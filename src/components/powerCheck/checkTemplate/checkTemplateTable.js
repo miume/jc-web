@@ -51,9 +51,9 @@ class CheckTemplateTable extends React.Component {
             render: ((text,record) => {
                 return (
                     <span>
-                        <AddModal record={record} title={'编辑'}/>
+                        <AddModal record={record} title={'编辑'} url={this.props.url} getTableParams={this.props.getTableParams}/>
                         <Divider type={'vertical'}/>
-                        <AddTableModal record={record} title={'新建点检'}/>
+                        <AddTableModal record={record} title={'新建点检'} url={this.props.url}/>
                         <Divider type={"vertical"}/>
                         <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
                             <span className='blue'>删除</span>
@@ -78,19 +78,18 @@ class CheckTemplateTable extends React.Component {
     }
 
     handleDelete(code) {
-        console.log(code)
-        // axios({
-        //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.getTableData(); //删除后重置信息
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
+        axios({
+            url:`${this.props.url.checkModel.delete}?id=${code}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.getTableParams(); //删除后重置信息
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     }
 }
 

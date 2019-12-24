@@ -157,7 +157,10 @@ class Role extends React.Component {
       render() {
           /**这是服务器网址及端口 */
           this.url = JSON.parse(localStorage.getItem('url'));
-          const current = JSON.parse(localStorage.getItem('current')) ;
+          const current = JSON.parse(localStorage.getItem('current'));
+          if(!current) {
+              this.props.history.push('/')
+          }
           /**获取当前菜单的所有操作权限 */
           this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
           const {selectedRowKeys} = this.state;

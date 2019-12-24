@@ -18,25 +18,8 @@ class AuxiliaryMaterial extends Component{
             dataIndex:'elementName',
         },{
             title:'名称',
-            key:'name',
-            dataIndex:'name',
-            render:(text,record)=>{
-                if(record.elementType===0){
-                    return 'Ni'
-                }
-                if(record.elementType===1){
-                    return 'Co'
-                }
-                if(record.elementType===2){
-                    return 'Mn'
-                }
-                if(record.elementType===3){
-                    return '氨'
-                }
-                if(record.elementType===4){
-                    return '碱'
-                }
-            }
+            key:'materialType',
+            dataIndex:'materialType'
         },{
             title:'周期类型',
             key:'period',
@@ -55,8 +38,8 @@ class AuxiliaryMaterial extends Component{
             dataIndex:'endTime',
         },{
             title:'入库量(领用,T)',
-            key:'use',
-            dataIndex:'use',
+            key:'materialRequisitions',
+            dataIndex:'materialRequisitions',
         },{
             title:'本期在制(T)',
             key:'currentGoodsInProcess',
@@ -121,11 +104,22 @@ class AuxiliaryMaterial extends Component{
                 periodCode:this.props.periodCode&&flag?this.props.periodCode:periodCode,
                 startTime:time
             }
-        }).then(data=>{
+        }).then((data)=>{
+            message.info(data.data.message);
+            let res = data.data.data;
+            if(res){
+                this.setState({
+                    data:res
+                })
+            }
             this.setState({
                 loading:false
             })
         }).catch(()=>{
+            this.setState({
+                loading:false,
+                data: []
+            });
             message.error('操作失败，请联系管理员!')
         })
     }
@@ -135,16 +129,18 @@ class AuxiliaryMaterial extends Component{
        // flag={this.judgeOperation(this.operation,'QUERY')}
         return(
             <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>       
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                    <Search flag={true} timeChange={this.timeChange} confirm={this.confirm} lineChange={this.lineChange}
                    selectChange={this.selectChange} staticPeriod={this.props.staticPeriod} line={this.props.line}
                    periodCode={this.props.periodCode&&this.state.flag?this.props.periodCode:this.state.periodCode}
                    date={this.props.date} />
-                   <div className='clear'></div> 
+                   <div className='clear'></div>
                     <Table
-                    rowKey={record=>record.id}
-                    columns={this.columns} 
+                        dataSource={this.state.data}
+                    rowKey={record=>record.materialType}
+                    columns={this.columns}
                     size='small'
+                    pagination={false}
                     bordered/>
                 </Spin>
             </div>

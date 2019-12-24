@@ -39,8 +39,8 @@ class CheckItemTable extends React.Component {
             width: '15%'
         },{
             title:'输入类型',
-            key:'dateType',
-            dataIndex:'dateType',
+            key:'dataType',
+            dataIndex:'dataType',
             width: '10%',
             render: (text) => {
                 return text ? '输入' : '勾选';
@@ -58,7 +58,7 @@ class CheckItemTable extends React.Component {
             render: ((text,record) => {
                 return (
                     <span>
-                        <AddModal record={record} title={'编辑'}/>
+                        <AddModal record={record} title={'编辑'} url={this.props.url} getTableParams={this.props.getTableParams}/>
                         <Divider type={"vertical"}/>
                         <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
                             <span className='blue'>删除</span>
@@ -75,6 +75,7 @@ class CheckItemTable extends React.Component {
                 selectedRowKeys,
                 onChange: onSelectChange,
             };
+        this.pagination.total = data ? data.total : 0;
         return (
             <Table rowKey={record => record.code} rowSelection={rowSelection} columns={this.columns}
                    dataSource={data} pagination={this.pagination} onChange={handleTableChange}
@@ -83,19 +84,18 @@ class CheckItemTable extends React.Component {
     }
 
     handleDelete(code) {
-        console.log(code)
-        // axios({
-        //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.getTableData(); //删除后重置信息
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
+        axios({
+            url:`${this.props.url.checkItem.delete}?id=${code}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.getTableParams(); //删除后重置信息
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     }
 }
 

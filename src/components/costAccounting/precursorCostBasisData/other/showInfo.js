@@ -1,8 +1,6 @@
 import React,{Component} from 'react'
 import {Button,Input,Popconfirm,message,Spin} from 'antd'
-// import '../statisticalPeriod/add.css'
 import SaveButton from '../../../BlockQuote/saveButton'
-import CancleButton from '../../../BlockQuote/cancleButton'
 import axios from 'axios'
 class ShowInfo extends Component{
     constructor(props){

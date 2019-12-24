@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider, Input, message, Popconfirm, Table} from "antd";
+import {Divider, message, Popconfirm, Table} from "antd";
 import AddModal from "../checkTemplate/tableAdd/addModal";
 import axios from "axios";
 
@@ -39,8 +39,8 @@ class PowerCheckTable extends React.Component {
             width: '15%'
         },{
             title:'班次',
-            key:'class',
-            dataIndex:'class',
+            key:'classNum',
+            dataIndex:'classNum',
             width: '15%'
         },{
             title:'生效日期',
@@ -53,11 +53,12 @@ class PowerCheckTable extends React.Component {
             dataIndex:'code',
             width: '15%',
             render: ((text,record) => {
+                let status = record.status;
                 return (
                     <span>
-                        <AddModal record={record} title={'编辑'}/>
+                        <AddModal record={record} title={'编辑'} status={status} url={this.props.url} getTableParams={this.props.getTableParams}/>
                         <Divider type={'vertical'}/>
-                        <AddModal record={record} title={'详情'}  disabled={true}/>
+                        <AddModal record={record} title={'详情'} disabled={true} url={this.props.url}/>
                         <Divider type={"vertical"}/>
                         <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
                             <span className='blue'>删除</span>
@@ -82,19 +83,18 @@ class PowerCheckTable extends React.Component {
     }
 
     handleDelete(code) {
-        console.log(code)
-        // axios({
-        //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.getTableData(); //删除后重置信息
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
+        axios({
+            url:`${this.props.url.checkRecord.delete}?id=${code}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.getTableParams(); //删除后重置信息
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     }
 }
 

@@ -8,12 +8,13 @@ class Search extends Component{
         super(props)
     }
     render(){
-        let date=this.props.date?[...new Set(JSON.parse(JSON.stringify(this.props.date)))]:null //es6数组去重
+        let date=this.props.date?[...new Set(JSON.parse(JSON.stringify(this.props.date)))]:null, {line} = this.props; //es6数组去重
         return(
             <div className={this.props.flag?'searchCell':'hide'}>
                 <Select  style={{width:'120px',marginRight:'10px'}} onChange={this.props.lineChange} placeholder='请选择产线'>
-                    <Option value={0} name={'产线'}>产线</Option>
-                    <Option value={1} name={'车间'}>车间</Option>
+                    {
+                        line ? line.map(e => <Option key={e.code} value={e.code}>{e.name}</Option>) : null
+                    }
                 </Select>
                 <Select value={this.props.periodCode} style={{width:'120px',marginRight:'10px'}} onChange={this.props.selectChange}>
                         {
@@ -24,7 +25,7 @@ class Search extends Component{
                             }):null
                         }
                 </Select>
-                
+
                 <Select
                     showSearch
                     style={{ width: 200 ,marginRight:'10px'}}
