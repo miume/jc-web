@@ -1,5 +1,5 @@
 import React from "react";
-import {Input} from "antd";
+import {Input,Radio} from "antd";
 import "./tr.css"
 
 class Tr extends React.Component{
@@ -7,27 +7,21 @@ class Tr extends React.Component{
         super(props)
     }
     codeChange = (e)=>{
-        const {value} = this.props;
-        value.ruleValue = e.target.value;
-        this.props.getData(value);
+        this.props.getData(this.props.index,"ruleValue",e.target.value);
     }
     desChange = (e)=>{
-        const {value} = this.props;
-        value.ruleDesc = e.target.value;
-        this.props.getData(value);
+        this.props.getData(this.props.index,"ruleDesc",e.target.value);
     }
+
     defaultChange = (e)=>{
-        const {value} = this.props;
-        value.defaultFlag = false;
-        this.props.getRadio(value);
+        this.props.getRadio(this.props.index,e.target.checked);
     }
     render(){
-        // console.log(this.props.value.defaultFlag)
         return(
             <tr><td className="isDefault"><Input onChange={this.codeChange} style={{border:'none',textAlign:'left'}} value={this.props.value.ruleValue}  placeholder={'请输入规则代码'}/></td>
                 <td className="isDefault"><Input onChange={this.desChange} style={{border:'none',textAlign:'left'}} value={this.props.value.ruleDesc} placeholder={'请输入说明'} /></td>
-                <td className="isDefault"><input onChange={this.defaultChange} checked={!this.props.value.defaultFlag} type="radio" className="defaultRadio" name="defaultRadio"/></td>
-                <td className="isDefault"><span style={{marginLeft:"4px"}} onClick={this.props.deleteRow.bind(this,this.props.id)} className='blue'>删除</span></td>
+                <td className="isDefault"><Radio onChange={this.defaultChange} checked={!this.props.value.defaultFlag} className="defaultRadio" style={{marginLeft:'20px'}}/></td>
+                <td className="isDefault"><span style={{marginLeft:"4px"}} onClick={this.props.deleteRow.bind(this,this.props.index)} className='blue'>删除</span></td>
             </tr>
         )
     }

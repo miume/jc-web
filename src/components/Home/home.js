@@ -827,7 +827,34 @@ class Home extends Component {
             fireMageTestItems:`${server}/jc/common/fireMageTestItems`,
 
             /**批次基础数据*/
-            batchConfig:`${server}/jc/common/batchConfig`,
+
+            batchConfig: `${server}/jc/common/batchConfig`,
+            /**火法质量基础数据送检部门*/
+            fireMageDept: {
+                page: `${server}/jc/common/fireMageDept/page`,
+                add: `${server}/jc/common/fireMageDept`,
+                ids: `${server}/jc/common/fireMageDept/ids`
+            },
+            /** 送检登记 */
+            fireInsRegister: {
+                fireMageCheck: `${server}/jc/common/fireMageCheck`,
+                check: `${server}/jc/common/fireMageCheck/check`,
+                detail: `${server}/jc/common/fireMageCheck/detail`,
+                page: `${server}/jc/common/fireMageCheck/page`,
+                getAllInfos: `${server}/jc/common/fireMageNumber/getAllInfos`,
+            },
+            /** 样品接收 */
+            fireInsSamRec: {},
+        /**批号与检测项目*/
+            fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
+            /**标签与检测项目*/
+            fireMageLabel:`${server}/jc/common/fireMageLabel`,
+        /**正极前驱体在制品*/
+            positiveProcessStatis:{
+                addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
+                afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`,
+                getNextPeriods:`${server}/jc/common/anodeGoodin/getNextPeriods`
+            },
 
             /**动力点检-点检项目*/
             checkItem: {
@@ -852,7 +879,6 @@ class Home extends Component {
                 deletes: `${server}/jc/common/checkSite/deletes`,
                 detail: `${server}/jc/common/checkSite/detail`,
             },
-
             /**动力点检-动力点检*/
             checkRecord: {
                 page: `${server}/jc/common/checkRecord/page`,
@@ -873,6 +899,10 @@ class Home extends Component {
                 deletes: `${server}/jc/common/checkModel/deletes`,
                 detail: `${server}/jc/common/checkModel/detail`,
                 bySiteCode: `${server}/jc/common/checkModel/bySiteCode`,
+            },
+            /**火法质量-检验管理-数据采集*/
+            dateConllection:{
+                page:`${server}/jc/common/dateConllection/page`
             },
     };
 

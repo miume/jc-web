@@ -9,13 +9,18 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      periodFlag: true //为真意味着是用的父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
+      periodFlag: true //为真意味着使用父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
     };
     this.startChange = this.startChange.bind(this);
     this.endChange = this.endChange.bind(this);
     this.selectChange = this.selectChange.bind(this);
     this.confirm = this.confirm.bind(this);
     this.reset=this.reset.bind(this);
+  }
+  componentWillUnmount(){
+      this.setState=()=>{
+          return
+      }
   }
 /**开始日期变化*/
   startChange(date, dateString) {
@@ -26,7 +31,9 @@ class Search extends Component {
         endDate=moment(t).format('YYYY-MM-DD')
     this.setState({
       startTime: `${dateString} ${secondTime}`,
-      endTime: `${endDate} ${secondTime}`
+      endTime: `${endDate} ${secondTime}`,
+      startDate:dateString,
+      endDate:endDate
     });
   }
   /**结束日期变化*/
@@ -37,7 +44,6 @@ class Search extends Component {
   }
   /**监控下拉框变化*/
   selectChange(value,option) {
-      console.log(value,option)
      if(option.props.name==='lineCode'){
          this.setState({
              lineCode:value
@@ -66,14 +72,19 @@ class Search extends Component {
               periodCode: periodCode1,
               lineCode:lineCode
             };
-
       this.props.addConfirm(params)
   }
   reset(){
+      this.setState({
+        startTime: undefined,
+        endTime: undefined,
+        periodCode: this.props.periodCode,
+        lineCode:undefined
+      })
   }
 
   render(){
-      let { periodCode ,line,periodStatis} = this.props,{periodFlag}=this.state
+      let { periodCode,line,periodStatis} = this.props,{periodFlag,endDate}=this.state
       return (
           <span className={this.props.flag ? "searchCell" : "hide"}>
         <span>开始时间 : </span>
@@ -89,6 +100,7 @@ class Search extends Component {
                   onChange={this.endChange}
                   style={{ width: 150, marginRight: "10px" }}
                   placeholder="请选择结束日期"
+                  value={endDate?moment(endDate):undefined}
               />
         <Select
             value={periodCode && periodFlag ? periodCode : this.state.periodCode}

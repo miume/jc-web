@@ -101,7 +101,7 @@ class ProcessName extends React.Component {
                                         {
                                             form => (
                                                 <span className='blue'
-                                                    onClick={() => this.save(form, record.key)}
+                                                    onClick={() => this.save(form, record.code)}
                                                     style={{ marginRight: 8 }}
                                                 >
                                                     保存
@@ -109,12 +109,12 @@ class ProcessName extends React.Component {
                                             )
                                         }
                                     </EditableContext.Consumer>
-                                    <Popconfirm title="确定取消?" okText='确定' cancelText='取消' onConfirm={() => this.cancel(record.key)}>
+                                    <Popconfirm title="确定取消?" okText='确定' cancelText='取消' onConfirm={() => this.cancel(record.code)}>
                                         <span className='blue'>取消</span>
                                     </Popconfirm>
                                 </span>
                             ) : (
-                                    <span className='blue' onClick={() => this.edit(record.index)}>编辑</span>
+                                    <span className='blue' onClick={() => this.edit(record.code)}>编辑</span>
                                 )
 
                             }
@@ -124,7 +124,7 @@ class ProcessName extends React.Component {
             }
         }]
     }
-    isEditing = record => record.index === this.state.editingKey;
+    isEditing = record => record.code === this.state.editingKey;
 
     cancel = () => {
         this.setState({
@@ -171,7 +171,7 @@ class ProcessName extends React.Component {
                 return;
             }
             var newData = [...this.state.data];
-            var index = newData.findIndex(item => key === item.key);
+            var index = newData.findIndex(item => key === item.code);
 
             if (index > -1) {
                 const item = newData[index];

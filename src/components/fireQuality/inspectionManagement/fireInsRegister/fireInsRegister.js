@@ -12,10 +12,10 @@ import AddModal from "../fireInsRegister/addModal";
 import "../fireInsRegister/fireInsRegister.css"
 
 const data = [];
-for (var i=0;i<20;i++){
+for (var i = 0; i < 20; i++) {
     data.push({
-        code: i+1,
-        col1: i+1,
+        code: i + 1,
+        col1: i + 1,
         col2: "HS5503191206F0205",
         col3: "Li Ni Co Mn Al Li Ni Co Mn Al Li Ni Co Mn Al Li Ni Co Mn Al",
         col4: "质量二部",
@@ -43,7 +43,7 @@ class FireInsRegister extends Component {
             loading: false,
             selectedRowKeys: [],
             dataSource: [],
-            searchContent:""
+            searchContent: ""
         }
         this.pagination = {
             pageSize: 10,
@@ -68,12 +68,16 @@ class FireInsRegister extends Component {
             <div>
                 <BlockQuote name="送检登记" menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal title={'新增'}/>
+                    <AddModal
+                        title={'新增'}
+                        url={this.url}
+                    />
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
                                  cancel={this.cancel} flag={Home.judgeOperation(this.operation, 'DELETE')}/>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'设备名/点检项目'}/>
                     <div className='clear'></div>
-                    <RegisterTable dataSource={dataSource} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
+                    <RegisterTable dataSource={dataSource} selectedRowKeys={selectedRowKeys}
+                                   onSelectChange={this.onSelectChange}
                                    handleTableChange={this.handleTableChange}/>
                 </Spin>
             </div>
@@ -98,7 +102,7 @@ class FireInsRegister extends Component {
     /**获取表格数据*/
     getTableData(params) {
         var dataSource = [];
-        for (var i = 0; i < data.length; i++){
+        for (var i = 0; i < data.length; i++) {
             const e = data[i];
             dataSource.push({
                 code: e.code,
