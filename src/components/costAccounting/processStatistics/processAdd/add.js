@@ -282,7 +282,6 @@ class CostProcessAdd extends Component {
             otherFlag:true,
             otherData:data
         })
-        console.log(data)
     }
 
     getChange(tabKey, inputData, selectData) {  //获取到下拉框，输入框填的值

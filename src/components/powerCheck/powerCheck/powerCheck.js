@@ -46,6 +46,7 @@ class PowerCheck extends React.Component {
     render() {
         const current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys,data} = this.state;
         this.url = JSON.parse(localStorage.getItem('url'));
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}/>
