@@ -842,9 +842,7 @@ class Home extends Component {
             positiveProcessStatis:{
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
                 afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
-            }
-    }
-
+            },
 
             /**动力点检-点检项目*/
             checkItem: {
