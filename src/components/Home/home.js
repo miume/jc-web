@@ -837,6 +837,7 @@ class Home extends Component {
                 check: `${server}/jc/common/fireMageCheck/check`,
                 detail: `${server}/jc/common/fireMageCheck/detail`,
                 page: `${server}/jc/common/fireMageCheck/page`,
+                getAllInfos: `${server}/jc/common/fireMageNumber/getAllInfos`,
             },
             /** 样品接收 */
             fireInsSamRec: {
