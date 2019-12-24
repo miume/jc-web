@@ -842,10 +842,7 @@ class Home extends Component {
             positiveProcessStatis:{
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
                 afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
-            }
-    }
-
-
+            },
             /**动力点检-点检项目*/
             checkItem: {
                 add: `${server}/jc/common/checkItem/add`,
@@ -869,7 +866,6 @@ class Home extends Component {
                 deletes: `${server}/jc/common/checkSite/deletes`,
                 detail: `${server}/jc/common/checkSite/detail`,
             },
-
             /**动力点检-动力点检*/
             checkRecord: {
                 page: `${server}/jc/common/checkRecord/page`,
