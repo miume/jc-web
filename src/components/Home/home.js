@@ -845,6 +845,12 @@ class Home extends Component {
             /**动力点检-点检站点*/
             checkSite: {
                 all: `${server}/jc/common/checkSite/all`,
+                page: `${server}/jc/common/checkSite/page`,
+                add: `${server}/jc/common/checkSite/add`,
+                update: `${server}/jc/common/checkSite/update`,
+                delete: `${server}/jc/common/checkSite/delete`,
+                deletes: `${server}/jc/common/checkSite/deletes`,
+                detail: `${server}/jc/common/checkSite/detail`,
             },
 
             /**动力点检-动力点检*/
@@ -867,7 +873,7 @@ class Home extends Component {
                 deletes: `${server}/jc/common/checkModel/deletes`,
                 detail: `${server}/jc/common/checkModel/detail`,
                 bySiteCode: `${server}/jc/common/checkModel/bySiteCode`,
-            }
+            },
     };
 
         localStorage.setItem('status', JSON.stringify(status));
