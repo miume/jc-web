@@ -6,30 +6,9 @@ import SaveButton from "../../../BlockQuote/saveButton";
 import moment from "moment";
 
 import "../fireInsRegister/fireInsRegister.css"
-import AddModal from "../../../powerCheck/checkTemplate/add/addModal";
-import AddTableModal from "../../../powerCheck/checkTemplate/tableAdd/addModal";
 
-const {Option} = Select;
 
-const data = [{
-    index: 1,
-    code: 1,
-    checkContent: '外壳是否完整',
-    dataType: 0,
-    frequency: '1次/天'
-},{
-    index: 2,
-    code: 2,
-    checkContent: '正常',
-    dataType: 1,
-    frequency: '1次/天'
-},{
-    index: 3,
-    code: 3,
-    checkContent: '未开机',
-    type: 1,
-    frequency: '1次/天'
-}];
+
 
 class AddModalLeft extends React.Component {
     constructor(props) {

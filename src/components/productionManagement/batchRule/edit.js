@@ -68,9 +68,16 @@ class Edit extends React.Component {
             if (res&&res.code === -1) {//-1为不可删除数据
                 message.info(res.message);
             } else {
-                message.info(data.data.message);
-                this.props.getTableData()
-                this.setState({visible: false});
+                console.log(data.data.data.code)
+                if (data.data.data.code === -1){
+                    message.info(data.data.data.message);
+                    this.props.getTableData()
+                    this.setState({visible: false});
+                }else{
+                    message.info(data.data.message);
+                    this.props.getTableData()
+                    this.setState({visible: false});
+                }
             }
         })
     }

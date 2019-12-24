@@ -35,6 +35,27 @@ class AddModalTop extends React.Component {
 
     getRule = () => {
 
+        axios({
+            url:`${this.props.url.fireInsRegister.getAllInfos}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+
+            const res = data.data.data;
+            if (res) {
+                console.log(res)
+
+            }else{
+
+            }
+
+            message.info(data.data.message);
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
+
 
         const data = [
             {
