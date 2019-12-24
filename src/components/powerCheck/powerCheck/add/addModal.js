@@ -95,7 +95,7 @@ class AddModal extends React.Component {
                        centered={true} width={700}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
-                           <AddTableModal key={'save'} title={'保存'} url={this.props.url} getTableParams={this.props.getTableParams}/>
+                           <AddTableModal key={'save'} title={'保存'} url={this.props.url} getTableParams={this.props.getTableParams} id={selectedRowKeys[0]} handleCancel={this.handleSave}/>
                        ]}>
                     <div className='check-template-add'>
                         <div>点检站点：</div>
@@ -157,13 +157,6 @@ class AddModal extends React.Component {
         })
     }
 
-    /**取消事件*/
-    handleCancel() {
-        this.setState({
-            visible: false
-        });
-    }
-
     /**监控地点、设备名/点检项目下拉框变化*/
     selectChange(value) {
         this.setState({
@@ -202,11 +195,8 @@ class AddModal extends React.Component {
 
     /**点击保存接口*/
     handleSave() {
-        let params = this.saveDataProcessing(), {title} = this.props, type = title === '新增' ? 'add' : '';
-        if(params) {
-            console.log(params)
-            this.handleCancel();
-        }
+        this.handleCancel();
+        this.props.getTableParams()
     }
 
     /**处理保存数据*/
@@ -222,6 +212,13 @@ class AddModal extends React.Component {
             message.info('信息不完整！');
             return false
         }
+    }
+
+    /**取消事件*/
+    handleCancel() {
+        this.setState({
+            visible: false
+        });
     }
 }
 
