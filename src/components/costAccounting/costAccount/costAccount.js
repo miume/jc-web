@@ -56,6 +56,10 @@ class CostAccount extends Component{
         }).then(data=>{
             let res=data.data.data
             if(res){
+                res.unshift({
+                    code: 0,
+                    name: '全部产线'
+                })
                 this.setState({
                     line:res
                 })
@@ -89,10 +93,12 @@ class CostAccount extends Component{
                 <Blockquote name={current.menuName} menu={current.menuParent}/>
                 <Tabs defaultActiveKey="1" tabBarGutter={32}>
                     <TabPane tab="主材" key="1">
-                        <MainMaterial periodCode={this.state.periodCode} staticPeriod={this.state.staticPeriod} line={this.state.line} url={this.url} getDate={this.getDate} date={this.state.date}/>
+                        <MainMaterial periodCode={this.state.periodCode} staticPeriod={this.state.staticPeriod} line={this.state.line} url={this.url}
+                                      getDate={this.getDate} date={this.state.date}/>
                     </TabPane>
                     <TabPane tab="辅材" key="2">
-                        <AuxiliaryMaterial periodCode={this.state.periodCode} staticPeriod={this.state.staticPeriod} line={this.state.line} url={this.url} getDate={this.getDate} date={this.state.date}/>
+                        <AuxiliaryMaterial periodCode={this.state.periodCode} staticPeriod={this.state.staticPeriod} line={this.state.line} url={this.url}
+                                           getDate={this.getDate} date={this.state.date}/>
                     </TabPane>
                 </Tabs>
             </div>

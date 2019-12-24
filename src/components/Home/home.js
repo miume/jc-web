@@ -818,11 +818,14 @@ class Home extends Component {
                 auxMatConfirm: `${server}/jc/common/precursorCostAccount/auxMatConfirm`
             },
             /**火法质量基础-编号规则*/
-            fireMageNumber: `${server}/jc/common/fireMageNumber`,
+            fireMageNumber:`${server}/jc/common/fireMageNumber`,
+
             /**火法质量操作手册*/
-            fireMageOperation: `${server}/jc/common/fireMageOperation`,
+            fireMageOperation:`${server}/jc/common/fireMageOperation`,
+
             /**火法质量检验项目*/
-            fireMageTestItems: `${server}/jc/common/fireMageTestItems`,
+            fireMageTestItems:`${server}/jc/common/fireMageTestItems`,
+
             /**批次基础数据*/
             batchConfig: `${server}/jc/common/batchConfig`,
             /**火法质量基础数据送检部门*/
@@ -840,19 +843,47 @@ class Home extends Component {
                 getAllInfos: `${server}/jc/common/fireMageNumber/getAllInfos`,
             },
             /** 样品接收 */
-            fireInsSamRec: {
-
+            fireInsSamRec: {},
+            /**动力点检-点检项目*/
+            checkItem: {
+                add: `${server}/jc/common/checkItem/add`,
+                pages: `${server}/jc/common/checkItem/page`,
+                update: `${server}/jc/common/checkItem/update`,
+                byId: `${server}/jc/common/checkItem/byId`,
+                byIds: `${server}/jc/common/checkItem/byIds`,
+                delete: `${server}/jc/common/checkItem/delete`,
+                deletes: `${server}/jc/common/checkItem/deletes`,
+                getItems: `${server}/jc/common/checkItem/getItems`,
+                getPlace: `${server}/jc/common/checkItem/getPlace`,
             },
-        /**批号与检测项目*/
-            fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
-            /**标签与检测项目*/
-            fireMageLabel:`${server}/jc/common/fireMageLabel`,
-        /**正极前驱体在制品*/
-            positiveProcess:{
-                addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
-                afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
+
+            /**动力点检-点检站点*/
+            checkSite: {
+                all: `${server}/jc/common/checkSite/all`,
+            },
+
+            /**动力点检-动力点检*/
+            checkRecord: {
+                page: `${server}/jc/common/checkRecord/page`,
+                add: `${server}/jc/common/checkRecord/add`,
+                update: `${server}/jc/common/checkRecord/update`,
+                delete: `${server}/jc/common/checkRecord/delete`,
+                deletes: `${server}/jc/common/checkRecord/deletes`,
+                detail: `${server}/jc/common/checkRecord/detail`,
+                getOperator: `${server}/jc/common/checkRecord/getOperator`,
+            },
+
+            /**动力点检-点检模版*/
+            checkModel: {
+                page: `${server}/jc/common/checkModel/page`,
+                add: `${server}/jc/common/checkModel/add`,
+                update: `${server}/jc/common/checkModel/update`,
+                delete: `${server}/jc/common/checkModel/delete`,
+                deletes: `${server}/jc/common/checkModel/deletes`,
+                detail: `${server}/jc/common/checkModel/detail`,
+                bySiteCode: `${server}/jc/common/checkModel/bySiteCode`,
             }
-    }
+    };
 
         localStorage.setItem('status', JSON.stringify(status));
         localStorage.setItem('dataType', JSON.stringify(dataType));

@@ -4,6 +4,7 @@ import NewButton from "../../../BlockQuote/newButton";
 import {Modal, Select, Table, message} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
+import AddTableModal from "../../checkTemplate/tableAdd/addModal";
 const {Option} = Select;
 
 const placeData = [{
@@ -67,7 +68,7 @@ class AddModal extends React.Component {
             title:'生效日期',
             key:'effectiveDate',
             dataIndex:'effectiveDate',
-            width: '20%'
+            width: '30%'
         }];
         this.handleSave = this.handleSave.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -76,11 +77,12 @@ class AddModal extends React.Component {
         this.renderButton = this.renderButton.bind(this);
         this.getTableData = this.getTableData.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
+        this.getAllCheckSite = this.getAllCheckSite.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
     }
 
     render() {
-        let {visible,selectedRowKeys,siteCode,data} = this.state, {title} = this.props, disabled = title !== '新增' ? true : false,
+        let {visible,selectedRowKeys,siteCode,data,siteData} = this.state, {title} = this.props, disabled = title !== '新增' ? true : false,
             rowSelection = {
                 type: 'radio',
                 selectedRowKeys,
@@ -93,13 +95,13 @@ class AddModal extends React.Component {
                        centered={true} width={700}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
-                           <SaveButton key={'save'} handleSave={this.handleSave}/>
+                           <AddTableModal key={'save'} title={'保存'} url={this.props.url} getTableParams={this.props.getTableParams}/>
                        ]}>
                     <div className='check-template-add'>
                         <div>点检站点：</div>
                         <Select disabled={disabled} value={siteCode} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
                             {
-                                placeData ? placeData.map(e => <Option key={e.code} name={'place'} value={e.code}>{e.place}</Option>) : null
+                                siteData ? siteData.map(e => <Option key={e.code} name={'siteCode'} value={e.code}>{e.siteName}</Option>) : null
                             }
                         </Select>
                     </div>
@@ -131,9 +133,28 @@ class AddModal extends React.Component {
                 index
             })
         }
+        this.getAllCheckSite();
         this.setState({
             visible: true
         });
+    }
+
+    /**获取所有点检站点*/
+    getAllCheckSite() {
+        axios({
+            url: `${this.props.url.checkSite.all}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                this.setState({
+                    siteData: res
+                })
+            }
+        })
     }
 
     /**取消事件*/
@@ -152,21 +173,22 @@ class AddModal extends React.Component {
     }
 
     getTableData(code) {
-        // axios({
-        //     url: `url?siteCode=${code}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.props.url.Authorization
-        //     }
-        // }).then(data => {
-        //     let res = data.data.data;
-        // })
-        let data = tableData.slice(0,code);
-        for(let i = 0; i < data.length; i++) {
-            data[i]['index'] = i + 1;
-        }
-        this.setState({
-            data
+        axios({
+            url: `${this.props.url.checkModel.bySiteCode}?siteCode=${code}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                for(let i = 0; i < res.length; i++) {
+                    res[i]['index'] = i + 1;
+                }
+                this.setState({
+                    data: res
+                })
+            }
         })
     }
 

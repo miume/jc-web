@@ -1,37 +1,39 @@
 import React from 'react';
+import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
 import {Modal, Select, Table, message} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 const {Option} = Select;
 
-const placeData = [{
-    code: 1,
-    place: '地点一'
-},{
-    code: 2,
-    place: '地点二'
-},{
-    code: 3,
-    place: '地点三'
-}],
-    itemData = [{
-        code: 1,
-        item: '地点一'
-    },{
-        code: 2,
-        item: '地点二'
-    },{
-        code: 3,
-        item: '地点三'
-    }];
+// const placeData = [{
+//     code: 1,
+//     place: '地点一'
+// },{
+//     code: 2,
+//     place: '地点二'
+// },{
+//     code: 3,
+//     place: '地点三'
+// }],
+//     itemData = [{
+//         code: 1,
+//         item: '地点一'
+//     },{
+//         code: 2,
+//         item: '地点二'
+//     },{
+//         code: 3,
+//         item: '地点三'
+//     }];
 
 class SelectModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
-            selectedRowKeys: []
+            selectedRowKeys: [],
+            selectedRows: []
         };
         this.columns = [{
             title:'序号',
@@ -61,16 +63,20 @@ class SelectModal extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.renderButton = this.renderButton.bind(this);
+        this.getCheckItem = this.getCheckItem.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.saveDataProcessing = this.saveDataProcessing.bind(this);
+        this.checkItemChange = this.checkItemChange.bind(this);
+        this.getCheckItemDetail = this.getCheckItemDetail.bind(this);
     }
 
     render() {
-        let {visible,selectedRowKeys,place,checkItem} = this.state, {title,data} = this.props, disabled = title !== '新增' ? true : false,
+        let {visible,selectedRowKeys,place,checkItem,placeData,itemData,data} = this.state, {title,disabledCode} = this.props, disabled = title !== '新增' ? true : false,
             rowSelection = {
-                type: 'radio',
                 selectedRowKeys,
                 onChange: this.onSelectChange,
+                getCheckboxProps: record => ({
+                    disabled: disabledCode && disabledCode.length &&disabledCode.includes(record.code)
+                }),
             };
         return (
             <span>
@@ -78,24 +84,23 @@ class SelectModal extends React.Component {
                 <Modal title={'选择点检内容'} visible={visible} maskClosable={false} closable={false}
                        centered={true} width={600}
                        footer={[
-                           <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
+                           <CancleButton key={'cancel'} handleCancel={this.handleCancel} flag={1}/>,
                            <SaveButton key={'save'} handleSave={this.handleSave}/>
                        ]}>
                     <div className='check-template-add'>
                         <div>地点：</div>
                         <Select disabled={disabled} value={place} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
                             {
-                                placeData ? placeData.map(e => <Option key={e.code} name={'place'} value={e.code}>{e.place}</Option>) : null
+                                placeData ? placeData.map((e,index) => <Option key={index} name={'place'} value={e}>{e}</Option>) : null
                             }
                         </Select>
                         <div className={'check-template-add-item'}>设备名/点检项目：</div>
-                        <Select disabled={disabled} value={checkItem} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
+                        <Select disabled={disabled} value={checkItem} onChange={this.checkItemChange} style={{width: 150}} placeholder={'请选择点检站点'}>
                             {
-                                itemData ? itemData.map(e => <Option key={e.code} name={'checkItem'} value={e.code}>{e.item}</Option>) : null
+                                itemData ? itemData.map((e,index) => <Option key={index} value={e['codeList'].join(',')}>{e.checkItem}</Option>) : null
                             }
                         </Select>
                     </div>
-
 
                     <Table dataSource={data} columns={this.columns} rowKey={record => record.code}
                            pagination={false} scroll={{y:200}} rowSelection={rowSelection}
@@ -115,32 +120,104 @@ class SelectModal extends React.Component {
 
     /**点击新增事件*/
     handleClick() {
-        let {record} = this.props;
-        if(record) {
-            let {place,checkItem,index} = record;
+        let {record,siteCode} = this.props;
+        if(!siteCode) {
+            message.info('请先选择点检站点');
+            return
+        }
+        this.getPlaceBySite(siteCode);
+        if(record) {  //处理编辑时初始数据
+            let {place,checkItem,index,code} = record;
             this.setState({
                 place,
                 checkItem,
-                index
-            })
+                index,
+                code
+            });
+            this.getCheckItem(place,checkItem)
+            // this.getCheckItemDetail(ids);
         }
         this.setState({
             visible: true
         });
     }
 
-    /**取消事件*/
-    handleCancel() {
-        this.setState({
-            visible: false
-        });
+    /**根据点检站点搜索地点*/
+    getPlaceBySite(code) {
+        axios({
+            url: `${this.props.url.checkItem.getPlace}?siteCode=${code}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                this.setState({
+                    placeData: res
+                })
+            }
+        })
     }
 
-    /**监控地点、设备名/点检项目下拉框变化*/
-    selectChange(value,option) {
-        let name = option.props.name;
+    /**监控地点下拉框变化*/
+    selectChange(value) {
         this.setState({
-            [name]: value
+            place: value
+        });
+        this.getCheckItem(value);
+    }
+
+    /**监控设备名/点检项目下拉框变化*/
+    checkItemChange(value) {
+        this.setState({
+            checkItem: value
+        });
+        let ids = value.split(',').map(e => parseInt(e))
+        this.getCheckItemDetail(ids);
+    }
+
+    /**根据站点code和地点获取点检项目*/
+    getCheckItem(place,checkItem) {
+        let {siteCode} = this.props;
+        axios({
+            url: `${this.props.url.checkItem.getItems}?siteCode=${siteCode}&place=${place}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                this.setState({
+                    itemData: res
+                });
+                if(checkItem) {
+                    let ids = res.filter(e => e.checkItem === checkItem)[0]['codeList'];
+                    this.getCheckItemDetail(ids);
+                }
+            }
+        })
+    }
+
+    getCheckItemDetail(ids) {
+        axios({
+            url: `${this.props.url.checkItem.byIds}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            data: ids
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                for(let i = 0; i < res.length; i++) {
+                    res[i]['index'] = i + 1;
+                }
+                this.setState({
+                    data: res
+                })
+            }
         })
     }
 
@@ -154,31 +231,22 @@ class SelectModal extends React.Component {
 
     /**点击保存接口*/
     handleSave() {
-        let params = this.saveDataProcessing(), {title} = this.props, type = title === '新增' ? 'add' : '';
-        if(params) {
+        let {selectedRows} = this.state;
+        if(selectedRows.length) {
             this.handleCancel();
-            this.props.addItem(params,type)
+            this.props.addItem(selectedRows)
+        } else {
+            message.info('请至少选择一条数据！')
         }
     }
 
-    /**处理保存数据*/
-    saveDataProcessing() {
-        let {checkItem,place,selectedRows,index} = this.state;
-        if(checkItem && place && selectedRows.length) {
-            let {checkContent,dataType,frequency} = selectedRows[0],
-                params = {
-                    index,
-                    checkItem,
-                    place,
-                    checkContent,
-                    dataType,
-                    frequency
-                };
-            return params;
-        } else {
-            message.info('信息不完整！');
-            return false
-        }
+    /**取消事件*/
+    handleCancel() {
+        this.setState({
+            visible: false,
+            selectedRows: [],
+            selectedRowKeys: []
+        });
     }
 }
 

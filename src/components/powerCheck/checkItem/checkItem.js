@@ -1,24 +1,25 @@
 import React from 'react';
 import BlockQuote from "../../BlockQuote/blockquote";
 import './checkItem.css';
-import {Spin} from "antd";
+import {Spin, message} from "antd";
 import SearchCell from '../../BlockQuote/newSearchSell';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import AddModal from "./addModal";
 import CheckItemTable from "./checkItemTable";
 import Home from "../../commom/fns";
+import axios from 'axios';
 
-const data = [{
-    index: 1,
-    code: 1,
-    siteName: '点检站点',
-    siteCode: 1,
-    place: '地点1',
-    checkItem: 'Fe',
-    checkContent: '外壳是否完整',
-    dataType: 0,
-    frequency: '1次/天'
-}];
+// const data = [{
+//     index: 1,
+//     code: 1,
+//     siteName: '点检站点',
+//     siteCode: 1,
+//     place: '地点1',
+//     checkItem: 'Fe',
+//     checkContent: '外壳是否完整',
+//     dataType: 0,
+//     frequency: '1次/天'
+// }];
 
 class CheckItem extends React.Component {
     constructor(props) {
@@ -44,17 +45,19 @@ class CheckItem extends React.Component {
 
     render() {
         let current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys,data} = this.state;
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal title={'新增'}/>
+                    <AddModal title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
                                  cancel={this.cancel} flag={Home.judgeOperation(this.operation,'DELETE')}/>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'设备名/点检项目'}/>
                     <div className='clear'></div>
-                    <CheckItemTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange} handleTableChange={this.handleTableChange}/>
+                    <CheckItemTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
+                                    url={this.url} handleTableChange={this.handleTableChange} getTableParams={this.getTableParams}/>
                 </Spin>
             </div>
         );
@@ -68,18 +71,39 @@ class CheckItem extends React.Component {
     getTableParams(value) {
         let {searchContent} = this.state, {pageSize,current} = this.pagination,
             params = {
-                searchContent: value === undefined ? searchContent : value,
-                pageSize: pageSize,
-                current: current
+                condition: value === undefined ? searchContent : value,
+                size: pageSize,
+                page: current
             };
         this.getTableData(params);
     }
 
     /**获取表格数据*/
     getTableData(params) {
-        console.log(params)
         this.setState({
-            data: data
+            loading: true
+        });
+        axios({
+            url: `${this.url.checkItem.pages}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.list) {
+                res.list['total'] = res['total'] ? res['total'] : 0;
+                for(let i = 0; i < res.list.length; i++) {
+                    res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
+                }
+                this.setState({
+                    data: res.list
+                })
+            }
+            this.setState({
+                loading: false
+            })
         })
     }
 
@@ -91,19 +115,19 @@ class CheckItem extends React.Component {
 
     deleteByIds() {
         let {selectedRowKeys} = this.state;
-        console.log('selectedRowKeys=',selectedRowKeys)
-        // axios({
-                //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-                //     method:'Delete',
-                //     headers:{
-                //         'Authorization':this.props.url.Authorization
-                //     }
-                // }).then((data)=>{
-                //     message.info(data.data.message);
-                //     this.props.getTableData(); //删除后重置信息
-                // }).catch(()=>{
-                //     message.info('删除失败，请联系管理员！');
-                // });
+        axios({
+            url:`${this.url.checkItem.deletes}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            data: selectedRowKeys
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.getTableParams(); //删除后重置信息
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     }
 
     handleTableChange(pagination) {
@@ -117,7 +141,6 @@ class CheckItem extends React.Component {
             searchContent
         });
         this.getTableParams(searchContent)
-        console.log('searchContent=',searchContent)
     }
 
     /**取消批量删除*/

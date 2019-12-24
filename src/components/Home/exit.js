@@ -102,13 +102,13 @@ class Exit extends Component {
     judgeCurrent(){
         const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path==='/todoList')[0]:{};
         if(menus) {
-            const parentName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).menuList.filter(e=>e.menuId===menus.parent)[0].menuName:[];
+            const parentName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).menuList.filter(e=>e.menuId===menus.parent)[0].menuName:'';
             const current = {
-                openKeys:menus.parent,
-                menuName:menus.menuName,
+                openKeys:menus.parent ? menus.parent : '',
+                menuName:menus.menuName ? menus.menuName : '',
                 menuParent:parentName,
                 path:menus.path
-            }
+            };
             localStorage.setItem('selectedKeys',menus.path)
             localStorage.setItem('defaultOpenKeys',[menus.parent])
             localStorage.setItem('current',JSON.stringify(current));
