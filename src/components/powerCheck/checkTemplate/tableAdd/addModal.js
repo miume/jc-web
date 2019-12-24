@@ -360,7 +360,7 @@ class AddTableModal extends React.Component {
         }
         for(let i = 0; i < tableData.length; i++) {
             let e = tableData[i];
-            if((e['dataType'] === 1 && !e['checkValue']) || (e['dataType'] === 0 && !e['checkResult']) ) {
+            if((e['dataType'] === 1 && !e['checkResult']) || (e['dataType'] === 0 && !e['checkValue']) ) {
                 message.info('请将表格数据的点检结果填写完整！');
                 return;
             }

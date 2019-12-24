@@ -31,27 +31,27 @@ class PowerCheckTable extends React.Component {
             title:'点检日期',
             key:'checkDate',
             dataIndex:'checkDate',
-            width: '20%'
+            width: '15%'
         },{
             title:'录检人',
             key:'operator',
             dataIndex:'operator',
-            width: '15%'
+            width: '10%'
         },{
             title:'班次',
             key:'classNum',
             dataIndex:'classNum',
-            width: '15%'
+            width: '10%'
         },{
             title:'生效日期',
             key:'effectiveDate',
             dataIndex:'effectiveDate',
-            width: '10%'
+            width: '15%'
         },{
             title:'操作',
             key:'code',
             dataIndex:'code',
-            width: '15%',
+            width: '20%',
             render: ((text,record) => {
                 let status = record.status;
                 return (

@@ -44,12 +44,12 @@ class SelectModal extends React.Component {
             title:'点检内容',
             key:'checkContent',
             dataIndex:'checkContent',
-            width: '30%'
+            width: '40%'
         },{
             title:'输入类型',
             key:'dataType',
             dataIndex:'dataType',
-            width: '30%',
+            width: '20%',
             render: (text) => {
                 return text ? '输入' : '勾选';
             }

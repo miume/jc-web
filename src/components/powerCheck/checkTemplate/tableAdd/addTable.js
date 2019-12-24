@@ -9,7 +9,7 @@ class AddTable extends React.Component {
             title:'序号',
             key:'index',
             dataIndex:'index',
-            width: '20%'
+            width: '10%'
         },{
             title:'地点',
             key:'place',
@@ -24,7 +24,7 @@ class AddTable extends React.Component {
             title:'点检内容',
             key:'checkContent',
             dataIndex:'checkContent',
-            width: '20%'
+            width: '30%'
         },{
             title:'点检结果',
             key:'checkResult',
