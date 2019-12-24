@@ -6,28 +6,11 @@ import SaveButton from "../../../BlockQuote/saveButton";
 import AddModalTop from "../fireInsRegister/addModalTop";
 import AddModalLeft from "../fireInsRegister/addModalLeft";
 import AddModalRight from "../fireInsRegister/addModalRight";
-import moment from "moment";
+import axios from "axios";
+
+
 const {Option} = Select;
 
-const data = [{
-    index: 1,
-    code: 1,
-    checkContent: '外壳是否完整',
-    dataType: 0,
-    frequency: '1次/天'
-},{
-    index: 2,
-    code: 2,
-    checkContent: '正常',
-    dataType: 1,
-    frequency: '1次/天'
-},{
-    index: 3,
-    code: 3,
-    checkContent: '未开机',
-    type: 1,
-    frequency: '1次/天'
-}];
 
 class AddModal extends React.Component {
     constructor(props) {
@@ -61,7 +44,7 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className="addModal_scala">
-                        <AddModalTop leftDataSource={this.state.leftDataSource} leftDataSourceChange = {this.leftDataSourceChange}/>
+                        <AddModalTop url={this.props.url} leftDataSource={this.state.leftDataSource} leftDataSourceChange = {this.leftDataSourceChange}/>
                         <div className="addModalDown_scala">
                             <AddModalLeft leftDataSource={this.state.leftDataSource}/>
                             <Divider type="vertical" className="addModalDown_divider" />
