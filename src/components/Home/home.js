@@ -843,10 +843,6 @@ class Home extends Component {
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
                 afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
             },
-<<<<<<< HEAD
-=======
-
->>>>>>> c7f920dbbe454263c930c8ef9c2e308b670fd4ec
             /**动力点检-点检项目*/
             checkItem: {
                 add: `${server}/jc/common/checkItem/add`,
