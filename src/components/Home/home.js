@@ -852,7 +852,8 @@ class Home extends Component {
         /**正极前驱体在制品*/
             positiveProcessStatis:{
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
-                afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
+                afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`,
+                getNextPeriods:`${server}/jc/common/anodeGoodin/getNextPeriods`
             },
 
             /**动力点检-点检项目*/
@@ -898,6 +899,10 @@ class Home extends Component {
                 deletes: `${server}/jc/common/checkModel/deletes`,
                 detail: `${server}/jc/common/checkModel/detail`,
                 bySiteCode: `${server}/jc/common/checkModel/bySiteCode`,
+            },
+            /**火法质量-检验管理-数据采集*/
+            dateConllection:{
+                page:`${server}/jc/common/dateConllection/page`
             },
     };
 

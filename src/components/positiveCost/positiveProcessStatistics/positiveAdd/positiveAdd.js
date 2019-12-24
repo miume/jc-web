@@ -28,19 +28,27 @@ class PositiveAdd extends Component {
         this.getAllProcess = this.getAllProcess.bind(this);
         this.addConfirm = this.addConfirm.bind(this);
         this.tabChange = this.tabChange.bind(this);
+        this.getPeriods=this.getPeriods.bind(this);
     }
     componentDidMount() {
         this.getAllProcess()
         let { location } = this.props,
             periodStatis = location.periodStatis,
-            line = location.line
+            line = location.line,
+            periodCode= periodStatis && periodStatis[0] && periodStatis[0].code ? periodStatis[0].code : undefined,
+            length= periodStatis && periodStatis[0] && periodStatis[0].length ? periodStatis[0].length : undefined,
+            time= periodStatis && periodStatis[0] && periodStatis[0].startTime ? periodStatis[0].startTime : undefined,
+            headPeriod={},
+            lineCode=line&&line[0]&&line[0].code?line&&line[0]&&line[0].code:undefined
+        headPeriod['periodCode']=periodCode
+        headPeriod['length']=length
+        headPeriod['time']=time
         this.setState({
             periodStatis: periodStatis,
             line: line,
-            periodCode: periodStatis && periodStatis[0] && periodStatis[0].code ? periodStatis[0].code : undefined,
-            length: periodStatis && periodStatis[0] && periodStatis[0].length ? periodStatis[0].length : undefined,
-            time: periodStatis && periodStatis[0] && periodStatis[0].startTime ? periodStatis[0].startTime : undefined,
+            headPeriod:headPeriod
         })
+        this.getPeriods(periodCode?periodCode:null,lineCode?lineCode:null)
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -57,9 +65,31 @@ class PositiveAdd extends Component {
         }).then((data) => {
             let res = data.data.data;
             if (res) {
-                console.log(res)
                 this.setState({
                     processData: res
+                })
+            }
+        })
+    }
+    /**根据周期和产线获取期数*/
+    getPeriods(periodId,lineCode){
+        axios({
+            url: `${this.url.positiveProcessStatis.getNextPeriods}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                periodId: periodId,
+                lineCode:lineCode
+            }
+        }).then(data => {
+            let res = data.data.data
+            if (res) {
+                this.setState({
+                    inputPeriod: res.periods,
+                    // giveEndDate:res.endTime.split(' ')[0]
+                    giveEndDate:res.endTime
                 })
             }
         })
@@ -68,14 +98,16 @@ class PositiveAdd extends Component {
     addConfirm() {
 
     }
-    tabChange() {
-
+    tabChange(key) {
+        this.setState({
+            tabKey:key
+        })
     }
     back() {
         this.props.history.push({ pathname: '/positiveProcess' })
     }
     render() {
-        let { processData, periodStatis, periodCode, line } = this.state
+        let { processData, periodStatis, line,headPeriod,inputPeriod} = this.state
         this.url = JSON.parse(localStorage.getItem('url'))
         this.tabData = [
             { component: <OnlineIngredients /> },
@@ -95,12 +127,12 @@ class PositiveAdd extends Component {
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='正极成本' menu2='在制品管理' returnDataEntry={this.back} />
                 <div className='rightDiv-content'>
                     <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis}
-                        lineData={line} periodCode={periodCode}
+                        lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getNextPeriods}
                     />
                     <div>
-                        {this.state.processData ? <Tabs defaultActiveKey='1'>
+                        {processData ? <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                             {
-                                this.state.processData ? this.state.processData.map((data, index) => {
+                                processData ? processData.map((data, index) => {
                                     return (
                                         <TabPane key={data.code.toString()} tab={data.processName}>{this.tabData[index] && this.tabData[index].component ? this.tabData[index].component : undefined}</TabPane>
                                     )
