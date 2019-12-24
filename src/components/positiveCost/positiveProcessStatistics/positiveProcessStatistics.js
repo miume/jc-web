@@ -24,6 +24,7 @@ class PositiveProcessStatistics extends Component{
     componentDidMount() {
         this.getPeriod()
         this.getLine()
+        
     }
     componentWillUnmount() {
         this.setState=()=>{
@@ -67,11 +68,17 @@ class PositiveProcessStatistics extends Component{
             }
         })
     }
-    addConfirm(params){
+ 
+    addConfirm(params){//主界面的确认按钮
 
     }
     handleAdd(){
-        this.props.history.push({pathname:'/positiveAdd'})
+        let {periodStatis,line}=this.state
+        this.props.history.push({
+            pathname:'/positiveAdd',
+            periodStatis:periodStatis,
+            line:line,
+        })
     }
     statisticalAnalysis(){
         this.props.history.push({pathname:'/positiveStatistic'})

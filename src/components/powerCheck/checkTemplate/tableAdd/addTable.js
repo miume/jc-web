@@ -1,5 +1,5 @@
 import React from 'react';
-import {Select, Table} from "antd";
+import {Input, Select, Table} from "antd";
 const {Option} = Select;
 
 class AddTable extends React.Component {
@@ -33,12 +33,13 @@ class AddTable extends React.Component {
             render: (text,record) => {
                 let {disabled} = this.props;
                     return (
-                        !disabled ?
-                            <Select placeholder='请选择' value={text ? text : undefined} onChange={this.props.selectChange} style={{width: '100%'}}>
-                            <Option name={record['index']} value={1}>正常</Option>
-                            <Option name={record['index']} value={2}>异常</Option>
-                            <Option name={record['index']} value={3}>未开机</Option>
-                        </Select> : text
+                        record.dataType ?
+                            <Select placeholder='请选择' value={record['checkValue'] ? record['checkValue'] : undefined} onChange={this.props.selectChange} style={{width: '100%'}} disabled={disabled}>
+                                <Option name={record['index']} value={1}>正常</Option>
+                                <Option name={record['index']} value={2}>异常</Option>
+                                <Option name={record['index']} value={3}>未开机</Option>
+                            </Select> :
+                            <Input value={text} name={`${record.index}-checkResult`} onChange={this.props.checkValueChange} disabled={disabled} style={{width: '100%'}}/>
                 )
             },
             className: 'check-template-table'

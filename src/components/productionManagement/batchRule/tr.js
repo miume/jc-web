@@ -12,6 +12,7 @@ class Tr extends React.Component{
     desChange = (e)=>{
         this.props.getData(this.props.index,"ruleDesc",e.target.value);
     }
+
     defaultChange = (e)=>{
         this.props.getRadio(this.props.index,e.target.checked);
     }

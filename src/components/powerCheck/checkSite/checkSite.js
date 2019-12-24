@@ -1,25 +1,13 @@
 import React from 'react';
-import './checkTemplate.css';
 import BlockQuote from "../../BlockQuote/blockquote";
-import AddModal from "./add/addModal";
+import {Spin, message, Table, Divider, Popconfirm} from "antd";
+import SearchCell from '../../BlockQuote/newSearchSell';
+import DeleteByIds from '../../BlockQuote/deleteByIds';
+import AddModal from "./addModal";
 import Home from "../../commom/fns";
-import {Spin, message} from "antd";
-import DeleteByIds from "../../BlockQuote/deleteByIds";
-import SearchCell from "../../BlockQuote/newSearchSell";
-import CheckTemplateTable from "./checkTemplateTable";
-import axios from "axios";
+import axios from 'axios';
 
-const data = [{
-    index: 1,
-    code: 1,
-    siteName: '点检站点',
-    modelName: '模版名称',
-    batchNumber: 'csedf323',
-    frequency: '1次/天',
-    effectiveDate: '2019-12-01 09:20:20'
-}];
-
-class PowerCheckTemplate extends React.Component {
+class CheckSite extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,9 +16,37 @@ class PowerCheckTemplate extends React.Component {
             searchContent: ''
         };
         this.pagination = {
-            pageSize: 10,
-            current: 1
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10", "20", "50", "100"]
         };
+        this.columns = [{
+            title: '序号',
+            key: 'index',
+            dataIndex: 'index',
+            width: '20%'
+        },{
+            title: '站点名称',
+            key: 'siteName',
+            dataIndex: 'siteName',
+            width: '40%'
+        },{
+            title: '操作',
+            key: 'code',
+            dataIndex: 'code',
+            width: '40%',
+            render: (text,record) => {
+                return (
+                    <span>
+                        <AddModal record={record} title={'编辑'} url={this.url} getTableParams={this.getTableParams}/>
+                        <Divider type={"vertical"}/>
+                        <Popconfirm title="确认删除?" onConfirm={()=> this.deleteByIds(text)} okText="确定" cancelText="取消" >
+                            <span className='blue'>删除</span>
+                        </Popconfirm>
+                    </span>
+                )
+            }
+         }];
         this.reset = this.reset.bind(this);
         this.cancel = this.cancel.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
@@ -42,9 +58,13 @@ class PowerCheckTemplate extends React.Component {
     }
 
     render() {
-        const current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys,data} = this.state;
+        let current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys,data} = this.state;
         this.url = JSON.parse(localStorage.getItem('url'));
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        let rowSelection = {
+                selectedRowKeys,
+                onChange: this.onSelectChange,
+            };
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}/>
@@ -52,10 +72,10 @@ class PowerCheckTemplate extends React.Component {
                     <AddModal title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
                                  cancel={this.cancel} flag={Home.judgeOperation(this.operation,'DELETE')}/>
-                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'模板名称'}/>
+                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'站点名称'}/>
                     <div className='clear'></div>
-                    <CheckTemplateTable data={data} url={this.url} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
-                                        handleTableChange={this.handleTableChange} getTableParams={this.getTableParams}/>
+                    <Table dataSource={data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
+                           onChange={this.handleTableChange} size={'small'} bordered rowKey={record => record.code}/>
                 </Spin>
             </div>
         );
@@ -82,7 +102,7 @@ class PowerCheckTemplate extends React.Component {
             loading: true
         });
         axios({
-            url: `${this.url.checkModel.page}`,
+            url: `${this.url.checkSite.page}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
@@ -91,16 +111,12 @@ class PowerCheckTemplate extends React.Component {
         }).then(data => {
             let res = data.data.data;
             if(res && res.list) {
-                let result = [];
-                result['total'] = res.total ? res.total : 0;
+                this.pagination.total = res['total'] ? res['total'] : 0;
                 for(let i = 0; i < res.list.length; i++) {
-                    let {model,siteName} = res['list'][i];
-                    model['index'] = (res['page'] - 1) * 10 + i + 1;
-                    model['siteName'] = siteName;
-                    result.push(model)
+                    res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
                 }
                 this.setState({
-                    data: result
+                    data: res.list
                 })
             }
             this.setState({
@@ -115,19 +131,23 @@ class PowerCheckTemplate extends React.Component {
         })
     }
 
-    /**批量删除*/
-    deleteByIds() {
-        let {selectedRowKeys} = this.state;
+    deleteByIds(id) {
+        let {selectedRowKeys} = this.state,
+            ids = typeof id === 'number' ? [id] : selectedRowKeys
         axios({
-            url:`${this.props.url.checkModel.deletes}`,
+            url:`${this.url.checkSite.deletes}`,
             method:'Delete',
             headers:{
-                'Authorization':this.props.url.Authorization
+                'Authorization':this.url.Authorization
             },
-            data: selectedRowKeys
+            data: ids
         }).then((data)=>{
-            message.info(data.data.message);
-            this.getTableParams(); //删除后重置信息
+            if(data.data.code === 4) {
+                message.info('存在站点名称已被使用，不允许删除！');
+            } else {
+                message.info(data.data.message);
+                this.getTableParams(); //删除后重置信息
+            }
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
@@ -163,4 +183,4 @@ class PowerCheckTemplate extends React.Component {
     }
 }
 
-export default PowerCheckTemplate;
+export default CheckSite;
