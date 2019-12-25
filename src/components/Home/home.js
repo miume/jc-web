@@ -827,13 +827,14 @@ class Home extends Component {
             fireMageTestItems:`${server}/jc/common/fireMageTestItems`,
 
             /**批次基础数据*/
-
             batchConfig: `${server}/jc/common/batchConfig`,
+
             /**火法质量基础数据送检部门*/
             fireMageDept: {
                 page: `${server}/jc/common/fireMageDept/page`,
                 add: `${server}/jc/common/fireMageDept`,
-                ids: `${server}/jc/common/fireMageDept/ids`
+                ids: `${server}/jc/common/fireMageDept/ids`,
+                getAll: `${server}/jc/common/fireMageDept/getAll`
             },
             /** 送检登记 */
             fireInsRegister: {
@@ -848,11 +849,14 @@ class Home extends Component {
             },
             /** 样品接收 */
             fireInsSamRec: {},
-        /**批号与检测项目*/
+
+            /**批号与检测项目*/
             fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
+
             /**标签与检测项目*/
             fireMageLabel:`${server}/jc/common/fireMageLabel`,
-        /**正极前驱体在制品*/
+
+            /**正极前驱体在制品*/
             positiveProcessStatis:{
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
                 afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`,
@@ -908,6 +912,14 @@ class Home extends Component {
                 page:`${server}/jc/common/dateConllection/page`,
                 getByProcessByProduct:`${server}/jc/common/dateConllection/getByProcessByProduct`,
                 
+            },
+
+            /**火法质量-检验管理-数据整理*/
+            dataReorganize:{
+                page:`${server}/jc/common/dataReorganize/page`,
+                detail: `${server}/jc/common/dataReorganize/detail`,
+                import: `${server}/jc/common/dataReorganize/import`,
+                export: `${server}/jc/common/dataReorganize/export`,
             },
     };
 

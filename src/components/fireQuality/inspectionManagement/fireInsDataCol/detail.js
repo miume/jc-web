@@ -1,21 +1,96 @@
 import React ,{Component}from 'react'
-import {Modal,Input,message} from 'antd'
+import {Modal} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
-
 import axios from "axios";
+
 class Detail extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            visible:false,
-            changeFlag:false,//监听渲染初始值还是已改变的值
-        }
-        this.showModal=this.showModal.bind(this);
-        this.cancel=this.cancel.bind(this);
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+            items: []
+        };
+
+        this.cancel = this.cancel.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.getDetailData = this.getDetailData.bind(this);
     }
-    showModal(){
+
+    render() {
+        let {visible, items} = this.state,
+            parentStyle = {
+                'display': 'flex',
+                'flexWrap': 'wrap',
+                'height': 200,
+                'overflow': 'auto'
+            },
+            sonStyle = {
+                'display': 'flex',
+                'margin': 5
+            },
+            spanStyle = {
+                'display': 'inline-block',
+                'width': 180,
+                'textAlign': 'right',
+                'fontWeight': 500
+            },
+            span1Style = {
+                'width': 60,
+                'border': '1px solid #ccc',
+                'textAlign': 'center'
+            };
+        return(
+            <span>
+                <span className={'blue'} onClick={this.showModal}>详情</span>
+                <Modal
+                    title={'详情'}
+                    visible={visible}
+                    maskClosable={false}
+                    closable={false}
+                    centered={true}
+                    width={'600px'}
+                    footer={[
+                        <CancleButton key={'cancel'} handleCancel={this.cancel} flag={true}/>,
+                    ]}>
+                        <div style={parentStyle}>
+                            {
+                                items.length ? items.map(e => {
+                                    return (
+                                        <div key={e.code} style={sonStyle}>
+                                            <span style={spanStyle}>{`${e.name}：`}</span>
+                                            <div style={span1Style}>{e.values}</div>
+                                        </div>
+                                    )
+                                }) : null
+                            }
+                        </div>
+                    </Modal>
+                </span>
+        )
+    }
+
+    showModal() {
+        let {code} = this.props;
+        this.getDetailData(code);
         this.setState({
             visible:true
+        })
+    }
+
+    getDetailData(code) {
+        axios({
+            url: `${this.props.url.dataReorganize.detail}?id=${code}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.items) {
+                this.setState({
+                    items: res.items
+                })
+            }
         })
     }
 
@@ -23,31 +98,6 @@ class Detail extends Component{
         this.setState({
             visible:false
         })
-
-    }
-    render(){
-        let {visible,changeFlag}=this.state,{editflag,record}=this.props
-        return(
-            <span>
-                <span className={'blue'} onClick={this.showModal}>详情</span>
-
-                <Modal
-                    title={'详情'}
-                    visible={visible}
-                    maskClosable={false}
-                    closable={false}
-                    centered={true}
-                    width={'400px'}
-                    footer={[
-                        <CancleButton key={'cancel'} handleCancel={this.cancel} flag={true}/>,
-                    ]}
-                >
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>检验项目名称 : </span><Input name={'name'} style={{width:'250px'}} placeholder={'请输入检验项目名称'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.name:undefined}/></div>
-                        <br/>
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>单位 : </span><Input name={'unit'} style={{width:'250px'}} placeholder={'请输入单位'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.unit:undefined}/></div>
-                    </Modal>
-                </span>
-        )
     }
 }
 export default Detail

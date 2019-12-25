@@ -277,15 +277,8 @@ class CheckTemplate extends React.Component{
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div className='equipment'>
-                    {/* <DepTree
-                        key="depTree"
-                        treeName={'所属部门'}
-                        url={this.url}
-                        getTableData={this.getTableData}
-                    /> */}
                     <Spin spinning={this.state.loading} wrapperClassName={'equipment-left'}>
                     <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></Spin>
-                    {/* <div style={{width:"80%",marginLeft:"15px"}}> */}
                     {/*右边表格部分*/}
                     <Spin spinning={this.state.tableLoading} wrapperClassName='equipment-right'>
                         <AddBut getTableData={this.getTableData} info={this.state.lineData} deptCode={this.state.deptCode} deviceName={this.state.deviceName} deptName={this.state.deptName}/>

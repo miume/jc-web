@@ -125,10 +125,10 @@ class PowerCheckTemplate extends React.Component {
                 'Authorization':this.props.url.Authorization
             },
             data: selectedRowKeys
-        }).then((data)=>{
+        }).then((data) => {
             message.info(data.data.message);
             this.getTableParams(); //删除后重置信息
-        }).catch(()=>{
+        }).catch(() => {
             message.info('删除失败，请联系管理员！');
         });
     }

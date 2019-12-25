@@ -70,6 +70,7 @@ class CheckTemplateTable extends React.Component {
                 selectedRowKeys,
                 onChange: onSelectChange,
             };
+        this.pagination.total = data ? data.total : 0;
         return (
             <Table rowKey={record => record.code} rowSelection={rowSelection} columns={this.columns}
                    dataSource={data} pagination={this.pagination} onChange={handleTableChange}

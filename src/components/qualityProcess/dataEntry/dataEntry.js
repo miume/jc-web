@@ -92,6 +92,7 @@ class DataEntry extends React.Component{
             data : data
         })
     }
+
     render(){
         return (
             <div>

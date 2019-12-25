@@ -23,8 +23,6 @@ class PictureUp extends React.Component{
         })
     }
 
-
-
     onRemove = (e) =>{
         var list = []
         list.push(e.response.data)

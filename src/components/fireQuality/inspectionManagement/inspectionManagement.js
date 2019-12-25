@@ -24,12 +24,12 @@ const data=[{
     className:'fa fa-sitemap fa-5x'
 }]
 class InspectionManagement extends Component {
-    constructor(props){
-        super(props)
-        this.click=this.click.bind(this)
+    constructor(props) {
+        super(props);
+        this.click = this.click.bind(this)
     }
     click(e) {
-        let path = e.currentTarget.id
+        let path = e.currentTarget.id;
         this.props.history.push({pathname:path})
     }
     render(){
