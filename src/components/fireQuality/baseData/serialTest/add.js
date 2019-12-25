@@ -264,9 +264,9 @@ class Add extends Component{
                          </div>
                         )
                     }
-                    <div className={'fire-ins-data-acq1'}> <span className='fireQua-add-span fireQua-add-span-width2' >请选择绑定检验项目 : </span></div>
+                    <div className={'fire-ins-data-acq1'}>请选择绑定检验项目 : </div>
                     <div className={'fireQua-add-check-group fireIns-add-check-group-scroll'} style={{padding:'10px'}}>
-                        <Group onChange={this.checkChange}  value={this.state.testItem} >
+                        <Group onChange={this.checkChange}  value={this.state.testItem} style={{width:'100%'}}>
                             {
                                 this.state.testItemData?this.state.testItemData.map((item,index)=>{
                                     return(
