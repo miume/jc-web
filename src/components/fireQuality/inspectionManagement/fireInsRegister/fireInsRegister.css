@@ -115,8 +115,11 @@
     flex-direction: row;
     justify-content: center;
 }
-.detailModal_top span{
-    width: 33%;
+.detailModal_top_maxSpan {
+    width: 54% !important;
+}
+.detailModal_top_minSpan{
+    width: 23%;
 }
 .detailModal_down {
     width: 100%;

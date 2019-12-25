@@ -7,7 +7,6 @@ import axios from "axios";
 const {Option} = Select;
 
 
-
 class AddModalTop extends React.Component {
     constructor(props) {
         super(props);
@@ -16,10 +15,34 @@ class AddModalTop extends React.Component {
             data: [],
             batchNumber: [],
             width: 900,
-            inputValue: ""
+            inputValue: "",
+            processCode: 3,
+            productCode: 1,
+            batchItems: {
+                batch: "",
+                checkInTime: "",
+                comfirmTime: "",
+                day: "",
+                delieryPeople: "",
+                deptCode: 0,
+                detectStatus: "",
+                dev1: "",
+                dev2: "",
+                flag: "",
+                line: "",
+                month: "",
+                other: "",
+                process: "",
+                product: "",
+                stream: "",
+                unit: "",
+                year: ""
+            },
+            itemIndex: ["process","dev1","dev2","product","year","month","day","unit","line","stream","other"]
         };
 
     }
+
     componentDidMount() {
         this.getRule()
     }
@@ -34,153 +57,62 @@ class AddModalTop extends React.Component {
     }
 
     getRule = () => {
-
         axios({
-            url:`${this.props.url.fireInsRegister.getAllInfos}`,
-            method:'get',
-            headers:{
-                'Authorization':this.props.url.Authorization
+            url: `${this.props.url.fireInsRegister.getAllInfos}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
             }
-        }).then((data)=>{
-
+        }).then((data) => {
             const res = data.data.data;
             if (res) {
-                console.log(res)
+                var dataSource = res;
+                var batchItems = this.state.batchItems;
+                const itemIndex = this.state.itemIndex;
+                dataSource.push({
+                    "rule": "自由段",
+                    "values": [],
+                    "defaultValue": "",
+                    "codes":[]
+                })
+                dataSource.push({
+                    "rule": "",
+                    "values": [],
+                    "defaultValue": "",
+                    "codes":[]
+                })
+                const batchNumber = [];
+                var processCode = this.state.processCode;
+                var productCode = this.state.productCode;
+                for (let i = 0; i < dataSource.length; i++) {
+                    batchNumber.push(dataSource[i].defaultValue);
+                    if (i < dataSource.length - 1){
+                        batchItems[itemIndex[i]] = dataSource[i].defaultValue
+                    }
+                    if (dataSource[i].position === "1") {
+                        processCode = dataSource[i].defaultCode
+                    }
+                    if (dataSource[i].position === "4") {
+                        productCode = dataSource[i].defaultCode
+                    }
 
-            }else{
+                }
+                this.setState({
+                    data: dataSource,
+                    batchNumber: batchNumber,
+                    batchItems: batchItems,
+                    processCode: processCode,
+                    productCode: productCode
+                },() => {
+                    this.props.getItem(processCode,productCode)
+                })
 
+            } else {
+                message.info("规则获取为空，请刷新")
             }
-
-            message.info(data.data.message);
-        }).catch(()=>{
-            message.info('删除失败，请联系管理员！');
+        }).catch(() => {
+            message.info('规则获取失败，请联系管理员！');
         });
-
-
-        const data = [
-            {
-                "rule": "工序",
-                "values": [
-                    "JQ",
-                    "JH",
-                    "HC"
-                ],
-                "defaultValue": "JQ"
-            },
-            {
-                "rule": "设备号1",
-                "values": [
-                    "F",
-                    "H"
-                ],
-                "defaultValue": "F"
-            },
-            {
-                "rule": "设备号2",
-                "values": [
-                    "1",
-                    "2",
-                ],
-                "defaultValue": "1"
-            },
-            {
-                "rule": "产品型号/厂家",
-                "values": [
-                    "906",
-                    "907"
-                ],
-                "defaultValue": "906"
-            },
-            {
-                "rule": "年",
-                "values": [
-                    "19",
-                    "29"
-                ],
-                "defaultValue": "19"
-            },
-            {
-                "rule": "月",
-                "values": [
-                    "1",
-                    "2",
-                    "3",
-                    "4"
-                ],
-                "defaultValue": "1"
-            },
-            {
-                "rule": "日",
-                "values": [
-                    "1",
-                    "2"
-                ],
-                "defaultValue": "1"
-            },
-            {
-                "rule": "单元",
-                "values": [
-                    "F",
-                    "G"
-                ],
-                "defaultValue": "F"
-            },
-            {
-                "rule": "产线",
-                "values": [
-                    "1",
-                    "2"
-                ],
-                "defaultValue": "1"
-            },
-            {
-                "rule": "流水",
-                "values": [
-                    "001",
-                    "002",
-                    "003"
-                ],
-                "defaultValue": "001"
-            }
-        ];
-        data.push({
-            "rule": "自由段",
-            "values": [
-            ],
-            "defaultValue": ""
-        })
-        data.push({
-            "rule": "",
-            "values": [
-            ],
-            "defaultValue": ""
-        })
-        const batchNumber = [];
-        for(let i = 0; i < data.length; i++) {
-            batchNumber.push(data[i].defaultValue);
-        }
-
-        this.setState({
-            data:data,
-            batchNumber: batchNumber
-        })
-
-        // axios.get(`${this.props.url.productionBatchRule.getAllInfos}`, {}, {
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data) => {
-        //     let res = data.data.data, batchNumber = [];
-        //     if(res && res.length) {
-        //         for(let i = 0; i < 7; i++) {
-        //             batchNumber.push(res[i].defaultValue);
-        //         }
-        //     }
-        //     this.setState({
-        //         data: res.slice(0,7),
-        //         batchNumber: batchNumber
-        //     })
-        // })
     }
 
 
@@ -188,15 +120,14 @@ class AddModalTop extends React.Component {
     renderSelectLabel = () => {
         let {data} = this.state;
         var index = 0;
-        if(data && data.length) {
+        if (data && data.length) {
             return (
-                data.map(e =>
-                    {
-                        if (e.rule === "产品型号/厂家"){
-                            index = index + 1
+                data.map(e => {
+                        if (e.rule === "产品型号/厂家") {
+                            index = index + 1;
                             return <span key={index} className='addModalTop_batchNumber_span_max'>{e.rule}</span>
                         } else {
-                            index = index + 1
+                            index = index + 1;
                             return <span key={index} className='addModalTop_batchNumber_span'>{e.rule}</span>
                         }
                     }
@@ -208,27 +139,32 @@ class AddModalTop extends React.Component {
     /**渲染select*/
     renderSelect = () => {
         let {data} = this.state;
-        if(data && data.length) {
+        if (data && data.length) {
             return (
-                data.map( (e, index) =>{
-                    if (e.rule === "自由段" || e.rule === ""){
-                        if (e.rule==="自由段"){
+                data.map((e, index) => {
+                        if (e.rule === "自由段" || e.rule === "") {
+                            if (e.rule === "自由段") {
+                                return (
+                                    <Input key={index} className='addModalTop_batchNumber_input' style={{marginRight: 10}}
+                                           value={this.state.inputValue} onChange={this.inputChange}
+                                           placeholder="可空，<6个字符>"/>
+                                )
+                            } else {
+                                return (
+                                    <span key={index} onClick={this.iconChange} className='addModalTop_batchNumber_add'
+                                          style={{marginRight: 10}}><Icon style={{fontSize: "30px", color: "green"}}
+                                                                          type="plus"/></span>
+                                )
+                            }
+                        } else {
                             return (
-                                <Input key={index} className='addModalTop_batchNumber_input' style={{marginRight: 10}} value={this.state.inputValue} onChange={this.inputChange} placeholder="可空，<6个字符>"/>
-                            )
-                        }else{
-                            return (
-                                <span key={index} onClick={this.iconChange} className='addModalTop_batchNumber_add' style={{marginRight: 10}}><Icon style={{fontSize:"30px",color:"green"}} type="plus" /></span>
+                                <Select onChange={this.selectChange} key={index}
+                                        defaultValue={e.defaultValue}
+                                        className='addModalTop_batchNumber_select' style={{marginRight: 10}}>
+                                    {this.renderOption(e.values, index,e.codes)}
+                                </Select>
                             )
                         }
-                    } else{
-                        return (
-                            <Select onChange={this.selectChange} name={e.values} key={index} defaultValue={e.defaultValue}
-                                    className='addModalTop_batchNumber_select' style={{marginRight: 10}}>
-                                {this.renderOption(e.values,index)}
-                            </Select>
-                        )
-                    }
                     }
                 )
             )
@@ -237,59 +173,115 @@ class AddModalTop extends React.Component {
 
     iconChange = () => {
         const batchNumber = this.state.batchNumber;
+        var batchItems = this.state.batchItems
         var col2 = "";
-        for (var i=0; i<batchNumber.length; i++){
+        for (var i = 0; i < batchNumber.length; i++) {
             col2 = col2 + batchNumber[i];
         }
         col2 = col2 + this.state.inputValue;
+        batchItems["other"] = this.state.inputValue;
+        batchItems["batch"] = col2;
+
         var dataSource = this.props.leftDataSource;
         const col1 = dataSource.length;
-        if (col1 === 10){
+        if (col1 === 10) {
             message.info("最多一次性选择 10 条数据");
             return
         }
 
+        // 前端控制，不能加一样的数据
+        for (var i = 0; i < dataSource.length; i++) {
+            if (dataSource[i].col2 === col2) {
+                message.info("该批号重复");
+                return
+            }
+        }
+
+
         // 通过调用接口，判断是否被重复，占用
-        // TODO
-        var col3 = 0;
-        var col4 = 0
-
-        dataSource.push({
-            col1: col1 + 1,
-            col2: col2,
-            col3: col3,
-            col4: col4
-        })
-
-        this.props.leftDataSourceChange(dataSource)
-
-
+        axios({
+            url:`${this.props.url.fireInsRegister.check}?batch=${col2}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            const res = data.data.data;
+            var flag = 0;
+            if (res) {
+                dataSource.push({
+                    col1: col1 + 1,
+                    col2: col2,
+                    col3: 0,
+                    col4: 1
+                });
+                flag = 1
+            }else{
+                dataSource.push({
+                    col1: col1 + 1,
+                    col2: col2,
+                    col3: 1,
+                    col4: 0
+                })
+                flag = 0
+            }
+            this.props.leftDataSourceChange(dataSource,batchItems,flag)
+            message.info(data.data.message);
+        }).catch(()=>{
+            message.info('批号重复检测失败，请联系管理员！');
+        });
     }
     inputChange = (e) => {
         this.setState({
-            inputValue: e.target.value
+            inputValue: e.target.value,
         })
     }
 
     /**渲染Option*/
-    renderOption = (data,name) => {
-        if(data && data.length) {
+    renderOption = (data, ruleIndex, code) => {
+        if (data && data.length) {
             return (
-                data.map((e,index) =>
-                    <Option name={name} key={index} value={e}>{e}</Option>
+                data.map((e, index) =>
+                    <Option name={code[index]}  key={index} value={e + "-" + ruleIndex}>{e}</Option>
                 )
             )
         }
     }
 
     /**监控下拉框变化*/
-    selectChange = (value, option) => {
+    selectChange = (data, option) => {
+        const code = option.props.name;
+
+        const index = parseInt(data.split("-")[1]);
+        const value = data.split("-")[0]
         var batchNumber = this.state.batchNumber;
-        batchNumber[option.props.name] = value;  //根据name属性修改实时更新batchNumber数组的值
+        var batchItems = this.state.batchItems;
+        const itemIndex = this.state.itemIndex;
+
+        batchNumber[index] = value;  //根据name属性修改实时更新batchNumber数组的值
+        batchItems[itemIndex[index]] = value;
+
+        var processCode = this.state.processCode;
+        var productCode = this.state.productCode;
+        // 若为工序 或者 产品型号 的修改，则返回code
+        if (index === 0 || index === 3){
+            if (index === 0){
+                processCode = code;
+                this.props.getItem(code,this.state.productCode)
+            }else{
+                productCode = code;
+                this.props.getItem(this.state.processCode,code)
+            }
+        }
+
         this.setState({
-            batchNumber: batchNumber
+            batchNumber: batchNumber,
+            batchItems: batchItems,
+            processCode: processCode,
+            productCode: productCode
         })
     }
+
 
 
 }

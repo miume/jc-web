@@ -1,10 +1,8 @@
 /**检验管理-送检登记*/
 import React, {Component} from 'react'
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Spin, Table, message} from "antd";
-import DeleteByIds from "../../../BlockQuote/deleteByIds";
+import {Spin, message} from "antd";
 import axios from "axios";
-import Home from "../../../commom/fns";
 import SearchCell from "../../../BlockQuote/newSearchSell";
 import RegisterTable from '../fireInsRegister/table';
 import AddModal from "../fireInsRegister/addModal";
@@ -41,9 +39,9 @@ class FireInsRegister extends Component {
         super(props)
         this.state = {
             loading: false,
-            selectedRowKeys: [],
             dataSource: [],
-            searchContent: ""
+            searchContent: "",
+            total: 0
         }
         this.pagination = {
             pageSize: 10,
@@ -52,16 +50,13 @@ class FireInsRegister extends Component {
         this.reset = this.reset.bind(this);
         this.cancel = this.cancel.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        this.deleteByIds = this.deleteByIds.bind(this);
         this.getTableData = this.getTableData.bind(this);
-        this.onSelectChange = this.onSelectChange.bind(this);
         this.getTableParams = this.getTableParams.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
     }
 
     render() {
         const current = JSON.parse(localStorage.getItem('current'))
-        const {selectedRowKeys, dataSource} = this.state;
         this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
         this.url = JSON.parse(localStorage.getItem('url'))
         return (
@@ -71,14 +66,16 @@ class FireInsRegister extends Component {
                     <AddModal
                         title={'新增'}
                         url={this.url}
+                        getTableParams={this.getTableParams}
                     />
-                    <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
-                                 cancel={this.cancel} flag={Home.judgeOperation(this.operation, 'DELETE')}/>
-                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'设备名/点检项目'}/>
+                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'批号'}/>
                     <div className='clear'></div>
-                    <RegisterTable dataSource={dataSource} selectedRowKeys={selectedRowKeys}
-                                   onSelectChange={this.onSelectChange}
-                                   handleTableChange={this.handleTableChange}/>
+                    <RegisterTable dataSource={this.state.dataSource}
+                                   handleTableChange={this.handleTableChange}
+                                   getTableParams={this.getTableParams}
+                                   url={this.url}
+                                   total={this.state.total}
+                    />
                 </Spin>
             </div>
         )
@@ -89,61 +86,57 @@ class FireInsRegister extends Component {
     }
 
     /**确定获取表格数据的参数*/
-    getTableParams(value) {
+    getTableParams = (value) => {
         let {searchContent} = this.state, {pageSize, current} = this.pagination,
             params = {
-                searchContent: value === undefined ? searchContent : value,
-                pageSize: pageSize,
-                current: current
+                condition: value === undefined ? searchContent : value,
+                size: pageSize,
+                page: current
             };
         this.getTableData(params);
     }
 
     /**获取表格数据*/
-    getTableData(params) {
-        var dataSource = [];
-        for (var i = 0; i < data.length; i++) {
-            const e = data[i];
-            dataSource.push({
-                code: e.code,
-                col1: e.col1,
-                col2: e.col2,
-                col3: e.col3,
-                col4: e.col4,
-                col5: e.col5,
-                col6: e.col6,
-                col7: e.col7,
+    getTableData = (params) => {
+        axios({
+            url:`${this.url.fireInsRegister.page}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params
+        }).then((data)=>{
+            const res = data.data.data;
+            if (res && res.list) {
+                var dataSource = [];
+                var total = res.total;
+                for (var i = 0; i < res.list.length; i++) {
+                    const e = res.list[i];
+                    dataSource.push({
+                        code: e.head.code,
+                        col1: i+1,
+                        col2: e.head.batch,
+                        col3: e.itemsSpace,
+                        col4: e.deptName,
+                        col5: e.head.delieryPeople,
+                        col6: e.head.checkInTime,
+                        col7: e.comfirmTime,
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource,
+                    total: total
+                })
+
+            }else{
+                message.info("检测项目获取为空")
+            }
+            this.setState({
+                loading: false
             })
-        }
-
-        console.log(params)
-        this.setState({
-            dataSource: dataSource
-        })
-    }
-
-    onSelectChange(selectedRowKeys) {
-        this.setState({
-            selectedRowKeys
-        })
-    }
-
-    /**批量删除*/
-    deleteByIds() {
-        let {selectedRowKeys} = this.state;
-        console.log(selectedRowKeys)
-        // axios({
-        //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.getTableData(); //删除后重置信息
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
+        }).catch(()=>{
+            message.info('查询失败，请联系管理员！');
+        });
     }
 
     handleTableChange = (pagination) => {
@@ -157,7 +150,6 @@ class FireInsRegister extends Component {
             searchContent
         });
         this.getTableParams(searchContent)
-        console.log('searchContent=', searchContent)
     }
 
     /**取消批量删除*/

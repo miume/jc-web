@@ -837,11 +837,14 @@ class Home extends Component {
             },
             /** 送检登记 */
             fireInsRegister: {
-                fireMageCheck: `${server}/jc/common/fireMageCheck`,
+                add: `${server}/jc/common/fireMageCheck/add`,
                 check: `${server}/jc/common/fireMageCheck/check`,
                 detail: `${server}/jc/common/fireMageCheck/detail`,
                 page: `${server}/jc/common/fireMageCheck/page`,
                 getAllInfos: `${server}/jc/common/fireMageNumber/getAllInfos`,
+                getAllItems: `${server}/jc/common/fireMageTestItems/getAll`,
+                getAllDepts: `${server}/jc/common/fireMageDept/getAll`,
+                getItemsByCode: `${server}/jc/common/fireMageTestItems/getAllByProcessByProdut`,
             },
             /** 样品接收 */
             fireInsSamRec: {},
