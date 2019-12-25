@@ -1,14 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Modal,Select,Form, Input,message,Icon,Col, Row,Upload,Radio,Divider,DatePicker } from 'antd';
+import { Button, Modal,Form, Input,message,Icon,Radio,Divider} from 'antd';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
-import moment from "moment";
-import locale from 'antd/lib/date-picker/locale/zh_CN';
-import PictureUp from './upload';
 import Tr from './editTr';
-
-const timeFormat = "YYYY-MM-DD"
 
 class Edit extends React.Component{
     url
@@ -29,24 +24,6 @@ class Edit extends React.Component{
     remove = (k) =>{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
-        // const fileList = `fileList${k}`;
-        // if(this.state[fileList][0] !== undefined){
-        //     var list = []
-        //     list.push(this.state[fileList][0].response.data)
-        //     // if(this.state[fileList] != false){
-        //     //     axios({
-        //     //         url: `${this.url.instructor.deletePic}`,
-        //     //         method:'delete',
-        //     //         headers:{
-        //     //             'Authorization': this.url.Authorization
-        //     //         },
-        //     //         data:list,
-        //     //         type:'json'
-        //     //     }).then((data)=>{
-        //     //         message.info(data.data.message);
-        //     //     })
-        //     // }
-        // }
         if(keys.length === 1){
             return;
         }
@@ -66,7 +43,6 @@ class Edit extends React.Component{
         const keys = form.getFieldValue('keys');
         const nextKeys = keys.concat(++this.state.deviceSpotcheckModelsDetails.length-1);
         this.state['fileList'+`${this.state.deviceSpotcheckModelsDetails.length-1}`] = [];
-        // console.log(this.state);
         form.setFieldsValue({
             keys: nextKeys,
         });
@@ -86,7 +62,6 @@ class Edit extends React.Component{
                 const content = res.deviceSpotcheckModelsDetails
                 this.setState({
                     data : res,
-                    // effectDate:res.deviceSpotcheckModelsHead.effectDate,
                     tabulateDate:res.deviceSpotcheckModelsHead.tabulateDate,
                     peopleName:res.peopleName,
                     radioValue:res.deviceSpotcheckModelsHead.modelStatus,
@@ -97,66 +72,32 @@ class Edit extends React.Component{
                     var fileList = `fileList${i}`
                     let data = [{response:{}}]
                     data[0].uid = content[i].spotcheckAddress
-                    // data[0].url = `http://47.107.237.60:3389/jc/common/spotCheck/model/${content[i].spotcheckAddress}`
                     data[0].url = `${this.server}/jc/common/spotCheck/model/${content[i].spotcheckAddress}`
-                    // var newUrl = `${this.server}/jc/common/spotCheck/model/${content[i].spotcheckAddress}`
-                    // console.log(data[0].url,newUrl)
                     data[0].name = content[i].spotcheckAddress
                     data[0].response.data = content[i].spotcheckAddress
                     this.setState({
                         [fileList]:data,
                     })
                 }
-                // console.log(this.state);
             }
         }).catch((err)=>{
             console.log(err)
         })
     }
 
-    // getPic = (id) => {
-    //     // console.log(id)
-    //     axios({
-    //         url:`${this.url.deviceSpot.checkDetail}`,
-    //         method:"GET",
-    //         params:{id:id},
-    //         headers:{
-    //             'Authorization':this.url.Authorization
-    //         },
-    //     }).then((data) => {
-    //         // console.log(data)
-    //         const res = data.data.data;
-    //         // console.log(res)
-    //         if(res){
-    //             for(var i=0;i<res.length;i++){
-    //                 this.state[`fileList${i}`] = [res.deviceSpotcheckModelsDetails.spotcheckAddress]
-    //             }
-    //             // console.log(this.state)
-    //         }
-    //     }).catch((err)=>{
-    //         console.log(err)
-    //     })
-    // }
-
     onChangeTime = (date) =>{
-        // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
         this.setState({
             date:date.target.value
         })
-        // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
     }
     showModal = () => {
         this.fetch(this.props.code);
-        // this.getPic(this.props.code);
         this.setState({ visible: true });
     };
 
     handleCancel = () => {
-        // const form = this.formRef.props.form;
         this.props.form.resetFields();
         this.setState({ visible: false });
-        // this.props.form.resetFields();
-        // form.resetFields();
     };
 
     handleCreate=(e)=>{
@@ -165,7 +106,6 @@ class Edit extends React.Component{
             if(err){
                 return ;
             }
-            // console.log(values)
             let data = {};
             let deviceSpotcheckModelsDetails = [];
             let deviceSpotcheckModelsHead = {};

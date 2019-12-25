@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Form, Icon, Input, Row} from 'antd';
+import {Form, Icon, Input} from 'antd';
 import PictureUp from './upload'
 
 class Tr extends React.Component{
@@ -43,12 +43,6 @@ class Tr extends React.Component{
                         <Input placeholder='请输入点检周期' style={{width:'150px'}}/>
                     )}
                 </Form.Item>
-
-                {/* <Form.Item style={{marginRight: 4 }}>
-                    {
-                        <Upload />
-                    }
-                </Form.Item> */}
 
                 <Form.Item style={{marginRight: 4 }}>
                     {
