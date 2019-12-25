@@ -4,7 +4,6 @@
 .fireIns-add-check-group{
     height:250px;
     border:1px solid #E4E4E4;
-    width:40%;
     border-radius: 4px;
     padding:10px;  
 }
@@ -21,6 +20,11 @@
 .fireIns-add-check-group-span{
     display:inline-block;
     width:33.3%;
+    box-sizing:border-box;
+}
+.fireIns-add-check-group-span1{
+    display:inline-block;
+    width:50%;
     box-sizing:border-box;
 }
 .fireIns-add-display{

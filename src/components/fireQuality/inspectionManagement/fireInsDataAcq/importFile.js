@@ -9,7 +9,6 @@ class ImportFile extends Component{
         super(props)
         this.state={
             visible:false,
-            changeFlag:false,//监听渲染初始值还是已改变的值
         }
         this.showModal=this.showModal.bind(this);
         this.handleCreate=this.handleCreate.bind(this);
@@ -17,6 +16,7 @@ class ImportFile extends Component{
         this.inputChange=this.inputChange.bind(this)
         this.getProcess=this.getProcess.bind(this);
         this.getModel=this.getModel.bind(this);
+        this.handleVisible=this.handleVisible.bind(this);
     }
     showModal(){
         this.setState({
@@ -68,54 +68,19 @@ class ImportFile extends Component{
     inputChange(e){
         let name=e.target.name,value=e.target.value
         this.setState({
-            changeFlag:true,
             [name]:value
         })
     }
     handleCreate(){
-        let {editflag,record}=this.props,{name,unit,changeFlag}=this.state
+        this.child.import()
+    }
+    handleVisible(value){
         this.setState({
-            visible:false
-        })
-        let data={
-            code: editflag?record.code:'',
-            name: editflag&&!changeFlag?record.name:name,
-            unit:  editflag&&!changeFlag?record.unit:unit
-        }
-        axios({
-            url:`${this.props.url.fireMageTestItems}`,
-            method:editflag?'put':'post',
-            headers:{
-                'Authorizaion':this.props.url.Authorizaion
-            },
-            data
-        }).then(data=>{
-            if(data.data.code===0){
-                message.info('操作成功！')
-                this.props.getTableData()
-            }
-            else{
-                message.error('操作失败，请联系管理员!')
-            }
+            visible:value
         })
     }
     cancel(){
-        let {record,editflag}=this.props
-        this.setState({
-            visible:false
-        })
-        if(editflag){
-            this.setState({
-                name:record.name,
-                unit:record.unit
-            })
-        }
-        else{
-            this.setState({
-                name:undefined,
-                unit:undefined
-            })
-        }
+        this.child.cancel()
     }
     render(){
         let {visible,processData,modelData}=this.state
@@ -128,13 +93,15 @@ class ImportFile extends Component{
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={'400px'}
+                    width={'500px'}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} />,
-                        (<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
+                        (<NewButton key={'ok'} name={'导入'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                       <ImportModal processData={processData} modelData={modelData}/>
+                       <ImportModal processData={processData} modelData={modelData} 
+                         url={this.props.url} onRef={(ref)=>this.child=ref} handleVisible={this.handleVisible}
+                       />
                     </Modal>
                 </span>
         )
