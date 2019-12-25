@@ -1,7 +1,8 @@
 import React from 'react';
-import {Checkbox, Divider, Col, Select, Input} from "antd";
+import {Checkbox, Divider, Col, Select, Input, message} from "antd";
 
 import "../fireInsRegister/fireInsRegister.css"
+import axios from "axios";
 
 
 const {Option} = Select;
@@ -9,10 +10,6 @@ class AddModalRight extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            plainOptions: [],
-            indeterminate: true,
-            checkAll: false,
-            checkedList: [], // 选中的列表
             selectList: [],
             selectDefaultValue: ""
         };
@@ -20,7 +17,7 @@ class AddModalRight extends React.Component {
     }
 
     componentDidMount() {
-        this.getItem();
+        // this.getItem();
         this.getSelect();
     }
 
@@ -31,9 +28,9 @@ class AddModalRight extends React.Component {
                     <span className="addModalRight_top_span">检验项目选择：</span>
                     <div style={{borderBottom: '1px solid #E9E9E9'}}>
                         <Checkbox
-                            indeterminate={this.state.indeterminate}
+                            indeterminate={this.props.indeterminate}
                             onChange={this.onCheckAllChange}
-                            checked={this.state.checkAll}
+                            checked={this.props.checkAll}
                         >
                             全选/全不选
                         </Checkbox>
@@ -43,11 +40,11 @@ class AddModalRight extends React.Component {
                 <div className="addModalRight_middle">
                     <Checkbox.Group className="addModalRight_middle_checkbox"
                                     onChange={this.onChange}
-                                    value={this.state.checkedList}
+                                    value={this.props.checkedList}
                     >
                         {
-                            this.state.plainOptions ? this.state.plainOptions.map(p =>
-                                <Col key={p.code} span={4}>
+                            this.props.plainOptions ? this.props.plainOptions.map(p =>
+                                <Col key={p.code} span={8}>
                                     <Checkbox value={p.code}>{p.name}</Checkbox>
                                 </Col>
                             ) : null
@@ -65,19 +62,34 @@ class AddModalRight extends React.Component {
         );
     }
 
-    getSelect = () => {
-        var selectList = [];
-        for (var i = 0; i < 10; i++) {
-            selectList.push({
-                code: i,
-                name: `test-${i+1}`
-            })
 
-        }
-        this.setState({
-            selectList:selectList,
-            selectDefaultValue: selectList.length>0?selectList[0].code:null
-        })
+    /**
+     * 部门相关
+     */
+    getSelect = () => {
+        axios({
+            url:`${this.props.url.fireInsRegister.getAllDepts}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            const res = data.data.data;
+            if (res) {
+                var dataSource = res;
+                this.setState({
+                    selectList:dataSource,
+                    selectDefaultValue: dataSource.length>0?dataSource[0].code:null
+                },() => {
+                    this.props.getDeptCode(dataSource.length>0?dataSource[0].code:0)
+                })
+
+            }else{
+                message.info("检验部门获取为空，请刷新")
+            }
+        }).catch(()=>{
+            message.info('检测部门获取失败，请联系管理员！');
+        });
     }
     /**渲染select*/
     renderSelect = () => {
@@ -93,11 +105,10 @@ class AddModalRight extends React.Component {
     }
     /**渲染Option*/
     renderOption = (selectList) => {
-        console.log(selectList)
         if(selectList && selectList.length) {
             return (
                 selectList.map((e,index) =>
-                    <Option name={e.name} key={e.code} value={e.code}>{e.name}</Option>
+                    <Option name={e.deptName} key={e.code} value={e.code}>{e.deptName}</Option>
                 )
             )
         }
@@ -107,53 +118,33 @@ class AddModalRight extends React.Component {
         this.props.getDeptCode(value)
     }
 
-
+    /**
+     * 送检人相关
+     * @param e
+     */
     inputChange = (e) => {
         this.props.getUsername(e.target.value)
     }
 
-    getItem = () => {
-        var plainOptions = [];
-        var checkedList = []
-        for (var i = 0; i < 200; i++) {
-            plainOptions.push({
-                code: i,
-                name: `Ca${i + 1}`
-            })
-            checkedList.push(i)
-        }
-        this.setState({
-            plainOptions: plainOptions,
-            checkedList: checkedList
-        }, () => {
-            this.props.getCheckedList(checkedList)
-        })
-    }
-
+    /**
+     * 检测项目相关
+     */
     onChange = checkedList => {
-        const plainOptions = this.state.plainOptions;
-        this.setState({
-            checkedList: checkedList,
-            indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
-            checkAll: checkedList.length === plainOptions.length,
-        }, () => {
-            this.props.getCheckedList(checkedList)
-        });
+        const plainOptions = this.props.plainOptions;
+        this.props.getCheckedList(checkedList)
+        this.props.getCheckAll(checkedList.length === plainOptions.length)
+        this.props.getIndeterminate(!!checkedList.length && checkedList.length < plainOptions.length)
     };
     onCheckAllChange = e => {
-        const plainOptions = this.state.plainOptions;
+        const plainOptions = this.props.plainOptions;
         var checkedList = []
         for (var i = 0; i < plainOptions.length; i++) {
             checkedList.push(plainOptions[i].code)
 
         }
-        this.setState({
-            checkedList: e.target.checked ? checkedList : [],
-            indeterminate: false,
-            checkAll: e.target.checked,
-        }, () => {
-            this.props.getCheckedList(e.target.checked ? checkedList : [])
-        });
+        this.props.getCheckedList(e.target.checked ? checkedList : [])
+        this.props.getCheckAll(e.target.checked)
+        this.props.getIndeterminate(false)
     }
 
 }

@@ -4,27 +4,7 @@ import BasePart from "../../qualityProcess/Base/basePart";
 
 const icon=['fa fa-industry fa-5x','fa fa-wrench fa-5x',
 'fa fa-tint fa-5x','fa fa-sitemap fa-5x']
-const data=[{
-    id:1,
-    name:'送检登记',
-    path:'/fireInsRegister',
-    className:'fa fa-industry fa-5x'
-},{
-    id:2,
-    name:'样品接收',
-    path:'/fireInsSamRec',
-    className:'fa fa-wrench fa-5x'
-},{
-    id:3,
-    name:'数据采集',
-    path:'/fireInsDataAcq',
-    className:'fa fa-tint fa-5x'
-},{
-    id:4,
-    name:'数据整理',
-    path:'/fireInsDataCol',
-    className:'fa fa-sitemap fa-5x'
-}]
+
 class InspectionManagement extends Component {
     constructor(props){
         super(props)

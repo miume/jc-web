@@ -1,9 +1,6 @@
 import React from 'react';
-import NewButton from "../../../BlockQuote/newButton";
-import {Icon, Table, Input, Modal, Popconfirm, Select} from "antd";
-import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
-import moment from "moment";
+import {Icon, Table} from "antd";
+
 
 import "../fireInsRegister/fireInsRegister.css"
 

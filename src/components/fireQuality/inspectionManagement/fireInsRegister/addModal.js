@@ -1,6 +1,6 @@
 import React from 'react';
 import NewButton from "../../../BlockQuote/newButton";
-import {DatePicker, Input, Modal, Select, Divider} from "antd";
+import {Modal, Select, Divider, message} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import AddModalTop from "../fireInsRegister/addModalTop";
@@ -9,7 +9,6 @@ import AddModalRight from "../fireInsRegister/addModalRight";
 import axios from "axios";
 
 
-const {Option} = Select;
 
 
 class AddModal extends React.Component {
@@ -19,11 +18,18 @@ class AddModal extends React.Component {
             visible: false,
             type: 0,
             leftDataSource: [],
-            checkedList: [],
             username: "",
-            deptCode: 0
+            deptCode: 0,
+            infos: [],
+
+
+            indeterminate: true,
+            checkAll: false,
+            plainOptions:[],
+            checkedList: [],
         };
     }
+
     componentWillUnmount() {
         this.setState(() => {
             return;
@@ -32,7 +38,7 @@ class AddModal extends React.Component {
 
     render() {
         let {visible} = this.state;
-        let {title,disabled} = this.props;
+        let {title, disabled} = this.props;
         return (
             <span>
                 <NewButton name='新增' className='fa fa-plus' handleClick={this.handleClick}/>
@@ -44,15 +50,24 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className="addModal_scala">
-                        <AddModalTop url={this.props.url} leftDataSource={this.state.leftDataSource} leftDataSourceChange = {this.leftDataSourceChange}/>
+                        <AddModalTop url={this.props.url} getItem={this.getItem}
+                                     leftDataSource={this.state.leftDataSource}
+                                     leftDataSourceChange={this.leftDataSourceChange}/>
                         <div className="addModalDown_scala">
                             <AddModalLeft leftDataSource={this.state.leftDataSource}/>
-                            <Divider type="vertical" className="addModalDown_divider" />
+                            <Divider type="vertical" className="addModalDown_divider"/>
                             <AddModalRight
-                                getCheckedList = {this.getCheckedList}
+                                indeterminate={this.state.indeterminate}
+                                getIndeterminate={this.getIndeterminate}
+                                checkAll={this.state.checkAll}
+                                getCheckAll={this.getCheckAll}
+                                url={this.props.url}
+                                getCheckedList={this.getCheckedList}
                                 getUsername={this.getUsername}
-                                username = {this.state.username}
+                                username={this.state.username}
                                 getDeptCode={this.getDeptCode}
+                                plainOptions={this.state.plainOptions}
+                                checkedList={this.state.checkedList}
                             />
                         </div>
                     </div>
@@ -62,60 +77,136 @@ class AddModal extends React.Component {
         );
     }
 
-    getDeptCode = (code) => {
-        console.log(code)
+
+    /**
+     * 表格相关
+     * @param leftDataSource
+     * @param batchItems
+     */
+    leftDataSourceChange = (leftDataSource, batchItems,flag) => {
+        var infos = this.state.infos;
+        if (flag === 1) {
+            infos.push(batchItems)
+        }
         this.setState({
-            deptCode:code
+            leftDataSource: leftDataSource,
+            infos: infos
         })
     }
 
-    getUsername = (username) => {
-        console.log(username)
-        this.setState({
-            username:username
-        })
+    /** 检测项目有关的函数*/
+    getItem = (processCode, productCode) => {
+        var checkedList = []
+        axios({
+            url:`${this.props.url.fireInsRegister.getItemsByCode}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                processCode: processCode,
+                productCode: productCode
+            }
+        }).then((data)=>{
+
+            const res = data.data.data;
+            if (res) {
+                var dataSource = res;
+                for (var i = 0; i < dataSource.length; i++) {
+                    checkedList.push(dataSource[i].code)
+                }
+                this.setState({
+                    plainOptions: dataSource,
+                    checkedList: checkedList
+                })
+            }else{
+                message.info("检测项目获取为空")
+            }
+        }).catch(()=>{
+            message.info('检测项目获取失败，请联系管理员！');
+        });
     }
 
+    getCheckAll = (checkAll) => {
+        this.setState({
+            checkAll:checkAll
+        })
+    }
+    getIndeterminate = (indeterminate) => {
+        this.setState({
+            indeterminate: indeterminate
+        })
+    }
     getCheckedList = (checkedList) => {
-        console.log(checkedList)
         this.setState({
-            checkedList:checkedList
+            checkedList: checkedList
         })
     }
 
-    leftDataSourceChange = (leftDataSource) => {
+
+    /**
+     * 部门相关
+     * @param code
+     */
+    getDeptCode = (code) => {
         this.setState({
-            leftDataSource: leftDataSource
+            deptCode: code
         })
     }
+
+    /**
+     * 送检人相关
+     * @param username
+     */
+    getUsername = (username) => {
+        this.setState({
+            username: username
+        })
+    }
+
 
 
     /**点击新增事件*/
     handleClick = () => {
-
         this.setState({
             visible: true
         });
     }
 
+    //TODO 待测试
     handleSave = () => {
-        const {leftDataSource, checkedList,username,deptCode}= this.state;
+        var infos = this.state.infos;
+        var checkedList = this.state.checkedList;
 
-        let params = this.saveDataProcessing();
-        // axios({
-        //     url: `url`,
-        //     method: 'put',
-        //     headers: {
-        //         'Authorization': this.props.url.Authorization
-        //     }
-        // }).then((data) => {
-        //     message.info(data.data.message);
-        // })
+        for (var i = 0; i < infos.length; i++) {
+            infos[i]["deptCode"] = this.state.deptCode
+            infos[i]["delieryPeople"] = this.state.username
+        }
+        axios({
+            url:`${this.props.url.fireInsRegister.add}?ids=${checkedList}`,
+            method:'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            data: infos,
+            type: 'json'
+        }).then((data)=>{
+            const res = data.data;
+            if (res.code===0){
+                message.info(res.message);
+                this.props.getTableParams();
+                this.setState({
+                    visible: false
+                });
+            }else{
+                message.info('新增失败，请联系管理员！');
+            }
+        }).catch(()=>{
+            message.info('新增失败，请联系管理员！');
+        });
+
     }
 
-    saveDataProcessing = () => {
-        console.log(this.state)
-    }
 
     /**取消事件*/
     handleCancel = () => {
