@@ -9,7 +9,6 @@ class Add extends Component{
         super(props)
         this.state={
             visible:false,
-            changeFlag:false,//监听渲染初始值还是已改变的值
         }
         this.showModal=this.showModal.bind(this);
         this.show=this.show.bind(this);
@@ -22,6 +21,13 @@ class Add extends Component{
         this.setState({
             visible:true
         })
+        let {record,editflag,detailFlag}=this.props
+        if(editflag||detailFlag){
+            this.setState({
+                title:record.title,
+                content:record.content
+            })
+        }
     }
     /**判断展示新增，详情还是编辑*/
     show() {
@@ -47,19 +53,22 @@ class Add extends Component{
     inputChange(e){
         let name=e.target.name,value=e.target.value
         this.setState({
-            changeFlag:true,
             [name]:value
         })
     }
     handleCreate(){
-        let {editflag,record}=this.props,{content,title,changeFlag}=this.state
+        let {editflag,record}=this.props,{content,title}=this.state
+        if(content===undefined||content===''||title===undefined||title===''){
+            message.error('信息填写不完整!')
+            return
+        }
         this.setState({
             visible:false
         })
         let data={
             code: editflag?record.code:'',
-            content: editflag&&!changeFlag?record.content:content,
-            title:  editflag&&!changeFlag?record.content:title
+            content: content,
+            title:  title
         }
         axios({
             url:`${this.props.url.fireMageOperation}`,
@@ -97,7 +106,7 @@ class Add extends Component{
         }
     }
     render(){
-        let {visible,changeFlag}=this.state,{editflag,detailFlag,record}=this.props
+        let {visible,title,content}=this.state,{editflag,detailFlag,record}=this.props
         return(
             <span>
                     {this.show()}
@@ -113,9 +122,9 @@ class Add extends Component{
                             detailFlag?null:(<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                         ]}
                     >
-                        <div>标题 : <Input name={'title'} style={{width:'400px'}} placeholder={'请输入标题'} onChange={this.inputChange} defaultValue={(detailFlag && !changeFlag)||(editflag && !changeFlag)?record.title:undefined}/></div>
+                        <div>标题 : <Input name={'title'} style={{width:'400px'}} placeholder={'请输入标题'} onChange={this.inputChange} value={title}/></div>
                         <br/>
-                        <div>内容 : <TextArea name={'content'} rows={5} style={{width:'400px',overflowY:'auto'}} placeholder={'请输入内容'} onChange={this.inputChange} defaultValue={(detailFlag && !changeFlag)||(editflag && !changeFlag)?record.content:undefined}/></div>
+                        <div>内容 : <TextArea name={'content'} rows={5} style={{width:'400px',overflowY:'auto'}} placeholder={'请输入内容'} onChange={this.inputChange} value={content}/></div>
                     </Modal>
                 </span>
         )

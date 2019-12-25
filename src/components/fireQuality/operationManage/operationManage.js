@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import BlockQuote from "../../BlockQuote/blockquote"
 import {Table,Spin,Divider,Popconfirm,message} from 'antd'
 import DeleteByIds from "../../BlockQuote/deleteByIds";
-import SearchCell from "../../BlockQuote/search";
+import NewSearchCell from "../../BlockQuote/newSearchSell";
 import Add from './add'
 import axios from 'axios'
 
@@ -46,7 +46,8 @@ class Operation extends Component{
         this.state={
             loading:false,
             selectedRowKeys:[],
-            dataSource:[]
+            dataSource:[],
+            searchContent:''
         }
         this.pagination={
             showSizeChanger: true,//是否可以改变 pageSize
@@ -57,6 +58,8 @@ class Operation extends Component{
         this.deleteByIds=this.deleteByIds.bind(this);
         this.cancel=this.cancel.bind(this);
         this.selectChange=this.selectChange.bind(this);
+        this.searchEvent=this.searchEvent.bind(this);
+        this.reset=this.reset.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -67,7 +70,13 @@ class Operation extends Component{
         }
     }
 
-    getTableData(){
+    getTableData(searchContent){
+        let {current,pageSize}=this.pagination,
+        params={
+            condition:searchContent?searchContent:'',
+            page:current?current:1,
+            size:pageSize?pageSize:10
+        }
         this.setState({
             loading:true
         })
@@ -76,18 +85,22 @@ class Operation extends Component{
             method:'get',
             headers:{
                 'Authorizaion':this.url.Authorizaion
-            }
+            },
+            params
         }).then(data=>{
             let res=data.data.data
+            this.pagination.total=res&&res.total?res.total:0
             if(res&&res.list){
                 for(let i=0;i<res.list.length;i++){
                     res.list[i]['index']=(res.page-1)*(res.size)+(i+1)
                 }
                 this.setState({
                     dataSource:res.list,
-                    loading:false
                 })
             }
+            this.setState({
+                loading:false
+            })
         })
     }
 
@@ -135,6 +148,19 @@ class Operation extends Component{
     selectChange(selectedRowKeys){
         this.setState({ selectedRowKeys: selectedRowKeys});
     }
+    searchEvent(searchContent){//搜索内容通过子组件传过来,以修改父组件值
+        this.setState({
+            searchContent:searchContent
+        })
+        this.getTableData(searchContent)
+    }
+   /**重置*/
+    reset(){
+       this.setState({
+           searchContent:''
+       })
+       this.getTableData('')
+    }
     render(){
         const current=JSON.parse(localStorage.getItem(('current')))
         this.url=JSON.parse(localStorage.getItem('url'))
@@ -150,7 +176,11 @@ class Operation extends Component{
                     <Add url={this.url} getTableData={this.getTableData}/>
                     <DeleteByIds flag={true} selectedRowKeys={selectedRowKeys}
                                  deleteByIds={this.deleteByIds} cancel={this.cancel}/>
-                    <SearchCell flag={true} name={'请输入手册标题'}/>
+                     <NewSearchCell placeholder={'请输入部门名称'}
+                                searchEvent={this.searchEvent}
+                                reset={this.reset}
+                                flag={true}
+                    />
                     <Table dataSource={dataSource}
                            columns={this.columns} bordered size={'small'}
                            rowKey={record => record.code}

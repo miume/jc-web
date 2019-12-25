@@ -8,7 +8,6 @@ class Add extends Component{
         super(props)
         this.state={
             visible:false,
-            changeFlag:false,//监听渲染初始值还是已改变的值
         }
         this.showModal=this.showModal.bind(this);
         this.handleCreate=this.handleCreate.bind(this);
@@ -16,28 +15,38 @@ class Add extends Component{
         this.inputChange=this.inputChange.bind(this)
     }
     showModal(){
+        let {record,editflag}=this.props
         this.setState({
             visible:true
         })
+       if(editflag){
+        this.setState({
+            deptName:record.deptName,
+            descr:record.descr
+        })
+       }
     }
 
     inputChange(e){
         let name=e.target.name,value=e.target.value
         this.setState({
-            changeFlag:true,
             [name]:value
         })
     }
     handleCreate(){
-        let {editflag,record}=this.props,{deptName,descr,changeFlag}=this.state
+        let {editflag,record}=this.props,{deptName,descr}=this.state
+        let data={
+            code: editflag?record.code:'',
+            deptName: deptName,
+            descr: descr
+        }
+        if(data['deptName']===undefined||data['deptName']===''||data['descr']===undefined||data['descr']===''){
+            message.error('信息填写不完整!')
+            return
+        }
         this.setState({
             visible:false
         })
-        let data={
-            code: editflag?record.code:'',
-            deptName: editflag&&!changeFlag?record.deptName:deptName,
-            descr:  editflag&&!changeFlag?record.descr:descr
-        }
         axios({
             url:`${this.props.url.fireMageDept.add}`,
             method:editflag?'put':'post',
@@ -74,7 +83,7 @@ class Add extends Component{
         }
     }
     render(){
-        let {visible,changeFlag,deptName,descr}=this.state,{editflag,record}=this.props
+        let {visible,deptName,descr}=this.state,{editflag,record}=this.props
         return(
             <span>
                 {editflag?<span className={'blue'} onClick={this.showModal}>编辑</span>
@@ -91,9 +100,9 @@ class Add extends Component{
                         (<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                        <div><span >部门名称 : </span><Input name={'deptName'} style={{width:'250px'}} placeholder={'请输入部门名称'} onChange={this.inputChange} value={(editflag && !changeFlag)?record.deptName:deptName}/></div>
+                        <div><span >部门名称 : </span><Input name={'deptName'} style={{width:'250px'}} placeholder={'请输入部门名称'} onChange={this.inputChange} value={deptName}/></div>
                         <br/>
-                        <div><span >部门描述 : </span><Input name={'descr'} style={{width:'250px'}} placeholder={'请输入部门描述'} onChange={this.inputChange} value={(editflag && !changeFlag)?record.descr:descr}/></div>
+                        <div><span >部门描述 : </span><Input name={'descr'} style={{width:'250px'}} placeholder={'请输入部门描述'} onChange={this.inputChange} value={descr}/></div>
                         <div>
 
                         </div>

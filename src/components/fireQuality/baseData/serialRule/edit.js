@@ -1,6 +1,6 @@
 import React ,{Component}from 'react'
 import NewButton from "../../../BlockQuote/newButton";
-import {Modal, Input, message, Table,  Popconfirm,Radio} from 'antd'
+import {Modal, Input, message, Table,Radio} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 import axios from "axios";
 
@@ -53,10 +53,7 @@ class Edit extends Component{
             width:'10%',
             render:(text,record)=>{
                 return(
-                      <Popconfirm title="确定删除吗?" onConfirm={() => this.handleDelete(record.index)} okText="确定" cancelText="再想想" >
-                        <span className='blue'>删除</span>
-                     </Popconfirm>
-
+                     <span className='blue' onClick={() => this.handleDelete(record.index)}>删除</span>
                 )
             }
         }]
@@ -146,6 +143,13 @@ class Edit extends Component{
     }
     handleCreate(){
        let {dataSource}=this.state,{position}=this.props.record
+       
+       for(let i=0;i<dataSource.length;i++){
+        if(dataSource[i]['value']===undefined||dataSource[i]['value']===''||dataSource[i]['description']===undefined||dataSource[i]['description']===''){
+            message.error('信息填写不完整!')
+            return
+        }
+       }
         this.setState({
             visible:false
         })

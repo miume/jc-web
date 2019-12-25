@@ -10,7 +10,6 @@ class Add extends Component{
         super(props)
         this.state={
             visible:false,
-            changeFlag:false,//监听渲染初始值还是已改变的值
             processData:[],
             lineData:[],
             testItemData:[],
@@ -85,7 +84,7 @@ class Add extends Component{
     }
     /**根据id获取一条记录数据*/
     getEditData(){
-        let id=this.props.record.code,{showFlag}=this.props
+        let id=this.props.record.code,{showFlag}=this.props //showFlag判断是标签还是批号界面
         axios({
             url:showFlag?`${this.props.url.fireMageLabel}/${id}`:`${this.props.url.fireMageBatchItems}/${id}`,
             method:'get',
@@ -126,7 +125,7 @@ class Add extends Component{
         this.setState({
             visible:true
         })
-        if(!editflag){//新增调用所有受检物料，编辑会返回所有item，所以不用调用此接口
+        if(!editflag){//只有新增调用所有受检物料，编辑会返回item，所以不用调用此接口
             this.getItems()
         }
      if(!showFlag){//标签的新增不需要这两个下拉框
@@ -172,7 +171,15 @@ class Add extends Component{
         }
     }
     handleCreate(){
-        let {editflag,record,showFlag}=this.props,ids=this.state.testItem,items=this.state.testItem
+        let {editflag,record,showFlag}=this.props,ids=this.state.testItem,items=this.state.testItem,{processCode,productCode}=this.state
+        if(items.length===0){
+            message.error('信息填写不完整!')
+            return
+        }
+        if((!showFlag&&processCode===undefined)||(!showFlag&&productCode===undefined)){
+            message.error('信息填写不完整!')
+            return
+        }
         this.setState({
             visible:false
         })  
@@ -223,7 +230,7 @@ class Add extends Component{
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={'500px'}
+                    width={'600px'}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} />,
                         (<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
@@ -233,7 +240,7 @@ class Add extends Component{
                         showFlag ? null:(
                          <div>
                              <div className={'fire-ins-data-acq1'}><span className='fireQua-add-span fireQua-add-span-width2'>请选择工序 : </span>
-                                 <Select name={'name'} style={{width:'310px'}} placeholder={'请选择工序'} onChange={this.selectChange} value={this.state.processCode}>
+                                 <Select name={'name'} style={{width:'410px'}} placeholder={'请选择工序'} onChange={this.selectChange} value={this.state.processCode}>
                                      {
                                          this.state.processData?this.state.processData.map(item=>{
                                              return(
@@ -244,7 +251,7 @@ class Add extends Component{
                                  </Select>
                              </div>
                              <div className={'fire-ins-data-acq1'}> <span className='fireQua-add-span fireQua-add-span-width2' >请选择产品型号/厂家 : </span>
-                                 <Select name={'unit'} style={{width:'310px'}} placeholder={'请选择产品型号/厂家'} onChange={this.selectChange} value={this.state.productCode}>
+                                 <Select name={'unit'} style={{width:'410px'}} placeholder={'请选择产品型号/厂家'} onChange={this.selectChange} value={this.state.productCode}>
                                      {
                                          this.state.lineData?this.state.lineData.map(item=>{
                                              return(
@@ -258,8 +265,8 @@ class Add extends Component{
                         )
                     }
                     <div className={'fire-ins-data-acq1'}> <span className='fireQua-add-span fireQua-add-span-width2' >请选择绑定检验项目 : </span></div>
-                    <div className={'fireQua-add-check-group'} style={{padding:'10px'}}>
-                        <Group onChange={this.checkChange}  value={this.state.testItem} className='check'>
+                    <div className={'fireQua-add-check-group fireIns-add-check-group-scroll'} style={{padding:'10px'}}>
+                        <Group onChange={this.checkChange}  value={this.state.testItem} >
                             {
                                 this.state.testItemData?this.state.testItemData.map((item,index)=>{
                                     return(
