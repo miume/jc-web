@@ -44,20 +44,21 @@ class PowerCheck extends React.Component {
     }
 
     render() {
-        const current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys,data} = this.state;
+        const current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys, data} = this.state;
         this.url = JSON.parse(localStorage.getItem('url'));
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddModal title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
-                                 cancel={this.cancel} flag={Home.judgeOperation(this.operation,'DELETE')}/>
+                                 cancel={this.cancel} flag={Home.judgeOperation(this.operation, 'DELETE')}/>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'点检名称'}/>
                     <div className='clear'></div>
                     <PowerCheckTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
-                                     url={this.url} handleTableChange={this.handleTableChange} getTableParams={this.getTableParams}/>
+                                     url={this.url} handleTableChange={this.handleTableChange}
+                                     getTableParams={this.getTableParams}/>
                 </Spin>
             </div>
         );
@@ -69,7 +70,7 @@ class PowerCheck extends React.Component {
 
     /**确定获取表格数据的参数*/
     getTableParams(value) {
-        let {searchContent} = this.state, {pageSize,current} = this.pagination,
+        let {searchContent} = this.state, {pageSize, current} = this.pagination,
             params = {
                 condition: value === undefined ? searchContent : value,
                 size: pageSize,
@@ -92,11 +93,11 @@ class PowerCheck extends React.Component {
             params
         }).then(data => {
             let res = data.data.data;
-            if(res && res.list) {
+            if (res && res.list) {
                 let result = [];
                 result['total'] = res.total ? res.total : 0;
-                for(let i = 0; i < res.list.length; i++) {
-                    let {head,siteName} = res['list'][i];
+                for (let i = 0; i < res.list.length; i++) {
+                    let {head, siteName} = res['list'][i];
                     head['index'] = (res['page'] - 1) * 10 + i + 1;
                     head['siteName'] = siteName;
                     result.push(head)
@@ -121,16 +122,16 @@ class PowerCheck extends React.Component {
     deleteByIds() {
         let {selectedRowKeys} = this.state;
         axios({
-            url:`${this.url.checkRecord.deletes}`,
-            method:'Delete',
-            headers:{
-                'Authorization':this.url.Authorization
+            url: `${this.url.checkRecord.deletes}`,
+            method: 'Delete',
+            headers: {
+                'Authorization': this.url.Authorization
             },
             data: selectedRowKeys
-        }).then((data)=>{
+        }).then((data) => {
             message.info(data.data.message);
             this.getTableParams(); //删除后重置信息
-        }).catch(()=>{
+        }).catch(() => {
             message.info('删除失败，请联系管理员！');
         });
     }

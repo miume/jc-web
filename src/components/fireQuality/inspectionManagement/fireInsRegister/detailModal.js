@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, Input, message, Divider, Checkbox, Col} from 'antd'
+import {Modal, message, Divider, Checkbox, Col} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 
 import axios from "axios";
@@ -9,7 +9,6 @@ class DetailModal extends Component {
         super(props)
         this.state = {
             visible: false,
-            changeFlag: false,//监听渲染初始值还是已改变的值
             batchNumber: "",
             deptName: "",
             username: "",
@@ -22,26 +21,25 @@ class DetailModal extends Component {
     }
 
     render() {
-        let {visible, changeFlag} = this.state, {editflag, record} = this.props
         return (
             <span>
                 <span className={'blue'} onClick={this.getDetail}>详情</span>
                 <Modal
                     title={'详情'}
-                    visible={visible}
+                    visible={this.state.visible}
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={600}
+                    width={700}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} flag={true}/>,
                     ]}
                 >
                     <div className="detailModal_scala">
                         <div className="detailModal_top">
-                            <span>{`样品编号：${this.state.batchNumber}`}</span>
-                            <span>{`送检部门：${this.state.deptName}`}</span>
-                            <span>{`送检人：${this.state.username}`}</span>
+                            <span className="detailModal_top_maxSpan">{`样品编号：${this.state.batchNumber}`}</span>
+                            <span className="detailModal_top_minSpan">{`送检部门：${this.state.deptName}`}</span>
+                            <span className="detailModal_top_minSpan">{`送检人：${this.state.username}`}</span>
                         </div>
                         <Divider/>
                         <div>检测项目：</div>
@@ -49,7 +47,7 @@ class DetailModal extends Component {
                             <Checkbox.Group value={this.state.checkedList}>
                                 {
                                     this.state.plainOptions ? this.state.plainOptions.map(p =>
-                                        <Col key={p.code} span={4}>
+                                        <Col key={p.code} span={8}>
                                             <Checkbox value={p.code}>{p.name}</Checkbox>
                                         </Col>
                                     ) : null
@@ -64,29 +62,59 @@ class DetailModal extends Component {
     }
 
     getDetail = () => {
-        var plainOptions = [];
-        for (var i = 0; i < 300; i++) {
-            plainOptions.push({
-                code: i,
-                name: `Ca${i + 1}`
+
+        // 获取详情数据
+        axios({
+            url:`${this.props.url.fireInsRegister.detail}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params: {
+                id:this.props.record.code
+            }
+        }).then((data)=>{
+            const res = data.data.data;
+
+            const items = res.items;
+            var plainOptions = []
+            var checkedList = []
+            for (var i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (item.flag){
+                    plainOptions.push({
+                        code:item.code,
+                        name:item.name
+                    })
+                    checkedList.push(item.code)
+                }
+
+            }
+
+
+            this.setState({
+                plainOptions: plainOptions,
+                checkedList: checkedList,
+                batchNumber: res.batch,
+                deptName: res.deptName,
+                username: res.delieryPeople,
+                visible: true
             })
-        }
-        this.setState({
-            plainOptions: plainOptions,
-        })
-        var checkedList = [1,3,5,6,7,14];
+            message.info(data.data.message)
 
-
-        this.setState({
-            plainOptions:plainOptions,
-            checkedList:checkedList,
-            visible: true
-        })
+        }).catch(()=>{
+            message.info('查询失败，请联系管理员！');
+        });
     }
 
     cancel = () => {
         this.setState({
-            visible: false
+            visible: false,
+            plainOptions: [],
+            checkedList: [],
+            batchNumber: "",
+            deptName: "",
+            username: "",
         })
 
     }
