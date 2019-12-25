@@ -56,7 +56,7 @@ class PowerCheckTable extends React.Component {
                 let status = record.status;
                 return (
                     <span>
-                        <AddModal record={record} title={'编辑'} status={status} url={this.props.url} getTableParams={this.props.getTableParams}/>
+                        <AddModal record={record} title={'编辑'} status={status} url={this.props.url} handleCancel={this.props.getTableParams}/>
                         <Divider type={'vertical'}/>
                         <AddModal record={record} title={'详情'} disabled={true} url={this.props.url}/>
                         <Divider type={"vertical"}/>
