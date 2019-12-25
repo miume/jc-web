@@ -49,7 +49,12 @@ class RegisterTable extends React.Component {
             title:'登记时间',
             key:'col6',
             dataIndex:'col6',
-            width: '12%'
+            width: '12%',
+            render:((text,record) => {
+                return(
+                    <span title={text}>{text.split(" ")[0] + " ..."}</span>
+                )
+            })
         },{
             title:'确认时间',
             key:'col7',
