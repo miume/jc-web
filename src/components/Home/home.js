@@ -902,7 +902,9 @@ class Home extends Component {
             },
             /**火法质量-检验管理-数据采集*/
             dateConllection:{
-                page:`${server}/jc/common/dateConllection/page`
+                page:`${server}/jc/common/dateConllection/page`,
+                getByProcessByProduct:`${server}/jc/common/dateConllection/getByProcessByProduct`,
+                
             },
     };
 

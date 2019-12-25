@@ -95,10 +95,12 @@ class FireSerialTest extends Component{
                 }
                 this.setState({
                     dataSource:res.list,
-                    loading:false,
-                    searchContent:''
                 })
             }
+            this.setState({
+                loading:false,
+                searchContent:''
+            })
         })
     }
     handleDelete(id){
@@ -182,7 +184,7 @@ class FireSerialTest extends Component{
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
                     <Add url={this.url} getTableData={this.getTableData}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={true}/>
-                    <NewSearchCell placeholder={'请输入部门名称'}
+                    <NewSearchCell placeholder={'请输入批号或产品型号/厂家'}
                                    searchEvent={this.searchEvent}
                                    reset={this.reset}
                                    flag={true}

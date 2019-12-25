@@ -9,7 +9,6 @@ class Add extends Component{
         super(props)
         this.state={
             visible:false,
-            changeFlag:false,//监听渲染初始值还是已改变的值
         }
         this.showModal=this.showModal.bind(this);
         this.handleCreate=this.handleCreate.bind(this);
@@ -20,25 +19,36 @@ class Add extends Component{
         this.setState({
             visible:true
         })
+        let {record,editflag}=this.props
+        if(editflag){
+            this.setState({
+                name:record.name,
+                unit:record.unit
+            })
+        }
     }
 
     inputChange(e){
         let name=e.target.name,value=e.target.value
         this.setState({
-            changeFlag:true,
             [name]:value
         })
+
     }
     handleCreate(){
-        let {editflag,record}=this.props,{name,unit,changeFlag}=this.state
+        let {editflag,record}=this.props,{name,unit}=this.state   
+        let data={
+            code: editflag?record.code:'',
+            name: name,
+            unit: unit
+        }
+        if(data['name']===undefined||data['name']===''||data['unit']===undefined||data['unit']===''){
+            message.error('信息填写不完整!')
+            return
+        }
         this.setState({
             visible:false
         })
-        let data={
-            code: editflag?record.code:'',
-            name: editflag&&!changeFlag?record.name:name,
-            unit:  editflag&&!changeFlag?record.unit:unit
-        }
         axios({
             url:`${this.props.url.fireMageTestItems}`,
             method:editflag?'put':'post',
@@ -75,7 +85,7 @@ class Add extends Component{
         }
     }
     render(){
-        let {visible,changeFlag}=this.state,{editflag,record}=this.props
+        let {visible,name,unit}=this.state,{editflag,record}=this.props
         return(
             <span>
                 {editflag?<span className={'blue'} onClick={this.showModal}>编辑</span>
@@ -92,9 +102,9 @@ class Add extends Component{
                         (<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>检验项目名称 : </span><Input name={'name'} style={{width:'250px'}} placeholder={'请输入检验项目名称'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.name:undefined}/></div>
+                        <div><span className='fireQua-add-span fireQua-add-span-width1'>检验项目名称 : </span><Input name={'name'} style={{width:'250px'}} placeholder={'请输入检验项目名称'} onChange={this.inputChange} value={name}/></div>
                         <br/>
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>单位 : </span><Input name={'unit'} style={{width:'250px'}} placeholder={'请输入单位'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.unit:undefined}/></div>
+                        <div><span className='fireQua-add-span fireQua-add-span-width1'>单位 : </span><Input name={'unit'} style={{width:'250px'}} placeholder={'请输入单位'} onChange={this.inputChange} value={unit}/></div>
                     </Modal>
                 </span>
         )

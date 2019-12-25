@@ -4,7 +4,7 @@ import {Spin, Table, Divider, message, Popconfirm} from "antd";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import Add from './add'
 import axios from "axios";
-import dataSample from "echarts/src/processor/dataSample";
+import NewSearchCell from '../../../BlockQuote/newSearchSell'
 class FireTestItem extends Component{
     constructor(props){
         super(props)
@@ -41,12 +41,20 @@ class FireTestItem extends Component{
             selectedRowKeys:[],
             dataSource:[]
         }
+        this.pagination={
+            total:this.state.dataSource.length,
+            showSizeChanger:true,
+            showTotal:(total)=>`共${total}条记录`,
+            pageSizeOptions: ["10","20","50","100"]
+        }
         this.back=this.back.bind(this);
         this.getTableData=this.getTableData.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
         this.deleteCancel=this.deleteCancel.bind(this);
         this.onSelectChange=this.onSelectChange.bind(this);
         this.handleDelete=this.handleDelete.bind(this);
+        this.searchEvent=this.searchEvent.bind(this);
+        this.reset=this.reset.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -57,7 +65,13 @@ class FireTestItem extends Component{
         }
     }
 
-    getTableData(){
+    getTableData(searchContent){
+        let {current,pageSize}=this.pagination,
+        params={
+            condition:searchContent?searchContent:'',
+            page:current?current:1,
+            size:pageSize?pageSize:10
+        }
         this.setState({
             loading:true
         })
@@ -66,18 +80,23 @@ class FireTestItem extends Component{
             method:'get',
             headers:{
                 'Authorizaion':this.url.Authorizaion
-            }
+            },
+            params
         }).then(data=>{
             let res=data.data.data
+            this.pagination.total=res&&res.total?res.total:0
             if(res&&res.list){
                 for(let i=0;i<res.list.length;i++){
                     res.list[i]['index']=(res.page-1)*(res.size)+(i+1)
                 }
                 this.setState({
                     dataSource:res.list,
-                    loading:false
                 })
             }
+            this.setState({
+                loading:false,
+                searchContent:''
+            })
         })
     }
     deleteByIds(){
@@ -120,6 +139,19 @@ class FireTestItem extends Component{
             }
         })
     }
+    searchEvent(searchContent){//搜索内容通过子组件传过来,以修改父组件值
+        this.setState({
+            searchContent:searchContent
+        })
+        this.getTableData(searchContent)
+    }
+   /**重置*/
+    reset(){
+       this.setState({
+           searchContent:''
+       })
+       this.getTableData('')
+    }
     onSelectChange(selectedRowKeys){
         this.setState({ selectedRowKeys: selectedRowKeys});
     }
@@ -140,7 +172,12 @@ class FireTestItem extends Component{
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
                     <Add url={this.url} getTableData={this.getTableData} />
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={true}/>
-                    <Table rowSelection={rowSelection} pagination={false} columns={this.columns}
+                    <NewSearchCell placeholder={'请输入检测项目名称'}
+                                searchEvent={this.searchEvent}
+                                reset={this.reset}
+                                flag={true}
+                    />
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns}
                            dataSource={this.state.dataSource} rowKey={record => record.code} bordered size={'small'} />
                 </Spin>
             </div>

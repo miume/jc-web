@@ -16,13 +16,56 @@ class ExportFile extends Component{
         this.cancel=this.cancel.bind(this);
         this.inputChange=this.inputChange.bind(this)
         this.selectChange=this.selectChange.bind(this);
+        this.getProcess=this.getProcess.bind(this);
+        this.getModel=this.getModel.bind(this);
     }
     showModal(){
         this.setState({
             visible:true
         })
+        this.getModel()
+        this.getProcess()
     }
-
+       /**获取工序*/
+       getProcess(){
+        axios({
+            url:`${this.props.url.fireMageNumber}/detail`,
+            method:'get',
+            headers:{
+                'Authorizaion':this.props.url.Authorizaion
+            },
+            params: {
+                position:1
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    processData:res
+                })
+            }
+        })
+    }
+    /**获取产品型号*/
+    getModel(){
+        axios({
+            url:`${this.props.url.fireMageNumber}/detail`,
+            method:'get',
+            headers:{
+                'Authorizaion':this.props.url.Authorizaion
+            },
+            params:{
+                position:4
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    modelData:res
+                })
+            }
+        })
+    }
     inputChange(e){
         let name=e.target.name,value=e.target.value
         this.setState({
@@ -67,7 +110,7 @@ class ExportFile extends Component{
 
     }
     render(){
-        let {visible}=this.state
+        let {visible,processData,modelData}=this.state
         return(
             <span>
                 <NewButton name={'导出'} className={'fa fa-plus'} handleClick={this.showModal}/>
@@ -83,7 +126,7 @@ class ExportFile extends Component{
                         (<NewButton key={'ok'} name={'导出'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                        <ExportModal/>
+                        <ExportModal processData={processData} modelData={modelData} url={this.props.url}/>
                     </Modal>
                 </span>
         )
