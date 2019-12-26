@@ -102,7 +102,7 @@ class DetailModal extends Component {
                 checkedList: checkedList,
                 batchNumber: res.batch,
                 deptName: res.deptName,
-                username: res.delieryPeople,
+                username: res.checkPeople,
                 visible: true
             })
             message.info(data.data.message)

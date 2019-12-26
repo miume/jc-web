@@ -9,19 +9,6 @@ import AddModal from "../fireInsRegister/addModal";
 
 import "../fireInsRegister/fireInsRegister.css"
 
-const data = [];
-for (var i = 0; i < 20; i++) {
-    data.push({
-        code: i + 1,
-        col1: i + 1,
-        col2: "HS5503191206F0205",
-        col3: "Li Ni Co Mn Al Li Ni Co Mn Al Li Ni Co Mn Al Li Ni Co Mn Al",
-        col4: "质量二部",
-        col5: "管理员",
-        col6: "2019-12-12 12:12:12",
-        col7: "2019-12-18 12:12:12",
-    })
-}
 
 class FireInsRegister extends Component {
 
@@ -114,7 +101,7 @@ class FireInsRegister extends Component {
                     const e = res.list[i];
                     dataSource.push({
                         code: e.head.code,
-                        col1: i+1,
+                        col1: (res['page'] - 1) * 10 + i + 1,
                         col2: e.head.batch,
                         col3: e.itemsSpace,
                         col4: e.deptName,

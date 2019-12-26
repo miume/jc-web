@@ -8,7 +8,6 @@ import axios from "axios";
 
 import SamRecTable from "../fireInsSamRec/table"
 import SearchCell from "../../../BlockQuote/newSearchSell";
-import RegisterTable from "../fireInsRegister/table";
 
 
 const data = [];
@@ -55,7 +54,6 @@ class FireInsSamRec extends Component {
         this.deleteByIds = this.deleteByIds.bind(this);
         this.deleteCancel = this.deleteCancel.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
     }
 
     render() {
@@ -68,12 +66,12 @@ class FireInsSamRec extends Component {
                 <Spin spinning={this.state.loading} wrapperClassName={'rightDiv-content'}>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}
                                  cancel={this.deleteCancel} flag={true}/>
-                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'设备名/点检项目'}/>
+                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'批号'}/>
                     <div className='clear'></div>
                     <SamRecTable
                         dataSource={this.state.dataSource}
                         selectedRowKeys={this.state.selectedRowKeys}
-                        onSelectChange={this.onSelectChange}
+                        handleTableChange={this.handleTableChange}
                         getTableParams={this.getTableParams}
                         url={this.url}
                         total={this.state.total}
@@ -116,13 +114,15 @@ class FireInsSamRec extends Component {
                     const e = res.list[i];
                     dataSource.push({
                         code: e.head.code,
-                        col1: i+1,
+                        col1: (res['page'] - 1) * 10 + i + 1,
                         col2: e.head.batch,
                         col3: e.itemsSpace,
                         col4: e.deptName,
                         col5: e.head.delieryPeople,
                         col6: e.head.checkInTime,
                         col7: e.comfirmTime,
+                        col8: e.head.comment?e.head.comment:"",
+                        flag: e.head.flag
                     })
                 }
                 this.setState({
@@ -147,7 +147,7 @@ class FireInsSamRec extends Component {
     }
 
     /**搜索事件*/
-    searchEvent(searchContent) {
+    searchEvent = (searchContent) => {
         this.setState({
             searchContent
         });
@@ -155,14 +155,14 @@ class FireInsSamRec extends Component {
     }
 
     /**取消批量删除*/
-    cancel() {
+    cancel = () => {
         this.setState({
             selectedRowKeys: []
         })
     }
 
     /**重置事件*/
-    reset() {
+    reset = () => {
         this.setState({
             searchContent: undefined
         });
@@ -171,7 +171,6 @@ class FireInsSamRec extends Component {
 
     deleteByIds() {
         let ids = this.state.selectedRowKeys
-        console.log(ids)
         axios({
             url:`${this.url.fireInsSamRec.deleteIds}`,
             method: 'Delete',
@@ -195,24 +194,6 @@ class FireInsSamRec extends Component {
         this.setState({
             selectedRowKeys: []
         });
-    }
-
-    handleDelete(id) {
-        // axios({
-        //     url:`${this.url.fireMageTestItems}/${id}`,
-        //     method:'delete',
-        //     headers:{
-        //         'Authorizaion':this.url.Authorizaion
-        //     }
-        // }).then(data=>{
-        //     if(data.data.code===0){
-        //         message.info('操作成功!')
-        //         this.getTableData()
-        //     }
-        //     else{
-        //         message.error('操作失败，请联系管理员!')
-        //     }
-        // })
     }
 
     onSelectChange = (selectedRowKeys) => {
