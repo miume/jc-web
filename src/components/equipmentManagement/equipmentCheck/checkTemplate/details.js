@@ -1,9 +1,7 @@
 import React from 'react';
 import {Modal,Radio,Divider} from 'antd';
-import WhiteSpace from '../../../BlockQuote/whiteSpace';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
-
 
 class Detail extends React.Component{
     url
@@ -24,7 +22,6 @@ class Detail extends React.Component{
     }
 
     fetch = (id) => {
-        // console.log(id)
         axios({
             url:`${this.url.deviceSpot.checkDetail}`,
             method:"GET",
@@ -33,9 +30,7 @@ class Detail extends React.Component{
                 'Authorization':this.url.Authorization
             },
         }).then((data) => {
-            // console.log(data)
             const res = data.data.data;
-            // console.log(res)
             if(res){
                 this.setState({
                     data : res,
@@ -74,7 +69,6 @@ class Detail extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.server = localStorage.getItem('server');
-        // const {deviceSpotcheckModelsDetails,deviceSpotcheckModelsHead,peopleName} = this.state.data;
         return(
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
@@ -110,7 +104,6 @@ class Detail extends React.Component{
                                 <Modal visible={this.state.previewVisible} footer={null} onCancel={this.previewCancel}>
                                     <img alt="图片未显示" style={{width:"100%"}} src={this.state.previewImage}/>
                                 </Modal>
-                                {/* <span className="DetailName">{e.spotcheckAddress}</span> */}
                             </div>
                         )
                     }

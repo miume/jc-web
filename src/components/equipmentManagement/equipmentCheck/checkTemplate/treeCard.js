@@ -11,12 +11,9 @@ class TreeCard extends React.Component{
         this.state = {
             selectedKeys:[],
             expandedKeys:[],
-            TreeData:[],
-            // defaultkey:[],
+            TreeData:[]
         }
         this.returnDepKey = this.returnDepKey.bind(this);
-        // this.getTreeData = this.getTreeData.bind(this);
-        // this.onSelect = this.onSelect.bind(this);
     }
     returnDepKey(){
 
@@ -25,37 +22,11 @@ class TreeCard extends React.Component{
 
     }
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
     }
-    // onExpand = (expandedKeys) => {
 
-    //     this.setState({expandedKeys: expandedKeys})
-    // }
-
-    // getTreeData(){
-    //     axios({
-    //         url:`${this.url.deviceSpot.getAllDevices}`,
-    //         method:"get",
-    //         headers:{
-    //             'Authorization':this.url.Authorization
-    //         },
-    //     }).then((data)=>{
-    //         const res = data.data.data
-    //         if(res.length !== 0){
-    //             var defaultkey = [];
-    //             defaultkey.push(res[0].basicInfoDept.code.toString());
-    //             var selectedKey = [];
-    //             selectedKey.push(res[0].basicInfoDept.code.toString()+"-"+0);
-    //             this.setState({
-    //                 TreeData:res,
-    //                 expandedKeys:defaultkey,
-    //                 selectedKeys:selectedKey
-    //             })
-    //         }
-    //     })
-    // }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
@@ -68,13 +39,12 @@ class TreeCard extends React.Component{
                     <Tree
                         showLine={true}
                         selectedKeys={this.props.selectedKeys}
-                        // treeData={this.state.treeData}
                         onSelect={this.props.onSelect}
                         onExpand={this.props.onExpand}
                         expandedKeys={this.props.expandedKeys}
                     >
                         {
-                            this.props.TreeData.map((item,value)=>{
+                            this.props.TreeData.map((item)=>{
                                 const code = item.basicInfoDept.code
                                 if(item.deviceName.length===0){
                                     return <Tree.TreeNode title={item.basicInfoDept.name} key={item.basicInfoDept.code} code={item.basicInfoDept.code}></Tree.TreeNode>

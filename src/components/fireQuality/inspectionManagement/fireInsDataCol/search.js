@@ -15,25 +15,25 @@ class SearchCell extends React.Component {
         this.selectChange = this.selectChange.bind(this);
     }
     render() {
-        let {date,departmentId,productionLine,product} = this.state, {flag,departmentData,productionData,productData} = this.props;
+        let {date,deptCode,process,product} = this.state, {flag,departmentData,productionData,productData} = this.props;
         return (
             <span className={flag?'searchCell':'hide'}>
                 送检部门：
-                <Select value={departmentId} style={{ width: 150,marginRight: '10px'}} placeholder={'请选择送检部门'} onChange={this.selectChange}>
+                <Select value={deptCode} style={{ width: 150,marginRight: '10px'}} placeholder={'请选择送检部门'} onChange={this.selectChange}>
                     {
-                        departmentData ? departmentData.map(e => <Option key={e.code} value={e.code} name={'departmentId'}>{e.name}</Option>) : null
+                        departmentData ? departmentData.map(e => <Option key={e.code} value={e.code} name={'deptCode'}>{e.deptName}</Option>) : null
                     }
                 </Select>
                 工序：
-                <Select value={productionLine} style={{ width: 150,marginRight: '10px'}} placeholder={'请选择工序'} onChange={this.selectChange}>
+                <Select value={process} style={{ width: 150,marginRight: '10px'}} placeholder={'请选择工序'} onChange={this.selectChange}>
                     {
-                        productionData ? productionData.map(e => <Option key={e.code} value={e.code} name={'productionLine'}>{e.name}</Option>) : null
+                        productionData ? productionData.map(e => <Option key={e.code} value={e.code} name={'process'}>{e.value}</Option>) : null
                     }
                 </Select>
                 产品：
                 <Select value={product} style={{ width: 150,marginRight: '10px'}} placeholder={'请选择产品'} onChange={this.selectChange}>
                     {
-                        productData ? productData.map(e => <Option key={e.code} value={e.code} name={'product'}>{e.name}</Option>) : null
+                        productData ? productData.map(e => <Option key={e.code} value={e.code} name={'product'}>{e.value}</Option>) : null
                     }
                 </Select>
                  <DatePicker placeholder={'请选择时间'} style={{width:200}} value={date ? moment(date) : null} onChange={this.dateChange}/>
@@ -42,6 +42,13 @@ class SearchCell extends React.Component {
                 <Button type="primary" style={{marginLeft:10}} onClick={this.reset} className='button'><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
             </span>
         );
+    }
+
+    componentDidMount() {
+        let date = moment(new Date()).format('YYYY-MM-DD');
+        this.setState({
+            date
+        })
     }
 
     /**监控搜索内容变化*/
@@ -61,12 +68,12 @@ class SearchCell extends React.Component {
 
     /**搜索事件*/
     searchEvent() {
-        let {departmentId, productionLine, product, date} = this.state,
+        let {deptCode, process, product, date} = this.state,
             params = {
                 date,
                 product,
-                departmentId,
-                productionLine,
+                deptCode,
+                process,
             };
         this.props.searchEvent(params);
     }
@@ -75,8 +82,8 @@ class SearchCell extends React.Component {
         this.setState({
             date: null,
             product: undefined,
-            departmentId: undefined,
-            productionLine: undefined
+            deptCode: undefined,
+            process: undefined
         });
         this.props.reset();
     }

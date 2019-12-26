@@ -1,34 +1,35 @@
 /**检验管理-数据整理*/
 import React,{Component} from 'react'
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Spin, Table, message} from "antd";
-import ExportFile from './exportFile'
+import {message, Spin, Table} from "antd";
 import ImportFile from './importFile'
 import Detail from './detail'
 import axios from "axios";
 import SearchCell from "./search";
+import moment from "moment";
+import NewButton from "../../../BlockQuote/newButton";
 
-const departmentData = [{
-    code: 1,
-    name: '部门1'
-},{
-    code: 2,
-    name: '部门2'
-}],
-    productionData = [{
-        code: 1,
-        name: '工序1'
-    },{
-        code: 2,
-        name: '工序2'
-    }],
-    productData = [{
-        code: 1,
-        name: '产品1'
-    },{
-        code: 2,
-        name: '产品2'
-    }];
+// const departmentData = [{
+//     code: 1,
+//     name: '部门1'
+// },{
+//     code: 2,
+//     name: '部门2'
+// }],
+//     productionData = [{
+//         code: 1,
+//         name: '工序1'
+//     },{
+//         code: 2,
+//         name: '工序2'
+//     }],
+//     productData = [{
+//         code: 1,
+//         name: '产品1'
+//     },{
+//         code: 2,
+//         name: '产品2'
+//     }];
 
 class FireInsDataCol extends Component{
     constructor(props) {
@@ -39,16 +40,19 @@ class FireInsDataCol extends Component{
             productData: [],
             departmentData: [],
             productionData: [],
+            selectedRowKeys: []
         };
         this.back = this.back.bind(this);
         this.reset = this.reset.bind(this);
+        this.export = this.export.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.getTableData = this.getTableData.bind(this);
         this.getTableParams = this.getTableParams.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.getProductData = this.getProductData.bind(this);
         this.getDepartmentData = this.getDepartmentData.bind(this);
-        this.getProductionLineData = this.getProductionLineData.bind(this);
+        this.getProcessData = this.getProcessData.bind(this);
+        this.onSelectChange = this.onSelectChange.bind(this);
         this.pagination = {
             pageSize: 10,
             current: 1,
@@ -62,35 +66,42 @@ class FireInsDataCol extends Component{
         this.columns = [{
             title:'序号',
             dataIndex:'index',
-            key:'index'
+            key:'index',
+            width: '6%'
         },{
             title:'批次',
             dataIndex:'batch',
-            key:'batch'
+            key:'batch',
+            width: '20%'
         },{
             title:'工序',
             dataIndex:'process',
-            key:'process'
+            key:'process',
+            width: '6%'
         },{
             title:'产品型号',
-            dataIndex:'type',
-            key:'type'
+            dataIndex:'product',
+            key:'product',
+            width: '6%'
         },{
             title:'检验项目',
-            dataIndex:'item',
-            key:'item'
+            dataIndex:'itemsSpace',
+            key:'itemsSpace',
+            width: '50%'
         },{
             title:'检验状态',
             dataIndex:'status',
-            key:'status'
+            key:'status',
+            width: '6%'
         },{
             title:'操作',
-            dataIndex:'operation',
-            key:'operation',
-            render:(text,record)=>{
+            dataIndex:'id',
+            key:'id',
+            width: '6%',
+            render:(text)=>{
                 return(
                     <span>
-                        <Detail url={this.url} getTableData={this.getTableData} record={record} editflag={true}/>
+                        <Detail url={this.url} getTableData={this.getTableData} code={text} editflag={true}/>
                     </span>
                 )
             }
@@ -100,79 +111,145 @@ class FireInsDataCol extends Component{
     render(){
         const current = JSON.parse(localStorage.getItem('current'));
         this.url = JSON.parse(localStorage.getItem('url'));
-        let {loading,dataSource,departmentData,productionData,productData} = this.state;
-
+        let {loading,dataSource,departmentData,productionData,productData,selectedRowKeys} = this.state;
+        const rowSelection = {
+            onChange: this.onSelectChange,
+            selectedRowKeys
+        }, disabled = selectedRowKeys.length ? false : true;
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name={'数据整理'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
                     <div>
-                        <ExportFile url={this.url} getTableData={this.getTableParams}/>
+                        <NewButton name={'导出'} className={'fa fa-plus'} flagConfirm={disabled} handleClick={this.export}/>
                         <ImportFile url={this.url} getTableData={this.getTableParams} />
                         <SearchCell flag={true} name={'请输入'} searchEvent={this.searchEvent} reset={this.reset}
                                     departmentData={departmentData} productionData={productionData} productData={productData}/>
                     </div>
                     <div className={'clear'}></div>
 
-                    <Table  columns={this.columns} pagination={this.pagination} onChange={this.handleTableChange}
-                            dataSource={dataSource} rowKey={record => record.code} bordered size={'small'} />
+                    <Table columns={this.columns} pagination={this.pagination} onChange={this.handleTableChange}
+                           dataSource={dataSource} rowKey={record => record.code} bordered size={'small'} rowSelection={rowSelection} />
                 </Spin>
             </div>
         )
     }
 
     componentDidMount() {
-        this.getTableParams();
+        let date = moment(new Date()).format('YYYY-MM-DD');
+        this.setState({date});
+        this.getTableParams({  //默认查当天的数据
+            date
+        });
         this.getDepartmentData();
-        this.getProductionLineData();
+        this.getProcessData();
         this.getProductData()
     }
 
     /**获取所有送检部门数据*/
     getDepartmentData() {
-        this.setState({
-            departmentData: departmentData
+        axios({
+            url: `${this.url.fireMageDept.getAll}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                this.setState({
+                    departmentData: res
+                })
+            }
         })
     }
 
     /**获取所有工序数据*/
-    getProductionLineData() {
-        this.setState({
-            productionData: productionData
+    getProcessData() {
+        axios({
+            url: `${this.url.fireMageNumber}/detail?position=1`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                this.setState({
+                    productionData: res
+                })
+            }
         })
     }
 
     /**获取所有产品数据*/
     getProductData() {
-        this.setState({
-            productData: productData
+        axios({
+            url: `${this.url.fireMageNumber}/detail?position=4`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                this.setState({
+                    productData: res
+                })
+            }
         })
     }
 
     /**统一表格数据*/
-    getTableParams(data) {
-        let {pageSize,current} = this.pagination, {departmentId,productionLine,product,searchContent} = this.state,
+    getTableParams(data = {}) {
+        let {pageSize,current} = this.pagination, {deptCode,process,product,date} = this.state,
             params = {
                 size: pageSize,
-                page: current
+                page: current,
+                deptCode: data['deptCode'] ? data['deptCode'] : deptCode,
+                process: data['process'] ? data['process'] : process,
+                product: data['product'] ? data['product'] : product,
+                date: data['date'] ? data['date'] : date
             };
-        if(!data) {
-            data = {
-                departmentId,
-                productionLine,
-                product,
-                searchContent
-            }
-        }
-        this.getTableData(params,data);
+        this.getTableData(params);
     }
 
     /**获取表格数据*/
-    getTableData(params,data) {
-        console.log(params,data)
-        // this.setState({
-        //     loading:true
-        // })
+    getTableData(params) {
+        this.setState({
+            loading:true
+        });
+        axios({
+            url: `${this.url.dataReorganize.page}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params
+        }).then(data => {
+            let res = data.data.data, head = [];
+            if(res && res.list.length) {
+                for(let i = 0; i < res.list.length; i++) {
+                    let temp = res.list[i]['head'];
+                    temp['index'] = (res.page - 1) * 10 + i + 1;
+                    temp['status'] = res.list[i]['status'];
+                    temp['itemsSpace'] = res.list[i]['itemsSpace'];
+                    temp['id'] = temp['code'];
+                    temp['code'] = temp['batch'];
+                    head.push(temp)
+                }
+            }
+            this.setState({
+                dataSource: head,
+                loading: false
+            })
+        })
+    }
+
+    onSelectChange(selectedRowKeys) {
+        this.setState({
+            selectedRowKeys
+        })
     }
 
     /**监控表格数据分页情况*/
@@ -182,10 +259,10 @@ class FireInsDataCol extends Component{
     }
 
     searchEvent(params) {
-        let {departmentId, productionLine, product, date} = params;
+        let {deptCode, process, product, date} = params;
         this.setState({
-            departmentId,
-            productionLine,
+            deptCode,
+            process,
             product,
             date
         });
@@ -195,18 +272,44 @@ class FireInsDataCol extends Component{
     /**重置*/
     reset() {
         this.setState({
-            departmentId: '',
-            productionLine: '',
+            deptCode: '',
+            process: '',
             product: '',
             date: ''
         });
         let params = {
-                date: null,
-                departmentId: -1,
-                productionLine: -1,
-                product: -1
-            };
+            date: '',
+            deptCode: '',
+            process: '',
+            product: ''
+        };
         this.getTableParams(params);
+    }
+
+    /**导出*/
+    export() {
+        let {selectedRowKeys} = this.state;
+        axios({
+            url: `${this.url.dataReorganize.export}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data: selectedRowKeys,
+        }).then((data) => {
+            let file = data.data.data;
+            if(file) {
+                let url = `${this.url.equipmentRepair.download}${file}`;
+                let a = document.createElement('a');
+                a.href = url;
+                a.click();
+                this.setState({
+                    selectedRowKeys: []
+                })
+            }
+
+            message.info(data.data.message)
+        })
     }
 
     /**返回检验管理*/

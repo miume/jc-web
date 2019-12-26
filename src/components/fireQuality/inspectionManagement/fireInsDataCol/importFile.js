@@ -1,6 +1,6 @@
 import React ,{Component}from 'react'
 import NewButton from "../../../BlockQuote/newButton";
-import {Modal, message, Input, Upload, Button, Icon} from 'antd'
+import {Modal, message, Upload, Button, Icon} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 import axios from "axios";
 
@@ -9,21 +9,32 @@ class ImportFile extends Component{
         super(props);
         this.state = {
             visible: false,
-            fileName: ''
+            fileList: []
         };
         this.cancel = this.cancel.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.showModal = this.showModal.bind(this);
-        this.onRemove = this.onRemove.bind(this);
+        this.uploadFile = this.uploadFile.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
         this.beforeUpload = this.beforeUpload.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleCreate = this.handleCreate.bind(this);
-        this.inputChange = this.inputChange.bind(this);
     }
 
     render(){
-        let {visible,fileName} = this.state;
-        return(
+        let {visible,fileList} = this.state,
+            props = {
+                onRemove: file => {
+                    this.setState(state => {
+                        const index = state.fileList.indexOf(file);
+                        const newFileList = state.fileList.slice();
+                        newFileList.splice(index, 1);
+                        return {
+                            fileList: newFileList,
+                        };
+                    });
+                },
+                beforeUpload: this.beforeUpload,
+                fileList
+            };
+        return (
             <span>
                 <NewButton name={'导入检验状态'} className={'fa fa-plus'} handleClick={this.showModal}/>
                 <Modal
@@ -34,20 +45,14 @@ class ImportFile extends Component{
                     centered={true}
                     width={440}
                     footer={[
-                        <CancleButton key={'cancel'} handleCancel={this.cancel} />
+                        <CancleButton key={'cancel'} handleCancel={this.cancel} />,
+                        <NewButton key={'ok'} name={'导出'} className={'fa fa-check'} handleClick={this.handleUpload}/>
                     ]}
                 >
                         <div style={{height: 50}}>
                             <span>导入文件：</span>
-                            {/*<span style={{width: 150,marginRight: 10}}>fileName</span>*/}
-                            <Upload
-                                // showUploadList={false}
-                                onChange={this.handleChange}
-                                onRemove={this.onRemove}
-                                beforeUpload={this.beforeUpload}>
-
+                            <Upload {...props}>
                                 <Button><Icon type="upload" /> 选择文件</Button>
-
                             </Upload>
                         </div>
                     </Modal>
@@ -61,87 +66,70 @@ class ImportFile extends Component{
         })
     }
 
-    inputChange(e) {
-        let name=e.target.name,value=e.target.value;
-        this.setState({
-            changeFlag:true,
-            [name]:value
-        })
-    }
-
-    handleChange(fileList) {
-
-    }
-
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    }
-
-    onRemove(e) {
-        this.setState({
-            fileName: ''
-        })
-    }
-
+    /**在上传文件之前验证*/
     beforeUpload(file) {
-        let fileName = file.name;
+        if(file.name.slice(-3) === 'xls' || file.name.slice(-4) === 'xlsx') {
+            this.setState({
+                isUpload: false
+            })
+        } else {
+            this.setState({
+                isUpload: true
+            })
+        }
+        /**让最新的文件覆盖旧文件*/
         this.setState({
-            fileName
-        })
-
-    }
-
-    handleCreate() {
-        let {editflag,record}=this.props,{name,unit,changeFlag}=this.state
-        this.setState({
-            visible:false
+            fileList: [file]
         });
-        let data={
-            code: editflag?record.code:'',
-            name: editflag&&!changeFlag?record.name:name,
-            unit:  editflag&&!changeFlag?record.unit:unit
-        };
+        return false;
+    }
+
+    /**点检导入按钮，进行文件类型判断*/
+    handleUpload() {
+        const { fileList ,isUpload} = this.state;
+        if(!fileList.length) {
+            message.error('请先上传.xls或者.xlsl文件!');
+        }
+        if(isUpload) {
+            message.error('上传文件类型错误！上传文件类型只能是.xls或者.xlsx！');
+            return
+        }
+
+        const formData = new FormData();
+        fileList.forEach(file => {
+            formData.append('excel', file);
+        });
+
+        this.uploadFile(formData);
+    }
+
+    /**上传文件*/
+    uploadFile(formData) {
         axios({
-            url:`${this.props.url.fireMageTestItems}`,
-            method:editflag?'put':'post',
+            url: `${this.props.url.dataReorganize.import}`,
+            method: 'post',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             },
-            data
-        }).then(data=>{
-            if(data.data.code===0){
-                message.info('操作成功！')
-                this.props.getTableData()
-            }
-            else{
-                message.error('操作失败，请联系管理员!')
-            }
+            data: formData
+        }).then(data => {
+            this.setState({
+                fileList: [],
+                visible: false,
+            });
+            message.success(data.data.message);
+        }).catch(() => {
+            this.setState({
+                visible: false,
+            });
+            message.error('上传失败，请联系管理员！');
         })
     }
+
     cancel() {
-        let {record,editflag}=this.props
         this.setState({
-            visible:false
+            visible: false
         })
-        if(editflag){
-            this.setState({
-                name:record.name,
-                unit:record.unit
-            })
-        }
-        else{
-            this.setState({
-                name:undefined,
-                unit:undefined
-            })
-        }
     }
 }
 export default ImportFile

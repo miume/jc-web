@@ -13,19 +13,28 @@ class FireInsDataAcq extends Component{
         this.columns=[{
             title:'序号',
             dataIndex:'index',
-            key:'index'
+            key:'index',
+            width:'10%'
         },{
             title:'批次',
-            dataIndex:'batch',
-            key:'batch'
+            dataIndex:'head.batch',
+            key:'head.batch',
+            width:'15%'
         },{
             title:'工序',
-            dataIndex:'process',
-            key:'process'
+            dataIndex:'head.process',
+            key:'head.process',
+            width:'15%'
         },{
             title:'检验项目',
-            dataIndex:'item',
-            key:'item'
+            dataIndex:'itemsSpace',
+            key:'itemsSpace',
+            render:(text,record)=>{
+                let data=text.substring(0, 20)
+                return(
+                    <span title={text}>{`${data}${'...'}`}</span>
+                )
+            }
         }]
         this.state={
             loading:false,
@@ -83,9 +92,12 @@ class FireInsDataAcq extends Component{
             loading:false,
             searchContent:''
         })
-    })
+     })
     }
     searchEvent(searchContent){
+        this.setState({
+            searchContent:searchContent
+        })
         this.getTableData(searchContent)
     }
     reset(){
@@ -110,7 +122,7 @@ class FireInsDataAcq extends Component{
                     <ImportFile url={this.url} getTableData={this.getTableData} />
                     <NewSearchCell reset={this.reset} searchEvent={this.searchEvent} placeholder={'请输入日期'} flag={true}/>
                     <Table  pagination={this.pagination} columns={this.columns}
-                           dataSource={dataSource} rowKey={record => record.index} bordered size={'small'} />
+                           dataSource={dataSource} rowKey={record => record.head.code} bordered size={'small'} />
                 </Spin>
             </div>
         )
