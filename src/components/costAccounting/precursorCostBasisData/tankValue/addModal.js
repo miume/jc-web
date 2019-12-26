@@ -21,12 +21,10 @@ class AddModal extends React.Component{
             tankData:[]
         }
         this.getLine=this.getLine.bind(this);
-        this.getHC=this.getHC.bind(this);
         this.editData=this.editData.bind(this);
     }
     componentDidMount(){
         this.getLine()
-        this.getHC()
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -47,20 +45,20 @@ class AddModal extends React.Component{
             });
         })
     }
-    getHC(){//合成槽号(合成工序下的物料点名称)
-        axios({
-            url:`${this.props.url.precursorCompoundCellVolumes.getHC}`,
-            method:"get",
-            headers:{
-                'Authorization':this.props.url.Authorization,
-            },
-        }).then((data)=>{
-            const res = data.data.data;
-            this.setState({
-                tankData:res
-            });
-        })
-    }
+    // getHC(){//合成槽号(合成工序下的物料点名称)
+    //     axios({
+    //         url:`${this.props.url.precursorCompoundCellVolumes.getHC}`,
+    //         method:"get",
+    //         headers:{
+    //             'Authorization':this.props.url.Authorization,
+    //         },
+    //     }).then((data)=>{
+    //         const res = data.data.data;
+    //         this.setState({
+    //             tankData:res
+    //         });
+    //     })
+    // }
     editData(){
         axios({
             url:this.props.url.precursorCompoundCellVolumes.getRecordById,
@@ -131,7 +129,23 @@ class AddModal extends React.Component{
     }
     change = (data)=>{//生产线
         this.setState({
-            productLine:data
+            productLine:data,
+            tank:undefined
+        })
+        axios({
+            url:this.props.url. techLineCellMap.byIds,
+            method:"post",
+            headers:{
+                'Authorization':this.props.url.Authorization,
+            },
+            data:[data]
+        }).then(data=>{
+            let res=data.data.data
+            if(res&&res[0].materialDTOS){
+                this.setState({
+                    tankData:res[0].materialDTOS
+                })
+            }
         })
     }
     onChange = (data,name)=>{//合成槽号
@@ -147,6 +161,7 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        let {editFlag}=this.props
         return(
             <span>
                {this.props.editFlag? <span className='blue' onClick={this.showModal}>编辑</span>
@@ -163,7 +178,7 @@ class AddModal extends React.Component{
                         <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
-                   <span className='tank-add-span'> 生产线：</span><Select onChange={this.change} value={this.state.productLine} placeholder="请选择生产线" style={{width:"250px"}}>
+                   <span className='tank-add-span'> 生产线：</span><Select onChange={this.change} value={this.state.productLine} placeholder="请选择生产线" style={{width:"250px"}} disabled={editFlag?true:false}>
                        {
                            this.state.lineData?this.state.lineData.map(data=>{
                                return(
@@ -174,11 +189,11 @@ class AddModal extends React.Component{
 
                     </Select>
                     <br /><br />
-                    <span className='tank-add-span'>合成槽号：</span><Select onChange={this.onChange} value={this.state.tank} placeholder="请选择合成槽号" style={{width:"250px"}}>
+                    <span className='tank-add-span'>合成槽号：</span><Select onChange={this.onChange} value={this.state.tank} placeholder="合成槽号" style={{width:"250px"}} disabled={editFlag?true:false}>
                         {
                             this.state.tankData?this.state.tankData.map(data=>{
                                 return(
-                                    <Option key={data.code} value={data.code}>{data.materialName}</Option>
+                                    <Option key={data.materialCode} value={data.materialCode}>{data.materialName}</Option>
                                 )
                             }):null
                         }
