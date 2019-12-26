@@ -849,8 +849,12 @@ class Home extends Component {
                 getItemsByCode: `${server}/jc/common/fireMageTestItems/getAllByProcessByProdut`,
             },
             /** 样品接收 */
-            fireInsSamRec: {},
-
+            fireInsSamRec: {
+                page: `${server}/jc/common/sampleReceive/page`,
+                deleteIds: `${server}/jc/common/sampleReceive/ids`,
+                detail: `${server}/jc/common/sampleReceive/detail`,
+                sampleReceive: `${server}/jc/common/sampleReceive`,
+            },
             /**批号与检测项目*/
             fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
 

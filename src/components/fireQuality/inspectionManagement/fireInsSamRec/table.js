@@ -3,9 +3,9 @@ import {Divider, message, Popconfirm, Table} from "antd";
 // import AddModal from "./add/addModal";
 import axios from "axios";
 // import DetailModal from "./detailModal"
-import Add from "./add";
 import DetailModal from "../fireInsRegister/detailModal";
 import PrintModal from "../fireInsSamRec/printModal"
+import Refuse from "../fireInsSamRec/refuse";
 class SamRecTable extends React.Component {
     constructor(props) {
         super(props);
@@ -70,17 +70,18 @@ class SamRecTable extends React.Component {
             render: ((text,record) => {
                 return (
                     <span>
-                        <DetailModal />
+                        <DetailModal url={this.props.url} flag={1} record={record}/>
                         <Divider type={'vertical'}/>
                         <PrintModal />
                         <Divider type={'vertical'}/>
                         <Popconfirm title={'确定接受吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleAccept(record.code)}>
-                            <span className={'blue'}>接受</span>
+                            <span  className={'blue'}>接受</span>
                         </Popconfirm>
                         <Divider type={'vertical'}/>
-                        <Popconfirm title={'确定拒绝吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleRefuse(record.code)}>
-                            <span className={'blue'}>拒绝</span>
-                        </Popconfirm>
+                        <Refuse record={record} url={this.props.url} getTableParams={this.props.getTableParams}/>
+                        {/*<Popconfirm title={'确定拒绝吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleRefuse(record.code)}>*/}
+                            {/*<span className={'blue'}>拒绝</span>*/}
+                        {/*</Popconfirm>*/}
                         <Divider type={'vertical'}/>
                         <Popconfirm title={'确定删除吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleDelete(record.code)}>
                             <span className={'blue'}>删除</span>
@@ -105,49 +106,57 @@ class SamRecTable extends React.Component {
     }
     handleAccept = (code) => {
         console.log(code)
-        // axios({
-        //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.getTableData(); //删除后重置信息
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
+        axios({
+            url:`${this.props.url.fireInsSamRec.sampleReceive}`,
+            method:'put',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                id: code,
+                flag: 1
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.getTableParams(); //删除后重置信息
+        }).catch(()=>{
+            message.info('接受失败，请联系管理员！');
+        });
     }
-    handleRefuse = (code) => {
-        console.log(code)
-        // axios({
-        //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.getTableData(); //删除后重置信息
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
-    }
+    // handleRefuse = (code) => {
+    //     console.log(code)
+    //     axios({
+    //         url:`${this.props.url.fireInsSamRec.sampleReceive}`,
+    //         method:'put',
+    //         headers:{
+    //             'Authorization':this.props.url.Authorization
+    //         },
+    //         params:{
+    //             id: code,
+    //             flag: 2
+    //         }
+    //     }).then((data)=>{
+    //         message.info(data.data.message);
+    //         this.props.getTableParams(); //删除后重置信息
+    //     }).catch(()=>{
+    //         message.info('拒绝失败，请联系管理员！');
+    //     });
+    // }
 
     handleDelete = (code) => {
         console.log(code)
-        // axios({
-        //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.getTableData(); //删除后重置信息
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
+        axios({
+            url:`${this.props.url.fireInsSamRec.sampleReceive}/${code}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.getTableParams(); //删除后重置信息
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     }
 }
 

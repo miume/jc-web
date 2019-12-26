@@ -129,7 +129,7 @@ class FireInsRegister extends Component {
                 })
 
             }else{
-                message.info("检测项目获取为空")
+                message.info("查询数据为空")
             }
             this.setState({
                 loading: false
