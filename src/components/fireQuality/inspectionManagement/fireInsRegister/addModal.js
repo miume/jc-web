@@ -86,7 +86,7 @@ class AddModal extends React.Component {
     leftDataSourceChange = (leftDataSource, batchItems,flag) => {
         var infos = this.state.infos;
         if (flag === 1) {
-            infos.push(batchItems)
+            infos.push(JSON.parse(JSON.stringify(batchItems)))
         }
         this.setState({
             leftDataSource: leftDataSource,
