@@ -121,7 +121,7 @@ class FireInsSamRec extends Component {
                         col4: e.deptName,
                         col5: e.head.delieryPeople,
                         col6: e.head.checkInTime,
-                        col7: e.comfirmTime,
+                        col7: e.head.comfirmTime,
                         col8: e.head.comment?e.head.comment:"",
                         flag: e.head.flag
                     })
