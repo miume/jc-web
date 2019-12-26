@@ -55,6 +55,7 @@ class FireTestItem extends Component{
         this.handleDelete=this.handleDelete.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
         this.reset=this.reset.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -64,7 +65,10 @@ class FireTestItem extends Component{
             return
         }
     }
-
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.getTableData()
+    }
     getTableData(searchContent){
         let {current,pageSize}=this.pagination,
         params={
@@ -177,7 +181,7 @@ class FireTestItem extends Component{
                                 reset={this.reset}
                                 flag={true}
                     />
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns}
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} onChange={this.handleTableChange}
                            dataSource={this.state.dataSource} rowKey={record => record.code} bordered size={'small'} />
                 </Spin>
             </div>

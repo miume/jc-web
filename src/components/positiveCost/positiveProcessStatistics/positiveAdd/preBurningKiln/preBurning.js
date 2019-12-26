@@ -5,20 +5,20 @@ class PreBuring extends Component{//预烧(窑炉)
         super(props)
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id'
+            dataIndex:'index',
+            key:'index'
         },{
             title:'物料类型',
-            dataIndex:'materialType',
-            key:'materialType'
+            dataIndex:'materialName',
+            key:'materialName'
         },{
             title:'产线',
             dataIndex:'produltLine',
             key:'produltLine'
         },{
             title:'入炉排数',
-            dataIndex:'enterFurnace',
-            key:'enterFurnace'
+            dataIndex:'intoFurnace',
+            key:'intoFurnace'
         },{
             title:'出炉排数',
             dataIndex:'outFurnace',
@@ -26,10 +26,18 @@ class PreBuring extends Component{//预烧(窑炉)
         }]
     }
     render(){
+        this.tableData = this.props.tagTableData&&this.props.tagTableData[3]&&this.props.tagTableData[3].materials?this.props.tagTableData[3].materials:[]
+        if (this.tableData && this.tableData.length) {
+            for (let i = 0; i < this .tableData.length; i++) {
+                this.tableData[i]['index'] = i + 1
+                this.tableData[i]['productLine']=this.props.productLine
+            }
+        }
         return(
             <div>
                 <Table
-                rowKey={record=>record.id}
+                dataSource={this.tableData}
+                rowKey={record=>record.code}
                 columns={this.columns}
                 size='small'
                 bordered/>

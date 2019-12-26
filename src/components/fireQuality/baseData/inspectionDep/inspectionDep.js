@@ -55,6 +55,7 @@ class FireInspecDep extends Component{
         this.searchEvent=this.searchEvent.bind(this);
         this.reset=this.reset.bind(this);
         this.handleDelete=this.handleDelete.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -163,6 +164,10 @@ class FireInspecDep extends Component{
     back(){
         this.props.history.push({pathname:"/fireBasicData"})
     }
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.getTableData()
+    }
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
@@ -182,7 +187,8 @@ class FireInspecDep extends Component{
                                 reset={this.reset}
                                 flag={true}
                     />
-                    <Table dataSource={this.state.dataSource} rowSelection={rowSelection} rowKey={record => record.code}  pagination={this.pagination} columns={this.columns} bordered size={'small'}/>
+                    <Table dataSource={this.state.dataSource} rowSelection={rowSelection} rowKey={record => record.code} 
+                     pagination={this.pagination} columns={this.columns} onChange={this.handleTableChange} bordered size={'small'} />
                 </Spin>
             </div>
         )

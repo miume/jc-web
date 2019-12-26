@@ -1,27 +1,13 @@
 import React,{Component} from 'react'
 import {Table,Spin,Popconfirm,Divider} from 'antd'
 
-const data=[{
-    id:'1',
-    periodType:'周',
-    period:'10',
-    beginTime:'2019-01-01',
-    endTime:'2019-01-01',
 
-},{
-    id:'2',
-    periodType:'周',
-    period:'10',
-    beginTime:'2019-01-01',
-    endTime:'2019-01-01',
-
-}]
 class PositivePendSubmit extends Component{//待提交
     constructor(props){
         super(props);
         this.state={
             loading:false,
-            data:data
+            data:[]
         }
         this.columns=[{
             title:'序号',
@@ -33,8 +19,8 @@ class PositivePendSubmit extends Component{//待提交
             key:'periodType'
         },{
             title:'期数',
-            dataIndex:'period',
-            key:'period'
+            dataIndex:'periods',
+            key:'periods'
         },{
             title:'开始时间',
             dataIndex:'beginTime',
@@ -61,9 +47,18 @@ class PositivePendSubmit extends Component{//待提交
                 )
             }
         }]
+        this.pagination={
+            showSizeChanger:true,//是否可以改变pageSize
+            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
+            pageSizeOptions:['10','20','50','100']
+        }
         this.handleEdit=this.handleEdit.bind(this);
         this.handleDelete=this.handleDelete.bind(this);
         this.judgeOperation=this.judgeOperation.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
+    }
+    componentDidMount(){
+        this.props.getPagination('1',this.pagination)
     }
     handleEdit(){
         this.props.history.push({
@@ -73,22 +68,27 @@ class PositivePendSubmit extends Component{//待提交
     handleDelete(id){
 
     }
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.props.handleTableChange(pagination)
+    }
     judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
         return flag.length?true:false
     }
     render(){
-        
         const current=JSON.parse(localStorage.getItem('current'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
        
         return(
             <div>
-               <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+               <Spin spinning={this.props.loadingSubmit} >
                 <Table
                     dataSource={this.state.data}
                     rowKey={record=>record.id}
                     columns={this.columns}
+                    onChange={this.handleTableChange}
+                    pagination={this.props.pagination}
                     size='small'
                     bordered/>
                </Spin>
