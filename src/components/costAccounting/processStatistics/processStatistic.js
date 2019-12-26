@@ -89,7 +89,6 @@ class ProcessStatistics extends Component {
                 paginationStatis: pagination
             })
         }
-
     }
     getPendSubmit(params = {}, periodCode) {//获取待提交表格数据
         if (!periodCode) return
@@ -120,10 +119,10 @@ class ProcessStatistics extends Component {
                     pagination: { current: res.page ? res.page : 0, total: res.total ? res.total : 0 },
 
                 })
-                this.setState({
-                    loadingSubmit: false
-                })
             }
+            this.setState({
+                loadingSubmit: false
+            })
         })
     }
     getStatisticPage(params = {}, periodCode) {//获取已统计表格数据

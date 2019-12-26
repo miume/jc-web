@@ -1,5 +1,5 @@
 import React, { component, Component } from "react";
-import { DatePicker, Select, Button } from "antd";
+import { DatePicker, Select, Button ,message} from "antd";
 import NewButton from "../../BlockQuote/newButton";
 import axios from 'axios'
 import moment from 'moment'
@@ -52,7 +52,6 @@ class Search extends Component {
      else{//统计周期下拉变化
          let name=option.props.name.split('-')
          let time=name[0],length=name[1]
-
          this.setState({
              periodCode: value,
              periodFlag: false,
@@ -67,12 +66,17 @@ class Search extends Component {
       let {periodCode}=this.props,{periodFlag,startTime,endTime,lineCode}=this.state,
           periodCode1=periodCode&&periodFlag?periodCode:this.state.periodCode,
           params = {
-              startTime: startTime,
-              endTime: endTime,
-              periodCode: periodCode1,
-              lineCode:lineCode
-            };
-      this.props.addConfirm(params)
+            beginTime: startTime,
+            endTime: endTime,
+            periodCode: periodCode1,
+            lineCode:lineCode
+          };
+          if(!periodCode1||!lineCode||startTime===null||endTime===null){
+              message.error('信息选择不完整!')
+              return
+          }
+         
+      this.props.confirm(params)
   }
   reset(){
       this.setState({
@@ -82,7 +86,6 @@ class Search extends Component {
         lineCode:undefined
       })
   }
-
   render(){
       let { periodCode,line,periodStatis} = this.props,{periodFlag,endDate}=this.state
       return (
@@ -100,7 +103,7 @@ class Search extends Component {
                   onChange={this.endChange}
                   style={{ width: 150, marginRight: "10px" }}
                   placeholder="请选择结束日期"
-                  value={endDate?moment(endDate):undefined}
+                  value={endDate?moment(endDate):null}
               />
         <Select
             value={periodCode && periodFlag ? periodCode : this.state.periodCode}

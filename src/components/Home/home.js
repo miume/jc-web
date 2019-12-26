@@ -861,7 +861,9 @@ class Home extends Component {
             positiveProcessStatis:{
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
                 afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`,
-                getNextPeriods:`${server}/jc/common/anodeGoodin/getNextPeriods`
+                getNextPeriods:`${server}/jc/common/anodeGoodin/getNextPeriods`,
+                unCommitPage:`${server}/jc/common/anodeGoodin/unCommitPage`,
+                commitPage:`${server}/jc/common/anodeGoodin/commitPage`,
             },
 
             /**动力点检-点检项目*/
