@@ -105,7 +105,7 @@ class DetailModal extends Component {
                 username: res.checkPeople,
                 visible: true
             })
-            message.info(data.data.message)
+            // message.info(data.data.message)
 
         }).catch(()=>{
             message.info('查询失败，请联系管理员！');

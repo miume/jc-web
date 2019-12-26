@@ -32,14 +32,12 @@
 .addModalTop_batchNumber_span {
     display: inline-block;
     width: 7%;
-    padding-left: 11px;
     margin-right: 10px;
 }
-.addModalTop_batch_Number_span_max{
+.addModalTop_batchNumber_span_max{
     display: inline-block;
     width: 9%;
-    padding-left: 11px;
-    margin-right: 10px;
+    margin-right: -18px;
 }
 
 /* ----down-----*/

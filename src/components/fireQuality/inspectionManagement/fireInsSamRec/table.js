@@ -90,7 +90,7 @@ class SamRecTable extends React.Component {
             })
         },{
             title:'拒绝原因',
-            key:'code',
+            key:'col8',
             dataIndex:'col8',
             width: '10%',
             render: ((text,record) => {
