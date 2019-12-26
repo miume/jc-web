@@ -1,6 +1,7 @@
 import React from 'react';
 import {Icon, Table} from "antd";
 import "../fireInsRegister/fireInsRegister.css"
+import DeleteAddTable from "../fireInsRegister/deleteAddTable"
 
 class AddModalLeft extends React.Component {
     constructor(props) {
@@ -35,11 +36,14 @@ class AddModalLeft extends React.Component {
             key:'col4',
             dataIndex:'col4',
             width: '10%',
-            render:((text) => {
+            render:((text,record) => {
                 if (text === 1){
                     return <span><Icon style={{fontSize:"20px",color:"green"}} type="check" /></span>
                 } else{
-                    return <span><Icon style={{fontSize:"20px",color:"red"}} type="close" /></span>
+                    // return <span onClick={this.props.deleteTableData(record.col1)} ><Icon style={{fontSize:"20px",color:"red"}} type="close" /></span>
+                    return (
+                        <DeleteAddTable record={record} deleteTableData={this.props.deleteTableData}/>
+                    )
                 }
             })
         }]
@@ -60,7 +64,6 @@ class AddModalLeft extends React.Component {
             </div>
         );
     }
-
 
 }
 
