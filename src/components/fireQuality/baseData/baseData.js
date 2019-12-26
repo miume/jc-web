@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import BlockQuote from "../../BlockQuote/blockquote";
-import BasePart from "../../qualityProcess/Base/basePart";
+import DataPart from "../../qualityProcess/dataEntry/dataPart";
 
 const data=[{
     id:1,
@@ -28,31 +28,68 @@ const data=[{
     path: '/fireLabelTest',
     className:'fa fa-sitemap fa-5x'
 }]
+
+const icon=['fa fa-industry fa-5x','fa fa-wrench fa-5x','fa fa-tasks fa-5x',
+    'fa fa-tint fa-5x','fa fa-sitemap fa-5x'];
+
 class FireQuaBase extends Component {
-    constructor(props){
-        super(props)
-        this.click=this.click.bind(this)
+    constructor(props) {
+        super(props);
+        this.state = {
+
+        };
+        this.click = this.click.bind(this);
+        this.getData = this.getData.bind(this);
     }
-    click(e){
-        let path=e.target.id
-        this.props.history.push({pathname:path})
-    }
+
     render(){
-        const current=JSON.parse(localStorage.getItem('current'))
+        this.current=JSON.parse(localStorage.getItem('current'))?JSON.parse(localStorage.getItem('current')):null
         return(
             <div>
-                <BlockQuote menu={current.menuParent} name={current.menuName}/>
+                <BlockQuote menu={this.current.menuParent} name={this.current.menuName}/>
                 <div className='dataEntry'>
                     <div className='card-parent'>
                         {
-                            data.map(d=>
-                                <BasePart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></BasePart>
-                            )
+                            this.state.data ? this.state.data.map(d=>
+                                <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
+                            ):null
                         }
                     </div>
                 </div>
             </div>
         )
     }
+    componentDidMount(){
+        this.getData()
+    }
+
+    click(e) {
+        let path = e.currentTarget.id.split('-')
+        const inspectionManagement={
+            openKeys:this.current.menuId,
+            menuName:path[1],
+            menuParent:this.current.menuName,
+            path:path[0]
+        };
+        localStorage.setItem('inspectionManagement',JSON.stringify(inspectionManagement))
+        this.props.history.push({pathname:path[0]})
+    }
+
+    getData(){
+        const menus=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===this.current.path)[0]:[];
+        var data=menus&&menus.menuList?
+            menus.menuList.sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
+                return ({
+                    id : m.menuId,
+                    name : m.menuName,
+                    path : `${m.path}-${m.menuName}`,
+                    className : icon[index]
+                })
+            }):[];
+        this.setState({
+            data:data
+        })
+    }
+
 }
 export default FireQuaBase

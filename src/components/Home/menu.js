@@ -46,7 +46,7 @@ class Menu1List extends React.Component {
         menuParent = event.item.props.name,
         menuId = event.item.props.id;
     const current = {
-      openKeys:localStorage.getItem('defaultOpenKeys'),
+      openKeys: parseInt(localStorage.getItem('defaultOpenKeys')),
       menuName:menuName,
       menuParent:menuParent,
       path:path,

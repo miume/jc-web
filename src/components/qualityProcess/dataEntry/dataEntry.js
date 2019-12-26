@@ -6,7 +6,7 @@ import Blockquote from '../../BlockQuote/blockquote';
 const icon = ['fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-leaf fa-5x',
               'fa fa-shopping-cart fa-5x','fa fa-code-fork fa-5x',
               'fa fa-cube fa-5x','fa fa-exclamation-triangle fa-5x',
-              'fa fa-crosshairs fa-5x']
+              'fa fa-crosshairs fa-5x'];
 // const data = [{
 //     id:1,
 //     name:'制程检测',

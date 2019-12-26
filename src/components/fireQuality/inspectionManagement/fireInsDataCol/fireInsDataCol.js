@@ -109,14 +109,15 @@ class FireInsDataCol extends Component{
     }
 
     render(){
-        const current = JSON.parse(localStorage.getItem('current'));
+        const current = JSON.parse(localStorage.getItem('dataEntry')), menus = JSON.parse(localStorage.getItem('menus'));
         this.url = JSON.parse(localStorage.getItem('url'));
         let {loading,dataSource,departmentData,productionData,productData,selectedRowKeys} = this.state;
         const rowSelection = {
             onChange: this.onSelectChange,
             selectedRowKeys
         }, disabled = selectedRowKeys.length ? false : true;
-        return(
+
+        return (
             <div>
                 <BlockQuote name={'数据整理'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>

@@ -42,7 +42,6 @@ class FireInspecDep extends Component{
             }
         }]
         this.pagination={
-            total:this.state.dataSource.length,
             showSizeChanger:true,
             showTotal:(total)=>`共${total}条记录`,
             pageSizeOptions: ["10","20","50","100"]
@@ -168,17 +167,17 @@ class FireInspecDep extends Component{
         this.pagination=pagination
         this.getTableData()
     }
-    render(){
-        const current=JSON.parse(localStorage.getItem('current'))
-        this.url=JSON.parse(localStorage.getItem('url'))
-        let {loading,selectedRowKeys}=this.state
+    render() {
+        const current=JSON.parse(localStorage.getItem('current'));
+        this.url=JSON.parse(localStorage.getItem('url'));
+        let {loading,selectedRowKeys}=this.state;
         const rowSelection = {//checkbox
             selectedRowKeys,
             onChange:this.onSelectChange,
         };
         return(
             <div>
-                <BlockQuote name={'送检部门'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
                     <Add url={this.url} getTableData={this.getTableData}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={true}/>
@@ -187,7 +186,7 @@ class FireInspecDep extends Component{
                                 reset={this.reset}
                                 flag={true}
                     />
-                    <Table dataSource={this.state.dataSource} rowSelection={rowSelection} rowKey={record => record.code} 
+                    <Table dataSource={this.state.dataSource} rowSelection={rowSelection} rowKey={record => record.code}
                      pagination={this.pagination} columns={this.columns} onChange={this.handleTableChange} bordered size={'small'} />
                 </Spin>
             </div>

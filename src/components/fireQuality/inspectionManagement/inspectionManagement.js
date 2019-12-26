@@ -1,9 +1,9 @@
 import React,{Component} from 'react'
 import BlockQuote from "../../BlockQuote/blockquote";
-import BasePart from "../../qualityProcess/Base/basePart";
+import DataPart from "../../qualityProcess/dataEntry/dataPart";
 
 const icon=['fa fa-industry fa-5x','fa fa-wrench fa-5x',
-'fa fa-tint fa-5x','fa fa-sitemap fa-5x']
+'fa fa-tint fa-5x','fa fa-sitemap fa-5x'];
 
 class InspectionManagement extends Component {
     constructor(props){
@@ -14,21 +14,22 @@ class InspectionManagement extends Component {
             path:'',
             clickButton:''
         }
-        this.click=this.click.bind(this)
+        this.click=this.click.bind(this);
         this.getData=this.getData.bind(this);
     }
     componentDidMount(){
         this.getData()
     }
     click(e) {
-        let path = e.currentTarget.id.split('-')
+        let path = e.currentTarget.id.split('-'), {menuId,openKeys,menuName} = this.current;
         const inspectionManagement={
-            openKeys:this.current.menuId,
-            menuName:path[1],
-            menuParent:this.current.menuName,
-            path:path[0]
-        }
-        localStorage.setItem('inspectionManagement',JSON.stringify(inspectionManagement))
+            openKeys: menuId,
+            menuName: path[1],
+            menuParent: menuName,
+            path: path[0],
+            menuId: parseInt(path[2])
+        };
+        localStorage.setItem('dataEntry',JSON.stringify(inspectionManagement))
         this.props.history.push({pathname:path[0]})
     }
     getData(){
@@ -38,10 +39,10 @@ class InspectionManagement extends Component {
                 return ({
                     id : m.menuId,
                     name : m.menuName,
-                    path : `${m.path}-${m.menuName}`,
+                    path : `${m.path}-${m.menuName}-${m.menuId}`,
                     className : icon[index]
                 })
-            }):[];    
+            }):[];
             this.setState({
                 data:data
             })
@@ -55,7 +56,7 @@ class InspectionManagement extends Component {
                     <div className='card-parent'>
                         {
                             this.state.data?this.state.data.map(d=>
-                                <BasePart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></BasePart>
+                                <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
                             ):null
                         }
                     </div>
