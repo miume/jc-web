@@ -3,7 +3,9 @@ import NewButton from "../../BlockQuote/newButton";
 import {Modal,Input,message} from 'antd'
 import CancleButton from "../../BlockQuote/cancleButton";
 import axios from "axios";
+import './operationMessage.css'
 const { TextArea } = Input;
+
 class Add extends Component{
     constructor(props){
         super(props)
@@ -116,15 +118,31 @@ class Add extends Component{
                         maskClosable={false}
                         closable={false}
                         centered={true}
-                        width={'500px'}
+                        width={'1000px'}
                         footer={[
                             <CancleButton key={'cancel'} handleCancel={this.cancel} flag={detailFlag?true:false}/>,
                             detailFlag?null:(<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                         ]}
                     >
-                        <div>标题 : <Input name={'title'} style={{width:'400px'}} placeholder={'请输入标题'} onChange={this.inputChange} value={title}/></div>
-                        <br/>
-                        <div>内容 : <TextArea name={'content'} rows={5} style={{width:'400px',overflowY:'auto'}} placeholder={'请输入内容'} onChange={this.inputChange} value={content}/></div>
+                        {detailFlag?
+                            <div>
+                                <div>
+                                    标题：&nbsp;
+                                    <span className='fire-operation-detail-divTitle'>{title}</span>
+                                </div>
+                                <br/>
+                                <div>
+                                    内容：&nbsp;
+                                    <span className='fire-operation-detail-divContent'>{content}</span>
+                                </div>
+                            </div>:
+                            <div>
+                                <div>标题 : <Input name={'title'} style={{width:'900px'}} placeholder={'请输入标题'} onChange={this.inputChange} value={title} /></div>
+                                <br/>
+                                <div>内容 : <TextArea name={'content'} rows={10} style={{width:'900px',overflowY:'auto'}} placeholder={'请输入内容'} onChange={this.inputChange} value={content} /></div>
+                            </div>
+                        }
+
                     </Modal>
                 </span>
         )

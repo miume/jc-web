@@ -3,12 +3,14 @@ import BlockQuote from "../../../BlockQuote/blockquote";
 import {Table,Spin,Switch,message} from 'antd'
 import axios from "axios";
 import Edit from "./edit";
+import './rule.css'
 class FireSerialRule extends Component{
     constructor(props){
         super(props)
         this.state={
             loading:false,
-            searchContent:''
+            searchContent:'',
+            dataCode:[]
         }
         this.columns=[{
             title:'序号',
@@ -67,14 +69,16 @@ class FireSerialRule extends Component{
                 'Authorizaion':this.url.Authorizaion
             }
         }).then(data=>{
-            let res=data.data.data
+            let res=data.data.data,{dataCode}=this.state
             if(res){
                 for(let i=0;i<res.length;i++){
                     res[i]['index']=(i+1)
+                    dataCode.push(res[i].demo)
                 }
                 this.setState({
                     dataSource:res,
-                    loading:false
+                    loading:false,
+                    dataCode:dataCode
                 })
             }
         })
@@ -106,12 +110,21 @@ class FireSerialRule extends Component{
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
-        let {loading,dataSource}=this.state
+        let {loading,dataSource,dataCode}=this.state
         return(
             <div>
                 <BlockQuote name={'编号规则'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
-                    <Table dataSource={dataSource} rowKey={record => record.position} pagination={false} columns={this.columns} bordered size={'small'}/>
+                    <strong className={'fire-rule-font-code'}>代码示例：</strong>
+                    {
+                        dataCode?dataCode.map((item,index)=>{
+                            return(
+                                <span key={index} className={((index%2)!==0)?'fire-rule-font-red fire-rule-font-code':'fire-rule-font-code'}><strong>{item}</strong>&nbsp;&nbsp;&nbsp;</span>
+                            )
+                        }):null
+                    }
+                    <br/>
+                    <Table dataSource={dataSource} rowKey={record => record.position} pagination={false} columns={this.columns} style={{marginTop:'10px'}} bordered size={'small'}/>
                 </Spin>
             </div>
         )

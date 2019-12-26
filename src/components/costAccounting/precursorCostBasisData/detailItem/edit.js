@@ -32,7 +32,6 @@ class AddModal extends React.Component{
             params:{id:this.props.code}
         }).then((data)=>{
             const res = data.data.data;
-            console.log(res)
             var metal = [];
             if(res["mn"]===1){
                 metal.push("Mn")
@@ -93,7 +92,7 @@ class AddModal extends React.Component{
             alkaliFlag:types===1&&metal.includes('碱')?1: 0,//碱
             ammoniaFlag: types===1&&metal.includes('氨')?1: 0,//氨
         };
-        if(!dataTypes||!name||!process||!types||!valueType||metal.length===0){
+        if((dataTypes!==0&&dataTypes!==1)||!name||!process||(types!==0&&types!==1)||(valueType!==0&&valueType!==1)||metal.length===0){
             message.error('信息填写不完整!')
             return
         }

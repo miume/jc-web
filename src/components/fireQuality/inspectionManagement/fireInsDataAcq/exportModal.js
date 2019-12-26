@@ -13,7 +13,7 @@ class ExportModal extends Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '10%'
+            width: '15%'
         }, {
             title: '批次',
             key: 'batch',
@@ -218,7 +218,7 @@ class ExportModal extends Component {
                             }
                         </Group>
                     </div>
-                    <Table style={{ width: '55%' }} dataSource={dataSource} rowSelection={rowSelection} columns={this.columns} pagination={false} rowKey={record => record.index} scroll={{ y: '200px' }} size={'small'} bordered />
+                    <Table style={{ width: '50%' }} dataSource={dataSource} rowSelection={rowSelection} columns={this.columns} pagination={false} rowKey={record => record.index} scroll={{ y: '200px' }} size={'small'} bordered />
                 </div>
                 {/* <div>
                     <span>导出位置 ：</span>
