@@ -43,7 +43,7 @@ class AddModal extends React.Component {
             <span>
                 <NewButton name='新增' className='fa fa-plus' handleClick={this.handleClick}/>
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
-                       centered={true} width={1200}
+                       centered={true} width={1400}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
                            <SaveButton key={'save'} handleSave={this.handleSave}/>
@@ -183,6 +183,22 @@ class AddModal extends React.Component {
             infos[i]["deptCode"] = this.state.deptCode
             infos[i]["delieryPeople"] = this.state.username
         }
+
+        /** 非空判断 */
+        if (this.state.deptCode===0){
+            message.info("请选择部门")
+            return
+        }
+        if (this.state.username===""){
+            message.info("请输入送检人名字")
+            return
+        }
+        if (this.state.infos.length<1){
+            message.info("请添加批号")
+            return
+        }
+
+
         axios({
             url:`${this.props.url.fireInsRegister.add}?ids=${checkedList}`,
             method:'post',
