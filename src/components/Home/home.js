@@ -854,6 +854,7 @@ class Home extends Component {
                 deleteIds: `${server}/jc/common/sampleReceive/ids`,
                 detail: `${server}/jc/common/sampleReceive/detail`,
                 sampleReceive: `${server}/jc/common/sampleReceive`,
+                print: `${server}/jc/common/sampleReceive/print`,
             },
             /**批号与检测项目*/
             fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
