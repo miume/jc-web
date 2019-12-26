@@ -50,7 +50,6 @@ class Home extends Component {
             '16': '工艺参数'
         };
         const server = localStorage.getItem('server');
-        const server1="http://10.168.1.160:8082"
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization: this.Authorization,

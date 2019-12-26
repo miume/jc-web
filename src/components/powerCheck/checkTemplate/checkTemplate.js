@@ -3,21 +3,21 @@ import './checkTemplate.css';
 import BlockQuote from "../../BlockQuote/blockquote";
 import AddModal from "./add/addModal";
 import Home from "../../commom/fns";
-import {Spin, message, Table} from "antd";
+import {Spin, message} from "antd";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
 import SearchCell from "../../BlockQuote/newSearchSell";
 import CheckTemplateTable from "./checkTemplateTable";
 import axios from "axios";
 
-const data = [{
-    index: 1,
-    code: 1,
-    siteName: '点检站点',
-    modelName: '模版名称',
-    batchNumber: 'csedf323',
-    frequency: '1次/天',
-    effectiveDate: '2019-12-01 09:20:20'
-}];
+// const data = [{
+//     index: 1,
+//     code: 1,
+//     siteName: '点检站点',
+//     modelName: '模版名称',
+//     batchNumber: 'csedf323',
+//     frequency: '1次/天',
+//     effectiveDate: '2019-12-01 09:20:20'
+// }];
 
 class PowerCheckTemplate extends React.Component {
     constructor(props) {

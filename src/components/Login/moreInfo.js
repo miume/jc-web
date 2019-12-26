@@ -1,6 +1,4 @@
-import React, { Component } from 'react'
-import {Drawer,Button} from 'antd'
-
+import React from 'react'
 
 class MoreInfo extends React.Component {
 
@@ -20,7 +18,7 @@ class MoreInfo extends React.Component {
     problem=()=>{
         this.props.handleInfo(true,2)
     }
-    
+
     render() {
         return (
             <div className={!this.props.infoFlag?'login-box login-info-left-default ':'login-box login-info-left-font '}>

@@ -93,12 +93,11 @@ class Login extends React.Component {
     }
  }
   render() {
-    let {loading,infoFlag} = this.state;
+    let {loading} = this.state;
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>
       <Spin spinning={loading} >
         <div className='gutter-box'>
-              {/*<MoreInfo infoFlag={infoFlag}/>*/}
               {this.infoShow()}
               <div className='login-box'>
                 <img src={require(`./logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>

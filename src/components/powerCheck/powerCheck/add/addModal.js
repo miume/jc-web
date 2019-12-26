@@ -3,39 +3,38 @@ import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
 import {Modal, Select, Table, message} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
 import AddTableModal from "../../checkTemplate/tableAdd/addModal";
 const {Option} = Select;
 
-const placeData = [{
-        code: 1,
-        place: '地点一'
-    },{
-        code: 2,
-        place: '地点二'
-    },{
-        code: 3,
-        place: '地点三'
-    }],
-    tableData = [{
-        code: 1,
-        modelName: '模版名称',
-        frequency: '1次/天',
-        batchNumber: 'DL-JL023',
-        effectiveDate: '2019-12-01'
-    },{
-        code: 2,
-        modelName: '模版名称2',
-        frequency: '1次/天',
-        batchNumber: 'DL-JL023',
-        effectiveDate: '2019-12-01'
-    },{
-        code: 3,
-        modelName: '模版名称2',
-        frequency: '1次/天',
-        batchNumber: 'DL-JL023',
-        effectiveDate: '2019-12-01'
-    }];
+// const placeData = [{
+//         code: 1,
+//         place: '地点一'
+//     },{
+//         code: 2,
+//         place: '地点二'
+//     },{
+//         code: 3,
+//         place: '地点三'
+//     }],
+//     tableData = [{
+//         code: 1,
+//         modelName: '模版名称',
+//         frequency: '1次/天',
+//         batchNumber: 'DL-JL023',
+//         effectiveDate: '2019-12-01'
+//     },{
+//         code: 2,
+//         modelName: '模版名称2',
+//         frequency: '1次/天',
+//         batchNumber: 'DL-JL023',
+//         effectiveDate: '2019-12-01'
+//     },{
+//         code: 3,
+//         modelName: '模版名称2',
+//         frequency: '1次/天',
+//         batchNumber: 'DL-JL023',
+//         effectiveDate: '2019-12-01'
+//     }];
 
 class AddModal extends React.Component {
     constructor(props) {
