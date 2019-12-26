@@ -88,6 +88,7 @@ class AddModal extends React.Component {
         if (flag === 1) {
             infos.push(JSON.parse(JSON.stringify(batchItems)))
         }
+        console.log(infos)
         this.setState({
             leftDataSource: leftDataSource,
             infos: infos
@@ -196,7 +197,10 @@ class AddModal extends React.Component {
                 message.info(res.message);
                 this.props.getTableParams();
                 this.setState({
-                    visible: false
+                    visible: false,
+                    leftDataSource: [],
+                    infos:[],
+                    username:""
                 });
             }else{
                 message.info('新增失败，请联系管理员！');
@@ -211,7 +215,10 @@ class AddModal extends React.Component {
     /**取消事件*/
     handleCancel = () => {
         this.setState({
-            visible: false
+            visible: false,
+            leftDataSource: [],
+            infos:[],
+            username:""
         });
     }
 }
