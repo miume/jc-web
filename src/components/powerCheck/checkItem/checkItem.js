@@ -31,7 +31,10 @@ class CheckItem extends React.Component {
         };
         this.pagination = {
             pageSize: 10,
-            current: 1
+            current: 1,
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10", "20", "50", "100"]
         };
         this.reset = this.reset.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -56,7 +59,7 @@ class CheckItem extends React.Component {
                                  cancel={this.cancel} flag={Home.judgeOperation(this.operation,'DELETE')}/>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'设备名/点检项目'}/>
                     <div className='clear'></div>
-                    <CheckItemTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
+                    <CheckItemTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange} pagination={this.pagination}
                                     url={this.url} handleTableChange={this.handleTableChange} getTableParams={this.getTableParams}/>
                 </Spin>
             </div>
@@ -93,7 +96,7 @@ class CheckItem extends React.Component {
         }).then(data => {
             let res = data.data.data;
             if(res && res.list) {
-                res.list['total'] = res['total'] ? res['total'] : 0;
+                this.pagination.total  = res['total'] ? res['total'] : 0;
                 for(let i = 0; i < res.list.length; i++) {
                     res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
                 }
@@ -140,6 +143,7 @@ class CheckItem extends React.Component {
         this.setState({
             searchContent
         });
+        this.pagination.current = 1;
         this.getTableParams(searchContent)
     }
 
@@ -155,6 +159,7 @@ class CheckItem extends React.Component {
         this.setState({
             searchContent: undefined
         });
+        this.pagination.current = 1;
         this.getTableParams('')
 
     }

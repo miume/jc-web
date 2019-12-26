@@ -46,7 +46,7 @@ class ImportFile extends Component{
                     width={440}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} />,
-                        <NewButton key={'ok'} name={'导出'} className={'fa fa-check'} handleClick={this.handleUpload}/>
+                        <NewButton key={'ok'} name={'导入'} className={'fa fa-check'} handleClick={this.handleUpload}/>
                     ]}
                 >
                         <div style={{height: 50}}>

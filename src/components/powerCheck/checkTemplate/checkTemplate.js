@@ -3,7 +3,7 @@ import './checkTemplate.css';
 import BlockQuote from "../../BlockQuote/blockquote";
 import AddModal from "./add/addModal";
 import Home from "../../commom/fns";
-import {Spin, message} from "antd";
+import {Spin, message, Table} from "antd";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
 import SearchCell from "../../BlockQuote/newSearchSell";
 import CheckTemplateTable from "./checkTemplateTable";
@@ -29,7 +29,10 @@ class PowerCheckTemplate extends React.Component {
         };
         this.pagination = {
             pageSize: 10,
-            current: 1
+            current: 1,
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10", "20", "50", "100"]
         };
         this.reset = this.reset.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -55,7 +58,7 @@ class PowerCheckTemplate extends React.Component {
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'模板名称'}/>
                     <div className='clear'></div>
                     <CheckTemplateTable data={data} url={this.url} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
-                                        handleTableChange={this.handleTableChange} getTableParams={this.getTableParams}/>
+                                        handleTableChange={this.handleTableChange} getTableParams={this.getTableParams} pagination={this.pagination}/>
                 </Spin>
             </div>
         );
@@ -143,6 +146,7 @@ class PowerCheckTemplate extends React.Component {
         this.setState({
             searchContent
         });
+        this.pagination.current = 1;
         this.getTableParams(searchContent)
     }
 
@@ -158,6 +162,7 @@ class PowerCheckTemplate extends React.Component {
         this.setState({
             searchContent: undefined
         });
+        this.pagination.current = 1;
         this.getTableParams('')
 
     }

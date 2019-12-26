@@ -163,6 +163,7 @@ class CheckSite extends React.Component {
         this.setState({
             searchContent
         });
+        this.pagination.current = 1;
         this.getTableParams(searchContent)
     }
 
@@ -178,6 +179,7 @@ class CheckSite extends React.Component {
         this.setState({
             searchContent: undefined
         });
+        this.pagination.current = 1;
         this.getTableParams('')
 
     }

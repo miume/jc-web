@@ -31,7 +31,10 @@ class PowerCheck extends React.Component {
         };
         this.pagination = {
             pageSize: 10,
-            current: 1
+            current: 1,
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10", "20", "50", "100"]
         };
         this.reset = this.reset.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -57,7 +60,7 @@ class PowerCheck extends React.Component {
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'点检名称'}/>
                     <div className='clear'></div>
                     <PowerCheckTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
-                                     url={this.url} handleTableChange={this.handleTableChange}
+                                     url={this.url} handleTableChange={this.handleTableChange} pagination={this.pagination}
                                      getTableParams={this.getTableParams}/>
                 </Spin>
             </div>
@@ -146,6 +149,7 @@ class PowerCheck extends React.Component {
         this.setState({
             searchContent
         });
+        this.pagination.current = 1;
         this.getTableParams(searchContent)
     }
 
@@ -161,6 +165,7 @@ class PowerCheck extends React.Component {
         this.setState({
             searchContent: undefined
         });
+        this.pagination.current = 1;
         this.getTableParams('')
 
     }

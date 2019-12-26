@@ -206,10 +206,10 @@ class FireInsDataCol extends Component{
             params = {
                 size: pageSize,
                 page: current,
-                deptCode: data['deptCode'] ? data['deptCode'] : deptCode,
-                process: data['process'] ? data['process'] : process,
-                product: data['product'] ? data['product'] : product,
-                date: data['date'] ? data['date'] : date
+                deptCode: data['deptCode'] === undefined ? deptCode : data['deptCode'],
+                process: data['process'] === undefined ? process : data['process'],
+                product: data['product'] === undefined ? product : data['product'],
+                date: data['date'] === undefined ? date : data['date']
             };
         this.getTableData(params);
     }
@@ -266,6 +266,7 @@ class FireInsDataCol extends Component{
             product,
             date
         });
+        this.pagination.current = 1;
         this.getTableParams(params);
     }
 
