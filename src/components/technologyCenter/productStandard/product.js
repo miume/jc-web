@@ -26,7 +26,7 @@ class Product extends React.Component {
             url: `${this.props.url.serialNumber.serialNumber}`,
             method: 'get',
             headers: {
-                'Authorizaion': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             },
             params: {
                 materialClass: 3

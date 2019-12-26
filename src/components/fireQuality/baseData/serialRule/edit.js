@@ -78,7 +78,7 @@ class Edit extends Component{
             url:`${this.props.url.fireMageNumber}/detail`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             params:{
                 position:record.position
@@ -143,7 +143,7 @@ class Edit extends Component{
     }
     handleCreate(){
        let {dataSource}=this.state,{position}=this.props.record
-       
+
        for(let i=0;i<dataSource.length;i++){
         if(dataSource[i]['value']===undefined||dataSource[i]['value']===''||dataSource[i]['description']===undefined||dataSource[i]['description']===''){
             message.error('信息填写不完整!')

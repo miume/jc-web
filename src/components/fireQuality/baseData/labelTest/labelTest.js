@@ -79,7 +79,7 @@ class FireLabelTest extends Component{
             url:`${this.url.fireMageLabel}/getAll`,
             method:'get',
             headers:{
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             }
         }).then(data=>{
             let res=data.data.data
@@ -99,7 +99,7 @@ class FireLabelTest extends Component{
             url:`${this.url.fireMageLabel}/${id}`,
             method:'delete',
             headers: {
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             }
         }).then(data=>{
             if(data.data.code===0){
@@ -119,7 +119,7 @@ class FireLabelTest extends Component{
             url:`${this.url.fireMageLabel}/ids`,
             method:'delete',
             headers: {
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             },
             data:selectedRowKeys
         }).then(data=>{

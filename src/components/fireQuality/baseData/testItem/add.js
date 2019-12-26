@@ -36,7 +36,7 @@ class Add extends Component{
 
     }
     handleCreate(){
-        let {editflag,record}=this.props,{name,unit}=this.state   
+        let {editflag,record}=this.props,{name,unit}=this.state
         let data={
             code: editflag?record.code:'',
             name: name,
@@ -53,7 +53,7 @@ class Add extends Component{
             url:`${this.props.url.fireMageTestItems}`,
             method:editflag?'put':'post',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             data
         }).then(data=>{

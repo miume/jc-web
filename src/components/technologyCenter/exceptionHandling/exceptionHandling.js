@@ -73,7 +73,7 @@ class ExceptionHandling extends React.Component {
             url: `${this.url.techException.page}`,
             method: 'get',
             header: {
-                'Authorization': this.url.Authorizaion
+                'Authorization': this.url.Authorization
             },
             params
         }).then((data) => {

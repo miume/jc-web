@@ -53,7 +53,7 @@ class ImportModal extends Component{
             url:`${this.props.url.fireMageTestItems}/getAllByProcessByProdut`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             params
         }).then(data=>{
@@ -68,7 +68,7 @@ class ImportModal extends Component{
             testItem:value
         })
     }
- 
+
     /**选择检验项目和文件，以导入文件*/
     import() {
         const { fileList,testItem } = this.state;
@@ -88,17 +88,17 @@ class ImportModal extends Component{
         fileList.forEach(file => {
           formData.append('excelFile', file);
         });
-       
+
         if(formData.get('excelFile').name.split('.')[1]!=='xls'){
             message.error("上传文件格式为'xls'!")
             return
         }
-      
+
         axios({
             url: `${this.props.url.dateConllection.import}?items=${testItem}`,
             method: 'post',
             headers: {
-                'Authorizaion': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             },
             data:formData
         }).then(data => {
@@ -185,7 +185,6 @@ class ImportModal extends Component{
                         </Button>
                     </Upload>
                 </div>
-                            {/* <Button onClick={this.cancel}>点击</Button> */}
             </div>
         )
     }

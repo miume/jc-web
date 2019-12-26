@@ -79,7 +79,7 @@ class FireInspecDep extends Component{
             url:this.url.fireMageDept.page,
             method:'get',
             headers:{
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             },
             params
         }).then(data=>{
@@ -102,7 +102,7 @@ class FireInspecDep extends Component{
                  url:`${this.url.fireMageDept.add}/${id}`,
                  method:'delete',
                  headers: {
-                     'Authorizaion':this.url.Authorizaion
+                     'Authorization':this.url.Authorization
                  }
              }).then(data=>{
                     if(data.data.code===0){
@@ -122,7 +122,7 @@ class FireInspecDep extends Component{
             url:`${this.url.fireMageDept.add}/${ids}`,
             method:'delete',
             headers: {
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             }
         }).then(data=>{
             if(data.data.code===0){

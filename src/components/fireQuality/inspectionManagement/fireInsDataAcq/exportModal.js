@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Table, Checkbox, Input, DatePicker, message } from "antd";
+import { Select, Table, Checkbox, DatePicker, message } from "antd";
 import NewButton from '../../../BlockQuote/newButton'
 import './acq.css'
 import axios from 'axios'
@@ -69,7 +69,7 @@ class ExportModal extends Component {
             url: `${this.props.url.fireMageTestItems}/getAllByProcessByProdut`,
             method: 'get',
             headers: {
-                'Authorizaion': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             },
             params
         }).then(data => {
@@ -105,7 +105,7 @@ class ExportModal extends Component {
             url: this.props.url.dateConllection.getByProcessByProduct,
             method: 'get',
             headers: {
-                'Authorizaion': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             },
             params: params
         }).then(data => {
@@ -144,7 +144,7 @@ class ExportModal extends Component {
             url: `${this.props.url.dateConllection.export}`,
             method: 'post',
             headers: {
-                'Authorizaion': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             },
             data
         }).then(data => {
@@ -220,11 +220,6 @@ class ExportModal extends Component {
                     </div>
                     <Table style={{ width: '50%' }} dataSource={dataSource} rowSelection={rowSelection} columns={this.columns} pagination={false} rowKey={record => record.index} scroll={{ y: '200px' }} size={'small'} bordered />
                 </div>
-                {/* <div>
-                    <span>导出位置 ：</span>
-                    <Input style={{ width: '200px', marginRight: '10px' }} />
-                </div> */}
-
             </div>
         )
     }

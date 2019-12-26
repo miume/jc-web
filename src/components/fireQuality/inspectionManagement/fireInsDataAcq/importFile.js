@@ -1,6 +1,6 @@
 import React ,{Component}from 'react'
 import NewButton from "../../../BlockQuote/newButton";
-import {Modal,message} from 'antd'
+import {Modal} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 import axios from "axios";
 import ImportModal from "./importModal";
@@ -31,7 +31,7 @@ class ImportFile extends Component{
             url:`${this.props.url.fireMageNumber}/detail`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             params: {
                 position:1
@@ -51,7 +51,7 @@ class ImportFile extends Component{
             url:`${this.props.url.fireMageNumber}/detail`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             params:{
                 position:4
@@ -99,7 +99,7 @@ class ImportFile extends Component{
                         (<NewButton key={'ok'} name={'导入'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                       <ImportModal processData={processData} modelData={modelData} 
+                       <ImportModal processData={processData} modelData={modelData}
                          url={this.props.url} onRef={(ref)=>this.child=ref} handleVisible={this.handleVisible}
                        />
                     </Modal>

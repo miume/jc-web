@@ -17,7 +17,6 @@ class AddModalRight extends React.Component {
     }
 
     componentDidMount() {
-        // this.getItem();
         this.getSelect();
     }
 
@@ -107,14 +106,14 @@ class AddModalRight extends React.Component {
     renderOption = (selectList) => {
         if(selectList && selectList.length) {
             return (
-                selectList.map((e,index) =>
+                selectList.map((e) =>
                     <Option name={e.deptName} key={e.code} value={e.code}>{e.deptName}</Option>
                 )
             )
         }
     }
     /**监控下拉框变化*/
-    selectChange = (value, option) => {
+    selectChange = (value) => {
         this.props.getDeptCode(value)
     }
 

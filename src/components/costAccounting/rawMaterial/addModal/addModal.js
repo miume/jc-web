@@ -111,7 +111,7 @@ class AddModal extends React.Component {
             url: `${this.url.rawMaterial.period}?periodCode=${periodCode}`,
             method: 'get',
             headers: {
-                'Authorization': this.url.Authorizaion
+                'Authorization': this.url.Authorization
             }
         }).then((data) => {
             let res = data.data ? data.data.data : '';
@@ -160,7 +160,7 @@ class AddModal extends React.Component {
             url: `${this.url.precursorRawMaterial.byDataType}?flag=0`,
             method: 'get',
             headers: {
-                'Authorization': this.url.Authorizaion
+                'Authorization': this.url.Authorization
             }
         }).then((data) => {
             let res = data.data ? data.data.data : [];

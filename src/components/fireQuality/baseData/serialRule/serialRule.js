@@ -66,7 +66,7 @@ class FireSerialRule extends Component{
             url:`${this.url.fireMageNumber}/getHead`,
             method:'get',
             headers:{
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             }
         }).then(data=>{
             let res=data.data.data,{dataCode}=this.state

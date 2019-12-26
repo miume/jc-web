@@ -31,7 +31,7 @@ class Add extends Component{
             url:`${this.props.url.fireMageNumber}/detail`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             params: {
                 position:1
@@ -51,7 +51,7 @@ class Add extends Component{
             url:`${this.props.url.fireMageNumber}/detail`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             params:{
                 position:4
@@ -71,7 +71,7 @@ class Add extends Component{
             url:`${this.props.url.fireMageTestItems}/getAll`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             }
         }).then(data=>{
             let res=data.data.data
@@ -89,7 +89,7 @@ class Add extends Component{
             url:showFlag?`${this.props.url.fireMageLabel}/${id}`:`${this.props.url.fireMageBatchItems}/${id}`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             }
         }).then(data=>{
             let res=data.data.data
@@ -182,13 +182,13 @@ class Add extends Component{
         }
         this.setState({
             visible:false
-        })  
+        })
         let params=this.transformParams()
         axios({
             url:showFlag?this.props.url.fireMageLabel:this.props.url.fireMageBatchItems,
             method:editflag?'put':'post',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             data:showFlag?items:ids,
             params

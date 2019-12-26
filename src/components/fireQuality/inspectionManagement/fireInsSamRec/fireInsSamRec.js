@@ -2,7 +2,7 @@
 /**检验管理-送检登记*/
 import React, {Component} from 'react'
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Spin, Table, Divider, message, Popconfirm} from "antd";
+import {Spin, message} from "antd";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import axios from "axios";
 
@@ -57,9 +57,8 @@ class FireInsSamRec extends Component {
     }
 
     render() {
-        const current = JSON.parse(localStorage.getItem('current'))
+        const current = JSON.parse(localStorage.getItem('dataEntry'))
         this.url = JSON.parse(localStorage.getItem('url'))
-        this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
         return (
             <div>
                 <BlockQuote name="样品接收" menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>

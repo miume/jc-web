@@ -74,7 +74,7 @@ class UnSubmitted extends React.Component {
             url: `${this.props.url.rawMaterial.deleteById}?statisticCode=${id}`,
             method: 'DELETE',
             headers: {
-                'Authorization': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             }
         }).then((data) => {
             message.info(data.data.message);

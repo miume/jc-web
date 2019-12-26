@@ -1,7 +1,7 @@
 /**检验管理-数据采集*/
 import React,{Component} from 'react'
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Spin, Table, message,DatePicker,Button} from "antd";
+import {Spin, Table,DatePicker,Button} from "antd";
 import ExportFile from './exportFile'
 import ImportFile from './importFile'
 import axios from "axios";
@@ -29,7 +29,7 @@ class FireInsDataAcq extends Component{
             title:'检验项目',
             dataIndex:'itemsSpace',
             key:'itemsSpace',
-            render:(text,record)=>{
+            render:(text)=>{
                 let data=text.substring(0, 50)
                 return(
                     <span title={text}>{`${data}${'...'}`}</span>
@@ -39,17 +39,16 @@ class FireInsDataAcq extends Component{
         this.state={
             loading:false,
             dataSource:[]
-        }
+        };
         this.pagination={
-            total:this.state.dataSource.length,
             showSizeChanger:true,
             showTotal:(total)=>`共${total}条记录`,
             pageSizeOptions: ["10","20","50","100"]
-        }
+        };
         this.back=this.back.bind(this);
         this.getTableData=this.getTableData.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
-        this.reset=this.reset.bind(this)
+        this.reset=this.reset.bind(this);
         this.dateChange=this.dateChange.bind(this);
     }
     componentDidMount() {
@@ -64,7 +63,7 @@ class FireInsDataAcq extends Component{
     getTableData(searchContent){
         this.setState({
             loading:true
-        })
+        });
         let {current,pageSize}=this.pagination,
         params={
             time:searchContent?searchContent:'',
@@ -75,7 +74,7 @@ class FireInsDataAcq extends Component{
         url:this.url.dateConllection.page,
         method:'get',
         headers:{
-            'Authorizaion':this.url.Authorizaion
+            'Authorization':this.url.Authorization
         },
         params
     }).then(data=>{
@@ -113,16 +112,16 @@ class FireInsDataAcq extends Component{
         this.props.history.push({pathname:"/inspectionManagement"})
     }
     render(){
-        const current=JSON.parse(localStorage.getItem('current'))
-        this.url=JSON.parse(localStorage.getItem('url'))
-        let {loading,selectedRowKeys,dataSource,searchContent}=this.state
+        const current=JSON.parse(localStorage.getItem('dataEntry'));
+        this.url=JSON.parse(localStorage.getItem('url'));
+        let {loading,dataSource,searchContent}=this.state;
         return(
             <div>
                 <BlockQuote name={'数据采集'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
                     <ExportFile url={this.url} getTableData={this.getTableData}/>
                     <ImportFile url={this.url} getTableData={this.getTableData} />
-                    
+
                     <span className={'searchCell'}>
                         <DatePicker placeholder={'请选择日期'} value={searchContent?moment(searchContent):null} onChange={this.dateChange}/>&nbsp;&nbsp;&nbsp;
                         <NewButton handleClick={this.searchEvent} name='确定' />

@@ -130,7 +130,7 @@ class processParameters extends React.Component {
             url: `${this.url.processParam.page}`,
             method: 'get',
             headers: {
-                'Authorization': this.url.Authorizaion
+                'Authorization': this.url.Authorization
             },
             params
         }).then((data) => {

@@ -30,7 +30,7 @@ class ExportFile extends Component{
             url:`${this.props.url.fireMageNumber}/detail`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             params: {
                 position:1
@@ -50,7 +50,7 @@ class ExportFile extends Component{
             url:`${this.props.url.fireMageNumber}/detail`,
             method:'get',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             params:{
                 position:4
@@ -93,7 +93,7 @@ class ExportFile extends Component{
                         (<NewButton key={'ok'} name={'导出'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                        <ExportModal processData={processData} modelData={modelData} 
+                        <ExportModal processData={processData} modelData={modelData}
                          url={this.props.url} onRef={(ref)=>this.child=ref} handleVisible={this.handleVisible}
                         />
                     </Modal>

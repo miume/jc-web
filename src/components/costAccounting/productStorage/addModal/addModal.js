@@ -91,7 +91,7 @@ class AddModal extends React.Component{
             url: `${this.url.productStorage.editDetail}?id=${code}`,
             method: 'get',
             headers: {
-                'Authorization': this.url.Authorizaion
+                'Authorization': this.url.Authorization
             }
         }).then((data) => {
             let res = data.data.data;
@@ -116,7 +116,7 @@ class AddModal extends React.Component{
             url: `${this.url.productStorage.nextPeriod}?periodId=${periodCode}`,
             method: 'get',
             headers: {
-                'Authorization': this.url.Authorizaion
+                'Authorization': this.url.Authorization
             }
         }).then((data) => {
             let res = data.data ? data.data.data : {};

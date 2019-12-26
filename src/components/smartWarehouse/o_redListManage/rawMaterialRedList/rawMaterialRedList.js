@@ -334,7 +334,7 @@ class RawMaterialRedList extends Component{
                 url:`${this.url.serialNumber.serialNumber}`,
                 method:'get',
                 headers:{
-                    'Authorizaion':this.url.Authorizaion
+                    'Authorization':this.url.Authorization
                 },
                 params:{
                     materialClass:1

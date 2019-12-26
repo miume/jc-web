@@ -89,7 +89,7 @@ class TemplateChoice extends React.Component {
             url: `${this.props.url.techException.getAll}`,
             method: 'get',
             header: {
-                'Authorization': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             }
         }).then((data) => {
             let res = data.data.data;

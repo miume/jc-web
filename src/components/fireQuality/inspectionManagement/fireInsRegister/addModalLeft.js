@@ -1,11 +1,6 @@
 import React from 'react';
 import {Icon, Table} from "antd";
-
-
 import "../fireInsRegister/fireInsRegister.css"
-
-
-
 
 class AddModalLeft extends React.Component {
     constructor(props) {
@@ -40,7 +35,7 @@ class AddModalLeft extends React.Component {
             key:'col4',
             dataIndex:'col4',
             width: '10%',
-            render:((text,record) => {
+            render:((text) => {
                 if (text === 1){
                     return <span><Icon style={{fontSize:"20px",color:"green"}} type="check" /></span>
                 } else{

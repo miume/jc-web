@@ -51,7 +51,7 @@ class Add extends Component{
             url:`${this.props.url.fireMageDept.add}`,
             method:editflag?'put':'post',
             headers:{
-                'Authorizaion':this.props.url.Authorizaion
+                'Authorization':this.props.url.Authorization
             },
             data
         }).then(data=>{

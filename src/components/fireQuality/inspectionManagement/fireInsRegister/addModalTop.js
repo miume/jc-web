@@ -1,6 +1,5 @@
 import React from 'react';
 import {Icon, Input, message, Select} from "antd";
-
 import "../fireInsRegister/fireInsRegister.css"
 import axios from "axios";
 
@@ -281,9 +280,6 @@ class AddModalTop extends React.Component {
             productCode: productCode
         })
     }
-
-
-
 }
 
 export default AddModalTop;

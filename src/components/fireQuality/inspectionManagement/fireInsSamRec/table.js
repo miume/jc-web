@@ -1,12 +1,9 @@
 import React from 'react';
 import {Divider, message, Popconfirm, Table} from "antd";
-// import AddModal from "./add/addModal";
 import axios from "axios";
-// import DetailModal from "./detailModal"
 import DetailModal from "../fireInsRegister/detailModal";
 import PrintModal from "../fireInsSamRec/printModal"
 import Refuse from "../fireInsSamRec/refuse";
-import DetailSpan from "../../../qualityProcess/dataEntry/intermediateProductTest/detailSpan";
 class SamRecTable extends React.Component {
     constructor(props) {
         super(props);
@@ -32,7 +29,7 @@ class SamRecTable extends React.Component {
             key:'col3',
             dataIndex:'col3',
             width: '15%',
-            render:((text,record) => {
+            render:((text) => {
                 var value = "";
                 if (text.length > 20){
                     value = text.substring(0,20)
@@ -61,7 +58,7 @@ class SamRecTable extends React.Component {
             key:'col6',
             dataIndex:'col6',
             width: '10%',
-            render:((text,record) => {
+            render:((text) => {
                 if (text){
                     return(
                         <span title={text}>{text.split(" ")[0] + " ..."}</span>
@@ -77,7 +74,7 @@ class SamRecTable extends React.Component {
             key:'col7',
             dataIndex:'col7',
             width: '10%',
-            render:((text,record) => {
+            render:((text) => {
                 if (text){
                     return(
                         <span title={text}>{text.split(" ")[0] + " ..."}</span>
@@ -93,7 +90,7 @@ class SamRecTable extends React.Component {
             key:'col8',
             dataIndex:'col8',
             width: '10%',
-            render: ((text,record) => {
+            render: ((text) => {
                 var value = "";
                 if (text && text.length > 10){
                     value = text.substring(0,10)

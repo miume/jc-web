@@ -93,7 +93,7 @@ class FireSerialTest extends Component{
             url:`${this.url.fireMageBatchItems}/page`,
             method:'get',
             headers:{
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             },
             params
         }).then(data=>{
@@ -118,7 +118,7 @@ class FireSerialTest extends Component{
             url:`${this.url.fireMageBatchItems}/${id}`,
             method:'delete',
             headers: {
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             }
         }).then(data=>{
             if(data.data.code===0){
@@ -138,7 +138,7 @@ class FireSerialTest extends Component{
             url:`${this.url.fireMageBatchItems}/ids`,
             method:'delete',
             headers: {
-                'Authorizaion':this.url.Authorizaion
+                'Authorization':this.url.Authorization
             },
             data:selectedRowKeys
         }).then(data=>{

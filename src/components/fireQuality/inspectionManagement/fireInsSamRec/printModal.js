@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, Table, message, LINK, Checkbox, Col, Popconfirm} from 'antd'
+import {Modal, Table, message, LINK} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 import "../fireInsSamRec/fireInsSamRec.css"
 import axios from "axios";
@@ -42,7 +42,7 @@ class PrintModal extends Component {
             key: 'col4',
             dataIndex: 'col4',
             width: '8%',
-            render: ((text, record) => {
+            render: (() => {
                 return (
                     <span>
                         <span className={'blue'} onClick={this.print}>打印</span>

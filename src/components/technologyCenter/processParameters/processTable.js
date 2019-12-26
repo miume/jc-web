@@ -148,7 +148,7 @@ class ProcessTable extends React.Component {
             url: `${this.props.url.processParam.delete}/${id}`,
             method: 'DELETE',
             headers: {
-                'Authorization': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             }
         }).then((data) => {
             message.info(data.data.message);
@@ -162,7 +162,7 @@ class ProcessTable extends React.Component {
             url: `${this.props.url.processParam.publish}?id=${code}`,
             method: 'put',
             headers: {
-                'Authorization': this.props.url.Authorizaion
+                'Authorization': this.props.url.Authorization
             }
         }).then((data) => {
             message.info(data.data.message);

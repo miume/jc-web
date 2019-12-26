@@ -1,6 +1,6 @@
 import React from 'react';
 import NewButton from "../../../BlockQuote/newButton";
-import {Modal, Select, Divider, message} from "antd";
+import {Modal, Divider, message} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import AddModalTop from "../fireInsRegister/addModalTop";
@@ -38,7 +38,7 @@ class AddModal extends React.Component {
 
     render() {
         let {visible} = this.state;
-        let {title, disabled} = this.props;
+        let {title} = this.props;
         return (
             <span>
                 <NewButton name='新增' className='fa fa-plus' handleClick={this.handleClick}/>
@@ -88,7 +88,6 @@ class AddModal extends React.Component {
         if (flag === 1) {
             infos.push(JSON.parse(JSON.stringify(batchItems)))
         }
-        console.log(infos)
         this.setState({
             leftDataSource: leftDataSource,
             infos: infos
