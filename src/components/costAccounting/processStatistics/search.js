@@ -8,9 +8,7 @@ const {RangePicker}=DatePicker;
  class Search extends Component{
     constructor(props){
         super(props);
-
     }
-  
     render(){
         let endDate=this.props.endDate?moment(this.props.endDate):null;
         let startDate=this.props.startDate?moment(this.props.startDate):null;

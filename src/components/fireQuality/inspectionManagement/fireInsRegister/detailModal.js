@@ -62,10 +62,15 @@ class DetailModal extends Component {
     }
 
     getDetail = () => {
-
+        var url = "";
+        if (this.props.flag===1){
+            url = `${this.props.url.fireInsSamRec.detail}`
+        } else{
+            url = `${this.props.url.fireInsRegister.detail}`
+        }
         // 获取详情数据
         axios({
-            url:`${this.props.url.fireInsRegister.detail}`,
+            url:url,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
@@ -97,7 +102,7 @@ class DetailModal extends Component {
                 checkedList: checkedList,
                 batchNumber: res.batch,
                 deptName: res.deptName,
-                username: res.delieryPeople,
+                username: res.checkPeople,
                 visible: true
             })
             message.info(data.data.message)

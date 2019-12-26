@@ -1,0 +1,34 @@
+.fireInsSamRec_print{
+    font-family: 'Arial Normal', 'Arial';
+    font-style: normal;
+    color: #333333;
+    line-height: normal;
+    /*display: none;*/
+}
+.fireInsSamRec_print_big{
+    font-size: 28px ;
+    font-weight: 400;
+}
+.fireInsSamRec_print_small{
+    font-size: 10px;
+    /*font-weight: 400;*/
+}
+.printModal_scala{
+    height: 500px;
+}
+
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print {
+    html, body {
+        min-width: 0;
+        width: 210mm;
+        height: 100mm;
+    }
+
+
+}

@@ -50,6 +50,7 @@ class Home extends Component {
             '16': '工艺参数'
         };
         const server = localStorage.getItem('server');
+        const server1="http://10.168.1.160:8082"
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization: this.Authorization,
@@ -848,8 +849,13 @@ class Home extends Component {
                 getItemsByCode: `${server}/jc/common/fireMageTestItems/getAllByProcessByProdut`,
             },
             /** 样品接收 */
-            fireInsSamRec: {},
-
+            fireInsSamRec: {
+                page: `${server}/jc/common/sampleReceive/page`,
+                deleteIds: `${server}/jc/common/sampleReceive/ids`,
+                detail: `${server}/jc/common/sampleReceive/detail`,
+                sampleReceive: `${server}/jc/common/sampleReceive`,
+                print: `${server}/jc/common/sampleReceive/print`,
+            },
             /**批号与检测项目*/
             fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
 
@@ -860,7 +866,9 @@ class Home extends Component {
             positiveProcessStatis:{
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
                 afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`,
-                getNextPeriods:`${server}/jc/common/anodeGoodin/getNextPeriods`
+                getNextPeriods:`${server}/jc/common/anodeGoodin/getNextPeriods`,
+                unCommitPage:`${server}/jc/common/anodeGoodin/unCommitPage`,
+                commitPage:`${server}/jc/common/anodeGoodin/commitPage`,
             },
 
             /**动力点检-点检项目*/
@@ -911,7 +919,9 @@ class Home extends Component {
             dateConllection:{
                 page:`${server}/jc/common/dateConllection/page`,
                 getByProcessByProduct:`${server}/jc/common/dateConllection/getByProcessByProduct`,
-                
+                export:`${server}/jc/common/dateConllection/export`,
+                import1:`${server}/jc/common/dateConllection/import`,
+                import:`${server}/jc/common/dateConllection/import`
             },
 
             /**火法质量-检验管理-数据整理*/

@@ -9,15 +9,13 @@ class ExportFile extends Component{
         super(props)
         this.state={
             visible:false,
-            changeFlag:false,//监听渲染初始值还是已改变的值
         }
         this.showModal=this.showModal.bind(this);
         this.handleCreate=this.handleCreate.bind(this);
         this.cancel=this.cancel.bind(this);
-        this.inputChange=this.inputChange.bind(this)
-        this.selectChange=this.selectChange.bind(this);
         this.getProcess=this.getProcess.bind(this);
         this.getModel=this.getModel.bind(this);
+        this.handleVisible=this.handleVisible.bind(this);
     }
     showModal(){
         this.setState({
@@ -66,48 +64,17 @@ class ExportFile extends Component{
             }
         })
     }
-    inputChange(e){
-        let name=e.target.name,value=e.target.value
-        this.setState({
-            changeFlag:true,
-            [name]:value
-        })
-    }
-    selectChange(){
-    }
 
     handleCreate(){
-        let {editflag,record}=this.props,{name,unit,changeFlag}=this.state
+        this.child.export()
+    }
+    handleVisible(value){
         this.setState({
-            visible:false
+            visible:value
         })
-        let data={
-            code: editflag?record.code:'',
-            name: editflag&&!changeFlag?record.name:name,
-            unit:  editflag&&!changeFlag?record.unit:unit
-        }
-        // axios({
-        //     url:`${this.props.url.fireMageTestItems}`,
-        //     method:editflag?'put':'post',
-        //     headers:{
-        //         'Authorizaion':this.props.url.Authorizaion
-        //     },
-        //     data
-        // }).then(data=>{
-        //     if(data.data.code===0){
-        //         message.info('操作成功！')
-        //         this.props.getTableData()
-        //     }
-        //     else{
-        //         message.error('操作失败，请联系管理员!')
-        //     }
-        // })
     }
     cancel(){
-        this.setState({
-            visible:false
-        })
-
+        this.child.cancel()
     }
     render(){
         let {visible,processData,modelData}=this.state
@@ -120,13 +87,15 @@ class ExportFile extends Component{
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={'800px'}
+                    width={'1000px'}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} />,
                         (<NewButton key={'ok'} name={'导出'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                        <ExportModal processData={processData} modelData={modelData} url={this.props.url}/>
+                        <ExportModal processData={processData} modelData={modelData} 
+                         url={this.props.url} onRef={(ref)=>this.child=ref} handleVisible={this.handleVisible}
+                        />
                     </Modal>
                 </span>
         )

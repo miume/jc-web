@@ -16,19 +16,29 @@ class FireSerialTest extends Component{
         this.columns=[{
             title:'序号',
             dataIndex:'index',
-            key:'index'
+            key:'index',
+            width:'6%'
         },{
             title:'工序',
             dataIndex:'processName',
-            key:'processName'
+            key:'processName',
+            width:'10%'
         },{
             title:'产品型号/厂家',
             dataIndex:'productName',
-            key:'productName'
+            key:'productName',
+            width:'20%'
         },{
             title:'检验项目',
             dataIndex:'itemNames',
-            key:'itemNames'
+            key:'itemNames',
+            width:'30%',
+            render:(text,record)=>{
+                let data=text.substring(0, 20)
+                return(
+                    <span title={text}>{`${data}${'...'}`}</span>
+                )
+            }
         },{
             title:'操作',
             dataIndex:'operation',

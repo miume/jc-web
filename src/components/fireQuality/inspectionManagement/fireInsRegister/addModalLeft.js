@@ -55,6 +55,7 @@ class AddModalLeft extends React.Component {
         return (
             <div className="addModalLeft_scala">
                 <Table
+                    rowKey={record => record.col1}
                     columns={this.columns}
                     dataSource={this.props.leftDataSource}
                     bordered

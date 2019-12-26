@@ -63,15 +63,30 @@ class PositiveStatisticDone extends Component{//已统计
                 )
             }
         }]
+        this.pagination={
+            showSizeChanger:true,
+            showTotal:(total)=>`共${total}条记录`,
+            pageSizeOptions:['10','20','50','100']
+        }
+        this.handleTableChange=this.handleTableChange.bind(this);
+    }
+    componentDidMount(){
+        this.props.getPagination('2',this.pagination)
+    }
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.pagination.handleTableChange(pagination)
     }
     render(){
         return(
             <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
+                <Spin spinning={this.props.loadingStatis}>
                     <Table
                     rowKey={record=>record.id}
                     dataSource={this.state.data}
                     columns={this.columns}
+                    onChange={this.handleTableChange}
+                    pagination={this.pagination}
                     size='small'
                     bordered/>
                 </Spin>

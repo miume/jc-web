@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, DatePicker, Button, Tabs,Input} from 'antd'
+import { Select, DatePicker, Button, Tabs,Input,message} from 'antd'
 import NewButton from '../../../BlockQuote/newButton'
 import axios from 'axios'
 import moment from 'moment'
@@ -15,6 +15,7 @@ class Search extends Component {
         this.getModel = this.getModel.bind(this)
         this.startChange = this.startChange.bind(this);
         this.endChange = this.endChange.bind(this);
+        this.confirm=this.confirm.bind(this)
     }
     componentDidMount() {
         this.getModel()
@@ -35,7 +36,8 @@ class Search extends Component {
             let res = data.data.data
             if (res) {
                 this.setState({
-                    modelData: res
+                    modelData: res,
+                    modelCode:res[0].code
                 })
             }
         })
@@ -46,7 +48,8 @@ class Search extends Component {
             this.setState({
                 periodCode: nextProps.headPeriod.periodCode,
                 length: nextProps.headPeriod.length,
-                time: nextProps.headPeriod.time
+                time: nextProps.headPeriod.time,
+                lineCode:nextProps.headPeriod.lineCode
             })
         }
     }
@@ -91,22 +94,26 @@ class Search extends Component {
         });
     }
     confirm() {
-        //   let {lineCode,periodCode,modelCode,startTime,endTime}=this.state,
-        //      params={
-        //         beginTime: startTime,
-        //         endTime: endTime,
-        //         flag: true,
-        //         lineCode: lineCode,
-        //         periodCode: periodCode,
-        //         typeCode: modelCode
-        //   }
-        //   this.props.addConfirm(params)
+          let {lineCode,periodCode,modelCode,startTime,endTime}=this.state,{inputPeriod}=this.props,
+             params={
+                beginTime: startTime,
+                endTime: endTime,
+                lineCode: lineCode,
+                periodCode: periodCode,
+                typeCode: modelCode,
+                periods:inputPeriod
+          }
+          if(!startTime|| !endTime|| !periodCode|| !inputPeriod ||!modelCode){
+            message.info('信息不完整!') //在点确定的时候做下判断，必须4个都填了，才能点击确定
+            return
+        }
+          this.props.addConfirm(params)
     }
     render() {
-        let { modelCode, periodCode, endDate } = this.state
+        let { modelCode, periodCode, endDate ,lineCode} = this.state,{flagConfirm}=this.props
         return (
             <div>
-                <Select onChange={this.selectChange} placeholder='请选择产线' style={{ width: '180px', marginRight: '10px' }}>
+                <Select onChange={this.selectChange} value={lineCode} placeholder='请选择产线' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
                     {
                         this.props.lineData ? this.props.lineData.map(item => {
                             return (
@@ -115,7 +122,7 @@ class Search extends Component {
                         }) : null
                     }
                 </Select>
-                <Select onChange={this.selectChange} value={modelCode} placeholder='请选择产品型号' style={{ width: '180px', marginRight: '10px' }}>
+                <Select onChange={this.selectChange} value={modelCode} placeholder='请选择产品型号' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
                     {
                         this.state.modelData ? this.state.modelData.map(item => {
                             return (
@@ -125,7 +132,7 @@ class Search extends Component {
                     }
 
                 </Select>
-                <Select onChange={this.selectChange} value={periodCode} placeholder='请选择周期' style={{ width: '180px', marginRight: '10px' }}>
+                <Select onChange={this.selectChange} value={periodCode} placeholder='请选择周期' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
                     {
                         this.props.periodStatis ? this.props.periodStatis.map(item => {
                             return (
@@ -135,8 +142,8 @@ class Search extends Component {
                     }
                 </Select>
                 <span>期数 : </span>&nbsp;<Input value={this.props.inputPeriod} placeholder='期数' style={{width:100,marginRight:'20px'}}  disabled={true}/>
-                <DatePicker onChange={this.startChange} placeholder='开始时间' style={{ width: '180px', marginRight: '10px' }} />
-                <DatePicker onChange={this.endChange} value={endDate ? moment(endDate) : undefined} placeholder='结束时间' style={{ width: '180px', marginRight: '10px' }} />
+                <DatePicker onChange={this.startChange} placeholder='开始时间' style={{ width: '180px', marginRight: '10px' }}  disabled={flagConfirm}/>
+                <DatePicker onChange={this.endChange} value={endDate ? moment(endDate) : undefined} placeholder='结束时间' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}/>
                 <NewButton name='确定' handleClick={this.confirm} />
             </div>
         )

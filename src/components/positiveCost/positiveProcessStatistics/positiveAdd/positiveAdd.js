@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs } from 'antd'
+import { Tabs ,message} from 'antd'
 import Blockquote from '../../../BlockQuote/blockquote'
 import CancleButton from '../../../BlockQuote/cancleButton'
 import SaveButton from '../../../BlockQuote/saveButton'
@@ -7,7 +7,7 @@ import NewButton from '../../../BlockQuote/newButton'
 import Search from './addSearch'
 import OnlineIngredients from './onlineIngredients/onlineIngredients'
 import PremixedCoulterMixed from './pemixedCoulterMixed/premixedCoulterMixed'
-import PremixedStorageBin from './pemixedCoulterMixed/premixedCoulterMixed'
+import PremixedStorageBin from './premixedStorageBin/premixedStorageBin'
 import PreBuring from './preBurningKiln/preBurning'
 import Crush from './crush/crush'
 import SecondMix from './secondMix/secondMix'
@@ -21,8 +21,8 @@ const { TabPane } = Tabs;
 class PositiveAdd extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-
+        this.state={
+            processData:[]
         }
         this.back = this.back.bind(this);
         this.getAllProcess = this.getAllProcess.bind(this);
@@ -43,6 +43,7 @@ class PositiveAdd extends Component {
         headPeriod['periodCode']=periodCode
         headPeriod['length']=length
         headPeriod['time']=time
+        headPeriod['lineCode']=lineCode
         this.setState({
             periodStatis: periodStatis,
             line: line,
@@ -95,8 +96,57 @@ class PositiveAdd extends Component {
         })
     }
     /**新增的确认*/
-    addConfirm() {
-
+    addConfirm(params) {
+        axios({
+            url: `${this.url.positiveProcessStatis.addComfirm}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data:params
+        }).then((data) => {
+            let res = data.data.data;
+             if(res.code<=0){
+                 message.error(res.message)
+                this.setState({
+                    loading:false
+                })
+            }
+            else {
+                this.setState({
+                    statisticId: res.code  //统计头表的code，即待提交表格数据的code
+                })
+                if (params['startTime'] && params['endTime'] && params['periodCode'] && params['inputPeriod']&&params['modelCode']) {//点击确定后不可再修改
+                    this.setState({
+                        flagConfirm:true
+                    })
+                }
+                axios({
+                    url: `${this.url.positiveProcessStatis.afterComfirm}`,
+                    method: 'post',
+                    headers: {
+                        'Authorization': this.url.Authorization
+                    },
+                    params:{
+                        id:res.code
+                    }
+                }).then((data) => {
+                    let tagTable = data.data.data;
+                    //console.log(tagTable)
+                    this.setState({
+                        productLine:tagTable&&tagTable.line?tagTable.line:undefined
+                    })
+                    if (tagTable && tagTable.processes) {
+                        this.setState({
+                            tagTableData: tagTable.processes,
+                            addData: tagTable,
+                            otherMaterial:tagTable.otherMaterials,
+                            loading:false,
+                        })
+                    }
+                })
+            }
+        })
     }
     tabChange(key) {
         this.setState({
@@ -107,27 +157,27 @@ class PositiveAdd extends Component {
         this.props.history.push({ pathname: '/positiveProcess' })
     }
     render() {
-        let { processData, periodStatis, line,headPeriod,inputPeriod} = this.state
+        let { processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData} = this.state
         this.url = JSON.parse(localStorage.getItem('url'))
         this.tabData = [
-            { component: <OnlineIngredients /> },
-            { component: <PremixedCoulterMixed /> },
-            { component: <PremixedStorageBin /> },
-            { component: <PreBuring /> },
-            { component: <Crush /> },
-            { component: <SecondMix /> },
-            { component: <SecondBuring /> },
-            { component: <Package /> },
-            { component: <WorkShopMaterial /> },
-            { component: <WareHouseMaterial /> },
+            { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData}/> },
+            { component: <PremixedCoulterMixed productLine={productLine} tagTableData={tagTableData}/> },
+            { component: <PremixedStorageBin productLine={productLine} tagTableData={tagTableData}/> },
+            { component: <PreBuring productLine={productLine} tagTableData={tagTableData}/> },
+            { component: <Crush productLine={productLine} tagTableData={tagTableData}/> },
+            { component: <SecondMix productLine={productLine} tagTableData={tagTableData}/> },
+            { component: <SecondBuring productLine={productLine} tagTableData={tagTableData}/> },
+            { component: <Package productLine={productLine} tagTableData={tagTableData}/> },
+            { component: <WorkShopMaterial tagTableData={tagTableData}/> },
+            { component: <WareHouseMaterial tagTableData={tagTableData}/> },
         ]
 
         return (
             <div>
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='正极成本' menu2='在制品管理' returnDataEntry={this.back} />
                 <div className='rightDiv-content'>
-                    <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis}
-                        lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getNextPeriods}
+                    <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis} flagConfirm={this.props.location.editFlag?true:flagConfirm}
+                        lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getPeriods}
                     />
                     <div>
                         {processData ? <Tabs defaultActiveKey='1' onChange={this.tabChange}>

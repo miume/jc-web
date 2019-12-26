@@ -7,7 +7,6 @@ class PendSubmit extends Component{//待提交
         super(props);
         this.pagination={
             showSizeChanger:true,//是否可以改变pageSize
-            onShowSizeChange:this.onShowSizeChange,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
             pageSizeOptions:['10','20','50','100']
         }
@@ -53,23 +52,17 @@ class PendSubmit extends Component{//待提交
         this.handleDelete=this.handleDelete.bind(this);
         this.judgeOperation=this.judgeOperation.bind(this);
         this.handleTableChange=this.handleTableChange.bind(this);
-        this.onShowSizeChange=this.onShowSizeChange.bind(this);
     }
     componentDidMount(){
         this.props.getPagination('1',this.pagination)
     }
     handleTableChange(pagination) {
-       // console.log('change',pagination)
         this.pagination = pagination;
         this.props.handleTableChange({
             size:pagination.pageSize,
             page:pagination.current
         })
     }
-     onShowSizeChange(current, pageSize) {
-        //console.log(current, pageSize);
-      }
-
     handleEdit(record,code){
         let {process,staticPeriod}=this.props
         this.props.history.push({
@@ -79,7 +72,6 @@ class PendSubmit extends Component{//待提交
             staticPeriod:staticPeriod,
             code:code
         })
-
     }
 
     handleDelete(id){
@@ -106,7 +98,6 @@ class PendSubmit extends Component{//待提交
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-       // console.log(this.props.pagination)
         return(
             <div>
                <Spin spinning={this.props.loadingSubmit} >
@@ -116,7 +107,6 @@ class PendSubmit extends Component{//待提交
                     columns={this.columns}
                     onChange={this.handleTableChange}
                     pagination={this.props.pagination}
-                    onChange={this.handleTableChange}
                     size='small'
                     bordered/>
                </Spin>
