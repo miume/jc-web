@@ -71,6 +71,7 @@ class FireInsSamRec extends Component {
                     <SamRecTable
                         dataSource={this.state.dataSource}
                         selectedRowKeys={this.state.selectedRowKeys}
+                        onSelectChange={this.onSelectChange}
                         handleTableChange={this.handleTableChange}
                         getTableParams={this.getTableParams}
                         url={this.url}
