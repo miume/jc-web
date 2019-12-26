@@ -230,7 +230,7 @@ class Add extends Component{
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={'600px'}
+                    width={'800px'}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} />,
                         (<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
@@ -240,7 +240,7 @@ class Add extends Component{
                         showFlag ? null:(
                          <div>
                              <div className={'fire-ins-data-acq1'}><span className='fireQua-add-span fireQua-add-span-width2'>请选择工序 : </span>
-                                 <Select name={'name'} style={{width:'410px'}} placeholder={'请选择工序'} onChange={this.selectChange} value={this.state.processCode}>
+                                 <Select name={'name'} style={{width:'610px'}} placeholder={'请选择工序'} onChange={this.selectChange} value={this.state.processCode}>
                                      {
                                          this.state.processData?this.state.processData.map(item=>{
                                              return(
@@ -251,7 +251,7 @@ class Add extends Component{
                                  </Select>
                              </div>
                              <div className={'fire-ins-data-acq1'}> <span className='fireQua-add-span fireQua-add-span-width2' >请选择产品型号/厂家 : </span>
-                                 <Select name={'unit'} style={{width:'410px'}} placeholder={'请选择产品型号/厂家'} onChange={this.selectChange} value={this.state.productCode}>
+                                 <Select name={'unit'} style={{width:'610px'}} placeholder={'请选择产品型号/厂家'} onChange={this.selectChange} value={this.state.productCode}>
                                      {
                                          this.state.lineData?this.state.lineData.map(item=>{
                                              return(

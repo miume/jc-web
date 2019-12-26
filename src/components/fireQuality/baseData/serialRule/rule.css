@@ -1,0 +1,9 @@
+.fire-rule-font-red{
+    color:red
+}
+.fire-rule-font-code{
+    font-family: 'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC';
+    font-weight: 650;
+    font-style: normal;
+    font-size: 18px;
+}

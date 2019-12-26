@@ -37,7 +37,7 @@ class Edit extends Component{
                 )
             }
         },{
-            title:'是否启用',
+            title:'是否默认',
             dataIndex:'enable',
             key:'enable',
             width:'20%',

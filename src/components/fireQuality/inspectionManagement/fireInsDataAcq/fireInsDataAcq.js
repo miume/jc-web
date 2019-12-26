@@ -1,12 +1,12 @@
 /**检验管理-数据采集*/
 import React,{Component} from 'react'
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Spin, Table, message} from "antd";
+import {Spin, Table, message,DatePicker,Button} from "antd";
 import ExportFile from './exportFile'
 import ImportFile from './importFile'
 import axios from "axios";
-import NewSearchCell from "../../../BlockQuote/newSearchSell";
-
+import NewButton from '../../../BlockQuote/newButton'
+import moment from 'moment'
 class FireInsDataAcq extends Component{
     constructor(props){
         super(props)
@@ -19,7 +19,7 @@ class FireInsDataAcq extends Component{
             title:'批次',
             dataIndex:'head.batch',
             key:'head.batch',
-            width:'15%'
+            width:'25%'
         },{
             title:'工序',
             dataIndex:'head.process',
@@ -30,7 +30,7 @@ class FireInsDataAcq extends Component{
             dataIndex:'itemsSpace',
             key:'itemsSpace',
             render:(text,record)=>{
-                let data=text.substring(0, 20)
+                let data=text.substring(0, 50)
                 return(
                     <span title={text}>{`${data}${'...'}`}</span>
                 )
@@ -50,6 +50,7 @@ class FireInsDataAcq extends Component{
         this.getTableData=this.getTableData.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
         this.reset=this.reset.bind(this)
+        this.dateChange=this.dateChange.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -90,21 +91,23 @@ class FireInsDataAcq extends Component{
         }
         this.setState({
             loading:false,
-            searchContent:''
         })
      })
     }
-    searchEvent(searchContent){
+    dateChange(date,dateString){
         this.setState({
-            searchContent:searchContent
+            searchContent:dateString
         })
+    }
+    searchEvent(){
+       let {searchContent}=this.state
         this.getTableData(searchContent)
     }
     reset(){
         this.setState({
-            searchContent: undefined
+            searchContent:null
         });
-        this.getTableData('')
+        this.getTableData(null)
     }
     back(){
         this.props.history.push({pathname:"/inspectionManagement"})
@@ -112,15 +115,24 @@ class FireInsDataAcq extends Component{
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
-        let {loading,selectedRowKeys,dataSource}=this.state
-
+        let {loading,selectedRowKeys,dataSource,searchContent}=this.state
         return(
             <div>
                 <BlockQuote name={'数据采集'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
                     <ExportFile url={this.url} getTableData={this.getTableData}/>
                     <ImportFile url={this.url} getTableData={this.getTableData} />
-                    <NewSearchCell reset={this.reset} searchEvent={this.searchEvent} placeholder={'请输入日期'} flag={true}/>
+                    
+                    <span className={'searchCell'}>
+                        <DatePicker placeholder={'请选择日期'} value={searchContent?moment(searchContent):null} onChange={this.dateChange}/>&nbsp;&nbsp;&nbsp;
+                        <NewButton handleClick={this.searchEvent} name='确定' />
+                        <Button
+                            type="primary"
+                            style={{marginLeft:10}}
+                            onClick={this.reset}
+                            className='button'
+                        ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
+                    </span>
                     <Table  pagination={this.pagination} columns={this.columns}
                            dataSource={dataSource} rowKey={record => record.head.code} bordered size={'small'} />
                 </Spin>
