@@ -120,8 +120,8 @@ class SamRecTable extends React.Component {
                         <PrintModal url={this.props.url} record={record}/>
                         <Divider type={'vertical'}/>
                         {record.flag===0?(
-                            <Popconfirm title={'确定接受吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleAccept(record.code)}>
-                                <span  className={'blue'}>接受</span>
+                            <Popconfirm title={'确定接收吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleAccept(record.code)}>
+                                <span  className={'blue'}>接收</span>
                             </Popconfirm>
                         ):(
                             <span className="notClick">接收</span>
@@ -170,7 +170,7 @@ class SamRecTable extends React.Component {
             message.info(data.data.message);
             this.props.getTableParams(); //删除后重置信息
         }).catch(()=>{
-            message.info('接受失败，请联系管理员！');
+            message.info('接收失败，请联系管理员！');
         });
     }
 
