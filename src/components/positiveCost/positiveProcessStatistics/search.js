@@ -107,7 +107,7 @@ class Search extends Component {
               />
         <Select
             value={periodCode && periodFlag ? periodCode : this.state.periodCode}
-            style={{ width: 120, marginRight: "10px" }}
+            style={{ width: 150, marginRight: "10px" }}
             onChange={this.selectChange}
             placeholder={'请选择统计周期'}
         >
@@ -122,7 +122,7 @@ class Search extends Component {
               : null}
         </Select>
          <Select
-             style={{ width: 120, marginRight: "10px" }}
+             style={{ width: 150, marginRight: "10px" }}
              onChange={this.selectChange}
              placeholder={'请选择产线'}
          >
