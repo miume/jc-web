@@ -28,11 +28,19 @@ class PrintModal extends Component {
             render: (text, record) => {
                 return (
                     <div>
-                        <div id="print_data" style={{fontFamily:"Arial Normal,Arial",fontStyle:"normal",color:"#333333",lineHeight:"normal"}}>
-                            <div style={{fontSize:"28px",fontWeight:"400"}}>{record.col4}</div>
-                            <div style={{fontSize:"10px"}}>检验项目：</div>
+                        <div style={{fontFamily:"Arial Normal,Arial",fontStyle:"normal",color:"#333333",lineHeight:"normal"}}>
+                            <div style={{fontSize:"20px"}}>{record.col4}</div>
+                            <div style={{fontSize:"8px"}}>检验项目：</div>
                             <div style={{fontSize:"10px"}}>{record.col3}</div>
-                            <div style={{fontSize:"10px"}}>送检时间：&nbsp;{record.col2}</div>
+                            <div style={{fontSize:"8px"}}>送检时间：&nbsp;{record.col2}</div>
+                        </div>
+                        <div className="printModal_print">
+                            <div id="print_data" style={{fontFamily:"Arial Normal,Arial",fontStyle:"normal",color:"#333333",lineHeight:"normal"}}>
+                                <div style={{fontSize:"15px"}}>{record.col4}</div>
+                                <div style={{fontSize:"8px"}}>检验项目：</div>
+                                <div style={{fontSize:"8px"}}>{record.col3}</div>
+                                <div style={{fontSize:"8px"}}>送检时间：&nbsp;{record.col2}</div>
+                            </div>
                         </div>
                     </div>
                 )
@@ -128,7 +136,7 @@ class PrintModal extends Component {
         document.body.appendChild(iframe);
         doc = iframe.contentWindow.document;
         // 引入打印的专有CSS样式，根据实际修改
-        // doc.write('<LINK rel="stylesheet" type="text/css" href="../fireInsSamRec/fireInsSamRec.css">');
+        doc.write('<link media="print" rel="stylesheet" type="text/css" href="../fireInsSamRec/fireInsSamRec.css">');
         doc.write(el.innerHTML);
         doc.close();
         // 获取iframe的焦点，从iframe开始打印
