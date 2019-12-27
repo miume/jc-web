@@ -21,7 +21,7 @@ class InspectionManagement extends Component {
         this.getData()
     }
     click(e) {
-        let path = e.currentTarget.id.split('-'), {menuId,openKeys,menuName} = this.current;
+        let path = e.currentTarget.id.split('-'), {menuId,menuName} = this.current;
         const inspectionManagement={
             openKeys: menuId,
             menuName: path[1],
@@ -32,20 +32,21 @@ class InspectionManagement extends Component {
         localStorage.setItem('dataEntry',JSON.stringify(inspectionManagement))
         this.props.history.push({pathname:path[0]})
     }
-    getData(){
-            const menus=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===this.current.path)[0]:[]
-            var data=menus&&menus.menuList?
-            menus.menuList.sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
-                return ({
-                    id : m.menuId,
-                    name : m.menuName,
-                    path : `${m.path}-${m.menuName}-${m.menuId}`,
-                    className : icon[index]
-                })
-            }):[];
-            this.setState({
-                data:data
-            })
+
+    getData() {
+        const menus = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===this.current.path)[0]:[];
+        let data = menus && menus['menuList'] ?
+                    menus['menuList'].sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
+                        return ({
+                            id : m.menuId,
+                            name : m.menuName,
+                            path : `${m.path}-${m.menuName}-${m.menuId}`,
+                            className : icon[index]
+                        })
+                    }):[];
+        this.setState({
+            data:data
+        })
     }
     render(){
         this.current=JSON.parse(localStorage.getItem('current'))?JSON.parse(localStorage.getItem('current')):null

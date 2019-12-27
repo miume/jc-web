@@ -2,33 +2,6 @@ import React,{Component} from 'react'
 import BlockQuote from "../../BlockQuote/blockquote";
 import DataPart from "../../qualityProcess/dataEntry/dataPart";
 
-const data=[{
-    id:1,
-    name:'编号规则',
-    path:'/fireSeriRule',
-    className:'fa fa-industry fa-5x'
-},{
-    id:2,
-    name:'检验项目',
-    path:'/fireTestItem',
-    className:'fa fa-wrench fa-5x'
-},{
-    id:3,
-    name:'送检部门',
-    path:'/fireInspecDep',
-    className:'fa fa-tint fa-5x'
-},{
-    id:4,
-    name:'批号与检验项目',
-    path:'/fireSerialTest',
-    className:'fa fa-sitemap fa-5x'
-},{
-    id:5,
-    name:'标签与检验项目',
-    path: '/fireLabelTest',
-    className:'fa fa-sitemap fa-5x'
-}]
-
 const icon=['fa fa-industry fa-5x','fa fa-wrench fa-5x','fa fa-tasks fa-5x',
     'fa fa-tint fa-5x','fa fa-sitemap fa-5x'];
 
@@ -43,7 +16,7 @@ class FireQuaBase extends Component {
     }
 
     render(){
-        this.current=JSON.parse(localStorage.getItem('current'))?JSON.parse(localStorage.getItem('current')):null
+        this.current = JSON.parse(localStorage.getItem('current'))?JSON.parse(localStorage.getItem('current')):null
         return(
             <div>
                 <BlockQuote menu={this.current.menuParent} name={this.current.menuName}/>
@@ -65,13 +38,13 @@ class FireQuaBase extends Component {
 
     click(e) {
         let path = e.currentTarget.id.split('-')
-        const inspectionManagement={
+        const dataEntry={
             openKeys:this.current.menuId,
             menuName:path[1],
             menuParent:this.current.menuName,
             path:path[0]
         };
-        localStorage.setItem('inspectionManagement',JSON.stringify(inspectionManagement))
+        localStorage.setItem('dataEntry',JSON.stringify(dataEntry))
         this.props.history.push({pathname:path[0]})
     }
 

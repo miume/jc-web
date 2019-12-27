@@ -1,7 +1,7 @@
 import React from 'react';
 import CommonBaseData from '../../BlockQuote/baseData';
 
-class BaseData extends React.Component{
+class DataStatistics extends React.Component{
 
     render() {
         this.current = localStorage.getItem('current')?JSON.parse(localStorage.getItem('current')):null;
@@ -11,4 +11,4 @@ class BaseData extends React.Component{
     }
 }
 
-export default BaseData;
+export default DataStatistics;
