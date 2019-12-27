@@ -36,6 +36,7 @@ class PremixedStorageBin extends Component{//预混(暂存仓)
         return(
             <div>
                 <Table
+                dataSource={this.tableData}
                 rowKey={record=>record.id}
                 columns={this.columns}
                 size='small'

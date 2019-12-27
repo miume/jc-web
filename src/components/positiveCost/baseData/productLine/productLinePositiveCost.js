@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Spin,Table,Divider,Popconfirm,message} from 'antd'
+import {Spin, Table, Divider, Popconfirm, message, Switch} from 'antd'
 import Blockquote from '../../../BlockQuote/blockquote'
 import NewButton from '../../../BlockQuote/newButton'
 import ProductLineAdd from './add'
@@ -22,6 +22,16 @@ class ProductLinePositiveCost extends Component{
             key:'name',
             width:'18%',
         },{
+            title:'是否启用',
+            dataIndex:'flag',
+            key:'flag',
+            width:'18%',
+            render:(text,record)=>{
+                return (
+                    <Switch checked={record.flag} onChange={()=>this.switchChange(record.position)}/>
+                )
+            }
+        },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
@@ -40,6 +50,7 @@ class ProductLinePositiveCost extends Component{
         }]
         this.returnBaseInfoPositive=this.returnBaseInfoPositive.bind(this);
         this.getTableData=this.getTableData.bind(this);
+        this.switchChange=this.switchChange.bind(this);
     }
     componentDidMount(){
         this.getTableData()
@@ -78,6 +89,26 @@ class ProductLinePositiveCost extends Component{
             })
         }).catch(error=>{
             //console.log(error)
+        })
+    }
+    switchChange(position){
+        axios({
+            url:`${this.url.fireMageNumber}/isEnable`,
+            method:"put",
+            headers:{
+                'Authorization': this.url.Authorization
+            },
+            params:{
+                position:position
+            }
+        }).then((data)=>{
+            if(data.data.code===0){
+                message.info('操作成功!')
+                this.getTableData();
+            }
+            else{
+                message.error('操作失败，请联系管理员!')
+            }
         })
     }
     handleDelete = (id)=>{

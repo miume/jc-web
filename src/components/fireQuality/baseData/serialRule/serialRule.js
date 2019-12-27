@@ -60,7 +60,8 @@ class FireSerialRule extends Component{
     }
     getTableData(){
         this.setState({
-            loading:true
+            loading:true,
+            dataCode:[]
         })
         axios({
             url:`${this.url.fireMageNumber}/getHead`,
