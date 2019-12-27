@@ -36,7 +36,8 @@ class PremixedCoulterMixed extends Component{//预混(犁刀混)
         return(
             <div>
                 <Table
-                rowKey={record=>record.id}
+                dataSource={this.tableData}
+                rowKey={record=>record.code}
                 columns={this.columns} 
                 size='small'
                 bordered/>

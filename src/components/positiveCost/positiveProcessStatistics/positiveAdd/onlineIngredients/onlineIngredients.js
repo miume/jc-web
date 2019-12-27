@@ -31,8 +31,9 @@ class OnlineIngredients extends Component{//在线原料
         }
         return(
             <div>
-                <Table 
-                rowKey={record=>record.id}
+                <Table
+                dataSource={this.tableData}
+                rowKey={record=>record.code}
                 columns={this.columns}
                 size='small'
                 bordered/>

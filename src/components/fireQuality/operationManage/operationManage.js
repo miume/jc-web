@@ -13,7 +13,7 @@ class Operation extends Component{
             title:'序号',
             dataIndex:'index',
             key:'index',
-            width:'15%'
+            width:'8%'
         },{
             title:'标题',
             dataIndex:'title',
@@ -23,12 +23,12 @@ class Operation extends Component{
             title:'内容',
             dataIndex:'content',
             key:'content',
-            width:'25%'
+            width:'40%'
         },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
-            width:'30%',
+            width:'20%',
             render:(text,record)=>{
                 return(
                     <span>

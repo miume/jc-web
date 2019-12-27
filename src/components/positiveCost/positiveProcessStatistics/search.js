@@ -1,15 +1,14 @@
-import React, { component, Component } from "react";
+import React, {  Component } from "react";
 import { DatePicker, Select, Button ,message} from "antd";
 import NewButton from "../../BlockQuote/newButton";
-import axios from 'axios'
 import moment from 'moment'
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      periodFlag: true //为真意味着使用父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
+      periodFlag: true, //为真意味着使用父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
+        lineCodeFlag:true
     };
     this.startChange = this.startChange.bind(this);
     this.endChange = this.endChange.bind(this);
@@ -27,26 +26,34 @@ class Search extends Component {
     let {length,time}=this.props,{periodFlag}=this.state,
         secondTime = time && periodFlag?time:this.state.time,
         length1=length&&periodFlag?length:this.state.length,
-        t=new Date(dateString).getTime()+24*length1*3600*1000,
-        endDate=moment(t).format('YYYY-MM-DD')
+        // t=new Date(dateString).getTime()+24*length1*3600*1000,
+        t= new Date(Date.parse(dateString) + 3600 * 24 * 1000 * length1),
+        endTime=moment(t).format('YYYY-MM-DD HH:mm:ss'),
+    endDate=moment(t).format('YYYY-MM-DD ')
+    console.log(`${dateString} ${secondTime}`,endTime,moment(dateString).add(0.5))
     this.setState({
       startTime: `${dateString} ${secondTime}`,
-      endTime: `${endDate} ${secondTime}`,
+      endTime: endTime,
       startDate:dateString,
-      endDate:endDate
+        endDate:endDate
     });
   }
   /**结束日期变化*/
   endChange(date, dateString) {
+      let {length}=this.props,{periodFlag}=this.state,
+          length1=length&&periodFlag?length:this.state.length,
+          t=new Date(dateString).getTime()+24*length1*3600*1000,
+          endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
     this.setState({
-      endDate: dateString
+      endDate: dateString,
+        endTime:endTime
     });
   }
   /**监控下拉框变化*/
   selectChange(value,option) {
      if(option.props.name==='lineCode'){
          this.setState({
-             lineCode:value
+             lineCode:value,
          })
      }
      else{//统计周期下拉变化
@@ -63,18 +70,13 @@ class Search extends Component {
 
     /**点击确定*/
   confirm() {
-      let {periodCode}=this.props,{periodFlag,startTime,endTime,lineCode}=this.state,
-          periodCode1=periodCode&&periodFlag?periodCode:this.state.periodCode,
+      let {periodCode,startTime,endTime,lineCode}=this.state,
           params = {
             beginTime: startTime,
             endTime: endTime,
-            periodCode: periodCode1,
+            periodCode: periodCode,
             lineCode:lineCode
           };
-          if(!periodCode1||!lineCode||startTime===null||endTime===null){
-              message.error('信息选择不完整!')
-              return
-          }
          
       this.props.confirm(params)
   }
@@ -83,11 +85,26 @@ class Search extends Component {
         startTime: undefined,
         endTime: undefined,
         periodCode: this.props.periodCode,
-        lineCode:undefined
+        lineCode:this.props.lineCode,
+        startDate: null,
+        endDate:null
       })
   }
-  render(){
-      let { periodCode,line,periodStatis} = this.props,{periodFlag,endDate}=this.state
+  componentWillReceiveProps(nextProps, nextContext) {
+      if(this.props.periodCode!=nextProps.periodCode){
+          this.setState({
+              periodCode:nextProps.periodCode
+          })
+      }
+      if(this.props.lineCode!=nextProps.lineCode){
+          this.setState({
+              lineCode:nextProps.lineCode
+          })
+      }
+  }
+
+    render(){
+      let { line,periodStatis} = this.props,{lineCode,endDate,periodCode,startDate}=this.state
       return (
           <span className={this.props.flag ? "searchCell" : "hide"}>
         <span>开始时间 : </span>
@@ -96,6 +113,7 @@ class Search extends Component {
                   onChange={this.startChange}
                   style={{ width: 150, marginRight: "10px" }}
                   placeholder={"请选择开始日期"}
+                  value={startDate?moment(startDate):null}
               />
         <span>结束时间 : </span>
               &nbsp;
@@ -106,7 +124,7 @@ class Search extends Component {
                   value={endDate?moment(endDate):null}
               />
         <Select
-            value={periodCode && periodFlag ? periodCode : this.state.periodCode}
+            value={periodCode}
             style={{ width: 150, marginRight: "10px" }}
             onChange={this.selectChange}
             placeholder={'请选择统计周期'}
@@ -122,6 +140,7 @@ class Search extends Component {
               : null}
         </Select>
          <Select
+             value={lineCode}
              style={{ width: 150, marginRight: "10px" }}
              onChange={this.selectChange}
              placeholder={'请选择产线'}

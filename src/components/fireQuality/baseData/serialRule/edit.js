@@ -99,7 +99,10 @@ class Edit extends Component{
     /**删除一行*/
     handleDelete(index){
         let {dataSource}=this.state
-        dataSource.splice(index-1)
+        dataSource.splice(index-1,1)
+        for(let i=0;i<dataSource.length;i++){
+            dataSource[i]['index']=i+1
+        }
         this.setState({
             dataSource:dataSource
         })

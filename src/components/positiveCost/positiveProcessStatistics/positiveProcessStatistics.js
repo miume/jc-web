@@ -14,7 +14,8 @@ class PositiveProcessStatistics extends Component{
             loading:false,
             loadingStatis:false,
             loadingSubmit:false,
-            head:{}
+            head:{},
+            tabKey:'1'
         }
         this.getPeriod=this.getPeriod.bind(this);
         this.judgeOperation=this.judgeOperation.bind(this);
@@ -26,6 +27,7 @@ class PositiveProcessStatistics extends Component{
         this.getStatisticPage=this.getStatisticPage.bind(this);
         this.getPagination=this.getPagination.bind(this);
         this.handleTableChange=this.handleTableChange.bind(this)
+        this.tabChange=this.tabChange.bind(this);
     }
     componentDidMount() {
         this.getPeriod()
@@ -69,7 +71,8 @@ class PositiveProcessStatistics extends Component{
             let res=data.data.data
             if(res){
                 this.setState({
-                    line:res
+                    line:res,
+                    lineCode:res[0].code
                 })
             }
         })
@@ -87,6 +90,13 @@ class PositiveProcessStatistics extends Component{
             })
         }
     }
+    tabChange(key){
+        this.setState(
+            {
+                tabKey:key
+            }
+        )
+    }
     handleTableChange(pagination){
         let {tabKey,head}=this.state
         this.setState({
@@ -102,6 +112,7 @@ class PositiveProcessStatistics extends Component{
     /**主界面的确认按钮*/
     confirm(params){
         let {tabKey}=this.state
+        console.log(tabKey==='1',tabKey)
         this.setState({
             head:params
         })
@@ -114,13 +125,14 @@ class PositiveProcessStatistics extends Component{
     }
     /**获取待提交表格数据*/
     getPendSubmit(params,pagination){
+        console.log('ijiji')
         let size=pagination?pagination.pageSize:10,page=pagination?pagination.current:1
         params=params?params:null
         this.setState({
             loadingSubmit: true
         })
         axios({
-            url: `${this.url.positiveProcessStatis.commitPage}`,
+            url: `${this.url.positiveProcessStatis.unCommitPage}`,
             method: 'post',
             headers: {
                 'Authorization': this.url.Authorization
@@ -132,7 +144,9 @@ class PositiveProcessStatistics extends Component{
             }
         }).then((data) => {
             let res = data.data.data
-           
+            this.setState({
+               loadingSubmit:false
+           })
         })
     }
     /**获取已统计表格数据*/
@@ -155,7 +169,9 @@ class PositiveProcessStatistics extends Component{
             }
         }).then((data) => {
             let res = data.data.data
-           
+            this.setState({
+                loadingStatis:false
+            })
         })
     }
  
@@ -175,7 +191,7 @@ class PositiveProcessStatistics extends Component{
         return flag.length?true:false
     }
     render(){
-        let {periodStatis,periodCode,time,length,line}=this.state
+        let {periodStatis,periodCode,time,length,line,lineCode}=this.state
         const current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
@@ -186,9 +202,9 @@ class PositiveProcessStatistics extends Component{
                     <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd}/>
                     <NewButton name='统计分析' handleClick={this.statisticalAnalysis}/>
                     <Search flag={this.judgeOperation(this.operation,'QUERY')} periodStatis={periodStatis} line={line}
-                            periodCode={periodCode} time={time} length={length} confirm={this.confirm}/>
+                            periodCode={periodCode} time={time} length={length} confirm={this.confirm} lineCode={lineCode}/>
                     <div className='clear'></div>
-                    <Tabs defaultActiveKey="1">
+                    <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         <TabPane tab='待提交' key='1'>
                             <PositivePendSubmit history={this.props.history} loadingSubmit={this.state.loadingSubmit} 
                                 url={this.url} getPagination={this.getPagination} pagination={this.state.pagination}
