@@ -98,7 +98,7 @@ class processParameters extends React.Component {
         return (
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
-                <div className={'process-parameters-auth'}>暂无权限</div>
+                <div className={tabsList ? 'hide' : 'process-parameters-auth'}>暂无权限</div>
                 <Spin spinning={loading} wrapperClassName={tabsList ? 'rightDiv-content' : 'hide'}>
                     {
                         addDisabled ?

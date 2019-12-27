@@ -29,16 +29,17 @@ import CheckStatistics from '../equipmentManagement/statisticAnalysis/checkStati
 import TestItem from '../qualityProcess/Base/testItem/testItem';
 import TestMaterial from '../qualityProcess/Base/testMaterial/tastMaterial'
 import OperationManagement from "../userPermissions/operationManagement/operationManagement";
-// import StockOut from '../smartWarehouse/o_stockOut/stockOut';
+
 import EquipmentCheck from "../equipmentManagement/equipmentCheck/equipmentCheck";
 import CheckPlan from "../equipmentManagement/equipmentCheck/checkPlan/checkPlan";
 import CheckQuery from "../equipmentManagement/equipmentCheck/checkQuery/checkQuery";
 import CheckTemplate from "../equipmentManagement/equipmentCheck/checkTemplate/checkTemplate";
 
 import OtherStockOut from '../smartWarehouse/otherStockOut/stockOut';
-// import EnterStorage from '../smartWarehouse/enterStorage/enterStorage';
-// import InventorManage from '../smartWarehouse/inventoryManage/inventorManage';
-// import RedListManage from '../smartWarehouse/redListManage/redListManage';
+import OriginalRecord from '../smartWarehouse/originalRecord/originalRecord';
+import DataStatistics from '../smartWarehouse/dataStatistics/dataStatistics';
+import DataQuery from '../smartWarehouse/dataQuery/dataQuery';
+import Suppliers from "../smartWarehouse/repoBasic/supplier/supplier";
 // import LibraryManage from '../smartWarehouse/libraryManage/library';
 // import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
@@ -132,8 +133,6 @@ import CheckSite from "../powerCheck/checkSite/checkSite";
 import PowerCheckTemplate from "../powerCheck/checkTemplate/checkTemplate";
 
 import RepoBaseData from "../smartWarehouse/repoBasic/basisData";
-import RepoBasicCategory from "../smartWarehouse/repoBasic/repoBasicCategory/repoBasicCategory";
-
 
 import FireLabelTest from "../fireQuality/baseData/labelTest/labelTest";
 import FireSerialRule from "../fireQuality/baseData/serialRule/serialRule";
@@ -146,6 +145,7 @@ import FireInsSamRec from '../fireQuality/inspectionManagement/fireInsSamRec/fir
 import FireInsDataAcq from '../fireQuality/inspectionManagement/fireInsDataAcq/fireInsDataAcq'
 import FireInsDataCol from '../fireQuality/inspectionManagement/fireInsDataCol/fireInsDataCol'
 import BaseConfigure from '../costAccounting/precursorCostBasisData/other/other'
+
 class Right extends React.Component {
     render() {
         const data = [{
@@ -368,15 +368,6 @@ class Right extends React.Component {
                 path: '/productStandard',
                 component: ProductStandard
             }, {
-                path: '/equipmentGuidance',
-                component: Equipment
-            }, {
-                path: '/equipmentRepair',
-                component: EquipmentRepair
-            }, {
-                path: '/equipmentArchive',
-                component: EquipmentArchive
-            }, {
                 path: '/equipmentBasicData',
                 component: BaseData
             }, {
@@ -385,18 +376,6 @@ class Right extends React.Component {
             }, {
                 path: "/equipmentStatus",
                 component: EquipmentStatus
-            }, {
-                path: "/equipmentMaintenance",
-                component: EquipmentMaintenance
-            }, {
-                path: "/maintenanceDataEntry",
-                component: EqMaintenanceDataEntry
-            }, {
-                path: "/maintenancePlan",
-                component: EqMaintenancePlan
-            }, {
-                path: "/maintenanceQuery",
-                component: EqMaintenanceQuery
             }, {
                 path: "/equipmentCheck",
                 component: EquipmentCheck
@@ -409,9 +388,6 @@ class Right extends React.Component {
             }, {
                 path: "/checkTemplate",
                 component: CheckTemplate
-            }, {
-                path: "/equipmentArchiveManager",
-                component: EquipmentArchiveManager
             }, {
                 path: "/eqcomponentSearch",
                 component: EqcomponentSearch
@@ -431,59 +407,8 @@ class Right extends React.Component {
                 path: "/locationBasic",
                 component: LocationBasic
             }, {
-                path: "/batchRule",
-                component: BatchRule
-            }, {
-                path: "/batchInfo",
-                component: BatchInfo
-            }, {
                 path: "/batchSearch",
                 component: BatchTrace
-            }, {
-                path: "/equpimentAssignment",
-                component: EqupimentAssignment
-            }, {
-                path: "/statisticAnalysis",
-                component: StatisticAnalysis
-            }, {
-                path: "/checkStatistics",
-                component: CheckStatistics
-            }, {
-                path: "/rawMaterialInput",
-                component: RawMaterialInput
-            }, {
-                path: "/eqUserDepAllocation",
-                component: EqUserDepAllocation
-            }, {
-                path: "/precursorCostBasisData",
-                component: PrecursorCostBasisData
-            }, {
-                path: "/statisticalPeriod",
-                component: StatisticalPeriod
-            }, {
-                path: "/BaseproductLine",
-                component: BaseProductLine
-            }, {
-                path: "/detailItem",
-                component: DetailItem
-            }, {
-                path: "/PLCaddress",
-                component: PLCaddress
-            }, {
-                path: "/materialPLC",
-                component: MaterialPLC
-            }, {
-                path: "/xinsongVGA",
-                component: XinsongVGA
-            }, {
-                path: "/productLineStatical",
-                component: ProductLineStatical
-            }, {
-                path: "/productLineVGA",
-                component: ProductLineVGA
-            }, {
-                path: "/processName",
-                component: ProcessName
             }, {
                 path: '/rawMaterial',
                 component: RawMaterial
@@ -520,9 +445,6 @@ class Right extends React.Component {
             }, {
                 path: '/statisticalAnalysis',
                 component: StatisticalAnalysis
-            }, {
-                path: "/batchTrace",
-                component: BatchTrace
             }, {
                 path: '/exceptionHandling',
                 component: ExceptionHandling
@@ -612,9 +534,6 @@ class Right extends React.Component {
                 path: '/repoBasic',
                 component: RepoBaseData
             }, {
-                path: '/repoBasicCategory',
-                component: RepoBasicCategory
-            }, {
                 path: '/fireBasicData',
                 component: FireQuaBase
             },
@@ -651,6 +570,18 @@ class Right extends React.Component {
             }, {
                 path: '/checkSite',
                 component: CheckSite
+            }, {
+                path: '/repoRecord',
+                component: OriginalRecord
+            }, {
+                path: '/repoStatistics',
+                component: DataStatistics
+            }, {
+                path: '/repoQuery',
+                component: DataQuery
+            }, {
+                path: '/repoBasicSupplier',
+                component: Suppliers
             }
         ];
         return (
