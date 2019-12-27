@@ -30,7 +30,7 @@ class Search extends Component {
         t= new Date(Date.parse(dateString) + 3600 * 24 * 1000 * length1),
         endTime=moment(t).format('YYYY-MM-DD HH:mm:ss'),
     endDate=moment(t).format('YYYY-MM-DD ')
-    console.log(`${dateString} ${secondTime}`,endTime,moment(dateString).add(0.5))
+    //console.log(`${dateString} ${secondTime}`,endTime,moment(dateString).add(0.5))
     this.setState({
       startTime: `${dateString} ${secondTime}`,
       endTime: endTime,
