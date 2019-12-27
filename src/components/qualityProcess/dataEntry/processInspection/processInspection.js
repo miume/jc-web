@@ -119,13 +119,11 @@ class ProcessInspection extends React.Component{
               const editorFlag = home.judgeOperation(this.operation,'UPDATE')
               return (
                   <span>
-                      {/* <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} url={this.url} /> */}
                       <Add value={text} status={status} url={this.url} fetch={this.fetch} flag={1} />
                       <span className={editorFlag?'':'hide'}>
                         <Divider type="vertical" />
                         <Add value={text} status={status} url={this.url} fetch={this.fetch} flag={2}/>
                       </span>
-                      {/* <Editor value={text} status={status} url={this.url}/> */}
                       <span className={deleteFlag?'':'hide'}>
                         <Divider type="vertical" />
                         {

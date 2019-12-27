@@ -148,7 +148,6 @@ class Add extends React.Component{
                 testItemIds:this.itemsToIds(items)
             })
         }
-        // console.log(data)
         this.setState({
             visible:flag?false:true,
             data:data,
@@ -241,14 +240,12 @@ class Add extends React.Component{
     /**对保存 送审数据进行判断和处理 */
     dataProcessing(status,process,urgent){
         const details = this.state.data;
-        // console.log(details)
         if(details.length===0) {
             message.info('必须新增一条数据！');
             return false;
         }
         for(var i = 0; i < details.length; i++){
             var e = details[i].procedureTestRecord;
-            console.log(e)
             if(details[i].testItemIds===[]){
                 message.info('请将数据填写完整，再新增！');
                 return false;
@@ -290,7 +287,6 @@ class Add extends React.Component{
                 details:details
             }
         }).then((data)=>{
-            // console.log(`status=${status?'送审':'保存'}`)
             /**status===1代表送审 若保存成功 则进行送审操作 */
             if(status){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
@@ -330,13 +326,7 @@ class Add extends React.Component{
             message.info(data.data.message);
         }
     }
-    /**获取每个Tr的值 从组件ProcessTable中实时获取 */
-    // getData(data){
-    //     // console.log(data)
-    //     this.setState({
-    //         saveData:data,
-    //     })
-    // }
+
     /**监控送审气泡的送审按钮 对应的事件 */
     applySaveAndReview(process,urgent){
         this.dataProcessing(1,process,urgent);
@@ -356,20 +346,7 @@ class Add extends React.Component{
     /**新增一条数据 */
     addData() {
         const {count,data,maxCount} = this.state;
-        // console.log(data)
-        // console.log(`maxCount=${this.state.maxCount},count=${this.state.count}`)
         /**点击新增 前面已知数据全部变成不可编辑 */
-        // var flag = true;  //表示能否新增一行数据
-        // for(var i = 0; i < data.length; i++){
-        //     var e = data[i];
-        //     if(e.testItemIds.length < 1){
-        //         message.info('请将数据填写完整，再新增！');
-        //         return false;
-        //     }
-        //     flag = this.checkAddRowData(e);
-        //     e.mode = 1;
-        // }
-        // if(flag){
             data.push({
                 mode:3,
                 id:maxCount+1,

@@ -809,7 +809,7 @@ class Home extends Component {
                 page: `${server}/jc/common/detectItem/page`,
                 add: `${server}/jc/common/detectItem`,
                 ids: `${server}/jc/common/detectItem/deleteByIds`,
-                all: `${server}/jc/common/detectItem`
+                all: `${server}/jc/common/detectItem/all`
             },
             /**前驱体成本核算*/
             costAccount: {

@@ -14,11 +14,6 @@ class ProcessTable extends React.Component{
         super(props);
         this.state = {
             allProductionProcess : []
-            // count : this.props.data?this.props.data.length:1,
-            // addApplyData:[],                             //存取每行的数据
-            // flag : this.props.flag,
-            // maxCount : this.props.data?this.props.data.length:1,
-            // data : this.props.data?this.props.data:[{id:1}], //用已知数据来渲染有多少行
         }
         this.getAllUser = this.getAllUser.bind(this);
         this.getAllTestMaterial = this.getAllTestMaterial.bind(this);
@@ -65,17 +60,17 @@ class ProcessTable extends React.Component{
     /**获取所有受检物料 */
     getAllTestMaterial(){
         axios({
-            url:`${this.props.url.serialNumber.serialNumber}?materialClass=2`,
+            url: `${this.props.url.testMaterial.all}`,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             const res = data.data.data;
-            if(res){
+            if(res) {
                 const children = res.map(e=>{
-                    return <Option key={e.id} value={e.id}>{e.materialName}</Option>
-                })
+                    return <Option key={e.code} value={e.code}>{e.name}</Option>
+                });
                 this.setState({
                     allTestMaterial:children
                 })

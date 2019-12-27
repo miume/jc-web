@@ -57,10 +57,8 @@ class Tr1 extends React.Component{
         detail.detail.testItems = testItems;
         this.props.getData(detail)
         this.setState({
-            // detail:detail,
             testItems:testItems
         })
-        // console.log(checkedValues)
     }
     /**监控产品线下拉框的变化 */
     productLineChange(value){
@@ -69,9 +67,6 @@ class Tr1 extends React.Component{
         detail.procedureTestRecord.deliveryFactoryId = value;
         detail.detail.deliveryFactory = allProductLine.filter(e=>e.props.value===value)[0].props.children;
         this.props.getData(detail)
-        // this.setState({
-        //     detail:detail
-        // })
     }
     /**监控工序下拉框的变化 */
     productionProcessChange(value){
