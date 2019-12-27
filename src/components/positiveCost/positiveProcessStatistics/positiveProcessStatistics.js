@@ -112,7 +112,6 @@ class PositiveProcessStatistics extends Component{
     /**主界面的确认按钮*/
     confirm(params){
         let {tabKey}=this.state
-        console.log(tabKey==='1',tabKey)
         this.setState({
             head:params
         })
@@ -125,7 +124,6 @@ class PositiveProcessStatistics extends Component{
     }
     /**获取待提交表格数据*/
     getPendSubmit(params,pagination){
-        console.log('ijiji')
         let size=pagination?pagination.pageSize:10,page=pagination?pagination.current:1
         params=params?params:null
         this.setState({
@@ -144,6 +142,15 @@ class PositiveProcessStatistics extends Component{
             }
         }).then((data) => {
             let res = data.data.data
+            if(res&&res.list){
+                for (let i = 0; i < res.list.length; i++) {
+                    res.list[i]['index'] = (res.page - 1) * res.size + (i + 1)
+                }
+                this.setState({
+                    dataSubmit: res.list,
+                    pagination: { current: res.page ? res.page : 0, total: res.total ? res.total : 0 },
+                })
+            }
             this.setState({
                loadingSubmit:false
            })
@@ -169,6 +176,15 @@ class PositiveProcessStatistics extends Component{
             }
         }).then((data) => {
             let res = data.data.data
+            if(res&&res.list){
+                for (let i = 0; i < res.list.length; i++) {
+                    res.list[i]['index'] = (res.page - 1) * res.size + (i + 1)
+                }
+                this.setState({
+                    dataStatistic: res.list,
+                    pagination: { current: res.page ? res.page : 0, total: res.total ? res.total : 0 },
+                })
+            }
             this.setState({
                 loadingStatis:false
             })
@@ -191,7 +207,7 @@ class PositiveProcessStatistics extends Component{
         return flag.length?true:false
     }
     render(){
-        let {periodStatis,periodCode,time,length,line,lineCode}=this.state
+        let {periodStatis,periodCode,time,length,line,lineCode,dataStatistic,dataSubmit}=this.state
         const current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
@@ -208,13 +224,13 @@ class PositiveProcessStatistics extends Component{
                         <TabPane tab='待提交' key='1'>
                             <PositivePendSubmit history={this.props.history} loadingSubmit={this.state.loadingSubmit} 
                                 url={this.url} getPagination={this.getPagination} pagination={this.state.pagination}
-                                handleTableChange={this.handleTableChange}
+                                handleTableChange={this.handleTableChange} dataSubmit={dataSubmit} line={line} periodStatis={periodStatis}
                             />
                         </TabPane>
                         <TabPane tab='已统计' key='2'>
                             <PositiveStatisticDone loadingStatis={this.state.loadingStatis} 
                                 url={this.url} getPagination={this.getPagination} pagination={this.state.pagination}
-                                handleTableChange={this.handleTableChange}
+                                handleTableChange={this.handleTableChange}  dataStatistic={dataStatistic}
                             />
                         </TabPane>
                     </Tabs>

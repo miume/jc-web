@@ -1,0 +1,30 @@
+.positive-process-add-onLine{
+    display: flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content: flex-start;
+}
+.positive-process-add-onLine-font{
+    display: inline-block;
+    margin-right: 20px;
+    font-family: 'PingFangSC-Regular', 'PingFang SC';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    line-height: normal;
+    text-align: right;
+    /* width: 100px; */
+}
+.positive-process-add-workShop{
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: space-between;
+    width: 60vw;
+    padding: 30px;
+    margin:2% auto;
+}
+.positive-process-add-span{
+    display:inline-block;
+    width:100px;
+    text-align:right
+}

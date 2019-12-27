@@ -147,12 +147,12 @@ class Edit extends Component{
     handleCreate(){
        let {dataSource}=this.state,{position}=this.props.record
 
-       for(let i=0;i<dataSource.length;i++){
-        if(dataSource[i]['value']===undefined||dataSource[i]['value']===''||dataSource[i]['description']===undefined||dataSource[i]['description']===''){
-            message.error('信息填写不完整!')
-            return
-        }
-       }
+    //    for(let i=0;i<dataSource.length;i++){
+    //     if(dataSource[i]['value']===undefined||dataSource[i]['value']===''||dataSource[i]['description']===undefined||dataSource[i]['description']===''){
+    //         message.error('信息填写不完整!')
+    //         return
+    //     }
+    //    }
         this.setState({
             visible:false
         })

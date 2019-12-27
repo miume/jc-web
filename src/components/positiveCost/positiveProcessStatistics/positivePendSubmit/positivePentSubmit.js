@@ -5,30 +5,31 @@ import {Table,Spin,Popconfirm,Divider} from 'antd'
 class PositivePendSubmit extends Component{//待提交
     constructor(props){
         super(props);
-        this.state={
-            loading:false,
-            data:[]
-        }
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id'
+            dataIndex:'index',
+            key:'index',
+            width:'8%'
         },{
             title:'周期类型',
-            dataIndex:'periodType',
-            key:'periodType'
+            dataIndex:'periodName',
+            key:'periodName',
+            width:'15%'
         },{
             title:'期数',
-            dataIndex:'periods',
-            key:'periods'
+            dataIndex:'head.periods',
+            key:'head.periods',
+            width:'15%'
         },{
             title:'开始时间',
-            dataIndex:'beginTime',
-            key:'beginTime'
+            dataIndex:'head.beginTime',
+            key:'head.beginTime',
+            width:'20%'
         },{
             title:'结束时间',
-            dataIndex:'endTime',
-            key:'endTime'
+            dataIndex:'head.endTime',
+            key:'head.endTime',
+            width:'20%'
         },{
             title:'操作',
             dataIndex:'operation',
@@ -36,7 +37,7 @@ class PositivePendSubmit extends Component{//待提交
             render:(text,record)=>{
                 return(
                     <span>
-                        <span className={this.judgeOperation(this.operation,'UPDATE')?'blue':'hide'} onClick={this.handleEdit}>编辑</span>
+                        <span className={this.judgeOperation(this.operation,'UPDATE')?'blue':'hide'} onClick={()=>this.handleEdit(record.head.code)}>编辑</span>
                         {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical'/>:''}
                         <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
                             <Popconfirm title='确定删除?' onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
@@ -60,10 +61,14 @@ class PositivePendSubmit extends Component{//待提交
     componentDidMount(){
         this.props.getPagination('1',this.pagination)
     }
-    handleEdit(){
+    handleEdit(code){
         this.props.history.push({
             pathname:'/positiveAdd',
-            editFlag:true})
+            editFlag:true,
+            code:code,
+            periodStatis:this.props.periodStatis,
+            line:this.props.line,
+        })
     }
     handleDelete(id){
 
@@ -84,8 +89,8 @@ class PositivePendSubmit extends Component{//待提交
             <div>
                <Spin spinning={this.props.loadingSubmit} >
                 <Table
-                    dataSource={this.state.data}
-                    rowKey={record=>record.id}
+                    dataSource={this.props.dataSubmit}
+                    rowKey={record=>record.head.code}
                     columns={this.columns}
                     onChange={this.handleTableChange}
                     pagination={this.props.pagination}

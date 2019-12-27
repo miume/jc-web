@@ -18,7 +18,7 @@ class Search extends Component {
         this.confirm=this.confirm.bind(this)
     }
     componentDidMount() {
-        this.getModel()
+            this.getModel()
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -37,20 +37,38 @@ class Search extends Component {
             if (res) {
                 this.setState({
                     modelData: res,
-                    modelCode:res[0].code
                 })
+                if(!this.props.editFlag){
+                    this.setState({
+                        modelCode:res[0].code
+                    })
+                }
             }
         })
     }
     /**子组件在接收到props变化时，执行此函数，此处setState不会引起第二次渲染*/
     componentWillReceiveProps(nextProps) {
-        if (this.props.headPeriod !== nextProps.headPeriod) {//传过来的统计周期那些值有变化
-            this.setState({
-                periodCode: nextProps.headPeriod.periodCode,
-                length: nextProps.headPeriod.length,
-                time: nextProps.headPeriod.time,
-                lineCode:nextProps.headPeriod.lineCode
-            })
+        
+        if(this.props.editFlag){//编辑头表变化
+            if(this.props.headEdit!=nextProps.headEdit){
+                this.setState({
+                    periodCode: nextProps.headEdit.periodCode,
+                    modelCode: nextProps.headEdit.typeCode,
+                    startDate: nextProps.headEdit.beginTime.split(' ')[0],
+                    endDate: nextProps.headEdit.endTime.split(' ')[0],
+                    lineCode:nextProps.headEdit.lineCode
+                })
+            }
+        }
+        else{
+            if (this.props.headPeriod !== nextProps.headPeriod) {//传过来的统计周期那些值有变化
+                this.setState({
+                    periodCode: nextProps.headPeriod.periodCode,
+                    length: nextProps.headPeriod.length,
+                    time: nextProps.headPeriod.time,
+                    lineCode:nextProps.headPeriod.lineCode
+                })
+            }
         }
     }
     selectChange(value, option) {
@@ -77,10 +95,11 @@ class Search extends Component {
     startChange(date, dateString) {
         let { time, length } = this.state,//tine是传过来的时分秒，和开始日期拼接传给后台，length是开始与结束相差几天，用来计算结束时间
             t = new Date(dateString).getTime() + 24 * length * 3600 * 1000,
-            endDate = moment(t).format('YYYY-MM-DD')
+            endDate = moment(t).format('YYYY-MM-DD'),
+            endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
         this.setState({
             startTime: `${dateString} ${time}`,
-            endTime: `${endDate} ${time}`,
+            endTime: endTime,
             startDate: dateString,
             endDate: endDate
         });
@@ -110,7 +129,7 @@ class Search extends Component {
           this.props.addConfirm(params)
     }
     render() {
-        let { modelCode, periodCode, endDate ,lineCode} = this.state,{flagConfirm}=this.props
+        let { modelCode, periodCode, endDate ,startDate,lineCode} = this.state,{flagConfirm,inputPeriod}=this.props
         return (
             <div>
                 <Select onChange={this.selectChange} value={lineCode} placeholder='请选择产线' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
@@ -141,8 +160,8 @@ class Search extends Component {
                         }) : null
                     }
                 </Select>
-                <span>期数 : </span>&nbsp;<Input value={this.props.inputPeriod} placeholder='期数' style={{width:100,marginRight:'20px'}}  disabled={true}/>
-                <DatePicker onChange={this.startChange} placeholder='开始时间' style={{ width: '180px', marginRight: '10px' }}  disabled={flagConfirm}/>
+                <span>期数 : </span>&nbsp;<Input value={inputPeriod} placeholder='期数' style={{width:100,marginRight:'20px'}}  disabled={true}/>
+                <DatePicker onChange={this.startChange} value={startDate?moment(startDate):undefined} placeholder='开始时间' style={{ width: '180px', marginRight: '10px' }}  disabled={flagConfirm}/>
                 <DatePicker onChange={this.endChange} value={endDate ? moment(endDate) : undefined} placeholder='结束时间' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}/>
                 <NewButton name='确定' handleClick={this.confirm} />
             </div>

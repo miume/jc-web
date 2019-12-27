@@ -29,8 +29,8 @@ class Search extends Component {
         // t=new Date(dateString).getTime()+24*length1*3600*1000,
         t= new Date(Date.parse(dateString) + 3600 * 24 * 1000 * length1),
         endTime=moment(t).format('YYYY-MM-DD HH:mm:ss'),
-    endDate=moment(t).format('YYYY-MM-DD ')
-    //console.log(`${dateString} ${secondTime}`,endTime,moment(dateString).add(0.5))
+        endDate=moment(t).format('YYYY-MM-DD ')
+    //console.log(`${dateString} ${secondTime}`,endTime,moment(dateString).add(24*length1,'hour').format('YYYY-MM-DD HH:mm:ss'))
     this.setState({
       startTime: `${dateString} ${secondTime}`,
       endTime: endTime,
@@ -70,15 +70,18 @@ class Search extends Component {
 
     /**点击确定*/
   confirm() {
-      let {periodCode,startTime,endTime,lineCode}=this.state,
-          params = {
-            beginTime: startTime,
-            endTime: endTime,
-            periodCode: periodCode,
-            lineCode:lineCode
-          };
-         
-      this.props.confirm(params)
+    let {periodCode,startTime,endTime,lineCode}=this.state,
+        params = {
+        beginTime: startTime,
+        endTime: endTime,
+        periodCode: periodCode,
+        lineCode:lineCode
+        };
+    // if(!periodCode||!startTime||!endTime||!lineCode){
+    // message.error('信息选择不完整!')
+    // return
+    // }
+    this.props.confirm(params)
   }
   reset(){
       this.setState({
