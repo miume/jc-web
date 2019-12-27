@@ -29,6 +29,9 @@ class AddModal extends React.Component {
             checkedList: [],
         };
     }
+    componentDidMount() {
+        this.allItems()
+    }
 
     componentWillUnmount() {
         this.setState(() => {
@@ -109,6 +112,29 @@ class AddModal extends React.Component {
 
 
     /** 检测项目有关的函数*/
+
+    allItems = () => {
+        axios({
+            url:`${this.props.url.fireInsRegister.getAllItems}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            const res = data.data.data;
+            if (res) {
+                var dataSource = res;
+                this.setState({
+                    plainOptions: dataSource
+                })
+            }else{
+                message.info("所有检测项目获取为空")
+            }
+        }).catch(()=>{
+            message.info('所有检测项目获取失败，请联系管理员！');
+        });
+    }
+
     getItem = (processCode, productCode) => {
         var checkedList = []
         axios({
@@ -122,7 +148,6 @@ class AddModal extends React.Component {
                 productCode: productCode
             }
         }).then((data)=>{
-
             const res = data.data.data;
             if (res) {
                 var dataSource = res;
@@ -130,11 +155,11 @@ class AddModal extends React.Component {
                     checkedList.push(dataSource[i].code)
                 }
                 this.setState({
-                    plainOptions: dataSource,
+                    // plainOptions: dataSource,
                     checkedList: checkedList
                 })
             }else{
-                message.info("检测项目获取为空")
+                message.info("该工序、产品型号/厂家下的检测项目为空")
             }
         }).catch(()=>{
             message.info('检测项目获取失败，请联系管理员！');
