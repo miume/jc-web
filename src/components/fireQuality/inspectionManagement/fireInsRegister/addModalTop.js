@@ -25,6 +25,7 @@ class AddModalTop extends React.Component {
                 delieryPeople: "",
                 deptCode: 0,
                 detectStatus: "",
+                inputWaterValue: "",
                 dev1: "",
                 dev2: "",
                 flag: "",
@@ -141,12 +142,18 @@ class AddModalTop extends React.Component {
         if (data && data.length) {
             return (
                 data.map((e, index) => {
-                        if (e.rule === "自由段" || e.rule === "") {
+                        if (e.rule === "自由段" || e.rule === "" || e.rule === "流水") {
                             if (e.rule === "自由段") {
                                 return (
                                     <Input key={index} className='addModalTop_batchNumber_input' style={{marginRight: 10}}
                                            value={this.state.inputValue} onChange={this.inputChange}
                                            placeholder="可空，<6个字符>"/>
+                                )
+                            } else if (e.rule === "流水"){
+                                return (
+                                    <Input key={index} className='addModalTop_batchNumber_water_input' style={{marginRight: 10}}
+                                           value={this.state.inputWaterValue} onChange={this.inputWaterChange}
+                                           placeholder="三个数字"/>
                                 )
                             } else {
                                 return (
@@ -168,6 +175,20 @@ class AddModalTop extends React.Component {
                 )
             )
         }
+    }
+
+    inputWaterChange = (e) => {
+        var batchNumber = this.state.batchNumber;
+        var batchItems = this.state.batchItems;
+        const itemIndex = this.state.itemIndex;
+        const index = 9;
+        batchNumber[index] = e.target.value;  //根据name属性修改实时更新batchNumber数组的值
+        batchItems[itemIndex[index]] = e.target.value;
+        this.setState({
+            batchNumber: batchNumber,
+            batchItems: batchItems,
+            inputWaterValue: e.target.value
+        })
     }
 
     iconChange = () => {
@@ -192,6 +213,21 @@ class AddModalTop extends React.Component {
         for (var i = 0; i < dataSource.length; i++) {
             if (dataSource[i].col2 === col2) {
                 message.info("该批号重复");
+                return
+            }
+        }
+
+        // 前端控制，流水好为数字，三个字符
+        const water = batchItems["stream"];
+        if (water.length > 3){
+            message.info("流水长度为 3")
+            return
+        }
+
+        for (var i = 0; i < water.length; i++) {
+            console.log(water[i])
+            if (water[i] < '0' || water[i] > '9'){
+                message.info(`流水输入框第 ${i+1} 位不是数字，都需要为数字`)
                 return
             }
         }

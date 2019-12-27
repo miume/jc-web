@@ -22,6 +22,9 @@
 .addModalTop_batchNumber_input {
     width: 13% !important;
 }
+.addModalTop_batchNumber_water_input {
+    width: 7% !important;
+}
 .addModalTop_batchNumber_add {
     width: 3% !important;
 }
