@@ -42,7 +42,6 @@ class FireTestItem extends Component{
             dataSource:[]
         }
         this.pagination={
-            total:this.state.dataSource.length,
             showSizeChanger:true,
             showTotal:(total)=>`共${total}条记录`,
             pageSizeOptions: ["10","20","50","100"]

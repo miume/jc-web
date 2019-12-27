@@ -57,8 +57,8 @@ class Edit extends React.Component{
       };
       add = () =>{
         const {form} = this.props;
-        const keys = form.getFieldValue('keys');
-        const nextKeys = keys.concat(++this.state.detail.length-1);
+        const keys = form.getFieldValue('keys'), {detail} = this.state;
+        const nextKeys = keys.concat(++detail.length-1);
         form.setFieldsValue({
             keys: nextKeys,
           });
@@ -100,7 +100,6 @@ class Edit extends React.Component{
   }
     handleCreate = () =>{
       this.props.form.validateFields((err, values) => {
-        // console.log(values.name)
         if (err) {
           return ;
         }
@@ -109,17 +108,15 @@ class Edit extends React.Component{
         let taskPersonList=[];
         value['description']=values.name;
         value['id'] = this.props.value;
-        // value["isUrgent"] = 0;
         value["status"] = -1;
         data["commonBatchNumber"] = value;
-        for(var i = 0;i<values.keys.length;i++){
+        for(let i = 0;i<values.keys.length;i++){
           taskPersonList.push({})
         }
-        for(var i = 0;i<values.keys.length;i++){
+        for(let i = 0;i<values.keys.length;i++){
           taskPersonList[i]["userId"]=values.persons[values.keys[i]];
           taskPersonList[i]['responsibility']=values.description[values.keys[i]];
         }
-        // console.log(taskPersonList)
         data["details"] = taskPersonList
         axios({
               url : `${this.url.processManagement.deleteByIds}`,
@@ -155,10 +152,10 @@ class Edit extends React.Component{
         // value["isUrgent"] = 0
         value["status"] = 2
         data["commonBatchNumber"] = value
-        for(var i = 0;i<values.keys.length;i++){
+        for(let i = 0;i<values.keys.length;i++){
           taskPersonList.push({})
         }
-        for(var i = 0;i<values.keys.length;i++){
+        for(let i = 0;i<values.keys.length;i++){
           taskPersonList[i]["userId"]=values.persons[values.keys[i]];
           taskPersonList[i]['responsibility']=values.description[values.keys[i]];
         }

@@ -3,9 +3,7 @@ import {withRouter} from 'react-router-dom'
 import Exit from './exit';
 import ChangePassword from "./changePassword";
 class Top extends React.Component{
-    constructor(props){
-        super(props);
-    }
+   
     logout = () => {
         document.getElementById('defaultCanvas0').style.visibility='visible';
         let showFrame = setInterval(function() {

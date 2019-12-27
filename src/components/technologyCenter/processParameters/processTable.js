@@ -66,9 +66,9 @@ class ProcessTable extends React.Component {
             key: 'code',
             dataIndex: 'code',
             render: (text, record) => {
-                let {update,deleteFlag,status,url} = this.props;
+                let {update,deleteFlag,status,url,addDisabled} = this.props;
                 return (
-                    this.judgeOperation(status,update,deleteFlag,record.code,url)
+                    this.judgeOperation(status,update,deleteFlag,record.code,url,addDisabled)
                 )
             }
         }]
@@ -95,15 +95,15 @@ class ProcessTable extends React.Component {
     }
 
     /**根据不同tabs页面渲染不同操作*/
-    judgeOperation(status,update,deleteFlag,code,url) {
+    judgeOperation(status,update,deleteFlag,code,url,addDisabled) {
         //待审核和审核中 已驳回
-        if(status === '1' || status === '2' || status === '4' ) {
+        if(status === '1' || status === '2' || status === '4' || addDisabled ) {
             return (
                 <DetailModal code={code} url={url} status={status}/>
             )
         }
         //已通过
-        if(status === '3' ) {
+        else if(status === '3' ) {
             return (
                 <span>
                     <Popconfirm title="确认发布?" onConfirm={() => this.publish(code)} okText="确定" cancelText="取消" >
@@ -115,7 +115,7 @@ class ProcessTable extends React.Component {
             )
         }
         //已发布
-        if(status === '5') {
+        else if(status === '5') {
             return (
                 <span>
                     <DetailModal code={code} url={url} status={status}/>

@@ -41,7 +41,7 @@ class ProcessParams extends React.Component{
             }
         }).then((data) => {
             let res = data.data.data;
-            if (data.data.code === 0) {
+            if (data.data.code === 0 && res && res['head']) {
                 let head = res['head'], {processCode} = head,
                     proAndLine = res['proAndLine'], {lineNames, productClassName} = proAndLine;
                 head['deptName'] = res['deptName'];

@@ -26,12 +26,48 @@ const {TabPane} = Tabs;
 //     preparer: '张三',
 //     dateOfFiling: '2019-10-12'
 // }];
+const STAFF_AUTH = [{
+        id: '0',
+        title: '未提交'
+    },{
+        id: '1',
+        title: '待审核'
+    },{
+        id: '2',
+        title: '审核中'
+    },{
+        id: '3',
+        title: '已通过'
+    },{
+        id: '4',
+        title: '已驳回'
+    },{
+        id: '5',
+        title: '已发布'
+    }],
+    APPROVER_AUTH = [{
+        id: '1',
+        title: '待审核'
+    },{
+        id: '3',
+        title: '已通过'
+    },{
+        id: '4',
+        title: '已驳回'
+    },{
+        id: '5',
+        title: '已发布'
+    }],
+    INQUIRER_AUTH = [{
+        id: '5',
+        title: '已发布'
+    }];
 
 class processParameters extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
+            loading: false,
             selectedRowKeys: [],
             condition: '',
             status: 0,   //默认为未提交
@@ -40,12 +76,13 @@ class processParameters extends React.Component {
         this.fetch = this.fetch.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.tabChange = this.tabChange.bind(this);
-        this.handleClick = this.handleClick.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.getTableData = this.getTableData.bind(this);
         this.confirmCancel = this.confirmCancel.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.renderTabs = this.renderTabs.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
+        this.judgeTabsPath = this.judgeTabsPath.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
     }
 
@@ -55,46 +92,93 @@ class processParameters extends React.Component {
         this.current = JSON.parse(localStorage.getItem('current'));
         /**获取当前菜单的所有操作权限 */
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===this.current.path)[0].operations:null;
-        let addFlag = home.judgeOperation(this.operation,'SAVE'),deleteFlag = home.judgeOperation(this.operation,'DELETE'),
-            {loading,data,selectedRowKeys} = this.state;
+        let deleteFlag = home.judgeOperation(this.operation,'DELETE'),
+            {loading,selectedRowKeys,tabsList} = this.state,
+            addDisabled = tabsList && tabsList.length  > 1 ? false : true;
         return (
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
-                <Spin spinning={loading} wrapperClassName='rightDiv-content'>
-                    <NewButton handleClick={this.handleAdd} name={'新增'} className='fa fa-plus' />
-                    <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds}
-                                 cancel={this.confirmCancel} flag={deleteFlag} />
-                    <SearchCell name={'请输入工序或车间'} flag={true} searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.reset}/>
+                <div className={'process-parameters-auth'}>暂无权限</div>
+                <Spin spinning={loading} wrapperClassName={tabsList ? 'rightDiv-content' : 'hide'}>
+                    {
+                        addDisabled ?
+                            <SearchCell name={'请输入工序或车间'} flag={true} searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.reset}/> :
+                            <div className={addDisabled ? 'hide' : ''}>
+                                <NewButton handleClick={this.handleAdd} name={'新增'} className='fa fa-plus' />
+                                <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds}
+                                             cancel={this.confirmCancel} flag={deleteFlag} />
+                                <SearchCell name={'请输入工序或车间'} type={1} flag={true} searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.reset}/>
+                            </div>
+                    }
+
                     <div className='clear' ></div>
-                    <Tabs defaultActiveKey={'0'} onChange={this.tabChange}>
-                        <TabPane tab={'未提交'} key={'0'}>
-                            <ProcessTable status={'0'} url={this.url} data={data} fetch={this.fetch} update={addFlag} onSelectChange={this.onSelectChange}
-                                          deleteFlag={deleteFlag} selectedRowKeys={selectedRowKeys} handleAdd={this.handleAdd}/>
-                        </TabPane>
-                        <TabPane tab={'待审核'} key={'1'}>
-                            <ProcessTable status={'1'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag}/>
-                        </TabPane>
-                        <TabPane tab={'审核中'} key={'2'}>
-                            <ProcessTable status={'2'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag}/>
-                        </TabPane>
-                        <TabPane tab={'已通过'} key={'3'}>
-                            <ProcessTable status={'3'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag} fetch={this.fetch}/>
-                        </TabPane>
-                        <TabPane tab={'已驳回'} key={'4'}>
-                            <ProcessTable status={'4'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag}/>
-                        </TabPane>
-                        <TabPane tab={'已发布'} key={'5'}>
-                            <ProcessTable status={'5'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag} handleAdd={this.handleAdd}/>
-                        </TabPane>
-                    </Tabs>
+                    <div>
+                    {
+                       this.renderTabs(tabsList,addDisabled)
+                    }
+                    </div>
                 </Spin>
             </div>
         )
     }
 
     componentDidMount() {
-        this.fetch();
+        let roleList = JSON.parse(localStorage.getItem('menuList'))['roleList'],
+            tabsList = this.judgeTabsPath(roleList);
+        if(tabsList) {
+            let status = tabsList[0]['id']
+            this.setState({
+                tabsList,
+                status
+            });
+            this.fetch({},status);
+        }
     }
+
+    judgeTabsPath(roleList) {
+        let ROLE_PROCESS_STAFF, ROLE_PROCESS_APPROVER, ROLE_PROCESS_INQUIRER;
+        for(let i = 0; i < roleList.length; i++) {
+            if(roleList[i]['roleName'] === 'ROLE_PROCESS_STAFF') {
+                ROLE_PROCESS_STAFF = true;
+            }
+            if(roleList[i]['roleName'] === 'ROLE_PROCESS_APPROVER') {
+                ROLE_PROCESS_APPROVER = true;
+            }
+            if(roleList[i]['roleName'] === 'ROLE_PROCESS_INQUIRER') {
+                ROLE_PROCESS_INQUIRER = true;
+            }
+        }
+        if(ROLE_PROCESS_STAFF) {
+            return STAFF_AUTH;
+        } else if(ROLE_PROCESS_APPROVER) {
+            return APPROVER_AUTH;
+        } else if(ROLE_PROCESS_INQUIRER){
+            return INQUIRER_AUTH;
+        } else {
+            return false
+        }
+    }
+
+    renderTabs(tabsList,addDisabled) {
+        let addFlag = home.judgeOperation(this.operation,'SAVE'),
+            deleteFlag = home.judgeOperation(this.operation,'DELETE'),
+            {data,selectedRowKeys} = this.state;
+        return (
+            tabsList ?
+                <Tabs defaultActiveKey={tabsList[0]['id']} onChange={this.tabChange}>
+                    {
+                        tabsList.map(e =>
+                            <TabPane tab={e.title} key={e.id}>
+                                <ProcessTable status={e.id} url={this.url} data={data} fetch={this.fetch} update={addFlag} onSelectChange={this.onSelectChange}
+                                              deleteFlag={deleteFlag} selectedRowKeys={selectedRowKeys} handleAdd={this.handleAdd} addDisabled={addDisabled}/>
+                            </TabPane>
+                        )
+                    }
+                </Tabs> :
+                <div style={{margin: 'auto', textAlign: 'center'}}>暂无权限</div>
+        )
+    }
+
 
     /**标签页切换*/
     tabChange(key) {
@@ -163,13 +247,6 @@ class processParameters extends React.Component {
             pathName += `/${code}`
         }
         this.props.history.push(pathName)
-    }
-
-    /**点击新增按钮
-     * record用来区分编辑和新增
-     * */
-    handleClick(record = {}) {
-
     }
 
     /**对应于批量删除时，确认取消删除 并实现checkbox选中为空 */

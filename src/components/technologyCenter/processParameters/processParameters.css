@@ -1,3 +1,10 @@
+.process-parameters-auth {
+    height: 500px;
+    line-height: 500px;
+    text-align: center;
+    font-size: 20px;
+}
+
 .process-parameters {
     padding: 10px;
     height: 100%;

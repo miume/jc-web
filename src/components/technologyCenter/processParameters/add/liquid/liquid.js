@@ -5,9 +5,6 @@ import Others from "./others";
 import Impurities from "./impurities";
 
 class Liquid extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         let {url,code,components,zyDetail,add,deleteItems,inputChange,liquidChange} = this.props;

@@ -1,12 +1,8 @@
 import React from 'react';
-import NewButton from "../../../../BlockQuote/newButton";
-import {Table, Input} from "antd";
+import {Input} from "antd";
 const {TextArea} = Input;
 
 class Impurities extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         let {data,inputChange} = this.props;

@@ -2,9 +2,6 @@ import React from 'react';
 import {Input} from "antd";
 
 class Others extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         let {inputChange,data} = this.props;
