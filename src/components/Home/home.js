@@ -868,6 +868,7 @@ class Home extends Component {
                 getNextPeriods:`${server}/jc/common/anodeGoodin/getNextPeriods`,
                 unCommitPage:`${server}/jc/common/anodeGoodin/unCommitPage`,
                 commitPage:`${server}/jc/common/anodeGoodin/commitPage`,
+                saveOrCommit:`${server}/jc/common/anodeGoodin/saveOrCommit`
             },
 
             /**动力点检-点检项目*/

@@ -1,34 +1,14 @@
 import React,{Component} from 'react'
 import {Spin,Table} from 'antd'
 import Detail from './detail'
-const data=[{
-    id:'1',
-    periodType:'周',
-    period:'10',
-    beginTime:'2019-01-01',
-    endTime:'2019-01-01',
-    process:'单晶体配置',
-    productLine:'F#生产线'
-},{
-    id:'2',
-    periodType:'周',
-    period:'10',
-    beginTime:'2019-01-01',
-    endTime:'2019-01-01',
-    process:'单晶体配置',
-    productLine:'F#生产线'
-}]
+
 class PositiveStatisticDone extends Component{//已统计
     constructor(props){
         super(props);
-        this.state={
-            loading:false,
-            data:data
-        }
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id'
+            dataIndex:'index',
+            key:'index'
         },{
             title:'周期类型',
             dataIndex:'periodType',
@@ -82,8 +62,8 @@ class PositiveStatisticDone extends Component{//已统计
             <div>
                 <Spin spinning={this.props.loadingStatis}>
                     <Table
-                    rowKey={record=>record.id}
-                    dataSource={this.state.data}
+                    rowKey={record=>record.index}
+                    dataSource={this.props.dataStatistic}
                     columns={this.columns}
                     onChange={this.handleTableChange}
                     pagination={this.pagination}

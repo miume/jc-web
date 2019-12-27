@@ -29,27 +29,38 @@ class PositiveAdd extends Component {
         this.addConfirm = this.addConfirm.bind(this);
         this.tabChange = this.tabChange.bind(this);
         this.getPeriods=this.getPeriods.bind(this);
+        this.afterConfirm=this.afterConfirm.bind(this);
+        this.inputChange=this.inputChange.bind(this);
+        this.save=this.save.bind(this);
+        this.submit=this.submit.bind(this);
     }
     componentDidMount() {
         this.getAllProcess()
         let { location } = this.props,
-            periodStatis = location.periodStatis,
-            line = location.line,
-            periodCode= periodStatis && periodStatis[0] && periodStatis[0].code ? periodStatis[0].code : undefined,
-            length= periodStatis && periodStatis[0] && periodStatis[0].length ? periodStatis[0].length : undefined,
-            time= periodStatis && periodStatis[0] && periodStatis[0].startTime ? periodStatis[0].startTime : undefined,
-            headPeriod={},
-            lineCode=line&&line[0]&&line[0].code?line&&line[0]&&line[0].code:undefined
-        headPeriod['periodCode']=periodCode
-        headPeriod['length']=length
-        headPeriod['time']=time
-        headPeriod['lineCode']=lineCode
+        periodStatis = location.periodStatis,
+        line = location.line
         this.setState({
             periodStatis: periodStatis,
-            line: line,
-            headPeriod:headPeriod
+            line: line
         })
-        this.getPeriods(periodCode?periodCode:null,lineCode?lineCode:null)
+        if(location.editFlag){ 
+            this.afterConfirm(location.code)
+        } 
+        else{
+            let periodCode= periodStatis && periodStatis[0] && periodStatis[0].code ? periodStatis[0].code : undefined,
+                length= periodStatis && periodStatis[0] && periodStatis[0].length ? periodStatis[0].length : undefined,
+                time= periodStatis && periodStatis[0] && periodStatis[0].startTime ? periodStatis[0].startTime : undefined,
+                headPeriod={},
+                lineCode=line&&line[0]&&line[0].code?line&&line[0]&&line[0].code:undefined
+            headPeriod['periodCode']=periodCode
+            headPeriod['length']=length
+            headPeriod['time']=time
+            headPeriod['lineCode']=lineCode
+            this.setState({
+                headPeriod:headPeriod
+            })
+            this.getPeriods(periodCode?periodCode:null,lineCode?lineCode:null)
+        }
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -121,30 +132,43 @@ class PositiveAdd extends Component {
                         flagConfirm:true
                     })
                 }
-                axios({
-                    url: `${this.url.positiveProcessStatis.afterComfirm}`,
-                    method: 'post',
-                    headers: {
-                        'Authorization': this.url.Authorization
-                    },
-                    params:{
-                        id:res.code
-                    }
-                }).then((data) => {
-                    let tagTable = data.data.data;
-                    //console.log(tagTable)
-                    this.setState({
-                        productLine:tagTable&&tagTable.line?tagTable.line:undefined
-                    })
-                    if (tagTable && tagTable.processes) {
-                        this.setState({
-                            tagTableData: tagTable.processes,
-                            addData: tagTable,
-                            loading:false,
-                        })
-                    }
-                })
+                this.afterConfirm(res.code)
             }
+        })
+    }
+    afterConfirm(code){
+        this.setState({
+            loading:true
+        })
+        axios({
+            url: `${this.url.positiveProcessStatis.afterComfirm}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params:{
+                id:code
+            }
+        }).then((data) => {
+            let tagTable = data.data.data;
+            //console.log(tagTable)
+            this.setState({
+                productLine:tagTable&&tagTable.line?tagTable.line:undefined
+            })
+            if (tagTable && tagTable.processes) {
+                this.setState({
+                    tagTableData: tagTable.processes,
+                    addData: tagTable,
+                    loading:false,
+                })
+                if(this.props.location.editFlag){
+                    this.setState({
+                        headEdit:tagTable.head,
+                        inputPeriod:tagTable.head.periods
+                    })
+                }
+            }
+          
         })
     }
     tabChange(key) {
@@ -152,31 +176,86 @@ class PositiveAdd extends Component {
             tabKey:key
         })
     }
+    inputChange(e,key){
+        let {addData}=this.state,value = e.target.value,
+            inputData = e.target.name.split('-'),
+            index = inputData[0],    //定位到是第几条数据
+            name = inputData[1]  
+        addData.processes[key-1].materials[index][name] =value
+    }
+    save(f) {
+        this.setState({
+            loading:true
+        })
+        let flag=(f===1?1:0)
+        let {addData}=this.state
+        // console.log(this.state.addData)
+        axios({
+            url: `${this.url.positiveProcessStatis.saveOrCommit}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                id: this.props.location.editFlag?this.props.location.code:this.state.statisticId,
+                flag: flag
+            },
+            data: this.state.addData
+
+        }).then(data => {
+            message.info(data.data.data)
+            if(data.data.code===0){
+                this.props.history.push({pathname:'/processStatistics'})
+            }
+            this.setState({
+                loading:false
+            })
+
+        }).catch(()=>{
+            message.info('新增失败!')
+        })
+    }
+    submit() {//提交需要所有空缺都填完整
+        let {addData}=this.state
+        let data=addData.processes
+        for(let i=0;i<data.length;i++){//第一层是遍历哪个tag
+                    for(let j=0;j<data[i].materialDetails.length;j++){
+                        for(let key in data[i].materialDetails[j]){
+                            if(data[i].materials[j][key]===undefined||data[i].materialDetails[j][key]===null){
+                                message.info('信息填写不完整!')
+                                return
+                            }
+                        }
+                    }
+                
+        }
+    this.save(1)
+}
     back() {
         this.props.history.push({ pathname: '/positiveProcess' })
     }
     render() {
-        let { processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData} = this.state
+        let { processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData,headEdit,tabKey} = this.state
         this.url = JSON.parse(localStorage.getItem('url'))
         this.tabData = [
-            { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData}/> },
-            { component: <PremixedCoulterMixed productLine={productLine} tagTableData={tagTableData}/> },
-            { component: <PremixedStorageBin productLine={productLine} tagTableData={tagTableData}/> },
-            { component: <PreBuring productLine={productLine} tagTableData={tagTableData}/> },
-            { component: <Crush productLine={productLine} tagTableData={tagTableData}/> },
-            { component: <SecondMix productLine={productLine} tagTableData={tagTableData}/> },
-            { component: <SecondBuring productLine={productLine} tagTableData={tagTableData}/> },
-            { component: <Package productLine={productLine} tagTableData={tagTableData}/> },
-            { component: <WorkShopMaterial tagTableData={tagTableData}/> },
-            { component: <WareHouseMaterial tagTableData={tagTableData}/> },
+            { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData} processId={tabKey} /> },
+            { component: <PremixedCoulterMixed productLine={productLine} tagTableData={tagTableData} processId={tabKey}/> },
+            { component: <PremixedStorageBin productLine={productLine} tagTableData={tagTableData} processId={tabKey}/> },
+            { component: <PreBuring productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
+            { component: <Crush productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
+            { component: <SecondMix productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
+            { component: <SecondBuring productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
+            { component: <Package productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
+            { component: <WorkShopMaterial tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
+            { component: <WareHouseMaterial tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
         ]
 
         return (
             <div>
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='正极成本' menu2='在制品管理' returnDataEntry={this.back} />
                 <div className='rightDiv-content'>
-                    <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis} flagConfirm={this.props.location.editFlag?true:flagConfirm}
-                        lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getPeriods}
+                    <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis} flagConfirm={this.props.location.editFlag?true:flagConfirm} headEdit={headEdit}
+                        lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getPeriods} editFlag={this.props.location.editFlag}
                     />
                     <div>
                         {processData ? <Tabs defaultActiveKey='1' onChange={this.tabChange}>

@@ -117,7 +117,6 @@ class ProcessStatistics extends Component {
                 this.setState({
                     dataSubmit: temp,
                     pagination: { current: res.page ? res.page : 0, total: res.total ? res.total : 0 },
-
                 })
             }
             this.setState({
