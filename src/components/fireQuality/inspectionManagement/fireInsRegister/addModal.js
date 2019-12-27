@@ -54,7 +54,7 @@ class AddModal extends React.Component {
                                      leftDataSource={this.state.leftDataSource}
                                      leftDataSourceChange={this.leftDataSourceChange}/>
                         <div className="addModalDown_scala">
-                            <AddModalLeft leftDataSource={this.state.leftDataSource}/>
+                            <AddModalLeft leftDataSource={this.state.leftDataSource} deleteTableData={this.deleteTableData}/>
                             <Divider type="vertical" className="addModalDown_divider"/>
                             <AddModalRight
                                 indeterminate={this.state.indeterminate}
@@ -93,6 +93,20 @@ class AddModal extends React.Component {
             infos: infos
         })
     }
+
+    deleteTableData = (index) => {
+        var leftDataSource = this.state.leftDataSource;
+        leftDataSource.splice(index-1,1)
+        for (var i = 0; i < leftDataSource.length; i++) {
+            leftDataSource[i].col1 = i+1
+        }
+        this.setState({
+            leftDataSource:leftDataSource
+        })
+
+    }
+
+
 
     /** 检测项目有关的函数*/
     getItem = (processCode, productCode) => {

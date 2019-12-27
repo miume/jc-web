@@ -140,7 +140,6 @@ class PositiveAdd extends Component {
                         this.setState({
                             tagTableData: tagTable.processes,
                             addData: tagTable,
-                            otherMaterial:tagTable.otherMaterials,
                             loading:false,
                         })
                     }

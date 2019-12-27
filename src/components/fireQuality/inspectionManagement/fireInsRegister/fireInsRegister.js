@@ -106,7 +106,7 @@ class FireInsRegister extends Component {
                         col4: e.deptName,
                         col5: e.head.delieryPeople,
                         col6: e.head.checkInTime,
-                        col7: e.comfirmTime,
+                        col7: e.head.comfirmTime,
                     })
                 }
                 this.setState({
