@@ -181,7 +181,10 @@ class PositiveAdd extends Component {
             inputData = e.target.name.split('-'),
             index = inputData[0],    //定位到是第几条数据
             name = inputData[1]  
-        addData.processes[key-1].materials[index][name] =value
+        if (value[value.length - 1] !== '.') {
+            value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
+        }
+        addData.processes[key-1].materials[index]['value'] =value
     }
     save(f) {
         this.setState({
@@ -189,7 +192,7 @@ class PositiveAdd extends Component {
         })
         let flag=(f===1?1:0)
         let {addData}=this.state
-        // console.log(this.state.addData)
+         console.log(this.state.addData)
         axios({
             url: `${this.url.positiveProcessStatis.saveOrCommit}`,
             method: 'post',
@@ -229,7 +232,7 @@ class PositiveAdd extends Component {
                     }
                 
         }
-    this.save(1)
+        this.save(1)
 }
     back() {
         this.props.history.push({ pathname: '/positiveProcess' })
@@ -271,8 +274,8 @@ class PositiveAdd extends Component {
                     </div>
                     <span style={{ bottom: '10px', position: 'absolute', left: '15px' }}><CancleButton /></span>
                     <span style={{ bottom: '0', position: 'absolute', right: '15px' }}>
-                        <SaveButton />
-                        <NewButton name='提交' />
+                    <SaveButton handleSave={this.save} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm}/>
+                    <NewButton name='提交' handleClick={this.submit} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm}/>
                     </span>
                 </div>
             </div>

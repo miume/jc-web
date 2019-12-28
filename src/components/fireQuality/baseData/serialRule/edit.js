@@ -53,7 +53,7 @@ class Edit extends Component{
             width:'10%',
             render:(text,record)=>{
                 return(
-                     <span className='blue' onClick={() => this.handleDelete(record.index)}>删除</span>
+                     <span className={record.flag?'blue':'hide'} onClick={() => this.handleDelete(record.index)}>删除</span>
                 )
             }
         }]
@@ -114,7 +114,8 @@ class Edit extends Component{
            index:dataSource.length+1,
            value:'',
            description:'',
-           enable:false
+           enable:false,
+           flag:true  //用来判断显示不显示删除
        })
        this.setState({
            dataSource:dataSource
@@ -153,8 +154,10 @@ class Edit extends Component{
     //         return
     //     }
     //    }
+        let newData= this.state.dataSource.filter(e=>e.flag===true)
+        console.log(newData)
         this.setState({
-            visible:false
+            visible:false,
         })
         axios({
             url:`${this.props.url.fireMageNumber}/save`,
@@ -165,7 +168,7 @@ class Edit extends Component{
             params:{
                 position:position
             },
-            data:dataSource
+            data:newData
         }).then((data)=>{
             if(data.data.code===0){
                 message.info('操作成功!')
@@ -182,6 +185,7 @@ class Edit extends Component{
         })
     }
     render(){
+    
         let {visible,changeFlag}=this.state,{editflag,detailFlag,record}=this.props
         return(
             <span>
