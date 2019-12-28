@@ -8,61 +8,80 @@ class ImportModal extends Component{
     constructor(props){
         super(props)
         this.state={
-            processCode:undefined,
-            modelCode:undefined,
+            // processCode:undefined,
+            // modelCode:undefined,
             fileList: [],
             testItem:[]
         }
-        this.selectChange=this.selectChange.bind(this);
-        this.getAllByProcessByProdut=this.getAllByProcessByProdut.bind(this);
+        //this.selectChange=this.selectChange.bind(this);
+        //this.getAllByProcessByProdut=this.getAllByProcessByProdut.bind(this);
         this.checkChange=this.checkChange.bind(this)
         this.import=this.import.bind(this);
         this.cancel=this.cancel.bind(this);
+        this.getItems=this.getItems.bind(this);
     }
     componentDidMount() {
         this.props.onRef(this)
+        this.getItems()
     }
     componentWillUnmount() {
         this.setState = () => {
             return;
         }
     }
-    selectChange(value, name) {
-        let {processCode,modelCode}=this.state
-        name=name.props.name
-        this.setState({
-            [name]:value
-        })
-        if(name==='processCode'&&modelCode){
-          let params={
-            processCode:value,
-            productCode:modelCode
-          }
-          this.getAllByProcessByProdut(params)
-        }
-        if(name==='modelCode'&&processCode){
-            let params={
-                processCode:processCode,
-                productCode:value
-              }
-            this.getAllByProcessByProdut(params)
-        }
-    }
-    getAllByProcessByProdut(params){
+       /**获取所有检测项目*/
+    getItems(){
         axios({
-            url:`${this.props.url.fireMageTestItems}/getAllByProcessByProdut`,
+            url:`${this.props.url.fireMageTestItems}/getAll`,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
-            },
-            params
+            }
         }).then(data=>{
             let res=data.data.data
-            this.setState({
-                testItemData:res
-            })
+            if(res){
+                this.setState({
+                    testItemData:res
+                })
+            }
         })
     }
+    // selectChange(value, name) {
+    //     let {processCode,modelCode}=this.state
+    //     name=name.props.name
+    //     this.setState({
+    //         [name]:value
+    //     })
+        // if(name==='processCode'&&modelCode){
+        //   let params={
+        //     processCode:value,
+        //     productCode:modelCode
+        //   }
+        //   this.getAllByProcessByProdut(params)
+        // }
+        // if(name==='modelCode'&&processCode){
+        //     let params={
+        //         processCode:processCode,
+        //         productCode:value
+        //       }
+        //     this.getAllByProcessByProdut(params)
+        // }
+   // }
+    // getAllByProcessByProdut(params){
+    //     axios({
+    //         url:`${this.props.url.fireMageTestItems}/getAllByProcessByProdut`,
+    //         method:'get',
+    //         headers:{
+    //             'Authorization':this.props.url.Authorization
+    //         },
+    //         params
+    //     }).then(data=>{
+    //         let res=data.data.data
+    //         this.setState({
+    //             testItemData:res
+    //         })
+    //     })
+    // }
     checkChange(value){
         this.setState({
             testItem:value
@@ -104,7 +123,10 @@ class ImportModal extends Component{
         }).then(data => {
             let res = data.data.data
             if (res) {
-               message.info(data.data.message)
+               message.info(res)
+            }
+            else{
+                message.info(data.data.message)
             }
             this.cancel()
             this.props.handleVisible(false)
@@ -115,9 +137,8 @@ class ImportModal extends Component{
         this.setState({
             fileList:[],
             testItem:[],
-            processCode:undefined,
-            modelCode:undefined,
-            testItemData:[]
+            // processCode:undefined,
+            // modelCode:undefined,
         })
     }
     render(){
@@ -143,7 +164,7 @@ class ImportModal extends Component{
         };
         return(
             <div >
-                <div className={'fire-ins-data-acq'}>
+                {/* <div className={'fire-ins-data-acq'}>
                     <span>工序 ：</span>
                     <Select onChange={this.selectChange} value={processCode} style={{width:'160px',marginRight:'15px'}} placeholder={'请选择工序'}>
                         {
@@ -164,7 +185,7 @@ class ImportModal extends Component{
                             }):null
                         }
                     </Select>
-                </div>
+                </div> */}
                 <div className={'fire-ins-data-acq'}>请选择绑定检验项目 : </div>
                 <div className={'fireQua-add-check-group fireIns-add-check-group-scroll fire-ins-data-acq'} style={{padding:'10px'}}>
                     <Group onChange={this.checkChange}  value={this.state.testItem} style={{width:'100%'}}>

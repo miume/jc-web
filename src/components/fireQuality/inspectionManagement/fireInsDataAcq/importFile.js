@@ -24,6 +24,7 @@ class ImportFile extends Component{
         })
         this.getModel()
         this.getProcess()
+        // this.child.getItems()
     }
         /**获取工序*/
     getProcess(){

@@ -186,7 +186,7 @@ class ExportModal extends Component {
             testItem:[],
             processCode:undefined,
             modelCode:undefined,
-            testItemData:[],
+            // testItemData:[],
             batches:[],
             date:null
         })
