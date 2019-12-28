@@ -9,7 +9,8 @@ class Edit extends Component{
         super(props)
         this.state={
             visible:false,
-            dataSource:[]
+            dataSource:[],
+            str:''
         }
         this.columns=[{
             title:'序号',
@@ -84,13 +85,17 @@ class Edit extends Component{
                 position:record.position
             }
         }).then(data=>{
-            let res=data.data.data
+            let res=data.data.data,str=''
             if(res){
                 for(let i=0;i<res.length;i++){
                     res[i]['index']=i+1
+                    if(res[i]['enable']===true){
+                        str=`${res[i]['value']}-${res[i]['description']}`
+                    }
                 }
                 this.setState({
-                    dataSource:res
+                    dataSource:res,
+                    str:str
                 })
             }
 
@@ -132,21 +137,23 @@ class Edit extends Component{
     }
     radioChange(record){
         record.enable=true
-         let {dataSource}=this.state
+         let {dataSource,str}=this.state
         for(let i=0;i<dataSource.length;i++){
             if(dataSource[i].index===record.index){
                 dataSource[i]['enable']=true
+                str=`${dataSource[i]['value']}-${dataSource[i]['description']}`
             }
             else{
                 dataSource[i]['enable']=false
             }
         }
         this.setState({
-            dataSource:dataSource
+            dataSource:dataSource,
+            str:str
         })
     }
     handleCreate(){
-       let {dataSource}=this.state,{position}=this.props.record
+       let {dataSource,str}=this.state,{position}=this.props.record
 
     //    for(let i=0;i<dataSource.length;i++){
     //     if(dataSource[i]['value']===undefined||dataSource[i]['value']===''||dataSource[i]['description']===undefined||dataSource[i]['description']===''){
@@ -155,7 +162,6 @@ class Edit extends Component{
     //     }
     //    }
         let newData= this.state.dataSource.filter(e=>e.flag===true)
-        console.log(newData)
         this.setState({
             visible:false,
         })
@@ -166,7 +172,8 @@ class Edit extends Component{
                 'Authorization': this.props.url.Authorization
             },
             params:{
-                position:position
+                position:position,
+                strs:str===''?null:str
             },
             data:newData
         }).then((data)=>{

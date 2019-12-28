@@ -175,6 +175,24 @@ class Detail extends Component{
             return this.columns3
         }
     }
+    /**车间和仓库的界面*/
+    getContent(){
+        return(
+            <div style={{height:'280px',width:'100%',overflowY:'auto'}}>
+                <span className='positive-process-add-workShop'>
+                    {
+                    this.tableData?this.tableData.map((item,index)=>{
+                        return(
+                            <span className='positive-process-add-onLine-font' key={index} style={{padding:'1%'}}>
+                                <span className={'positive-process-add-span'}> {item.materialName}</span> : <span className={'positive-process-add-crush-span'}>{item.value}</span>
+                            </span>
+                        )
+                    }):null
+                    }
+                </span>
+            </div>
+        )
+    }
     detail(){
 
     }

@@ -58,7 +58,7 @@ class OnlineIngredients extends Component{//在线原料
                    {
                         this.dataBottom?this.dataBottom.map(item=>{
                             return(
-                                <span className='positive-process-add-onLine-font' key={item.code}>{item.materialName} (kg) : {item.value}</span>
+                                <span className='positive-process-add-onLine-font' key={item.code}>{item.materialName} (kg) : <span className={'positive-process-add-crush-span'}>{item.value}</span></span>
                             )
                         }):null
                     }

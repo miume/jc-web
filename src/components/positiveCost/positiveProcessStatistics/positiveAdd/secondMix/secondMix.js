@@ -68,13 +68,17 @@ class SecondMix extends Component{//预烧(窑炉)
                         {
                         this.dataBottom?this.dataBottom.map((item,index)=>{
                             return(
-                                <span className='positive-process-add-onLine-font' key={index}>
-                                    {item.materialName} : <Input  name={`${length+index}-${item.materialName}`} onChange={this.inputChange} placeholder='请输入' key={item.code} defaultValue={item.value} style={{width:'150px',marginRight:'20px'}} />
+                                <span key={index} className='positive-process-add-onLine-font'>
+                                    {item.materialName} : &nbsp;
+                                    {
+                                        item.dateType===1?<Input name={`${length+index}-${item.materialName}`} onChange={this.inputChange} placeholder='请输入' key={item.code} defaultValue={item.value} style={{width:'150px',marginRight:'20px'}} />
+                                        : <span className={'positive-process-add-crush-span'}>{item.value}</span>
+                                    }
                                 </span>
                             )
                         }):null
                         }
-                   </span>
+                    </span>
                </div>
             </div>
         )

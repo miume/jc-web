@@ -45,7 +45,7 @@ class ProcessStatisticalAnalysis extends Component{//在制品统计的统计分
         this.getProductLine()
     }
     componentWillUnmount(){
-        this.setState = (state,callback)=>{
+        this.setState = ()=>{
         return;
         };
       }
