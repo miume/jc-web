@@ -34,14 +34,33 @@ class ExportModal extends Component {
         this.export = this.export.bind(this);
         this.getAllByProcessByProdut = this.getAllByProcessByProdut.bind(this);
         this.cancel=this.cancel.bind(this);
+        this.getItems=this.getItems.bind(this);
     }
     componentDidMount() {
         this.props.onRef(this)
+        this.getItems()
     }
     componentWillUnmount() {
         this.setState = () => {
             return;
         }
+    }
+    /**获取所有检测项目*/
+    getItems(){
+        axios({
+            url:`${this.props.url.fireMageTestItems}/getAll`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    testItemData:res
+                })
+            }
+        })
     }
     selectChange(value, name) {
         let { processCode, modelCode } = this.state
@@ -49,20 +68,20 @@ class ExportModal extends Component {
         this.setState({
             [name]: value
         })
-        if (name === 'processCode' && modelCode) {
-            let params = {
-                processCode: value,
-                productCode: modelCode
-            }
-            this.getAllByProcessByProdut(params)
-        }
-        if (name === 'modelCode' && processCode) {
-            let params = {
-                processCode: processCode,
-                productCode: value
-            }
-            this.getAllByProcessByProdut(params)
-        }
+        // if (name === 'processCode' && modelCode) {
+        //     let params = {
+        //         processCode: value,
+        //         productCode: modelCode
+        //     }
+        //     this.getAllByProcessByProdut(params)
+        // }
+        // if (name === 'modelCode' && processCode) {
+        //     let params = {
+        //         processCode: processCode,
+        //         productCode: value
+        //     }
+        //     this.getAllByProcessByProdut(params)
+        // }
     }
     getAllByProcessByProdut(params) {
         axios({
@@ -89,7 +108,7 @@ class ExportModal extends Component {
             date: dateString
         })
     }
-    /**根据日期得到表格数据*/
+    /**根据日期，产品型号，工序得到表格数据*/
     confirm() {
         let { processCode, modelCode, date } = this.state,
             params = {
@@ -97,10 +116,10 @@ class ExportModal extends Component {
                 productCode: modelCode,
                 startTime: date
             }
-        if (processCode === undefined || processCode === '' || modelCode === undefined || modelCode === '' || date === '' || date === undefined) {
-            message.error('信息选择不完整!')
-            return
-        }
+        // if (processCode === undefined || processCode === '' || modelCode === undefined || modelCode === '' || date === '' || date === undefined) {
+        //     message.error('信息选择不完整!')
+        //     return
+        // }
         axios({
             url: this.props.url.dateConllection.getByProcessByProduct,
             method: 'get',
@@ -206,8 +225,8 @@ class ExportModal extends Component {
                     <NewButton name='确定' handleClick={this.confirm} />
                 </div>
                 <div className={'fire-ins-data-acq'}>检验项目：</div>
-                <div className={'fireIns-add-display fire-ins-data-acq'}>
-                    <div className={'fireIns-add-check-group fireIns-add-check-group-width1'}>
+                <div className={'fireIns-add-display fire-ins-data-acq '}>
+                    <div className={'fireIns-add-check-group fireIns-add-check-group-width1 fireIns-add-check-group-scroll'}>
                         <Group onChange={this.checkChange} value={this.state.testItem} style={{width:'100%'}}>
                             {
                                 testItemData ? testItemData.map((item, index) => {

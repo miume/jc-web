@@ -33,32 +33,147 @@ class Detail extends Component{
             title:'序号',
             dataIndex:'index',
             key:'index',
-
+            width:'10%'
         },{
             title:'物料种类',
-            dataIndex:'materiaType',
-            key:'materiaType',
+            dataIndex:'materialName',
+            key:'materialName',
+            width:'30%'
         },{
-            title:'领料量(kg)',
-            dataIndex:'pick',
-            key:'pick',
+            title:'产线',
+            dataIndex:'productLine',
+            key:'productLine',
+            width:'30%'
         },{
-            title:'消耗量(kg)',
-            dataIndex:'consume',
-            key:'consume',
+            title:'领料量',
+            dataIndex:'receive',
+            key:'receive',
+            width:'25%'
+        },]
+        this.columns1=[{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            width:'10%'
+        },{
+            title:'物料类型',
+            dataIndex:'materialName',
+            key:'materialName',
+            width:'20%'
+        },{
+            title:'产线',
+            dataIndex:'productLine',
+            key:'productLine',
+            width:'20%'
+        },{
+            title:'已混量(kg)',
+            dataIndex:'mix',
+            key:'mix',
+            width:'20%'
         },{
             title:'结存量(kg)',
             dataIndex:'balance',
             key:'balance',
-        },]
+            width:'20%'
+        }]
+        this.columns2=[{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            width:'10%'
+        },{
+            title:'物料类型',
+            dataIndex:'materialName',
+            key:'materialName',
+            width:'20%'
+        },{
+            title:'产线',
+            dataIndex:'productLine',
+            key:'productLine',
+            width:'20%'
+        },{
+            title:'进料量(kg)',
+            dataIndex:'inMat',
+            key:'inMat',
+            width:'20%'
+        },{
+            title:'结存量(kg)',
+            dataIndex:'balance',
+            key:'balance',
+            width:'20%'
+        }]
+   
+        this.columns3=[{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            width:'10%'
+        },{
+            title:'物料类型',
+            dataIndex:'materialName',
+            key:'materialName',
+            width:'20%'
+        },{
+            title:'产线',
+            dataIndex:'productLine',
+            key:'productLine',
+            width:'20%'
+        },{
+            title:'入炉排数',
+            dataIndex:'intoFurnace',
+            key:'intoFurnace',
+            width:'20%'
+        },{
+            title:'出炉排数',
+            dataIndex:'outFurnace',
+            key:'outFurnace',
+            width:'20%'
+        }]
+       
         this.showModal=this.showModal.bind(this);
         this.detail=this.detail.bind(this);
         this.back=this.back.bind(this);
+        this.getColumns=this.getColumns.bind(this);
+        this.getFooter=this.getFooter.bind(this)
     }
     showModal(){
         this.setState({
             visible:true
         })
+    }
+    getColumns(id){
+        if(id===1){//在线原料
+            return this.columns
+        }
+        else if(id===2||id===8){//预混(犁刀混),包装
+            return this.columns1
+        }
+        else if(id===3||id===5||id===6){//预混(暂存仓),粉碎,二混
+            return this.columns2
+        }
+        else if(id===4||id===7){//预烧,二烧
+            return this.columns3
+        }
+    }
+    getFooter(id){
+        if(id===1){//在线原料
+            return (
+                <span style={{float:'right'}}> 
+                    <span >总领料量 : 10kg</span>
+                    <span >总消耗量 : 10kg</span>
+                    <span >总结存量 : 10kg</span>
+                </span>
+            )
+        }
+        else if(id===2||id===8){//预混(犁刀混),包装
+            return this.columns1
+        }
+        else if(id===3||id===5||id===6){//预混(暂存仓),粉碎,二混
+            return this.columns2
+        }
+        else if(id===4||id===7){//预烧,二烧
+            return this.columns3
+        }
     }
     detail(){
 
@@ -82,7 +197,7 @@ class Detail extends Component{
                     <CancleButton key='cancel' flag={true} handleCancel={this.back}/>
                 ]}>
                     <div className='process-statisDone-detail'>
-                        <span >周期 : {this.props.record.periodType}</span>
+                        <span >周期 : {this.props.record.periodName}</span>
                         <span>开始时间 : {this.props.record.beginTime}</span>
                         <span>结束时间 : {this.props.record.endTime}</span>
                     </div>
@@ -95,7 +210,7 @@ class Detail extends Component{
                     <Table
                     dataSource={this.state.data}
                     rowKey={record=>record.index}
-                    columns={this.columns}
+                    columns={this.getColumns()}
                     footer={() => {
                         return(
                             <div className='process-statisDone-detail1'>

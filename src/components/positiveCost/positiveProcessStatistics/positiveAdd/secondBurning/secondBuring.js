@@ -29,6 +29,7 @@ class SecondBuring extends Component{//预烧(窑炉)
             key:'outFurnace',
             width:'20%'
         }]
+        this.inputChange=this.inputChange.bind(this)
     }
     inputChange(e){
         this.props.inputChange(e,this.props.processId)

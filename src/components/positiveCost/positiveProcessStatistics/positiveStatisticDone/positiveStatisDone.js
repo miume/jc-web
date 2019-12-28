@@ -11,20 +11,20 @@ class PositiveStatisticDone extends Component{//已统计
             key:'index'
         },{
             title:'周期类型',
-            dataIndex:'periodType',
-            key:'periodType'
+            dataIndex:'periodName',
+            key:'periodName'
         },{
             title:'期数',
-            dataIndex:'period',
-            key:'period'
+            dataIndex:'head.periods',
+            key:'head.periods'
         },{
             title:'开始时间',
-            dataIndex:'beginTime',
-            key:'beginTime'
+            dataIndex:'head.beginTime',
+            key:'head.beginTime'
         },{
             title:'结束时间',
-            dataIndex:'endTime',
-            key:'endTime'
+            dataIndex:'head.endTime',
+            key:'head.endTime'
         },{
             title:'工序',
             dataIndex:'process',

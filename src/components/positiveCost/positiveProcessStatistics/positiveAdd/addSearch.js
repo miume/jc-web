@@ -163,7 +163,7 @@ class Search extends Component {
                 <span>期数 : </span>&nbsp;<Input value={inputPeriod} placeholder='期数' style={{width:100,marginRight:'20px'}}  disabled={true}/>
                 <DatePicker onChange={this.startChange} value={startDate?moment(startDate):undefined} placeholder='开始时间' style={{ width: '180px', marginRight: '10px' }}  disabled={flagConfirm}/>
                 <DatePicker onChange={this.endChange} value={endDate ? moment(endDate) : undefined} placeholder='结束时间' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}/>
-                <NewButton name='确定' handleClick={this.confirm} />
+                <NewButton name='确定' handleClick={this.confirm} disabled={flagConfirm}/>
             </div>
         )
     }

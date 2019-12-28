@@ -297,6 +297,7 @@ class Detail extends Component{
         this.showModal=this.showModal.bind(this);
         this.back=this.back.bind(this);
         this.getDetail=this.getDetail.bind(this)
+        this.getColumns=this.getColumns.bind(this);
     }
     getDetail(){
         axios({
