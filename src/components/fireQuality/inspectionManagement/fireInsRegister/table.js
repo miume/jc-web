@@ -28,12 +28,15 @@ class RegisterTable extends React.Component {
                 var value = "";
                 if (text.length > 20){
                     value = text.substring(0,20)
+                    return(
+                        <span title={text}>{value + " ..."}</span>
+                    )
                 }else{
                     value = text;
+                    return(
+                        <span>{value}</span>
+                    )
                 }
-                return(
-                    <span title={text}>{value + " ..."}</span>
-                )
             })
         },{
             title:'送检部门',
