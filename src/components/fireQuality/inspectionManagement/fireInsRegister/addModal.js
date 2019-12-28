@@ -159,6 +159,10 @@ class AddModal extends React.Component {
                     checkedList: checkedList
                 })
             }else{
+                this.setState({
+                    // plainOptions: dataSource,
+                    checkedList: []
+                })
                 message.info("该工序、产品型号/厂家下的检测项目为空")
             }
         }).catch(()=>{

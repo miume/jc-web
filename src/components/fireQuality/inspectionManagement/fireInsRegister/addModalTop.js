@@ -85,6 +85,14 @@ class AddModalTop extends React.Component {
                 var processCode = this.state.processCode;
                 var productCode = this.state.productCode;
                 for (let i = 0; i < dataSource.length; i++) {
+                    if (dataSource[i].defaultValue === null){
+                        dataSource[i].defaultValue = "";
+                    }
+                    if (dataSource[i].position === "10") {
+                        dataSource[i].defaultValue = "";
+                    }
+
+
                     batchNumber.push(dataSource[i].defaultValue);
                     if (i < dataSource.length - 1){
                         batchItems[itemIndex[i]] = dataSource[i].defaultValue
@@ -277,7 +285,7 @@ class AddModalTop extends React.Component {
         if (data && data.length) {
             return (
                 data.map((e, index) =>
-                    <Option name={code[index]}  key={index} value={e + "-" + ruleIndex}>{e}</Option>
+                    <Option name={code[index]}  key={index} value={e + "-" + ruleIndex}>{e?e:'空'}</Option>
                 )
             )
         }
@@ -288,7 +296,8 @@ class AddModalTop extends React.Component {
         const code = option.props.name;
 
         const index = parseInt(data.split("-")[1]);
-        const value = data.split("-")[0]
+        const value = data.split("-")[0]?data.split("-")[0]:'';
+        console.log(value)
         var batchNumber = this.state.batchNumber;
         var batchItems = this.state.batchItems;
         const itemIndex = this.state.itemIndex;

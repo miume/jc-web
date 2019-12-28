@@ -44,7 +44,7 @@ class DetailModal extends Component {
                         <Divider/>
                         <div>检测项目：</div>
                         <div className="detailModal_down">
-                            <Checkbox.Group value={this.state.checkedList}>
+                            <Checkbox.Group style={{width:"100%"}} value={this.state.checkedList}>
                                 {
                                     this.state.plainOptions ? this.state.plainOptions.map(p =>
                                         <Col key={p.code} span={8}>
