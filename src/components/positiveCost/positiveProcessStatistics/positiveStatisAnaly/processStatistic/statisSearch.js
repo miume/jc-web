@@ -9,8 +9,14 @@ const {Option}=Select
     render(){
         return(
             <div className='searchCell'>
-                <Select value={1} style={{width:'120px',marginRight:'10px'}}>
-                    <Option value={1}>日</Option>
+                <Select style={{width:'120px',marginRight:'10px'}}>
+                    {
+                        this.props.staticPeriod?this.props.staticPeriod.map(item=>{
+                            return(
+                                <Option key={item.code} value={item.code}>{item.name}</Option>
+                            )
+                        }):null
+                    }
                 </Select>
                 <Select 
                     style={{width:'120px',marginRight:'10px'}}
@@ -18,8 +24,6 @@ const {Option}=Select
                     showSearch 
                     optionFilterProp="children"  
                     onChange={this.props.onChange}
-                    onFocus={this.props.onFocus}
-                    onBlur={this.props.onBlur}
                     onSearch={this.props.onSearch}
                     filterOption={(input, option) =>
                         // console.log(input,option)

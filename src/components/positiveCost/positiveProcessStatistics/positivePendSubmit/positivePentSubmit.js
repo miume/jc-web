@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
-import {Table,Spin,Popconfirm,Divider} from 'antd'
-
+import {Table,Spin,Popconfirm,Divider,message} from 'antd'
+import axios from 'axios'
 
 class PositivePendSubmit extends Component{//待提交
     constructor(props){
@@ -71,7 +71,21 @@ class PositivePendSubmit extends Component{//待提交
         })
     }
     handleDelete(id){
-
+        axios({
+            url:`${this.props.url.positiveProcessStatis.delete}`,
+            method:'delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                id:id
+            }
+        }).then((data)=>{
+            message.info(data.data.message)
+            this.props.getPendSubmit(this.props.head,this.pagination)
+        }).catch(()=>{
+            message.info('删除失败!')
+        })
     }
     handleTableChange(pagination){
         this.pagination=pagination

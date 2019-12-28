@@ -222,9 +222,9 @@ class PositiveAdd extends Component {
         let {addData}=this.state
         let data=addData.processes
         for(let i=0;i<data.length;i++){//第一层是遍历哪个tag
-                    for(let j=0;j<data[i].materialDetails.length;j++){
-                        for(let key in data[i].materialDetails[j]){
-                            if(data[i].materials[j][key]===undefined||data[i].materialDetails[j][key]===null){
+                    for(let j=0;j<data[i].materials.length;j++){
+                        for(let key in data[i].materials[j]){
+                            if(data[i].materials[j][key]===undefined||data[i].materials[j][key]===null){
                                 message.info('信息填写不完整!')
                                 return
                             }

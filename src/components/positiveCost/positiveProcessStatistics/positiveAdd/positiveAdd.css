@@ -29,3 +29,19 @@
     width:100px;
     text-align:right
 }
+.positive-process-add-span1{
+    display:inline-block;
+    width:170px;
+    text-align:right
+}
+.positive-process-add-crush-span{
+    height: 35px;
+    /* padding: 2px auto; */
+    line-height: 35px;
+    width: 150px;
+    border: 1px solid #e4e4e4;
+    display: inline-block;
+    margin-right: 20px; 
+    border-radius: 4px;
+    text-align: center;
+}

@@ -14,7 +14,7 @@ class PositiveProcessStatistics extends Component{
             loading:false,
             loadingStatis:false,
             loadingSubmit:false,
-            head:{},
+            head:{},// 主界面选择的时间，周期等
             tabKey:'1'
         }
         this.getPeriod=this.getPeriod.bind(this);
@@ -200,14 +200,19 @@ class PositiveProcessStatistics extends Component{
         })
     }
     statisticalAnalysis(){
-        this.props.history.push({pathname:'/positiveStatistic'})
+        let {line,periodStatis}=this.state
+        this.props.history.push({
+            pathname:'/positiveStatistic',
+            periodStatis: periodStatis,
+            line: line
+        })
     }
     judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
         return flag.length?true:false
     }
     render(){
-        let {periodStatis,periodCode,time,length,line,lineCode,dataStatistic,dataSubmit}=this.state
+        let {periodStatis,periodCode,time,length,line,lineCode,dataStatistic,dataSubmit,head}=this.state
         const current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
@@ -222,8 +227,8 @@ class PositiveProcessStatistics extends Component{
                     <div className='clear'></div>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         <TabPane tab='待提交' key='1'>
-                            <PositivePendSubmit history={this.props.history} loadingSubmit={this.state.loadingSubmit} 
-                                url={this.url} getPagination={this.getPagination} pagination={this.state.pagination}
+                            <PositivePendSubmit history={this.props.history} loadingSubmit={this.state.loadingSubmit}  head={head}
+                                url={this.url} getPagination={this.getPagination} pagination={this.state.pagination} getPendSubmit={this.getPendSubmit}
                                 handleTableChange={this.handleTableChange} dataSubmit={dataSubmit} line={line} periodStatis={periodStatis}
                             />
                         </TabPane>

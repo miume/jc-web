@@ -62,14 +62,14 @@ class ProductLineStatis extends Component{//产品线统计
         let {startTime}=this.state
         let periodId=this.state.periodId?this.state.periodId:this.props.periodCode
         axios({
-            url:`${this.props.url.precursorGoodIn.getAnalysisLine}`,
+            url:`${this.props.url. positiveProcessStatis.statisticLine}`,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
             },
             params:{
                 periodId:periodId,
-                startTime:startTime
+                periods:startTime
             }
         }).then((data)=>{
             let res=data.data.data
