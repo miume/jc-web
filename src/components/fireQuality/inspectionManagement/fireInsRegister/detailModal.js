@@ -39,7 +39,9 @@ class DetailModal extends Component {
                         <div className="detailModal_top">
                             <span className="detailModal_top_maxSpan">{`样品编号：${this.state.batchNumber}`}</span>
                             <span className="detailModal_top_minSpan">{`送检部门：${this.state.deptName}`}</span>
-                            <span className="detailModal_top_minSpan">{`送检人：${this.state.username}`}</span>
+                        </div>
+                        <div className="detailModal_middle">
+                            <span>{`备注：${this.state.username}`}</span>
                         </div>
                         <Divider/>
                         <div>检测项目：</div>

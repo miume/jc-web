@@ -49,11 +49,6 @@ class SamRecTable extends React.Component {
             dataIndex:'col4',
             width: '8%'
         },{
-            title:'送检人',
-            key:'col5',
-            dataIndex:'col5',
-            width: '7%'
-        },{
             title:'登记时间',
             key:'col6',
             dataIndex:'col6',
@@ -90,6 +85,25 @@ class SamRecTable extends React.Component {
             key:'col8',
             dataIndex:'col8',
             width: '10%',
+            render: ((text) => {
+                var value = "";
+                if (text && text.length > 10){
+                    value = text.substring(0,10)
+                    return(
+                        <span title={text}>{value + " ..."}</span>
+                    )
+                }else{
+                    value = text;
+                    return(
+                        <span>{value}</span>
+                    )
+                }
+            })
+        },{
+            title:'备注',
+            key:'col5',
+            dataIndex:'col5',
+            width: '7%',
             render: ((text) => {
                 var value = "";
                 if (text && text.length > 10){

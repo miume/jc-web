@@ -6,6 +6,7 @@ import axios from "axios";
 
 
 const {Option} = Select;
+const { TextArea } = Input;
 class AddModalRight extends React.Component {
     constructor(props) {
         super(props);
@@ -53,9 +54,8 @@ class AddModalRight extends React.Component {
                 <div className="addModalRight_down">
                     <span className="addModalRight_down_span">送检部门：</span>
                     {this.renderSelect()}
-                    <span className="addModalRight_down_span">送检人：</span>
-                    <Input key="input" value={this.props.username} placeholder="请输入送检人名字" onChange={this.inputChange} className="addModalRight_down_input"/>
-
+                    <span className="addModalRight_down_span_demo">备注：</span>
+                    <TextArea rows={2} key="input" value={this.props.username} placeholder="备注" onChange={this.inputChange} className="addModalRight_down_input"/>
                 </div>
             </div>
         );

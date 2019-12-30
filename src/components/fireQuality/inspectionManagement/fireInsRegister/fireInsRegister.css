@@ -76,7 +76,7 @@
     margin-top: 0 !important;
 }
 .addModalRight_middle{
-    height: 75%;
+    height: 65%;
     width: 100%;
     overflow: auto;
 }
@@ -87,22 +87,28 @@
 .addModalRight_down {
     display: flex;
     width: 100%;
-    height: 15%;
+    height: 25%;
     padding-top: 10px;
 }
 .addModalRight_down_span {
     padding-left: 10px;
     padding-top: 5px;
     width: 15%;
-    height: 100%;
+    height: 30%;
+}
+.addModalRight_down_span_demo{
+    padding-left: 40px;
+    padding-top: 5px;
+    width: 15%;
+    height: 30%;
 }
 .addModalRight_down_select {
     width: 35% !important;
-    height: 80%;
+    height: 30%;
 }
 .addModalRight_down_input{
     width: 35% !important;
-    height: 80%;
+    height: 80% !important;
 }
 
 
@@ -111,10 +117,23 @@
 }
 .detailModal_top {
     width: 100%;
-    height: 5%;
+    height: 10%;
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+.detailModal_middle{
+    width: 100%;
+    height: 10%;
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*justify-content: center;*/
+}
+.detailModal_middle span{
+    padding-top: 10px !important;
+    padding-left: 75px;
+    width: 100%;
+    height: 100%;
 }
 .detailModal_top_maxSpan {
     width: 54% !important;
@@ -124,7 +143,7 @@
 }
 .detailModal_down {
     width: 100%;
-    height: 75%;
+    height: 55%;
     padding-top: 10px;
     overflow: auto;
 

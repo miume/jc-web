@@ -44,11 +44,6 @@ class RegisterTable extends React.Component {
             dataIndex:'col4',
             width: '10%'
         },{
-            title:'送检人',
-            key:'col5',
-            dataIndex:'col5',
-            width: '10%'
-        },{
             title:'登记时间',
             key:'col6',
             dataIndex:'col6',
@@ -63,6 +58,25 @@ class RegisterTable extends React.Component {
             key:'col7',
             dataIndex:'col7',
             width: '12%'
+        },{
+            title:'备注',
+            key:'col5',
+            dataIndex:'col5',
+            width: '10%',
+            render:((text,record) => {
+                var value = "";
+                if (text.length > 20){
+                    value = text.substring(0,20)
+                    return(
+                        <span title={text}>{value + " ..."}</span>
+                    )
+                }else{
+                    value = text;
+                    return(
+                        <span>{value}</span>
+                    )
+                }
+            })
         },{
             title:'操作',
             key:'code',
