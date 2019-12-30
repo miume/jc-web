@@ -69,6 +69,7 @@ class FireSerialTest extends Component{
         this.reset=this.reset.bind(this);
         this.getTableData=this.getTableData.bind(this)
         this.handleDelete=this.handleDelete.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -177,6 +178,10 @@ class FireSerialTest extends Component{
         })
         this.getTableData('')
     }
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.getTableData()
+    }
     back(){
         this.props.history.push({pathname:"/fireBasicData"})
     }
@@ -199,7 +204,8 @@ class FireSerialTest extends Component{
                                    reset={this.reset}
                                    flag={true}
                     />
-                    <Table dataSource={this.state.dataSource} rowKey={record=>record.code} rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} bordered size={'small'}/>
+                    <Table dataSource={this.state.dataSource} rowKey={record=>record.code} onChange={this.handleTableChange}
+                    rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} bordered size={'small'}/>
                 </Spin>
             </div>
         )

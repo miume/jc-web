@@ -188,7 +188,8 @@ class ExportModal extends Component {
             modelCode:undefined,
             // testItemData:[],
             batches:[],
-            date:null
+            date:null,
+            selectedRowKeys:[]
         })
     }
     render() {

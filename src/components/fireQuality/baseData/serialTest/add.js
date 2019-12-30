@@ -180,9 +180,6 @@ class Add extends Component{
             message.error('信息填写不完整!')
             return
         }
-        this.setState({
-            visible:false
-        })
         let params=this.transformParams()
         axios({
             url:showFlag?this.props.url.fireMageLabel:this.props.url.fireMageBatchItems,
@@ -196,6 +193,7 @@ class Add extends Component{
             if(data.data.code===0){
                 message.info('操作成功！')
                 this.props.getTableData()
+                this.cancel()
             }
             else{
                 message.error('操作失败，请联系管理员!')

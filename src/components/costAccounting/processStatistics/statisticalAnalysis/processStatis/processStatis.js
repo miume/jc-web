@@ -62,6 +62,9 @@ class ProcessStatis extends Component{//工序统计
     }
 
     getTableData(){
+        this.setState({
+            loading:true
+        })
        let {startTime}=this.state
        let periodId=this.state.periodId?this.state.periodId:this.props.periodCode
         axios({
@@ -85,6 +88,9 @@ class ProcessStatis extends Component{//工序统计
                     data:res.details
                 })
             }
+            this.setState({
+                loading:false
+            })
         })
     }
  

@@ -27,19 +27,19 @@ class PositiveStatisticDone extends Component{//已统计
             key:'head.endTime'
         },{
             title:'工序',
-            dataIndex:'process',
-            key:'process'
+            dataIndex:'processName',
+            key:'processName'
         },{
             title:'产线',
-            dataIndex:'productLine',
-            key:'productLine'
+            dataIndex:'lineName',
+            key:'lineName'
         },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
             render:(text,record)=>{
                 return(
-                    <Detail record={record}/>
+                    <Detail record={record} url={this.props.url}/>
                 )
             }
         }]
@@ -55,18 +55,18 @@ class PositiveStatisticDone extends Component{//已统计
     }
     handleTableChange(pagination){
         this.pagination=pagination
-        this.pagination.handleTableChange(pagination)
+        this.props.handleTableChange(pagination)
     }
     render(){
         return(
             <div>
                 <Spin spinning={this.props.loadingStatis}>
                     <Table
-                    rowKey={record=>record.index}
+                    rowKey={record=>record.totals.code}
                     dataSource={this.props.dataStatistic}
                     columns={this.columns}
                     onChange={this.handleTableChange}
-                    pagination={this.pagination}
+                    pagination={this.props.pagination}
                     size='small'
                     bordered/>
                 </Spin>

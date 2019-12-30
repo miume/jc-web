@@ -59,6 +59,9 @@ class ProductLineStatis extends Component{//产品线统计
     }
 
     getTableData(){
+        this.setState({
+            loading:true
+        })
         let {startTime}=this.state
         let periodId=this.state.periodId?this.state.periodId:this.props.periodCode
         axios({
@@ -81,6 +84,9 @@ class ProductLineStatis extends Component{//产品线统计
                     data:res.details
                 })
             }
+            this.setState({
+                loading:false
+            })
         })
     }
     selectChange(value){
@@ -94,7 +100,6 @@ class ProductLineStatis extends Component{//产品线统计
 
     }
     timeChange(value){
-        console.log(value)
         this.setState({
             startTime:value
         })
@@ -102,8 +107,7 @@ class ProductLineStatis extends Component{//产品线统计
     render(){
         let time=this.props.time?this.props.time:null
         return(
-            <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                <Spin spinning={this.state.loading} >
                     <Search flag={true} periodCode={this.state.periodId?this.state.periodId:this.props.periodCode}  staticPeriod={this.props.staticPeriod} time={this.state.time?this.state.time:time} selectChange={this.selectChange}  confirm={this.getTableData} onSearch={this.onSearch} timeChange={this.timeChange}/>
                     <div className='clear'></div>
                     <Table
@@ -113,7 +117,6 @@ class ProductLineStatis extends Component{//产品线统计
                     size='small'
                     bordered/>
                 </Spin>
-            </div>
         );
     }
 }

@@ -1,12 +1,12 @@
 import React,{Component} from 'react'
-import {Table} from 'antd'
+import {Table,Spin} from 'antd'
 import Search from './statisSearch'
 import axios from 'axios'
 class PositiveProcess extends Component{
     constructor(props){
         super(props);
         this.state={
-
+            loading:false
         }
         this.columns=[{
             title:'序号',
@@ -81,14 +81,38 @@ class PositiveProcess extends Component{
             }
         }]
         this.onChange=this.onChange.bind(this)
-        this.onSearch=this.onSearch.bind(this)
         this.getTableData=this.getTableData.bind(this);
         this.selectChange=this.selectChange.bind(this);
+        this.getStartTime=this.getStartTime.bind(this);
+    }
+    componentDidMount(){
+        let {periodCode,lineCode}=this.props
+        this.setState({
+            periodCode:periodCode,
+            lineCode:lineCode
+        })
+        this.getStartTime(periodCode)
+    }
+      /**根据统计周期code查询所有开始时间*/
+      getStartTime(periodCode) {
+        axios({
+            url: `${this.props.url.positiveProcessStatis.getDateByPeriodId}?periodId=${periodCode}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            if(res){
+                this.setState({
+                    timeData:res
+                })
+            }
+        })
     }
     /**按工序统计*/
     getTableData(){
-        let {startTime}=this.state
-        let periodId=this.state.periodId?this.state.periodId:this.props.periodCode
+        let {periodId,periods,lineId}=this.state
          axios({
              url:`${this.props.url. positiveProcessStatis.processLine}`,
              method:'get',
@@ -96,10 +120,9 @@ class PositiveProcess extends Component{
                  'Authorization':this.props.url.Authorization
              },
              params:{
-                 // ...params,
                  periodId:periodId,
-                 periods:startTime,
-                //  lineId:
+                 periods:periods,
+                 lineId:lineId
              }
          }).then((data)=>{
              let res=data.data.data
@@ -113,23 +136,32 @@ class PositiveProcess extends Component{
              }
          })
      }
-     selectChange(value){
+     /**周期类型,产线变化*/
+     selectChange(value,name){
+         name=name.props.name
+         console.log(name)
         this.setState({
-            periodId:value,
+            [name]:value
         })
     }
-    onChange(value) {
-        console.log(`selected ${value}`);
+    onChange(value,name) {
+        let {periodCode}=this.state
+        name=name.props.name
+        console.log(name)
+        this.setState({
+            periods:name
+        })
+        this.getStartTime(periodCode)
       }
-      
-    onSearch(val) {
-        console.log('search:', val);
-      }
+
+  
     render(){
+        let {line,staticPeriod}=this.props,{periodCode,lineCode,loading,timeData}=this.state
         return(
-            <div>
-                <Search lineFlag={true} staticPeriod={this.props.staticPeriod} selectChange={this.selectChange}
-                        onChange={this.onChange} onSearch={this.onSearch}
+            <Spin spinning={loading}>
+                <Search lineFlag={true} staticPeriod={staticPeriod} selectChange={this.selectChange} 
+                        line={line} onChange={this.onChange} 
+                        periodCode={periodCode} lineCode={lineCode} timeData={timeData}
                 />
                 <div className='clear'></div>
                 <Table 
@@ -137,7 +169,7 @@ class PositiveProcess extends Component{
                 columns={this.columns}
                 size='small'
                 bordered/>
-            </div>
+            </Spin>
         )
     }
 }
