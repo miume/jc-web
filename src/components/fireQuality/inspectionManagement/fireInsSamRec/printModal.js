@@ -84,7 +84,7 @@ class PrintModal extends Component {
                             bordered
                             size={'small'}
                             pagination={false}
-                            scroll={{y: 650}}
+                            scroll={{y: 450}}
                         />
                     </div>
 
