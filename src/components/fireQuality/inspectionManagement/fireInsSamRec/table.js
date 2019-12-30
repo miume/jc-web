@@ -28,11 +28,11 @@ class SamRecTable extends React.Component {
             title:'检测项目',
             key:'col3',
             dataIndex:'col3',
-            width: '15%',
+            width: '22%',
             render:((text) => {
                 var value = "";
-                if (text.length > 20){
-                    value = text.substring(0,20)
+                if (text.length > 25){
+                    value = text.substring(0,25)
                     return(
                         <span title={text}>{value + " ..."}</span>
                     )
@@ -48,11 +48,6 @@ class SamRecTable extends React.Component {
             key:'col4',
             dataIndex:'col4',
             width: '8%'
-        },{
-            title:'送检人',
-            key:'col5',
-            dataIndex:'col5',
-            width: '7%'
         },{
             title:'登记时间',
             key:'col6',

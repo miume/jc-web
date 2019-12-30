@@ -18,12 +18,68 @@ class RegisterTable extends React.Component {
             title:'批号',
             key:'col2',
             dataIndex:'col2',
-            width: '24%'
+            width: '20%'
         },{
             title:'检测项目',
             key:'col3',
             dataIndex:'col3',
-            width: '20%',
+            width: '27%',
+            render:((text,record) => {
+                var value = "";
+                if (text.length > 30){
+                    value = text.substring(0,30)
+                    return(
+                        <span title={text}>{value + " ..."}</span>
+                    )
+                }else{
+                    value = text;
+                    return(
+                        <span>{value}</span>
+                    )
+                }
+            })
+        },{
+            title:'送检部门',
+            key:'col4',
+            dataIndex:'col4',
+            width: '8%'
+        },{
+            title:'登记时间',
+            key:'col6',
+            dataIndex:'col6',
+            width: '10%',
+            render:((text,record) => {
+                if (text){
+                    return(
+                        <span title={text}>{text.split(" ")[0] + " ..."}</span>
+                    )
+                }else{
+                    return(
+                        <span>{text}</span>
+                    )
+                }
+            })
+        },{
+            title:'确认时间',
+            key:'col7',
+            dataIndex:'col7',
+            width: '10%',
+            render:((text,record) => {
+                if (text){
+                    return(
+                        <span title={text}>{text.split(" ")[0] + " ..."}</span>
+                    )
+                }else{
+                    return(
+                        <span>{text}</span>
+                    )
+                }
+            })
+        },{
+            title:'备注',
+            key:'col5',
+            dataIndex:'col5',
+            width: '10%',
             render:((text,record) => {
                 var value = "";
                 if (text.length > 20){
@@ -39,35 +95,10 @@ class RegisterTable extends React.Component {
                 }
             })
         },{
-            title:'送检部门',
-            key:'col4',
-            dataIndex:'col4',
-            width: '10%'
-        },{
-            title:'送检人',
-            key:'col5',
-            dataIndex:'col5',
-            width: '10%'
-        },{
-            title:'登记时间',
-            key:'col6',
-            dataIndex:'col6',
-            width: '12%',
-            render:((text,record) => {
-                return(
-                    <span title={text}>{text.split(" ")[0] + " ..."}</span>
-                )
-            })
-        },{
-            title:'确认时间',
-            key:'col7',
-            dataIndex:'col7',
-            width: '12%'
-        },{
             title:'操作',
             key:'code',
             dataIndex:'code',
-            width: '7%',
+            width: '10%',
             render: ((text,record) => {
                 return (
                     <span>
