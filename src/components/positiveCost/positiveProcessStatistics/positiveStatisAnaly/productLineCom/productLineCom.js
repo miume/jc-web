@@ -1,7 +1,8 @@
 import React,{Component} from 'react'
 import Search from '../processCompare/compareSearch'
 import ReactEcharts from 'echarts-for-react'
-import {Spin} from 'antd'
+import {Spin,message} from 'antd'
+import axios from 'axios'
 import '../../../../costAccounting/processStatistics/process.css'
 class ProductLineCom extends Component{
     constructor(props){
@@ -10,23 +11,68 @@ class ProductLineCom extends Component{
             loading:false
         }
         this.handleConfirm=this.handleConfirm.bind(this)
-        this.periodChange=this.periodChange.bind(this);
         this.timeChange=this.timeChange.bind(this)
-        this.dataTypeChange=this.dataTypeChange.bind(this);
         this.getOption=this.getOption.bind(this);
+        this.selectChange=this.selectChange.bind(this);
     }
     handleConfirm(){
-
-    }
-    periodChange(){
-        
+        let {periodCode,dataFlag,startTime,endTime,materialFlag}=this.state;   
+        this.setState({
+            loading:true
+        })
+        axios({
+            url:this.props.url.positiveProcessStatis.lineCompare,
+            method:'get',
+            headers:{
+               'Authorization' :this.props.url.Authorization
+            },
+            params:{
+                periodId:periodCode,
+                dataFlag:dataFlag,
+                startTime:startTime,
+                endTime:endTime,
+                materialFlag:materialFlag
             }
-    timeChange(){
+        }).then(data=>{
+            let res=data.data.data
+           if(res){
+                // let xData=[],
+                //     seriesDataNi=[],
+                //     seriesDataCo=[],
+                //     seriesDataMn=[]
+                // for(let i=0;i<res.length;i++){
+                //     seriesDataNi.push(res[i].ni)
+                //     seriesDataCo.push(res[i].co)
+                //     seriesDataMn.push(res[i].mn)
+                //     xData.push(res[i].periodNum)
+                // }
+                // this.setState({
+                //     xData:xData,
+                //     seriesDataNi:seriesDataNi,
+                //     seriesDataCo:seriesDataCo,
+                //     seriesDataMn:seriesDataMn,
+                // })
+           }
+            this.setState({
+                loading:false
+            })
+        })
+    }
+  
+    selectChange(value,name){
+        name=name.props.name
+        this.setState({
+            [name]:value
+        })
+    }
+    timeChange(date,dateString){
+        this.setState({
+            startTime:dateString[0],
+            endTime:dateString[1]
+        })
+        console.log(dateString[0],dateString[1])
+    }
 
-    }
-    dataTypeChange(){
-        
-    }
     getOption(){
         let labelOption = {
             normal: {
@@ -93,7 +139,9 @@ class ProductLineCom extends Component{
     render(){
         return(
                 <Spin spinning={this.state.loading}>
-                    <Search handleConfirm={this.handleConfirm} periodChange={this.periodChange} timeChange={this.timeChange} dataTypeChange={this.dataTypeChange}/>
+                    <Search handleConfirm={this.handleConfirm} timeChange={this.timeChange} dataFlag={this.state.dataFlag}
+                            selectChange={this.selectChange} staticPeriod={this.props.staticPeriod}
+                    />
                     <div className={'statis-processCompare-echarts'}>
                         <ReactEcharts  
                             option={this.getOption()}

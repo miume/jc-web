@@ -7,21 +7,22 @@ const {Option}=Select
         super(props)
     }
     render(){
-        let {lineCode,periodCode,timeData}=this.props
+        let {lineCode,periodCode,timeData,startTime}=this.props
         return(
             <div className='searchCell'>
-                <Select value={periodCode} onChange={this.props.selectChange} style={{width:'150px',marginRight:'10px'}} placeholder='请选择周期类型'>
+                <Select value={periodCode} onChange={this.props.selectChange} style={{width:'200px',marginRight:'10px'}} placeholder='请选择周期类型'>
                     {
                         this.props.staticPeriod?this.props.staticPeriod.map(item=>{
                             return(
-                                <Option key={item.code} name='periodId' value={item.code}>{item.name}</Option>
+                                <Option key={item.code} name='periodCode' value={item.code}>{item.name}</Option>
                             )
                         }):null
                     }
                 </Select>
                 <Select 
-                    style={{width:'150px',marginRight:'10px'}}
+                    style={{width:'200px',marginRight:'10px'}}
                     placeholder='请选择时间'
+                    value={startTime}
                     showSearch 
                     optionFilterProp="children"  
                     onChange={this.props.onChange}
@@ -42,13 +43,13 @@ const {Option}=Select
                         {
                             this.props.line?this.props.line.map(item=>{
                                 return(
-                                    <Option key={item.code} name='lineId' value={item.code}>{item.name}</Option>
+                                    <Option key={item.code} name='lineCode' value={item.code}>{item.name}</Option>
                                 )
                             }):null
                         }
                     </Select>
                 </span>
-                <NewButton name='确定'/>
+                <NewButton name='确定' handleClick={this.props.getTableData}/>
             </div>
         )
     }

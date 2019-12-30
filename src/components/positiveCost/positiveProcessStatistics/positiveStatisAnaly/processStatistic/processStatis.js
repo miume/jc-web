@@ -17,17 +17,17 @@ class PositiveProcess extends Component{
             title:'周期类型',
             key:'period',
             dataIndex:'period',
-            width:"10%"
+            width:"7%"
         },{
             title:'开始时间',
-            key:'beginTime',
-            dataIndex:'beginTime',
-            width:"13%"
+            key:'head.beginTime',
+            dataIndex:'head.beginTime',
+            width:"12%"
         },{
             title:'结束时间',
-            key:'endTime',
-            dataIndex:'',
-            width:"13%"
+            key:'head.endTime',
+            dataIndex:'head.endTime',
+            width:"12%"
         },{
             title:'工序名称',
             key:'processName',
@@ -40,44 +40,88 @@ class PositiveProcess extends Component{
             width:"10%"
         },{
             title:'投入(kg)',
-            key:'materialWeight',
-            dataIndex:'materialWeight',
-            width:"10%",
+            key:'values.feedstockTotals',
+            dataIndex:'values.feedstockTotals',
+            width:"12%",
             render:(text,record)=>{
-                return(
-                    <span>
-                        前驱体(kg)：200
-                        碳酸锂(kg)：200
-                        预混料(kg)：200
-                        烧结料(kg)：20
-                    </span>
-                )
+                if(record.values.processCode===1){//只有在线原料才显示
+                    var data=record.in, res = [];
+                    for(let key in data){
+                     res.push(<span key={key} style={{display:'block'}}>
+                         {`${key} : ${data[key]}`}
+                     </span>)
+                    }
+                    return(
+                        <span>
+                            {res.length ? res.map(e => e) : '无'}
+                        </span>
+                    )
+                }
+                else{
+                    return(
+                        <span>
+                            {record.values.feedstockTotals}
+                        </span>
+                    )
+                }
             }
         },{
             title:'消耗(kg)',
-            key:'processWeight',
-            dataIndex:'processWeight',
-            width:"10%",
+            key:'values.consumeTotals',
+            dataIndex:'values.consumeTotals',
+            width:"12%",
             render:(text,record)=>{
-                return(
-                    <span>
-                        前驱体(kg)：200
-                        碳酸锂(kg)：200
-                    </span>
-                )
+                if(record.values.processCode===1){//只有在线原料才显示
+                    let data=record.con,res=[]
+                    for(let key in data){
+                        res.push(
+                            <span key={key} style={{display:'block'}}>
+                                {`${key} : ${data[key]}`}
+                            </span>
+                        )
+                    }
+                    return(
+                        <span>
+                            {res.length?res.map(e=>e):'无'}
+                        </span>
+                    )
+                }
+                else{
+                    return(
+                        <span>
+                            {record.values.consumeTotals}
+                        </span>
+                    )
+                }
             }
         },{
             title:'结存(kg)',
-            key:'productWeight',
-            dataIndex:'productWeight',
-            width:"10%",
+            key:'values.balanceTotals',
+            dataIndex:'values.balanceTotals',
+            width:"12%",
             render:(text,record)=>{
-                return(
-                    <span>
-                        前驱体(kg)：200
-                        碳酸锂(kg)：200
-                    </span>
-                )
+                if(record.values.processCode===1){//只有在线原料才显示
+                    let data=record.bal,res=[]
+                    for(let key in data){
+                        res.push(
+                            <span key={key} style={{display:'block'}}>
+                                {`${key} : ${data[key]}`}
+                            </span>
+                        )
+                    }
+                    return(
+                        <span>
+                            {res.length?res.map(e=>e):'无'}
+                        </span>
+                    )
+                }
+                else{
+                    return(
+                        <span>
+                            {record.values.balanceTotals}
+                        </span>
+                    )
+                }
             }
         }]
         this.onChange=this.onChange.bind(this)
@@ -105,35 +149,43 @@ class PositiveProcess extends Component{
             let res = data.data.data;
             if(res){
                 this.setState({
-                    timeData:res
+                    timeData:res,
+                    startTime:res[0]&&res[0].beginTime?res[0].beginTime:undefined,
+                    periods:res[0]&&res[0].periods?res[0].periods:undefined
                 })
             }
         })
     }
     /**按工序统计*/
     getTableData(){
-        let {periodId,periods,lineId}=this.state
+        this.setState({
+            loading:true
+        })
+        let {periodCode,periods,lineCode}=this.state
          axios({
-             url:`${this.props.url. positiveProcessStatis.processLine}`,
+             url:`${this.props.url. positiveProcessStatis.statisticProcess}`,
              method:'get',
              headers:{
                  'Authorization':this.props.url.Authorization
              },
              params:{
-                 periodId:periodId,
+                 periodId:periodCode,
                  periods:periods,
-                 lineId:lineId
+                 lineId:lineCode
              }
          }).then((data)=>{
              let res=data.data.data
-             if(res&&res.details){
-                 for(let i=0;i<res.details.length;i++){
-                     res.details[i]['id']=(i+1)
+             if(res){
+                 for(let i=0;i<res.length;i++){
+                     res[i]['index']=(i+1)
                  }
                  this.setState({
-                     data:res.details
+                     data:res
                  })
              }
+             this.setState({
+                loading:false
+            })
          })
      }
      /**周期类型,产线变化*/
@@ -149,24 +201,27 @@ class PositiveProcess extends Component{
         name=name.props.name
         console.log(name)
         this.setState({
-            periods:name
+            periods:name,
+            startTime:value
         })
         this.getStartTime(periodCode)
       }
 
   
     render(){
-        let {line,staticPeriod}=this.props,{periodCode,lineCode,loading,timeData}=this.state
+        let {line,staticPeriod}=this.props,{periodCode,lineCode,loading,timeData,startTime,data}=this.state
         return(
             <Spin spinning={loading}>
                 <Search lineFlag={true} staticPeriod={staticPeriod} selectChange={this.selectChange} 
-                        line={line} onChange={this.onChange} 
-                        periodCode={periodCode} lineCode={lineCode} timeData={timeData}
+                        line={line} onChange={this.onChange}  startTime={startTime}
+                        periodCode={periodCode} lineCode={lineCode} timeData={timeData} getTableData={this.getTableData}
                 />
                 <div className='clear'></div>
                 <Table 
+                dataSource={data}
                 rowKey={record=>record.index}
                 columns={this.columns}
+                pagination={false}
                 size='small'
                 bordered/>
             </Spin>

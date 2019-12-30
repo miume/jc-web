@@ -1,36 +1,80 @@
 import  React,{Component} from 'react'
 import Search from './compareSearch'
-import {Spin} from 'antd'
+import {Spin,message} from 'antd'
+import axios from 'axios'
 import ReactEcharts from 'echarts-for-react'
 import '../../../../costAccounting/processStatistics/process.css'
 class PositiveProcessCom extends Component{
     constructor(props){
         super(props);
         this.state={
-            loading:false
+            loading:false,
+            // dataFlag:undefined,
+            // periodCode:undefined,
+            // lineCode:undefined,
+            // flag:undefined
         }
         this.handleConfirm=this.handleConfirm.bind(this);
-        this.periodChange=this.periodChange.bind(this);
         this.timeChange=this.timeChange.bind(this)
-        this.lineChange=this.lineChange.bind(this);
-        this.analyChange=this.analyChange.bind(this)
         this.getOption=this.getOption.bind(this);
+        this.selectChange=this.selectChange.bind(this);
     }
     handleConfirm(){
-
+        let {periodCode,lineCode,startTime,endTime,flag}=this.state;   
+        this.setState({
+            loading:true
+        })
+        axios({
+            url:this.props.url.positiveProcessStatis.processCompare,
+            method:'get',
+            headers:{
+               'Authorization' :this.props.url.Authorization
+            },
+            params:{
+                periodId:periodCode,
+                flag:flag,
+                startTime:startTime,
+                endTime:endTime,
+                lineCode:lineCode
+            }
+        }).then(data=>{
+            let res=data.data.data
+           if(res){
+                // let xData=[],
+                //     seriesDataNi=[],
+                //     seriesDataCo=[],
+                //     seriesDataMn=[]
+                // for(let i=0;i<res.length;i++){
+                //     seriesDataNi.push(res[i].ni)
+                //     seriesDataCo.push(res[i].co)
+                //     seriesDataMn.push(res[i].mn)
+                //     xData.push(res[i].periodNum)
+                // }
+                // this.setState({
+                //     xData:xData,
+                //     seriesDataNi:seriesDataNi,
+                //     seriesDataCo:seriesDataCo,
+                //     seriesDataMn:seriesDataMn,
+                // })
+           }
+            this.setState({
+                loading:false
+            })
+        })
     }
-    periodChange(){
-
+    selectChange(value,name){
+        name=name.props.name
+        this.setState({
+            [name]:value
+        })
     }
-    timeChange(){
-
+    timeChange(date,dateString){
+        this.setState({
+            startTime:dateString[0],
+            endTime:dateString[1]
+        })
     }
-    lineChange(){
-
-    }
-    analyChange(){
-
-    }
+  
     getOption(){
         let labelOption = {
             normal: {
@@ -95,10 +139,12 @@ class PositiveProcessCom extends Component{
         return option
     }
     render(){
-        let {loading}=this.state
+        let {loading,dataFlag}=this.state,{line}=this.props
         return(
             <Spin spinning={loading}>
-                <Search flag={true} handleConfirm={this.handleConfirm} periodChange={this.periodChange} timeChange={this.timeChange} lineChange={this.lineChange} analyChange={this.analyChange}/>
+                <Search flag={true} handleConfirm={this.handleConfirm} dataFlag={dataFlag}
+                timeChange={this.timeChange} selectChange={this.selectChange} staticPeriod={this.props.staticPeriod}
+                line={line}/>
                 <div className={'statis-processCompare-echarts'}>
                     <ReactEcharts  
                         option={this.getOption()}

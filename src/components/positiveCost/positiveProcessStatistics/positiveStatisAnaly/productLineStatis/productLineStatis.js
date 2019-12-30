@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Table,Spin} from 'antd'
+import {Table,Spin,message} from 'antd'
 import Search from '../processStatistic/statisSearch'
 import axios from 'axios'
 const data=[{
@@ -97,12 +97,10 @@ const data=[{
     }
     componentDidMount(){
         let {periodCode,lineCode}=this.props
-        console.log(this.props.periodCode)
         this.setState({
             periodCode:periodCode,
             lineCode:lineCode
         })
-        this.getStartTime(periodCode)
     }
      /**根据统计周期code查询所有开始时间*/
      getStartTime(periodCode) {
@@ -114,16 +112,17 @@ const data=[{
             }
         }).then((data) => {
             let res = data.data.data;
-
             if(res){
                 this.setState({
-                    timeData:res
+                    timeData:res,
+                    startTime:res[0]&&res[0].beginTime?res[0].beginTime:undefined,
+                    periods:res[0]&&res[0].periods?res[0].periods:undefined
                 })
             }
         })
     }
     getTableData(){
-        let {periodId,periods}=this.state
+        let {periodCode,periods}=this.state
 
         axios({
             url:`${this.props.url.positiveProcessStatis.statisticLine}`,
@@ -132,25 +131,31 @@ const data=[{
                 'Authorization':this.props.url.Authorization
             },
             params:{
-                periodId:periodId,
+                periodId:periodCode,
                 periods:periods
             }
         }).then((data)=>{
             let res=data.data.data
-            if(res&&res.details){
-                for(let i=0;i<res.details.length;i++){
-                    res.details[i]['id']=(i+1)
-                }
-                this.setState({
-                    data:res.details
-                })
+            if(data.data.code===0){
+                message.info('操作成功!')
+                // if(res&&res.details){
+            //     for(let i=0;i<res.details.length;i++){
+            //         res.details[i]['id']=(i+1)
+            //     }
+            //     this.setState({
+            //         data:res.details
+            //     })
+            // }
+            }
+            else{
+                message.error(data.data.message)
             }
         })
     }
        /**周期类型变化*/
     selectChange(value){
         this.setState({
-            periodId:value
+            periodCode:value
         })
     }
     onChange(value,name) {
@@ -158,7 +163,8 @@ const data=[{
         name=name.props.name
         console.log(name)
         this.setState({
-            periods:name
+            periods:name,
+            startTime:value
         })
         this.getStartTime(periodCode)
       }
@@ -172,14 +178,18 @@ const data=[{
                 periodCode:nextProps.periodCode
             })
         }
+        this.setState({
+            periodCode:nextProps.periodCode
+        })
+        this.getStartTime(nextProps.periodCode)
     }
     render(){
-        let {staticPeriod}=this.props,{periodCode,loading,timeData}=this.state
-        console.log(this.props.periodCode)
+        let {staticPeriod}=this.props,{periodCode,loading,timeData,startTime}=this.state
         return(
             <Spin spinning={loading}>
                 <Search onChange={this.onChange} timeData={timeData} selectChange={this.selectChange}
-                        staticPeriod={staticPeriod} periodCode={periodCode}
+                        staticPeriod={staticPeriod} periodCode={periodCode} getTableData={this.getTableData}
+                        startTime={startTime}
                 />
                 <div className='clear'></div>
                 <Table 

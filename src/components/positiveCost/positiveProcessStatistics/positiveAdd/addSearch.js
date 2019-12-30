@@ -93,10 +93,11 @@ class Search extends Component {
     }
     /**开始日期变化*/
     startChange(date, dateString) {
-        let { time, length } = this.state,//tine是传过来的时分秒，和开始日期拼接传给后台，length是开始与结束相差几天，用来计算结束时间
-            t = new Date(dateString).getTime() + 24 * length * 3600 * 1000,
-            endDate = moment(t).format('YYYY-MM-DD'),
-            endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
+        let { time, length } = this.state,//time是传过来的时分秒，和开始日期拼接传给后台，length是开始与结束相差几天，用来计算结束时间
+            end = dateString.replace(new RegExp("-","gm"),"/"),
+            t=new Date(`${end} ${time}`).getTime()+24*length*3600*1000,
+            endTime=moment(t).format('YYYY-MM-DD HH:mm:ss'),
+            endDate=moment(t).format('YYYY-MM-DD ')
         this.setState({
             startTime: `${dateString} ${time}`,
             endTime: endTime,
@@ -107,6 +108,9 @@ class Search extends Component {
     /**结束日期变化*/
     endChange(date, dateString) {
         let { time } = this.state
+        // end = dateString.replace(new RegExp("-","gm"),"/"),
+        // t=new Date(`${end} ${time}`).getTime()+24*length*3600*1000,
+        // endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
         this.setState({
             endDate: dateString,
             endTime: `${dateString} ${time}`

@@ -52,7 +52,6 @@ const {TabPane}=Tabs
         const current=JSON.parse(localStorage.getItem('current'))
         let {line,staticPeriod,periodCode,lineCode}=this.state
         this.url=JSON.parse(localStorage.getItem('url'))
-        console.log()
         return(
             <div>
                 <Blockquote name='在制品统计分析' menu='正极成本'  menu2='在制品管理' returnDataEntry={this.back}/>
