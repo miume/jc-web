@@ -31,12 +31,13 @@ const {TabPane}=Tabs
             line:line,
             periodCode:periodCode,
             length:length,
-            startSecondTime:startTime
+            startSecondTime:startTime,
+            lineCode:lineCode
         })
     }
     componentWillUnmount(){
         this.setState = ()=>{
-        return;
+            return;
         };
       }
     tabChange(key){
@@ -49,19 +50,20 @@ const {TabPane}=Tabs
     }
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
-        let {line,staticPeriod}=this.state
-        let periodCode=this.props.location.periodStatis && this.props.location.periodStatis[0]?this.props.location.periodStatis[0].code:''
+        let {line,staticPeriod,periodCode,lineCode}=this.state
+        this.url=JSON.parse(localStorage.getItem('url'))
+        console.log()
         return(
             <div>
                 <Blockquote name='在制品统计分析' menu='正极成本'  menu2='在制品管理' returnDataEntry={this.back}/>
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                <div className='rightDiv-content'>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
-                        <TabPane key='1' tab='按产线统计'> <PositiveProductLine staticPeriod={staticPeriod} periodCode={periodCode}/> </TabPane>
-                        <TabPane key='2' tab='按工序统计'> <PositiveProcess line={line} staticPeriod={staticPeriod} periodCode={periodCode}/> </TabPane>
-                        <TabPane key='3' tab='产线对比分析'> <ProductLineCom staticPeriod={staticPeriod} periodCode={periodCode}/> </TabPane>
-                        <TabPane key='4' tab='工序对比分析'> <PositiveProcessCom staticPeriod={staticPeriod} line={line} periodCode={periodCode}/> </TabPane>
+                        <TabPane key='1' tab='按产线统计'> <PositiveProductLine staticPeriod={staticPeriod} periodCode={periodCode} url={this.url}/> </TabPane>
+                        <TabPane key='2' tab='按工序统计'> <PositiveProcess line={line} staticPeriod={staticPeriod} periodCode={periodCode} lineCode={lineCode} url={this.url}/> </TabPane>
+                        <TabPane key='3' tab='产线对比分析'> <ProductLineCom staticPeriod={staticPeriod} periodCode={periodCode} url={this.url}/> </TabPane>
+                        <TabPane key='4' tab='工序对比分析'> <PositiveProcessCom staticPeriod={staticPeriod} line={line} periodCode={periodCode} url={this.url}/> </TabPane>
                     </Tabs>
-                </Spin>
+                </div>
             </div>
         )
     }

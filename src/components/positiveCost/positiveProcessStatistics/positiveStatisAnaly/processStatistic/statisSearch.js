@@ -7,36 +7,45 @@ const {Option}=Select
         super(props)
     }
     render(){
+        let {lineCode,periodCode,timeData}=this.props
         return(
             <div className='searchCell'>
-                <Select style={{width:'120px',marginRight:'10px'}}>
+                <Select value={periodCode} onChange={this.props.selectChange} style={{width:'150px',marginRight:'10px'}} placeholder='请选择周期类型'>
                     {
                         this.props.staticPeriod?this.props.staticPeriod.map(item=>{
                             return(
-                                <Option key={item.code} value={item.code}>{item.name}</Option>
+                                <Option key={item.code} name='periodId' value={item.code}>{item.name}</Option>
                             )
                         }):null
                     }
                 </Select>
                 <Select 
-                    style={{width:'120px',marginRight:'10px'}}
+                    style={{width:'150px',marginRight:'10px'}}
                     placeholder='请选择时间'
                     showSearch 
                     optionFilterProp="children"  
                     onChange={this.props.onChange}
-                    onSearch={this.props.onSearch}
                     filterOption={(input, option) =>
-                        // console.log(input,option)
                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                 >
-                    <Option value={1}>2019-09-08</Option>
-                    <Option value={2}>2017-09-08</Option>
-                    <Option value={3}>2016-09-08</Option>
+                    {
+                        timeData?timeData.map((item,index)=>{
+                            return(
+                                <Option key={index} value={item.beginTime} name={item.periods}>{item.beginTime}</Option>
+                            )
+                        }):null
+                    }
                 </Select>
                 <span className={this.props.lineFlag?'':'hide'}>
-                    <Select style={{width:'120px',marginRight:'10px'}} placeholder='请选择产线'>
-                        
+                    <Select value={lineCode} onChange={this.props.selectChange} style={{width:'150px',marginRight:'10px'}} placeholder='请选择产线'>
+                        {
+                            this.props.line?this.props.line.map(item=>{
+                                return(
+                                    <Option key={item.code} name='lineId' value={item.code}>{item.name}</Option>
+                                )
+                            }):null
+                        }
                     </Select>
                 </span>
                 <NewButton name='确定'/>

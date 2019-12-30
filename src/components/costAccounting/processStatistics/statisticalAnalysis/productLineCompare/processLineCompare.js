@@ -44,10 +44,16 @@ class ProductLineCompare extends Component{//工序对比分析
             },
         
             toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
                 feature: {
-                    magicType:{show:true,type:['line','bar']},
-                    saveAsImage: {show:true},
+                    mark: {show: true},
                     dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
                 }
             },
             xAxis: {
@@ -115,6 +121,9 @@ class ProductLineCompare extends Component{//工序对比分析
     }
     search(){
         let {periodCode,lineCode,startTime,endTime}=this.state;
+        this.setState({
+            loading:true
+        })
         axios({
             url:this.props.url.precursorGoodIn.lineCompare,
             method:'get',
@@ -147,6 +156,9 @@ class ProductLineCompare extends Component{//工序对比分析
                     seriesDataMn:seriesDataMn,
                 })
            }
+           this.setState({
+            loading:false
+        })
         })
     }
     render(){

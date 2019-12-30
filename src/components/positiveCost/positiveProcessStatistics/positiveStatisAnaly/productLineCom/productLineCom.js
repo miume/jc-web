@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import Search from '../processCompare/compareSearch'
 import ReactEcharts from 'echarts-for-react'
 import {Spin} from 'antd'
+import '../../../../costAccounting/processStatistics/process.css'
 class ProductLineCom extends Component{
     constructor(props){
         super(props);
@@ -27,17 +28,37 @@ class ProductLineCom extends Component{
         
     }
     getOption(){
+        let labelOption = {
+            normal: {
+                show: true,
+                formatter: '{c}  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                        textBorderColor: '#fff'
+                    }
+                }
+            }
+        }
         const option={
+            color: ['#003366', '#dc150c','#1890ff'],
             tooltip:{
                 trigger:'axis'
             },
             legend:{
                 data:['生产线1','生产线2','生产线3']
             },
-            toolbox:{
-                feature:{
-                    magicType:{show:true,type:['line','bar']},
-                    saveAsImage:{show:true}
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
                 }
             },
             xAxis:{
@@ -53,14 +74,17 @@ class ProductLineCom extends Component{
             series:[{
                 name:'生产线1',
                 type:'line',
+                label: labelOption,
                 data:[24, 25, 57, 35, 32]
             },{
                 name:'生产线2',
                 type:'line',
+                label: labelOption,
                 data:[26, 28, 51, 48, 19]
             },{
                 name:'生产线3',
                 type:'line',
+                label: labelOption,
                 data:[9, 26, 28, 52, 48]
             }]
         }
@@ -68,14 +92,16 @@ class ProductLineCom extends Component{
     }
     render(){
         return(
-            <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                <Spin spinning={this.state.loading}>
                     <Search handleConfirm={this.handleConfirm} periodChange={this.periodChange} timeChange={this.timeChange} dataTypeChange={this.dataTypeChange}/>
-                    <ReactEcharts 
-                        option={this.getOption()}
-                        style={{height:'350px',margin:'20px 100px 0 150px'}}/>
+                    <div className={'statis-processCompare-echarts'}>
+                        <ReactEcharts  
+                            option={this.getOption()}
+                            style={{width:'100%'}}
+                        />
+                    </div>                  
                 </Spin>
-            </div>
+
         )
     }
 }

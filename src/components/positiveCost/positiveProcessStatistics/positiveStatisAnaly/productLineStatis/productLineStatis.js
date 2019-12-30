@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Table} from 'antd'
+import {Table,Spin} from 'antd'
 import Search from '../processStatistic/statisSearch'
 import axios from 'axios'
 const data=[{
@@ -18,7 +18,8 @@ const data=[{
     constructor(props){
         super(props)
         this.state={
-            data:data
+            data:data,
+            loading:false
         }
         this.columns=[{
             title:'序号',
@@ -62,8 +63,8 @@ const data=[{
             }
         },{
             title:'原料结存(kg)',
-            key:'materialWeight',
-            dataIndex:'materialWeight',
+            key:'materialWeight1',
+            dataIndex:'materialWeight1',
             width:'10%',
             render:(text,record)=>{
                 return(
@@ -75,8 +76,8 @@ const data=[{
             }
         },{
             title:'前段在制品(kg)',
-            key:'processWeight',
-            dataIndex:'processWeight',
+            key:'processFWeight',
+            dataIndex:'processFWeight',
             width:'10%'
         },{
             title:'后段在制品(kg)',
@@ -89,22 +90,50 @@ const data=[{
             dataIndex:'productWeight',
             width:'10%'
         },]
+        this.selectChange=this.selectChange.bind(this);
         this.onChange=this.onChange.bind(this)
-        this.onSearch=this.onSearch.bind(this)
         this.getTableData=this.getTableData.bind(this);
+        this.getStartTime=this.getStartTime.bind(this);
+    }
+    componentDidMount(){
+        let {periodCode,lineCode}=this.props
+        console.log(this.props.periodCode)
+        this.setState({
+            periodCode:periodCode,
+            lineCode:lineCode
+        })
+        this.getStartTime(periodCode)
+    }
+     /**根据统计周期code查询所有开始时间*/
+     getStartTime(periodCode) {
+        axios({
+            url: `${this.props.url.positiveProcessStatis.getDateByPeriodId}?periodId=${periodCode}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+
+            if(res){
+                this.setState({
+                    timeData:res
+                })
+            }
+        })
     }
     getTableData(){
-        let {startTime}=this.state
-        let periodId=this.state.periodId?this.state.periodId:this.props.periodCode
+        let {periodId,periods}=this.state
+
         axios({
-            url:`${this.props.url.precursorGoodIn.getAnalysisLine}`,
+            url:`${this.props.url.positiveProcessStatis.statisticLine}`,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
             },
             params:{
                 periodId:periodId,
-                startTime:startTime
+                periods:periods
             }
         }).then((data)=>{
             let res=data.data.data
@@ -118,16 +147,40 @@ const data=[{
             }
         })
     }
-    onChange(value) {
-        console.log(`selected ${value}`);
+       /**周期类型变化*/
+    selectChange(value){
+        this.setState({
+            periodId:value
+        })
+    }
+    onChange(value,name) {
+        let {periodCode}=this.state
+        name=name.props.name
+        console.log(name)
+        this.setState({
+            periods:name
+        })
+        this.getStartTime(periodCode)
       }
-    onSearch(val) {
-        console.log('search:', val);
-      }
+
+   
+      /**监控父组件periodCode的变化*/
+    componentWillReceiveProps(nextProps){
+        let {periodCode}=this.props
+        if(nextProps.periodCode!==periodCode){
+            this.setState({
+                periodCode:nextProps.periodCode
+            })
+        }
+    }
     render(){
+        let {staticPeriod}=this.props,{periodCode,loading,timeData}=this.state
+        console.log(this.props.periodCode)
         return(
-            <div>
-                <Search onChange={this.onChange} onSearch={this.onSearch} staticPeriod={this.props.staticPeriod}/>
+            <Spin spinning={loading}>
+                <Search onChange={this.onChange} timeData={timeData} selectChange={this.selectChange}
+                        staticPeriod={staticPeriod} periodCode={periodCode}
+                />
                 <div className='clear'></div>
                 <Table 
                 dataSource={this.state.data}
@@ -144,7 +197,7 @@ const data=[{
                     )}}
                 size='small'
                 bordered/>
-            </div>
+            </Spin>
         )
     }
  }

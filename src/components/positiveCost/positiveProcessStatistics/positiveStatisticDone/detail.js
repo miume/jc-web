@@ -1,33 +1,16 @@
 import React,{Component} from 'react'
-import {Modal,Table} from 'antd'
+import {Modal,Table,Divider} from 'antd'
 import CancleButton from '../../../BlockQuote/cancleButton'
-import '../../../costAccounting/processStatistics/process.css'
+import './detai.css'
+import axios from 'axios'
 
-const data=[{
-    index:'1',
-    materiaType:'前驱体',
-    pick:'100',
-    consume:'5',
-    balance:'5'
-},{
-    index:'2',
-    materiaType:'碳酸锂',
-    pick:'100',
-    consume:'5',
-    balance:'5'
-},{
-    index:'3',
-    materiaType:'布料袋',
-    pick:'100',
-    consume:'5',
-    balance:'5'
-}]
 class Detail extends Component{
     constructor(props){
         super(props);
         this.state={
             visible:false,
-            data:data
+            data:[],
+            sub:{}
         }
         this.columns=[{
             title:'序号',
@@ -38,37 +21,42 @@ class Detail extends Component{
             title:'物料种类',
             dataIndex:'materialName',
             key:'materialName',
-            width:'30%'
-        },{
-            title:'产线',
-            dataIndex:'productLine',
-            key:'productLine',
-            width:'30%'
+            width:'20%'
         },{
             title:'领料量',
             dataIndex:'receive',
             key:'receive',
             width:'25%'
-        },]
+        },{
+            title:'消耗量(kg)',
+            dataIndex:'consum',
+            key:'consum',
+            width:'20%'
+        },{
+            title:'结存量(kg)',
+            dataIndex:'balance',
+            key:'balance',
+            width:'20%'
+        }]
         this.columns1=[{
             title:'序号',
             dataIndex:'index',
             key:'index',
             width:'10%'
         },{
-            title:'物料类型',
+            title:'物料种类',
             dataIndex:'materialName',
             key:'materialName',
-            width:'20%'
-        },{
-            title:'产线',
-            dataIndex:'productLine',
-            key:'productLine',
             width:'20%'
         },{
             title:'已混量(kg)',
             dataIndex:'mix',
             key:'mix',
+            width:'20%'
+        },{
+            title:'消耗量(kg)',
+            dataIndex:'consum',
+            key:'consum',
             width:'20%'
         },{
             title:'结存量(kg)',
@@ -82,19 +70,19 @@ class Detail extends Component{
             key:'index',
             width:'10%'
         },{
-            title:'物料类型',
+            title:'物料种类',
             dataIndex:'materialName',
             key:'materialName',
-            width:'20%'
-        },{
-            title:'产线',
-            dataIndex:'productLine',
-            key:'productLine',
             width:'20%'
         },{
             title:'进料量(kg)',
             dataIndex:'inMat',
             key:'inMat',
+            width:'20%'
+        },{
+            title:'消耗量(kg)',
+            dataIndex:'consum',
+            key:'consum',
             width:'20%'
         },{
             title:'结存量(kg)',
@@ -109,29 +97,39 @@ class Detail extends Component{
             key:'index',
             width:'10%'
         },{
-            title:'物料类型',
+            title:'物料种类',
             dataIndex:'materialName',
             key:'materialName',
-            width:'20%'
-        },{
-            title:'产线',
-            dataIndex:'productLine',
-            key:'productLine',
-            width:'20%'
+            width:'15%'
         },{
             title:'入炉排数',
             dataIndex:'intoFurnace',
             key:'intoFurnace',
-            width:'20%'
+            width:'15%'
         },{
             title:'出炉排数',
             dataIndex:'outFurnace',
             key:'outFurnace',
-            width:'20%'
+            width:'15%'
+        },{
+            title:'进料量(kg)',
+            dataIndex:'inMat',
+            key:'inMat',
+            width:'15%'
+        },{
+            title:'消耗量(kg)',
+            dataIndex:'consum',
+            key:'consum',
+            width:'15%'
+        },{
+            title:'结存量(kg)',
+            dataIndex:'balance',
+            key:'balance',
+            width:'15%'
         }]
        
         this.showModal=this.showModal.bind(this);
-        this.detail=this.detail.bind(this);
+        this.getDetail=this.getDetail.bind(this);
         this.back=this.back.bind(this);
         this.getColumns=this.getColumns.bind(this);
         this.getFooter=this.getFooter.bind(this)
@@ -140,15 +138,51 @@ class Detail extends Component{
         this.setState({
             visible:true
         })
+        this.getDetail()
+    }
+    getDetail(){
+        axios({
+            url:this.props.url.positiveProcessStatis.commitDetail,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                totalsId:this.props.record.totals.code
+            }
+        }).then((data)=>{
+            let res=data.data.data,newData=[],dataBottom=[],length=0
+            if(res){
+               if(res.mats){
+                   for(let i=0;i<res.mats.length;i++){
+                       res.mats[i]['index']=i+1
+                       if( res.mats[i]['flag']===true){
+                        res.mats[i]['index'] = i + 1
+                        newData.push(res.mats[i])
+                    }   
+                    else{
+                        dataBottom.push(res.mats[i])
+                    }
+                   }
+                   this.setState({
+                       data:newData,
+                       dataBottom:dataBottom
+                   })
+               }
+               this.setState({
+                   sub:res
+               })
+            }
+        })
     }
     getColumns(id){
         if(id===1){//在线原料
             return this.columns
         }
-        else if(id===2||id===8){//预混(犁刀混),包装
+        else if(id===2){//预混(犁刀混)
             return this.columns1
         }
-        else if(id===3||id===5||id===6){//预混(暂存仓),粉碎,二混
+        else if(id===3||id===5||id===6||id===8){//预混(暂存仓),粉碎,二混,包装
             return this.columns2
         }
         else if(id===4||id===7){//预烧,二烧
@@ -156,46 +190,102 @@ class Detail extends Component{
         }
     }
     getFooter(id){
+        let {sub,dataBottom}=this.state
         if(id===1){//在线原料
             return (
-                <span style={{float:'right'}}> 
-                    <span >总领料量 : 10kg</span>
-                    <span >总消耗量 : 10kg</span>
-                    <span >总结存量 : 10kg</span>
+                <span >  
+                        {
+                            dataBottom?dataBottom.map(item=>{
+                                return(
+                                    <span  key={item.code}>{item.materialName} : {item.value}</span>
+                                )
+                            }):null
+                        }
                 </span>
             )
         }
-        else if(id===2||id===8){//预混(犁刀混),包装
-            return this.columns1
+        else if(id===2){//预混(犁刀混)
+            return (
+                <span style={{float:'right'}}> 
+                    <span >总已混量 : {sub&&sub.tMix?sub.tMix:undefined}</span>
+                    <span >总消耗量 : {sub&&sub.tCom?sub.tCom:undefined}</span>
+                    <span >总结存量 : {sub&&sub.tBal?sub.tBal:undefined}</span>
+                </span>
+            )
         }
-        else if(id===3||id===5||id===6){//预混(暂存仓),粉碎,二混
-            return this.columns2
+        else if(id===3||id===5||id===6||id===8){//预混(暂存仓),粉碎,二混,包装
+            return (
+                <div style={{height:'50px'}}>
+                     <div style={{float:'left'}}>  
+                        {
+                            dataBottom?dataBottom.map(item=>{
+                                return(
+                                    <span  key={item.code}>{item.materialName} : {item.value}</span>
+                                )
+                            }):null
+                        }
+                    </div>
+                    <Divider style={{width:'100%'}}/>
+                    <div>
+                        <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : </span>
+                        <span style={{float:'right'}}> 
+                            <span >总进料量 : {sub&&sub.tFee?sub.tFee:undefined}</span>
+                            <span >总消耗量 : {sub&&sub.tCom?sub.tCom:undefined}</span>
+                            <span >总结存量 : {sub&&sub.tBal?sub.tBal:undefined}</span>
+                        </span>
+                    </div>
+                </div>
+            )
         }
         else if(id===4||id===7){//预烧,二烧
-            return this.columns3
+            return (
+               <span>
+                    <span >  
+                        {
+                            dataBottom?dataBottom.map(item=>{
+                                return(
+                                    <span  key={item.code}>{item.materialName} : {item.value}</span>
+                                )
+                            }):null
+                        }
+                    </span>
+                    <span style={{float:'right'}}> 
+                        <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : </span>
+                        <span >总入炉排数 : {sub&&sub.tIn?sub.tIn:undefined}</span>
+                        <span >总出炉排数 : {sub&&sub.tOut?sub.tOut:undefined}</span>
+                        <span >总进料量 : {sub&&sub.tFee?sub.tFee:undefined}</span>
+                        <span >总消耗量 : {sub&&sub.tCom?sub.tCom:undefined}</span>
+                        <span >总结存量 : {sub&&sub.tBal?sub.tBal:undefined}</span>
+                    </span>
+               </span>
+            )
         }
     }
+ 
     /**车间和仓库的界面*/
-    getContent(){
+    getContent(id){
+        let {dataBottom,sub}=this.state
         return(
-            <div style={{height:'280px',width:'100%',overflowY:'auto'}}>
-                <span className='positive-process-add-workShop'>
+            <div className={id===9?'positive-process-detail-workShop-div positive-process-detail-height1':'positive-process-detail-workShop-div positive-process-detail-height2'}>
+                <span className='positive-process-detail-workShop'>
                     {
-                    this.tableData?this.tableData.map((item,index)=>{
-                        return(
-                            <span className='positive-process-add-onLine-font' key={index} style={{padding:'1%'}}>
-                                <span className={'positive-process-add-span'}> {item.materialName}</span> : <span className={'positive-process-add-crush-span'}>{item.value}</span>
-                            </span>
-                        )
-                    }):null
+                        dataBottom?dataBottom.map((item,index)=>{
+                            return(
+                                <span className='positive-process-add-onLine-font' key={index} style={{padding:'1%'}}>
+                                    <span className={'positive-process-add-span'}> {item.materialName}</span> : <span className={'positive-process-add-crush-span'}>{item.value}</span>
+                                </span>
+                            )
+                        }):null
                     }
+                </span>
+                <Divider style={{width:'100%'}}/>
+                <span style={{float:'right',marginRight:'10px'}}> 
+                    <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : {sub&&sub.totals?sub.totals:undefined}</span>&nbsp;&nbsp;
                 </span>
             </div>
         )
     }
-    detail(){
-
-    }
+   
     back(){
         this.setState({
             visible:false
@@ -216,34 +306,34 @@ class Detail extends Component{
                 ]}>
                     <div className='process-statisDone-detail'>
                         <span >周期 : {this.props.record.periodName}</span>
-                        <span>开始时间 : {this.props.record.beginTime}</span>
-                        <span>结束时间 : {this.props.record.endTime}</span>
+                        <span>开始时间 : {this.props.record.head.beginTime}</span>
+                        <span>结束时间 : {this.props.record.head.endTime}</span>
                     </div>
                     <div className='process-statisDone-detail'>
-                        <span>过程工序 : {this.props.record.process}</span>
-                        <span >产线 : {this.props.record.productLine}</span>
-                        <span>产品型号 : {this.props.record.process}</span>
+                        <span>过程工序 : {this.props.record.processName}</span>
+                        <span >产线 : {this.props.record.lineName}</span>
+                        <span>产品型号 : {this.props.record.typeName}</span>
                     </div>
                     <div style={{marginTop:'30px'}}></div>
-                    <Table
-                    dataSource={this.state.data}
-                    rowKey={record=>record.index}
-                    columns={this.getColumns()}
-                    footer={() => {
-                        return(
-                            <div className='process-statisDone-detail1'>
-                               <span >小计</span>
-                               <span style={{float:'right'}}> 
-                                    <span >总领料量 : 10kg</span>
-                                    <span >总消耗量 : 10kg</span>
-                                    <span >总结存量 : 10kg</span>
-                                </span>
-                            </div>
-                        );
-                    }}
-                    pagination={false}
-                    size='small'
-                    bordered/>
+                   {
+                       this.props.record.totals.processCode===9||this.props.record.totals.processCode===10?this.getContent(this.props.record.totals.processCode):
+                       <Table
+                       dataSource={this.state.data}
+                       rowKey={record=>record.index}
+                       columns={this.getColumns(this.props.record.totals.processCode)}
+                       footer={() => {
+                           return(
+                               <div className='process-statisDone-detail1'>
+                                  {this.getFooter(this.props.record.totals.processCode)}
+                               </div>
+                           );
+                       }}
+                       scroll={{y:'38vh'}}
+                       style={{flex:'1',height:'50vh'}}
+                       pagination={false}
+                       size='small'
+                       bordered/>
+                   }
                 </Modal>
             </span>
         )

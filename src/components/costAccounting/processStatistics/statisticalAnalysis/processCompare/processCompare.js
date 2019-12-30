@@ -40,10 +40,16 @@ class ProcessCompare extends Component{//工序对比分析
                 data:['Ni','Co','Mn']
             },
             toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
                 feature: {
+                    mark: {show: true},
                     dataView: {show: true, readOnly: false},
-                    magicType:{show:true,type:['line','bar']},
-                    saveAsImage: {show:true}
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
                 }
             },
             xAxis: {
@@ -111,6 +117,9 @@ class ProcessCompare extends Component{//工序对比分析
     }
     search(){
         let {periodCode,processCode,startTime,endTime}=this.state;   
+        this.setState({
+            loading:true
+        })
         axios({
             url:this.props.url.precursorGoodIn.processCompare,
             method:'get',
@@ -143,13 +152,15 @@ class ProcessCompare extends Component{//工序对比分析
                     seriesDataMn:seriesDataMn,
                 })
            }
+           this.setState({
+            loading:false
+        })
         })
     }
     render(){
         this.startSecondTime=this.props.staticPeriod && this.props.staticPeriod[0]?this.props.staticPeriod[0].startTime:''
         return(
-            <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                <Spin spinning={this.state.loading} >
                    <Search flag={true} staticPeriod={this.props.staticPeriod} process={this.props.process} periodCode={this.props.periodCode} startDate={this.state.startDate} endDate={this.state.endDate} selectPeriodChange={this.selectPeriodChange} selectProcessChange={this.selectProcessChange} startChange={this.startChange} endChange={this.endChange} search={this.search}/>
                   <div className='statis-processCompare-echarts'>
                     <ReactEcharts
@@ -158,7 +169,6 @@ class ProcessCompare extends Component{//工序对比分析
                     />
                   </div>
                 </Spin>
-            </div>
         );
     }
 }

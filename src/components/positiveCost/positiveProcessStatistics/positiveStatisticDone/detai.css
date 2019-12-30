@@ -1,0 +1,20 @@
+.positive-process-detail-workShop{
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: space-between;
+    width: 50vw;
+    padding: 20px;
+    margin:1% auto;
+}
+.positive-process-detail-workShop-div{
+  
+    width:100%;
+    overflow-y:auto;
+    border:1px solid #e4e4e4;
+}
+.positive-process-detail-height1{
+    height:380px;
+}
+.positive-process-detail-height2{
+    height:230px;
+}
