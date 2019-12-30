@@ -26,11 +26,10 @@ class Search extends Component {
     let {length,time}=this.props,{periodFlag}=this.state,
         secondTime = time && periodFlag?time:this.state.time,
         length1=length&&periodFlag?length:this.state.length,
-        // t=new Date(dateString).getTime()+24*length1*3600*1000,
-        t= new Date(Date.parse(dateString) + 3600 * 24 * 1000 * length1),
+        end = dateString.replace(new RegExp("-","gm"),"/"),
+        t=new Date(`${end} ${secondTime}`).getTime()+24*length1*3600*1000,
         endTime=moment(t).format('YYYY-MM-DD HH:mm:ss'),
         endDate=moment(t).format('YYYY-MM-DD ')
-    //console.log(`${dateString} ${secondTime}`,endTime,moment(dateString).add(24*length1,'hour').format('YYYY-MM-DD HH:mm:ss'))
     this.setState({
       startTime: `${dateString} ${secondTime}`,
       endTime: endTime,
@@ -40,13 +39,15 @@ class Search extends Component {
   }
   /**结束日期变化*/
   endChange(date, dateString) {
-      let {length}=this.props,{periodFlag}=this.state,
-          length1=length&&periodFlag?length:this.state.length,
-          t=new Date(dateString).getTime()+24*length1*3600*1000,
-          endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
+    let {length,time}=this.props,{periodFlag}=this.state,
+        //   length1=length&&periodFlag?length:this.state.length,
+           secondTime = time && periodFlag?time:this.state.time
+        //   end = dateString.replace(new RegExp("-","gm"),"/"),
+        //   t=new Date(`${end} ${secondTime}`).getTime()+24*length1*3600*1000,
+        //   endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
     this.setState({
       endDate: dateString,
-        endTime:endTime
+      endTime:`${dateString} ${secondTime}`
     });
   }
   /**监控下拉框变化*/

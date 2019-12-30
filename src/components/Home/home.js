@@ -871,9 +871,11 @@ class Home extends Component {
                 saveOrCommit:`${server}/jc/common/anodeGoodin/saveOrCommit`,
                 delete:`${server}/jc/common/anodeGoodin`,
                 statisticLine:`${server}/jc/common/anodeGoodin/statisticLine`,
-                processLine:`${server}/jc/common/anodeGoodin/processLine`,
+                statisticProcess:`${server}/jc/common/anodeGoodin/statisticProcess`,
                 commitDetail:`${server}/jc/common/anodeGoodin/commitDetail`,
-                getDateByPeriodId:`${server}/jc/common/anodeGoodin/getDateByPeriodId`
+                getDateByPeriodId:`${server}/jc/common/anodeGoodin/getDateByPeriodId`,
+                lineCompare:`${server}/jc/common/anodeGoodin/lineCompare`,
+                processCompare:`${server}/jc/common/anodeGoodin/processCompare`
             },
 
             /**动力点检-点检项目*/

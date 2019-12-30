@@ -152,9 +152,9 @@ class ProcessCompare extends Component{//工序对比分析
                     seriesDataMn:seriesDataMn,
                 })
            }
-           this.setState({
-            loading:false
-        })
+            this.setState({
+                loading:false
+            })
         })
     }
     render(){

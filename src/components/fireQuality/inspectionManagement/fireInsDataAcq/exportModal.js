@@ -150,10 +150,18 @@ class ExportModal extends Component {
     }
     /**选择检验项目和表格数据，以导出文件*/
     export() {
-        let { batches, testItem } = this.state
+        let { batches, testItem ,testItemData} = this.state
         if (batches.length === 0 || testItem.length === 0) {
             message.error('信息选择不完整!')
             return
+        }
+        let test=[]
+        for(let i=0;i<testItemData.length;i++){
+            for(let j=0;j<testItem.length;j++){
+                if(testItemData[i]['name']===testItem[j]){
+                    test.push(testItemData[i]['name'])
+                }
+            }
         }
         let data = {
             batches: batches,
