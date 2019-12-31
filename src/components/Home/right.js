@@ -147,6 +147,7 @@ import FireInsDataCol from '../fireQuality/inspectionManagement/fireInsDataCol/f
 import BaseConfigure from '../costAccounting/precursorCostBasisData/other/other'
 
 import RepoRecordWater from '../smartWarehouse/originalRecord/repoRecordWater/repoRecordWater'
+import RepoRecordAccount from '../smartWarehouse/originalRecord/repoRecordAccount/repoRecordAccount'
 
 class Right extends React.Component {
     render() {
@@ -587,6 +588,9 @@ class Right extends React.Component {
             },{
                 path: '/repoRecordWater',
                 component: RepoRecordWater
+            },{
+                path: '/repoRecordAccount',
+                component: RepoRecordAccount
             }
         ];
         return (
