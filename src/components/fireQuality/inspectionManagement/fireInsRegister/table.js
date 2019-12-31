@@ -4,11 +4,6 @@ import DetailModal from "./detailModal"
 class RegisterTable extends React.Component {
     constructor(props) {
         super(props);
-        this.pagination = {
-            showSizeChanger: true,//是否可以改变 pageSize
-            showTotal: (total) => `共${total}条记录`,//显示共几条记录
-            pageSizeOptions: ["10", "20", "50", "100"]
-        };
         this.columns = [{
             title:'序号',
             key:'col1',
@@ -113,11 +108,10 @@ class RegisterTable extends React.Component {
     }
 
     render() {
-        let {dataSource,handleTableChange,total} = this.props
-        this.pagination.total = total ? total : 0;
+        let {dataSource,handleTableChange} = this.props
         return (
             <Table rowKey={record => record.code} columns={this.columns}
-                   dataSource={dataSource} pagination={this.pagination} onChange={handleTableChange}
+                   dataSource={dataSource} pagination={this.props.pagination} onChange={handleTableChange}
                    bordered size={'small'}/>
         );
     }

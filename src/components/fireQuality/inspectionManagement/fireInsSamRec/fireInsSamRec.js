@@ -50,11 +50,13 @@ class FireInsSamRec extends Component {
             selectedRowKeys: [],
             dataSource: [],
             searchContent: "",
-            total: 0
         }
         this.pagination = {
             pageSize: 10,
-            current: 1
+            current: 1,
+            howSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10", "20", "50", "100"]
         };
         this.back = this.back.bind(this);
         this.getTableData = this.getTableData.bind(this);
@@ -86,7 +88,7 @@ class FireInsSamRec extends Component {
                         handleTableChange={this.handleTableChange}
                         getTableParams={this.getTableParams}
                         url={this.url}
-                        total={this.state.total}
+                        pagination={this.pagination}
                     />
                 </Spin>
             </div>
@@ -121,7 +123,7 @@ class FireInsSamRec extends Component {
             const res = data.data.data;
             if (res && res.list) {
                 var dataSource = [];
-                var total = res.total;
+                this.pagination.total = res.total;
                 for (var i = 0; i < res.list.length; i++) {
                     const e = res.list[i];
                     dataSource.push({
@@ -138,8 +140,7 @@ class FireInsSamRec extends Component {
                     })
                 }
                 this.setState({
-                    dataSource: dataSource,
-                    total: total
+                    dataSource: dataSource
                 })
 
             }else{
@@ -178,6 +179,7 @@ class FireInsSamRec extends Component {
         this.setState({
             searchContent: undefined
         });
+        this.pagination.current = 1;
         this.getTableParams('')
     }
 
