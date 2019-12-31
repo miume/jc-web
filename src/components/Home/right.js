@@ -148,6 +148,7 @@ import BaseConfigure from '../costAccounting/precursorCostBasisData/other/other'
 
 import RepoRecordWater from '../smartWarehouse/originalRecord/repoRecordWater/repoRecordWater'
 import RepoRecordAccount from '../smartWarehouse/originalRecord/repoRecordAccount/repoRecordAccount'
+import RepoQueryInOutDaily from '../smartWarehouse/dataQuery/repoQueryInOutDaily/repoQueryInOutDaily'
 
 class Right extends React.Component {
     render() {
@@ -591,6 +592,9 @@ class Right extends React.Component {
             },{
                 path: '/repoRecordAccount',
                 component: RepoRecordAccount
+            },{
+                path: '/repoQueryInOutDaily',
+                component: RepoQueryInOutDaily
             }
         ];
         return (

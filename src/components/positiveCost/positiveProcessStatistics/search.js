@@ -1,8 +1,10 @@
-import React, {  Component } from "react";
-import { DatePicker, Select, Button ,message} from "antd";
+import React, {Component} from "react";
+import {DatePicker, Select, Button, message} from "antd";
 import NewButton from "../../BlockQuote/newButton";
 import moment from 'moment'
-const { Option } = Select;
+
+const {Option} = Select;
+
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -65,75 +67,77 @@ class Search extends Component {
          });
      }
   }
-
     /**点击确定*/
-  confirm() {
-    let {periodCode,startTime,endTime,lineCode}=this.state,
-        params = {
-        beginTime: startTime,
-        endTime: endTime,
-        periodCode: periodCode,
-        lineCode:lineCode
-        };
-    // if(!periodCode||!startTime||!endTime||!lineCode){
-    // message.error('信息选择不完整!')
-    // return
-    // }
-    this.props.confirm(params)
-  }
-  reset(){
-      this.setState({
-        startTime: undefined,
-        endTime: undefined,
-        periodCode: this.props.periodCode,
-        lineCode:this.props.lineCode,
-        startDate: null,
-        endDate:null
-      })
-  }
-  componentWillReceiveProps(nextProps, nextContext) {
-      if(this.props.periodCode!=nextProps.periodCode){
-          this.setState({
-              periodCode:nextProps.periodCode
-          })
-      }
-      if(this.props.lineCode!=nextProps.lineCode){
-          this.setState({
-              lineCode:nextProps.lineCode
-          })
-      }
-  }
+    confirm() {
+        let {periodCode, startTime, endTime, lineCode} = this.state,
+            params = {
+                beginTime: startTime,
+                endTime: endTime,
+                periodCode: periodCode,
+                lineCode: lineCode
+            };
+        // if(!periodCode||!startTime||!endTime||!lineCode){
+        // message.error('信息选择不完整!')
+        // return
+        // }
+        this.props.confirm(params)
+    }
 
-    render(){
-      let { line,periodStatis} = this.props,{lineCode,endDate,periodCode,startDate}=this.state
-      return (
-          <span className={this.props.flag ? "searchCell" : "hide"}>
+    reset() {
+        this.setState({
+            startTime: undefined,
+            endTime: undefined,
+            periodCode: this.props.periodCode,
+            lineCode: this.props.lineCode,
+            startDate: null,
+            endDate: null
+        })
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (this.props.periodCode != nextProps.periodCode) {
+            this.setState({
+                periodCode: nextProps.periodCode
+            })
+        }
+        if (this.props.lineCode != nextProps.lineCode) {
+            this.setState({
+                lineCode: nextProps.lineCode
+            })
+        }
+    }
+
+    render() {
+        let {line, periodStatis} = this.props, {lineCode, endDate, periodCode, startDate} = this.state
+        return (
+            <span className={this.props.flag ? "searchCell" : "hide"}>
         <span>开始时间 : </span>
-              &nbsp;
-              <DatePicker
-                  onChange={this.startChange}
-                  style={{ width: 150, marginRight: "10px" }}
-                  placeholder={"请选择开始日期"}
-                  value={startDate?moment(startDate):null}
-              />
+                &nbsp;
+                <DatePicker
+                    onChange={this.startChange}
+                    style={{width: 150, marginRight: "10px"}}
+                    placeholder={"请选择开始日期"}
+                    value={startDate ? moment(startDate) : null}
+                />
         <span>结束时间 : </span>
-              &nbsp;
-              <DatePicker
-                  onChange={this.endChange}
-                  style={{ width: 150, marginRight: "10px" }}
-                  placeholder="请选择结束日期"
-                  value={endDate?moment(endDate):null}
-              />
+                &nbsp;
+                <DatePicker
+                    onChange={this.endChange}
+                    style={{width: 150, marginRight: "10px"}}
+                    placeholder="请选择结束日期"
+                    value={endDate ? moment(endDate) : null}
+                />
         <Select
             value={periodCode}
-            style={{ width: 150, marginRight: "10px" }}
+            style={{width: 150, marginRight: "10px"}}
             onChange={this.selectChange}
             placeholder={'请选择统计周期'}
         >
           {periodStatis
               ? periodStatis.map(item => {
                   return (
-                      <Option key={item.code} value={item.code} name={`${item.startTime}-${item.length}-${'periodCode'}`}>
+                      <Option key={item.code} value={item.code}
+                              name={`${item.startTime}-${item.length}-${'periodCode'}`}>
                           {item.name}
                       </Option>
                   );
@@ -142,7 +146,7 @@ class Search extends Component {
         </Select>
          <Select
              value={lineCode}
-             style={{ width: 150, marginRight: "10px" }}
+             style={{width: 150, marginRight: "10px"}}
              onChange={this.selectChange}
              placeholder={'请选择产线'}
          >
@@ -156,10 +160,12 @@ class Search extends Component {
               })
               : null}
         </Select>
-        <NewButton name="确定" handleClick={this.confirm} />
-        <Button type={'primary'} onClick={this.reset} className={'button'}><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
+        <NewButton name="确定" handleClick={this.confirm}/>
+        <Button type={'primary'} onClick={this.reset} className={'button'}><i className="fa fa-repeat"
+                                                                              aria-hidden="true"></i> 重置</Button>
       </span>
-      );
-  }
+        );
+    }
 }
+
 export default Search;
