@@ -165,7 +165,7 @@ class ExportModal extends Component {
         }
         let data = {
             batches: batches,
-            itemNames: testItem
+            itemNames: test
         }
         axios({
             url: `${this.props.url.dateConllection.export}`,

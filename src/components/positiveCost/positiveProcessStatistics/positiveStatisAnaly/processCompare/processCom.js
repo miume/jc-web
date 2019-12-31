@@ -9,10 +9,9 @@ class PositiveProcessCom extends Component{
         super(props);
         this.state={
             loading:false,
-            // dataFlag:undefined,
-            // periodCode:undefined,
-            // lineCode:undefined,
-            // flag:undefined
+            name:[],
+            xData:[],
+            series:[]
         }
         this.handleConfirm=this.handleConfirm.bind(this);
         this.timeChange=this.timeChange.bind(this)
@@ -40,23 +39,46 @@ class PositiveProcessCom extends Component{
         }).then(data=>{
             let res=data.data.data
            if(res){
-                // let xData=[],
-                //     seriesDataNi=[],
-                //     seriesDataCo=[],
-                //     seriesDataMn=[]
-                // for(let i=0;i<res.length;i++){
-                //     seriesDataNi.push(res[i].ni)
-                //     seriesDataCo.push(res[i].co)
-                //     seriesDataMn.push(res[i].mn)
-                //     xData.push(res[i].periodNum)
-                // }
-                // this.setState({
-                //     xData:xData,
-                //     seriesDataNi:seriesDataNi,
-                //     seriesDataCo:seriesDataCo,
-                //     seriesDataMn:seriesDataMn,
-                // })
-           }
+                let xData=[],name=[],
+                    data10=[[],[],[],[],[],[],[],[],[]]
+                for(let i=0;i<res.length;i++){
+                    if(res[i].list){
+                        data10[0].push(res[i].list[0].statValue)
+                        name.push(res[i].list[0].processName)
+
+                        data10[1].push(res[i].list[1].statValue)
+                        name.push(res[i].list[1].processName)
+
+                        data10[2].push(res[i].list[2].statValue)
+                        name.push(res[i].list[2].processName)
+
+                        data10[3].push(res[i].list[3].statValue)
+                        name.push(res[i].list[3].processName)
+
+                        data10[4].push(res[i].list[4].statValue)
+                        name.push(res[i].list[4].processName)
+
+                        data10[5].push(res[i].list[5].statValue)
+                        name.push(res[i].list[5].processName)
+
+                        data10[6].push(res[i].list[6].statValue)
+                        name.push(res[i].list[6].processName)
+
+                        data10[7].push(res[i].list[7].statValue)
+                        name.push(res[i].list[7].processName)
+
+                        data10[8].push(res[i].list[8].statValue)
+                        name.push(res[i].list[8].processName)
+                    }
+                    xData.push(res[i].time)
+                } 
+                name=[...new Set(name)]    
+                this.setState({
+                    xData:xData,
+                    name:name,
+                    data10:data10
+                })
+            }
             this.setState({
                 loading:false
             })
@@ -76,6 +98,16 @@ class PositiveProcessCom extends Component{
     }
   
     getOption(){
+        let {xData,name,data10}=this.state,
+            series=[]
+            for(let i=0;i<name.length;i++){
+                series.push({
+                    name:name[i],
+                    type:'line',
+                    label: labelOption,
+                    data:data10[i]
+                })
+            }
         let labelOption = {
             normal: {
                 show: true,
@@ -93,9 +125,9 @@ class PositiveProcessCom extends Component{
                 trigger:'axis'
             },
             legend:{
-                data:['在线原料','工序名称','工序名称1']
+                data: name
             },
-            color: ['#003366', '#dc150c','#1890ff'],
+            color: ['#003366', '#dc150c','#1890ff','yellow','orange','green','purple','black','blue'],
             toolbox: {
                 show: true,
                 orient: 'vertical',
@@ -110,31 +142,16 @@ class PositiveProcessCom extends Component{
                 }
             },
             xAxis:{
-                type:'',
+                type:'category',
                 name:'日期',
                 boundaryGap:false,
-                data:['2019-09-01','2019-09-02','2019-09-03','2019-09-04','2019-09-05']
+                data: xData
             },
             yAxis:{
                 type:'value',
                 name:'含量(T)'
             },
-            series:[{
-                name:'在线原料',
-                type:'line',
-                label: labelOption,
-                data:[24, 25, 57, 35, 32]
-            },{
-                name:'工序名称',
-                type:'line',
-                label: labelOption,
-                data:[26, 28, 51, 48, 19]
-            },{
-                name:'工序名称1',
-                type:'line',
-                label: labelOption,
-                data:[9, 26, 28, 52, 48]
-            }]
+            series:series
         }
         return option
     }
@@ -145,6 +162,7 @@ class PositiveProcessCom extends Component{
                 <Search flag={true} handleConfirm={this.handleConfirm} dataFlag={dataFlag}
                 timeChange={this.timeChange} selectChange={this.selectChange} staticPeriod={this.props.staticPeriod}
                 line={line}/>
+                <div className={'clear'}></div>
                 <div className={'statis-processCompare-echarts'}>
                     <ReactEcharts  
                         option={this.getOption()}

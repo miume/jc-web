@@ -70,7 +70,7 @@ class ProductLineCom extends Component{
             startTime:dateString[0],
             endTime:dateString[1]
         })
-        console.log(dateString[0],dateString[1])
+        
     }
 
     getOption(){

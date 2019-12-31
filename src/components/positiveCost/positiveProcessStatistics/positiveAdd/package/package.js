@@ -30,12 +30,17 @@ class Package extends Component{//包装
             width:'20%'
         }]
         this.inputChange=this.inputChange.bind(this);
+        this.inputChange1=this.inputChange1.bind(this);
     }
     inputChange(e){
         this.props.inputChange(e,this.props.processId)
     }
+    inputChange1(e){
+        this.props.inputChange1(e,this.props.processId)
+    }
     render(){
         this.tableData = this.props.tagTableData&&this.props.tagTableData[7]&&this.props.tagTableData[7].materials?this.props.tagTableData[7].materials:[]
+        this.otherData = this.props.tagTableData&&this.props.tagTableData[7]&&this.props.tagTableData[7].others?this.props.tagTableData[7].others:[]
         this.data=[]
         this.dataBottom=[]
         let length=0
@@ -73,6 +78,19 @@ class Package extends Component{//包装
                                         {
                                             item.dateType===1?<Input name={`${length+index}-${item.materialName}`} onChange={this.inputChange} placeholder='请输入' key={item.code} defaultValue={item.value} style={{width:'150px',marginRight:'20px'}} />
                                             : <span className={'positive-process-add-crush-span'}>{item.value}</span>
+                                        }
+                                    </span>
+                                )
+                            }):null
+                        }
+                        {
+                            this.otherData?this.otherData.map((item,index)=>{
+                                return(
+                                    <span key={index} className='positive-process-add-onLine-font'>
+                                        <span className={'positive-process-add-span1'}>{item.materialName}</span> : &nbsp;
+                                        {
+                                        <Input name={`${index}-${item.materialName}`} onChange={this.inputChange1} placeholder='请输入' key={index} defaultValue={item.value} style={{width:'150px',marginRight:'20px'}} />
+                                          
                                         }
                                     </span>
                                 )

@@ -6,75 +6,67 @@ import moment from 'moment'
 const {Option} = Select;
 
 class Search extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            periodFlag: true, //为真意味着使用父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
-            lineCodeFlag: true
-        };
-        this.startChange = this.startChange.bind(this);
-        this.endChange = this.endChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
-        this.confirm = this.confirm.bind(this);
-        this.reset = this.reset.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      periodFlag: true, //为真意味着使用父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
+        lineCodeFlag:true
+    };
+    this.startChange = this.startChange.bind(this);
+    this.endChange = this.endChange.bind(this);
+    this.selectChange = this.selectChange.bind(this);
+    this.confirm = this.confirm.bind(this);
+    this.reset=this.reset.bind(this);
+  }
+  componentWillUnmount(){
+      this.setState=()=>{
+          return
+      }
+  }
+/**开始日期变化*/
+  startChange(date, dateString) {
+    let {length,time}=this.props,{periodFlag}=this.state,
+        secondTime = time && periodFlag?time:this.state.time,
+        length1=length&&periodFlag?length:this.state.length,
+        end = dateString.replace(new RegExp("-","gm"),"/"),
+        t=new Date(`${end} ${secondTime}`).getTime()+24*length1*3600*1000,
+        endTime=moment(t).format('YYYY-MM-DD HH:mm:ss'),
+        endDate=moment(t).format('YYYY-MM-DD ')
+    this.setState({
+      startTime: `${dateString} ${secondTime}`,
+      endTime: endTime,
+      startDate:dateString,
+        endDate:endDate,
+        secondTime:endTime.split(' ')[1]
+    });
+  }
+  /**结束日期变化*/
+  endChange(date, dateString) {
+    let {secondTime}=this.state
 
-    componentWillUnmount() {
-        this.setState = () => {
-            return
-        }
-    }
-
-    /**开始日期变化*/
-    startChange(date, dateString) {
-        let {length, time} = this.props, {periodFlag} = this.state,
-            secondTime = time && periodFlag ? time : this.state.time,
-            length1 = length && periodFlag ? length : this.state.length,
-            end = dateString.replace(new RegExp("-", "gm"), "/"),
-            t = new Date(`${end} ${secondTime}`).getTime() + 24 * length1 * 3600 * 1000,
-            endTime = moment(t).format('YYYY-MM-DD HH:mm:ss'),
-            endDate = moment(t).format('YYYY-MM-DD ')
-        this.setState({
-            startTime: `${dateString} ${secondTime}`,
-            endTime: endTime,
-            startDate: dateString,
-            endDate: endDate
-        });
-    }
-
-    /**结束日期变化*/
-    endChange(date, dateString) {
-        let {length, time} = this.props, {periodFlag} = this.state,
-            //   length1=length&&periodFlag?length:this.state.length,
-            secondTime = time && periodFlag ? time : this.state.time
-        //   end = dateString.replace(new RegExp("-","gm"),"/"),
-        //   t=new Date(`${end} ${secondTime}`).getTime()+24*length1*3600*1000,
-        //   endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
-        this.setState({
-            endDate: dateString,
-            endTime: `${dateString} ${secondTime}`
-        });
-    }
-
-    /**监控下拉框变化*/
-    selectChange(value, option) {
-        if (option.props.name === 'lineCode') {
-            this.setState({
-                lineCode: value,
-            })
-        }
-        else {//统计周期下拉变化
-            let name = option.props.name.split('-')
-            let time = name[0], length = name[1]
-            this.setState({
-                periodCode: value,
-                periodFlag: false,
-                length: length,
-                time: time
-            });
-        }
-    }
-
+    this.setState({
+      endDate: dateString,
+      endTime:`${dateString} ${secondTime}`
+    });
+  }
+  /**监控下拉框变化*/
+  selectChange(value,option) {
+     if(option.props.name==='lineCode'){
+         this.setState({
+             lineCode:value,
+         })
+     }
+     else{//统计周期下拉变化
+         let name=option.props.name.split('-')
+         let time=name[0],length=name[1]
+         this.setState({
+             periodCode: value,
+             periodFlag: false,
+             length:length,
+             time:time
+         });
+     }
+  }
     /**点击确定*/
     confirm() {
         let {periodCode, startTime, endTime, lineCode} = this.state,

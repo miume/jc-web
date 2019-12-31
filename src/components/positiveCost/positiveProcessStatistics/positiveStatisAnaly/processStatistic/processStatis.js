@@ -191,7 +191,6 @@ class PositiveProcess extends Component{
      /**周期类型,产线变化*/
      selectChange(value,name){
          name=name.props.name
-         console.log(name)
         this.setState({
             [name]:value
         })
@@ -199,7 +198,6 @@ class PositiveProcess extends Component{
     onChange(value,name) {
         let {periodCode}=this.state
         name=name.props.name
-        console.log(name)
         this.setState({
             periods:name,
             startTime:value
