@@ -16,6 +16,7 @@ import Package from './package/package'
 import WorkShopMaterial from './workShopMaterials/workShopMaterials'
 import WareHouseMaterial from './wareHouseMaterial/wareHouseMaterial'
 import axios from 'axios'
+import moment from 'moment'
 const { TabPane } = Tabs;
 
 class PositiveAdd extends Component {
@@ -33,6 +34,8 @@ class PositiveAdd extends Component {
         this.inputChange=this.inputChange.bind(this);
         this.save=this.save.bind(this);
         this.submit=this.submit.bind(this);
+        this.inputChange1=this.inputChange1.bind(this);
+        this.disabledDate=this.disabledDate.bind(this);
     }
     componentDidMount() {
         this.getAllProcess()
@@ -100,8 +103,7 @@ class PositiveAdd extends Component {
             if (res) {
                 this.setState({
                     inputPeriod: res.periods,
-                    // giveEndDate:res.endTime.split(' ')[0]
-                    giveEndDate:res.endTime
+                    giveEndDate:res.endTime.split(' ')[0]
                 })
             }
         })
@@ -127,7 +129,7 @@ class PositiveAdd extends Component {
                 this.setState({
                     statisticId: res.code  //统计头表的code，即待提交表格数据的code
                 })
-                if (params['startTime'] && params['endTime'] && params['periodCode'] && params['inputPeriod']&&params['modelCode']) {//点击确定后不可再修改
+                if (params['beginTime'] && params['endTime'] && params['periodCode'] && params['periods']&&params['typeCode']) {//点击确定后不可再修改
                     this.setState({
                         flagConfirm:true
                     })
@@ -151,7 +153,6 @@ class PositiveAdd extends Component {
             }
         }).then((data) => {
             let tagTable = data.data.data;
-            //console.log(tagTable)
             this.setState({
                 productLine:tagTable&&tagTable.line?tagTable.line:undefined
             })
@@ -186,13 +187,27 @@ class PositiveAdd extends Component {
         }
         addData.processes[key-1].materials[index]['value'] =value
     }
+    inputChange1(e,key){
+        let {addData}=this.state,value = e.target.value,
+        inputData = e.target.name.split('-'),
+        index = inputData[0],    //定位到是第几条数据
+        name = inputData[1]  
+    if (value[value.length - 1] !== '.') {
+        value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
+    }
+    addData.processes[key-1].others[index]['value'] =value
+    }
+    disabledDate(current) {
+        let {giveEndDate}=this.state
+        //小于给定时间不能选
+        return  current && current < moment(giveEndDate);
+      }
     save(f) {
         this.setState({
             loading:true
         })
         let flag=(f===1?1:0)
         let {addData}=this.state
-         console.log(this.state.addData)
         axios({
             url: `${this.url.positiveProcessStatis.saveOrCommit}`,
             method: 'post',
@@ -208,7 +223,7 @@ class PositiveAdd extends Component {
         }).then(data => {
             message.info(data.data.data)
             if(data.data.code===0){
-                this.props.history.push({pathname:'/processStatistics'})
+                this.props.history.push({pathname:'/positiveProcess'})
             }
             this.setState({
                 loading:false
@@ -238,7 +253,7 @@ class PositiveAdd extends Component {
         this.props.history.push({ pathname: '/positiveProcess' })
     }
     render() {
-        let { processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData,headEdit,tabKey} = this.state
+        let { processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData,headEdit,tabKey,giveEndDate} = this.state
         this.url = JSON.parse(localStorage.getItem('url'))
         this.tabData = [
             { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData} processId={tabKey} /> },
@@ -248,7 +263,7 @@ class PositiveAdd extends Component {
             { component: <Crush productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
             { component: <SecondMix productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
             { component: <SecondBuring productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
-            { component: <Package productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
+            { component: <Package productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange} inputChange1={this.inputChange1}/> },
             { component: <WorkShopMaterial tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
             { component: <WareHouseMaterial tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
         ]
@@ -259,6 +274,7 @@ class PositiveAdd extends Component {
                 <div className='rightDiv-content'>
                     <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis} flagConfirm={this.props.location.editFlag?true:flagConfirm} headEdit={headEdit}
                         lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getPeriods} editFlag={this.props.location.editFlag}
+                        disabledDate={this.disabledDate} giveEndDate={giveEndDate}
                     />
                     <div>
                         {processData ? <Tabs defaultActiveKey='1' onChange={this.tabChange}>
@@ -274,8 +290,8 @@ class PositiveAdd extends Component {
                     </div>
                     <span style={{ bottom: '10px', position: 'absolute', left: '15px' }}><CancleButton /></span>
                     <span style={{ bottom: '0', position: 'absolute', right: '15px' }}>
-                    <SaveButton handleSave={this.save} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm}/>
-                    <NewButton name='提交' handleClick={this.submit} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm}/>
+                    <SaveButton handleSave={this.save} />
+                    <NewButton name='提交' handleClick={this.submit} />
                     </span>
                 </div>
             </div>

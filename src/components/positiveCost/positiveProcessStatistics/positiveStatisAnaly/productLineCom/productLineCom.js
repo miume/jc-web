@@ -8,7 +8,9 @@ class ProductLineCom extends Component{
     constructor(props){
         super(props);
         this.state={
-            loading:false
+            loading:false,
+            name:[],
+            xData:[],
         }
         this.handleConfirm=this.handleConfirm.bind(this)
         this.timeChange=this.timeChange.bind(this)
@@ -36,22 +38,37 @@ class ProductLineCom extends Component{
         }).then(data=>{
             let res=data.data.data
            if(res){
-                // let xData=[],
-                //     seriesDataNi=[],
-                //     seriesDataCo=[],
-                //     seriesDataMn=[]
-                // for(let i=0;i<res.length;i++){
-                //     seriesDataNi.push(res[i].ni)
-                //     seriesDataCo.push(res[i].co)
-                //     seriesDataMn.push(res[i].mn)
-                //     xData.push(res[i].periodNum)
-                // }
-                // this.setState({
-                //     xData:xData,
-                //     seriesDataNi:seriesDataNi,
-                //     seriesDataCo:seriesDataCo,
-                //     seriesDataMn:seriesDataMn,
-                // })
+            let xData=[],name=[],
+            data10=[[],[],[],[],[],[]]
+        for(let i=0;i<res.length;i++){
+            if(res[i].lines&&res[i].value){
+                data10[0].push(res[i].value[0])
+                name.push(res[i].lines[0].name)
+
+                data10[1].push(res[i].value[1])
+                name.push(res[i].lines[1].name)
+
+                data10[2].push(res[i].value[2])
+                name.push(res[i].lines[2].name)
+
+                data10[3].push(res[i].value[3])
+                name.push(res[i].lines[3].name)
+
+                data10[4].push(res[i].value[4])
+                name.push(res[i].lines[4].name)
+
+                data10[5].push(res[i].value[5])
+                name.push(res[i].lines[5].name)
+
+            }
+            xData.push(res[i].time)
+        } 
+            name=[...new Set(name)]    
+            this.setState({
+                xData:xData,
+                name:name,
+                data10:data10
+            })
            }
             this.setState({
                 loading:false
@@ -70,10 +87,20 @@ class ProductLineCom extends Component{
             startTime:dateString[0],
             endTime:dateString[1]
         })
-        console.log(dateString[0],dateString[1])
+        
     }
 
     getOption(){
+        let {xData,name,data10}=this.state,
+        series=[]
+        for(let i=0;i<name.length;i++){
+            series.push({
+                name:name[i],
+                type:'line',
+                label: labelOption,
+                data:data10[i]
+            })
+        }
         let labelOption = {
             normal: {
                 show: true,
@@ -92,7 +119,7 @@ class ProductLineCom extends Component{
                 trigger:'axis'
             },
             legend:{
-                data:['生产线1','生产线2','生产线3']
+                data: name
             },
             toolbox: {
                 show: true,
@@ -111,28 +138,13 @@ class ProductLineCom extends Component{
                 type:'category',
                 name:'日期',
                 boundaryGap:false,
-                data:['2019-09-01','2019-09-02','2019-09-03','2019-09-04','2019-09-05']
+                data: xData
             },
             yAxis:{
                 type:'value',
                 name:'含量(T)',
             },
-            series:[{
-                name:'生产线1',
-                type:'line',
-                label: labelOption,
-                data:[24, 25, 57, 35, 32]
-            },{
-                name:'生产线2',
-                type:'line',
-                label: labelOption,
-                data:[26, 28, 51, 48, 19]
-            },{
-                name:'生产线3',
-                type:'line',
-                label: labelOption,
-                data:[9, 26, 28, 52, 48]
-            }]
+            series:series
         }
         return option
     }

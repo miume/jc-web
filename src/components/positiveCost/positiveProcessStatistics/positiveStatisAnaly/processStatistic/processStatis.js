@@ -149,9 +149,7 @@ class PositiveProcess extends Component{
             let res = data.data.data;
             if(res){
                 this.setState({
-                    timeData:res,
-                    startTime:res[0]&&res[0].beginTime?res[0].beginTime:undefined,
-                    periods:res[0]&&res[0].periods?res[0].periods:undefined
+                    lineNameData:res
                 })
             }
         })
@@ -191,30 +189,28 @@ class PositiveProcess extends Component{
      /**周期类型,产线变化*/
      selectChange(value,name){
          name=name.props.name
-         console.log(name)
         this.setState({
             [name]:value
         })
+        if(name==='periodCode'){
+            this.getStartTime(value)
+        }
     }
-    onChange(value,name) {
-        let {periodCode}=this.state
-        name=name.props.name
-        console.log(name)
+    onChange(value) {
+        value=value.split('/')[0]
         this.setState({
-            periods:name,
-            startTime:value
-        })
-        this.getStartTime(periodCode)
+            periods:value
+        })   
       }
 
   
     render(){
-        let {line,staticPeriod}=this.props,{periodCode,lineCode,loading,timeData,startTime,data}=this.state
+        let {line,staticPeriod}=this.props,{periodCode,lineCode,loading,lineNameData,data,periods}=this.state
         return(
             <Spin spinning={loading}>
                 <Search lineFlag={true} staticPeriod={staticPeriod} selectChange={this.selectChange} 
-                        line={line} onChange={this.onChange}  startTime={startTime}
-                        periodCode={periodCode} lineCode={lineCode} timeData={timeData} getTableData={this.getTableData}
+                        line={line} onChange={this.onChange}  periods={periods}
+                        periodCode={periodCode} lineCode={lineCode} lineNameData={lineNameData} getTableData={this.getTableData}
                 />
                 <div className='clear'></div>
                 <Table 

@@ -938,6 +938,11 @@ class Home extends Component {
                 import: `${server}/jc/common/dataReorganize/import`,
                 export: `${server}/jc/common/dataReorganize/export`,
             },
+            /**正极成本核算*/
+            anodeCostAccount:{
+                getDate:`${server}/jc/common/anodeCostAccount/getDate`,
+                confirm:`${server}/jc/common/anodeCostAccount/confirm`
+            }
     };
 
         localStorage.setItem('status', JSON.stringify(status));

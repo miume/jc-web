@@ -2,62 +2,56 @@ import React,{Component} from 'react'
 import {Table,Spin,message} from 'antd'
 import Search from '../processStatistic/statisSearch'
 import axios from 'axios'
-const data=[{
-    index:'1',
-    period:'周',
-    startTime:'2019-01-01  00:00',
-    endTime:'2019-01-07  24:00',
-    productLineName:'H#生产线',
-    materialWeight:'1000',
-    processWeight:'1000',
-    productWeight:'1000'
-    
- }
-]
+
  class PositiveProductLine extends Component{
     constructor(props){
         super(props)
         this.state={
-            data:data,
+            data:[],
             loading:false
         }
         this.columns=[{
             title:'序号',
             key:'index',
             dataIndex:'index',
-            width:'5%'
+            width:'4%'
         },{
             title:'周期类型',
-            key:'period',
-            dataIndex:'period',
+            key:'periodName',
+            dataIndex:'periodName',
             width:'7%'
         },{
             title:'开始时间',
-            key:'startTime',
-            dataIndex:'startTime',
+            key:'head.beginTime',
+            dataIndex:'head.beginTime',
             width:'13%'
         },{
             title:'结束时间',
-            key:'endTime',
-            dataIndex:'endTime',
+            key:'head.endTime',
+            dataIndex:'head.endTime',
             width:'13%'
         },{
             title:'产线名称',
-            key:'productLineName',
-            dataIndex:'productLineName',
-            width:'10%'
+            key:'lineName',
+            dataIndex:'lineName',
+            width:'7%'
         },{
             title:'原料重量(kg)',
             key:'materialWeight',
             dataIndex:'materialWeight',
-            width:'10%',
+            width:'13%',
             render:(text,record)=>{
+                let data=record.rawW,res=[]
+                for(let key in data){
+                    res.push(
+                        <span key={key} style={{display:'block'}}>{`${key} : ${data[key]}`}</span>
+                    )
+                }
                 return(
                     <span>
-                        前驱体(kg)：200
-                        碳酸锂(kg)：200
-                        预混料(kg)：200
-                        烧结料(kg)：20
+                        {
+                            res.length?res.map(e=>e):'无'
+                        }
                     </span>
                 )
             }
@@ -65,30 +59,37 @@ const data=[{
             title:'原料结存(kg)',
             key:'materialWeight1',
             dataIndex:'materialWeight1',
-            width:'10%',
+            width:'13%',
             render:(text,record)=>{
+                let data=record.rawB,res=[]
+                for(let key in data){
+                    res.push(
+                        <span key={key} style={{display:'block'}}>{`${key} : ${data[key]}`}</span>
+                    )
+                }
                 return(
                     <span>
-                        前驱体(kg)：200
-                        碳酸锂(kg)：200
+                        {
+                            res.length?res.map(e=>e):'无'
+                        }
                     </span>
                 )
             }
         },{
             title:'前段在制品(kg)',
-            key:'processFWeight',
-            dataIndex:'processFWeight',
+            key:'details.firstProcess',
+            dataIndex:'details.firstProcess',
             width:'10%'
         },{
             title:'后段在制品(kg)',
-            key:'processWeight',
-            dataIndex:'processWeight',
+            key:'details.secondProces',
+            dataIndex:'details.secondProces',
             width:'10%'
         },{
             title:'产品重量(kg)',
-            key:'productWeight',
-            dataIndex:'productWeight',
-            width:'10%'
+            key:'details.product',
+            dataIndex:'details.product',
+            width:'8.5%'
         },]
         this.selectChange=this.selectChange.bind(this);
         this.onChange=this.onChange.bind(this)
@@ -114,16 +115,16 @@ const data=[{
             let res = data.data.data;
             if(res){
                 this.setState({
-                    timeData:res,
-                    startTime:res[0]&&res[0].beginTime?res[0].beginTime:undefined,
-                    periods:res[0]&&res[0].periods?res[0].periods:undefined
+                   lineNameData:res
                 })
             }
         })
     }
     getTableData(){
         let {periodCode,periods}=this.state
-
+        this.setState({
+            loading:true
+        })
         axios({
             url:`${this.props.url.positiveProcessStatis.statisticLine}`,
             method:'get',
@@ -138,18 +139,22 @@ const data=[{
             let res=data.data.data
             if(data.data.code===0){
                 message.info('操作成功!')
-                // if(res&&res.details){
-            //     for(let i=0;i<res.details.length;i++){
-            //         res.details[i]['id']=(i+1)
-            //     }
-            //     this.setState({
-            //         data:res.details
-            //     })
-            // }
+                if(res&&res.list){
+                    for(let i=0;i<res.list.length;i++){
+                        res.list[i]['index']=i+1
+                    }
+                    this.setState({
+                        res:res,
+                        data:res.list
+                    })
+                }      
             }
             else{
                 message.error(data.data.message)
             }
+            this.setState({
+                loading:false
+            })
         })
     }
        /**周期类型变化*/
@@ -157,16 +162,13 @@ const data=[{
         this.setState({
             periodCode:value
         })
+        this.getStartTime(value)
     }
-    onChange(value,name) {
-        let {periodCode}=this.state
-        name=name.props.name
-        console.log(name)
+    onChange(value) {
+        value=value.split('/')[0]
         this.setState({
-            periods:name,
-            startTime:value
-        })
-        this.getStartTime(periodCode)
+            periods:value
+        })   
       }
 
    
@@ -184,24 +186,26 @@ const data=[{
         this.getStartTime(nextProps.periodCode)
     }
     render(){
-        let {staticPeriod}=this.props,{periodCode,loading,timeData,startTime}=this.state
+        let {staticPeriod}=this.props,{periodCode,loading,lineNameData,res,data,periods}=this.state
         return(
             <Spin spinning={loading}>
-                <Search onChange={this.onChange} timeData={timeData} selectChange={this.selectChange}
+                <Search onChange={this.onChange}  selectChange={this.selectChange}
                         staticPeriod={staticPeriod} periodCode={periodCode} getTableData={this.getTableData}
-                        startTime={startTime}
+                         lineNameData={lineNameData} periods={periods}
                 />
                 <div className='clear'></div>
                 <Table 
-                dataSource={this.state.data}
-                rowKey={record=>record.index}
+                dataSource={data}
+                rowKey={record=>record.head.code}
                 columns={this.columns}
                 footer={()=>{
                     return(
-                        <div>
-                            合计 : 
-                            <span style={{float:'right'}}>
-                                原料重量 : 6000kg &nbsp;&nbsp;&nbsp; 在制品重量 : 6000kg &nbsp;&nbsp;&nbsp;产品重量 : 6000kg &nbsp;&nbsp;&nbsp;
+                        <div className={data.length===0?'hide':''}>
+                            合计 : &nbsp;&nbsp;&nbsp;
+                            <span >
+                            前驱体原料重量 : {res&&res['前驱体']['feedstock']?res['前驱体']['feedstock']:''} &nbsp;&nbsp;&nbsp; 碳酸锂原料重量 : {res&&res['碳酸锂']['feedstock']?res['碳酸锂']['feedstock']:''} &nbsp;&nbsp;&nbsp;预混料原料重量 : {res&&res['预混料']['feedstock']?res['预混料']['feedstock']:''} &nbsp;&nbsp;&nbsp;
+                            烧结料原料重量 : {res&&res['烧结料']['feedstock']?res['烧结料']['feedstock']:''} &nbsp;&nbsp;&nbsp; 前驱体原料结存 : {res&&res['前驱体']['balance']?res['前驱体']['balance']:''} &nbsp;&nbsp;&nbsp;碳酸锂原料结存 : {res&&res['碳酸锂']['balance']?res['碳酸锂']['balance']:''} &nbsp;&nbsp;&nbsp;
+                            前段在制品重量 : {res&&res['前段在制品重量']?res['前段在制品重量']:''} &nbsp;&nbsp;&nbsp; 后段在制品重量 : {res&&res['后段在制品重量']?res['后段在制品重量']:''} &nbsp;&nbsp;&nbsp;产品重量 : {res&&res['产品重量']?res['产品重量']:''} &nbsp;&nbsp;&nbsp;
                             </span>
                         </div>
                     )}}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, DatePicker, Button, Tabs,Input,message} from 'antd'
+import { Select, DatePicker, Button, Tabs,Input,message,Popconfirm} from 'antd'
 import NewButton from '../../../BlockQuote/newButton'
 import axios from 'axios'
 import moment from 'moment'
@@ -94,30 +94,37 @@ class Search extends Component {
     /**开始日期变化*/
     startChange(date, dateString) {
         let { time, length } = this.state,//time是传过来的时分秒，和开始日期拼接传给后台，length是开始与结束相差几天，用来计算结束时间
+            {giveEndDate}=this.props,
             end = dateString.replace(new RegExp("-","gm"),"/"),
             t=new Date(`${end} ${time}`).getTime()+24*length*3600*1000,
             endTime=moment(t).format('YYYY-MM-DD HH:mm:ss'),
-            endDate=moment(t).format('YYYY-MM-DD ')
+            endDate=moment(t).format('YYYY-MM-DD '),
+            date1=Date.parse(dateString),date2=Date.parse(giveEndDate),dateSub=Math.abs(date1-date2),
+            lengthSub=Math.floor(dateSub / (24 * 3600 * 1000))
+        if(lengthSub>1){//选择的开始时间与给的上一期结束时间间隔天数，大于1天要给提示
+            this.setState({
+                disabledDateFlag:true,
+                lengthSub:lengthSub
+            })
+        }
         this.setState({
             startTime: `${dateString} ${time}`,
             endTime: endTime,
             startDate: dateString,
-            endDate: endDate
+            endDate: endDate,
+            secondTime:endTime.split(' ')[1]
         });
     }
     /**结束日期变化*/
     endChange(date, dateString) {
-        let { time } = this.state
-        // end = dateString.replace(new RegExp("-","gm"),"/"),
-        // t=new Date(`${end} ${time}`).getTime()+24*length*3600*1000,
-        // endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
+        let { secondTime} = this.state
         this.setState({
             endDate: dateString,
-            endTime: `${dateString} ${time}`
+            endTime: `${dateString} ${secondTime}`
         });
     }
     confirm() {
-          let {lineCode,periodCode,modelCode,startTime,endTime}=this.state,{inputPeriod}=this.props,
+          let {lineCode,periodCode,modelCode,startTime,endTime,}=this.state,{inputPeriod}=this.props,
              params={
                 beginTime: startTime,
                 endTime: endTime,
@@ -133,7 +140,8 @@ class Search extends Component {
           this.props.addConfirm(params)
     }
     render() {
-        let { modelCode, periodCode, endDate ,startDate,lineCode} = this.state,{flagConfirm,inputPeriod}=this.props
+        let { modelCode, periodCode, endDate ,startDate,lineCode,lengthSub,disabledDateFlag} = this.state,{flagConfirm,inputPeriod}=this.props
+        
         return (
             <div>
                 <Select onChange={this.selectChange} value={lineCode} placeholder='请选择产线' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
@@ -165,9 +173,13 @@ class Search extends Component {
                     }
                 </Select>
                 <span>期数 : </span>&nbsp;<Input value={inputPeriod} placeholder='期数' style={{width:100,marginRight:'20px'}}  disabled={true}/>
-                <DatePicker onChange={this.startChange} value={startDate?moment(startDate):undefined} placeholder='开始时间' style={{ width: '180px', marginRight: '10px' }}  disabled={flagConfirm}/>
-                <DatePicker onChange={this.endChange} value={endDate ? moment(endDate) : undefined} placeholder='结束时间' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}/>
-                <NewButton name='确定' handleClick={this.confirm} disabled={flagConfirm}/>
+                <DatePicker onChange={this.startChange} disabledDate={this.props.disabledDate} value={startDate?moment(startDate):undefined} placeholder='开始时间' style={{ width: '180px', marginRight: '10px' }}  disabled={flagConfirm}/>
+                <DatePicker onChange={this.endChange} disabledDate={this.props.disabledDate} value={endDate ? moment(endDate) : undefined} placeholder='结束时间' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}/>
+                {!disabledDateFlag?<Button type='primary' className='button' style={this.props.editFlag?{display:'none'}:{}} onClick={this.confirm} disabled={this.props.flagConfirm}>确定</Button>
+                :<Popconfirm title={`与上期结束时间间隔${lengthSub}天，确定继续吗?`} onConfirm={this.confirm} okText="确定" cancelText="再想想" >
+                    <Button type='primary' className='button' style={this.props.editFlag?{display:'none'}:{}}  disabled={this.props.flagConfirm}>确定</Button>
+                </Popconfirm>}
+                &nbsp;
             </div>
         )
     }

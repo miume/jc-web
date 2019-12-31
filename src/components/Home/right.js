@@ -115,7 +115,7 @@ import OtherBaseInfo from '../positiveCost/baseData/otherBaseInfo/otherBaseInfo'
 import MaterialTypePLCMeterCom from '../positiveCost/baseData/materialTypePLCMeterCompare/materialTypePLCMeterCom'
 import ProcessStatistics from '../costAccounting/processStatistics/processStatistic'
 import CostAccount from '../costAccounting/costAccount/costAccount'
-import PositiveCostAccount from '../positiveCost/costAccout/costAccount'
+import PositiveCostAccount from '../positiveCost/costAccout/mainMaterial'
 import PositiveProcessStatistics from '../positiveCost/positiveProcessStatistics/positiveProcessStatistics'
 import CostProcessAdd from '../costAccounting/processStatistics/processAdd/add'
 import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/statisticalAnalysis/statisticalAnalysis'
@@ -152,6 +152,10 @@ import FireInsSamRec from '../fireQuality/inspectionManagement/fireInsSamRec/fir
 import FireInsDataAcq from '../fireQuality/inspectionManagement/fireInsDataAcq/fireInsDataAcq'
 import FireInsDataCol from '../fireQuality/inspectionManagement/fireInsDataCol/fireInsDataCol'
 import BaseConfigure from '../costAccounting/precursorCostBasisData/other/other'
+
+import RepoRecordWater from '../smartWarehouse/originalRecord/repoRecordWater/repoRecordWater'
+import RepoRecordAccount from '../smartWarehouse/originalRecord/repoRecordAccount/repoRecordAccount'
+import RepoQueryInOutDaily from '../smartWarehouse/dataQuery/repoQueryInOutDaily/repoQueryInOutDaily'
 
 class Right extends React.Component {
     render() {
@@ -589,6 +593,7 @@ class Right extends React.Component {
             }, {
                 path: '/repoBasicSupplier',
                 component: Suppliers
+<<<<<<< HEAD
             }, {
                 path: '/repoBasicWorkshop',
                 component: WorkShop
@@ -610,6 +615,17 @@ class Right extends React.Component {
             }, {
                 path: '/repoBasicSafety',
                 component: SafetyStock
+=======
+            },{
+                path: '/repoRecordWater',
+                component: RepoRecordWater
+            },{
+                path: '/repoRecordAccount',
+                component: RepoRecordAccount
+            },{
+                path: '/repoQueryInOutDaily',
+                component: RepoQueryInOutDaily
+>>>>>>> 7840f91cfd0263abdfc3c8fc54a7a0a7200f6d67
             }
         ];
         return (

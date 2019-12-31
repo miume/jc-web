@@ -8,6 +8,7 @@ import axios from "axios";
 
 import SamRecTable from "../fireInsSamRec/table"
 import SearchCell from "../../../BlockQuote/newSearchSell";
+import {getOperations, judgeOperation} from "../../../commom/getOperations";
 
 
 const data = [];
@@ -28,6 +29,12 @@ class FireInsSamRec extends Component {
 
     componentDidMount() {
         this.getTableParams()
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            deleteFlag: judgeOperation(operations,'DELETE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            printFlag: judgeOperation(operations,'PRINT')
+        })
     }
 
     componentWillUnmount() {
@@ -43,11 +50,13 @@ class FireInsSamRec extends Component {
             selectedRowKeys: [],
             dataSource: [],
             searchContent: "",
-            total: 0
         }
         this.pagination = {
             pageSize: 10,
-            current: 1
+            current: 1,
+            howSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10", "20", "50", "100"]
         };
         this.back = this.back.bind(this);
         this.getTableData = this.getTableData.bind(this);
@@ -57,24 +66,29 @@ class FireInsSamRec extends Component {
     }
 
     render() {
-        const current = JSON.parse(localStorage.getItem('dataEntry'))
+        this.current = JSON.parse(localStorage.getItem('dataEntry'))
         this.url = JSON.parse(localStorage.getItem('url'))
         return (
             <div>
-                <BlockQuote name="样品接收" menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName={'rightDiv-content'}>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}
-                                 cancel={this.deleteCancel} flag={true}/>
+                    <span className={this.state.deleteFlag?'':'hide'}>
+                        <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}
+                                     cancel={this.deleteCancel} flag={true}/>
+                    </span>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'批号'}/>
                     <div className='clear'></div>
                     <SamRecTable
+                        deleteFlag={this.state.deleteFlag}
+                        updateFlag={this.state.updateFlag}
+                        printFlag={this.state.printFlag}
                         dataSource={this.state.dataSource}
                         selectedRowKeys={this.state.selectedRowKeys}
                         onSelectChange={this.onSelectChange}
                         handleTableChange={this.handleTableChange}
                         getTableParams={this.getTableParams}
                         url={this.url}
-                        total={this.state.total}
+                        pagination={this.pagination}
                     />
                 </Spin>
             </div>
@@ -109,7 +123,7 @@ class FireInsSamRec extends Component {
             const res = data.data.data;
             if (res && res.list) {
                 var dataSource = [];
-                var total = res.total;
+                this.pagination.total = res.total;
                 for (var i = 0; i < res.list.length; i++) {
                     const e = res.list[i];
                     dataSource.push({
@@ -126,8 +140,7 @@ class FireInsSamRec extends Component {
                     })
                 }
                 this.setState({
-                    dataSource: dataSource,
-                    total: total
+                    dataSource: dataSource
                 })
 
             }else{
@@ -166,6 +179,7 @@ class FireInsSamRec extends Component {
         this.setState({
             searchContent: undefined
         });
+        this.pagination.current = 1;
         this.getTableParams('')
     }
 

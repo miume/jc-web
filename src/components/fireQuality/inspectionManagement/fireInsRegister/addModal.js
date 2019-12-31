@@ -232,7 +232,7 @@ class AddModal extends React.Component {
             return
         }
         if (this.state.username===""){
-            message.info("请输入送检人名字")
+            message.info("备注不能为空")
             return
         }
         if (this.state.infos.length<1){
