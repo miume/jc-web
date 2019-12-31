@@ -155,13 +155,13 @@ class AddModalTop extends React.Component {
                                 return (
                                     <Input key={index} className='addModalTop_batchNumber_input' style={{marginRight: 10}}
                                            value={this.state.inputValue} onChange={this.inputChange}
-                                           placeholder="可空，<6个字符>"/>
+                                           placeholder="可空，<20个字符>"/>
                                 )
                             } else if (e.rule === "流水"){
                                 return (
                                     <Input key={index} className='addModalTop_batchNumber_water_input' style={{marginRight: 10}}
                                            value={this.state.inputWaterValue} onChange={this.inputWaterChange}
-                                           placeholder="三个数字"/>
+                                           placeholder="三位数字"/>
                                 )
                             } else {
                                 return (
