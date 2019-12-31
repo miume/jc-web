@@ -215,17 +215,18 @@ class Detail extends Component{
         }
         else if(id===3||id===5||id===6||id===8){//预混(暂存仓),粉碎,二混,包装
             return (
-                <div style={{height:'50px'}}>
+                <div >
                      <div style={{float:'left'}}>  
                         {
-                            dataBottom?dataBottom.map(item=>{
+                            dataBottom?dataBottom.map((item,index)=>{
                                 return(
-                                    <span  key={item.code}>{item.materialName} : {item.value}</span>
+                                    <span  key={index}>{item.materialName} : {item.value}</span>
                                 )
                             }):null
                         }
                     </div>
-                    <Divider style={{width:'100%'}}/>
+                    {/* <hr style={{width:'100%',backgroundColor:'#e8e8e8'}}/> */}
+                    <Divider style={{margin:'10px 0'}}/>
                     <div>
                         <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : </span>
                         <span style={{float:'right'}}> 
@@ -315,6 +316,7 @@ class Detail extends Component{
                         <span>产品型号 : {this.props.record.typeName}</span>
                     </div>
                     <div style={{marginTop:'30px'}}></div>
+                   
                    {
                        this.props.record.totals.processCode===9||this.props.record.totals.processCode===10?this.getContent(this.props.record.totals.processCode):
                        <Table
@@ -328,12 +330,13 @@ class Detail extends Component{
                                </div>
                            );
                        }}
-                       scroll={{y:'38vh'}}
-                       style={{flex:'1',height:'50vh'}}
+                       scroll={{y:300}}
+                    //    style={{flex:'1',height:'50vh'}}
                        pagination={false}
                        size='small'
                        bordered/>
                    }
+                   
                 </Modal>
             </span>
         )

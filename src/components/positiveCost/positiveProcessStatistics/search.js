@@ -34,17 +34,14 @@ class Search extends Component {
       startTime: `${dateString} ${secondTime}`,
       endTime: endTime,
       startDate:dateString,
-        endDate:endDate
+        endDate:endDate,
+        secondTime:endTime.split(' ')[1]
     });
   }
   /**结束日期变化*/
   endChange(date, dateString) {
-    let {length,time}=this.props,{periodFlag}=this.state,
-        //   length1=length&&periodFlag?length:this.state.length,
-           secondTime = time && periodFlag?time:this.state.time
-        //   end = dateString.replace(new RegExp("-","gm"),"/"),
-        //   t=new Date(`${end} ${secondTime}`).getTime()+24*length1*3600*1000,
-        //   endTime=moment(t).format('YYYY-MM-DD HH:mm:ss')
+    let {secondTime}=this.state
+
     this.setState({
       endDate: dateString,
       endTime:`${dateString} ${secondTime}`

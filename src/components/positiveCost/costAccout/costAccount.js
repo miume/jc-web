@@ -34,11 +34,29 @@ class PositiveCostAccount extends Component{
                     period:res,
                     periodCode:res[0].code
                 })
+                this.getTimeByPeriod(res[0].code)
             }
         })
+        
     }
-    getTimeByPeriod(){
-
+    getTimeByPeriod(value){
+        axios({
+            url:this.url.anodeCostAccount.getDate,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{
+                periodId:value
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    date:res
+                })
+            }
+        })
     }
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
