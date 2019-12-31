@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Spin,Tabs} from 'antd'
+import {Spin,Tabs,message} from 'antd'
 import Blockquote from '../../BlockQuote/blockquote'
 import NewButton from '../../BlockQuote/newButton'
 import Search from './search'
@@ -32,7 +32,7 @@ class PositiveProcessStatistics extends Component{
     componentDidMount() {
         this.getPeriod()
         this.getLine()
-        
+        this.getPendSubmit()
     }
     componentWillUnmount() {
         this.setState=()=>{
@@ -86,16 +86,21 @@ class PositiveProcessStatistics extends Component{
         }
         else{
             this.setState({
-                pagination:pagination
+                paginationStatis:pagination
             })
         }
     }
     tabChange(key){
-        this.setState(
-            {
+        let {pagination,head,paginationStatis}=this.state
+        this.setState({
                 tabKey:key
+            })
+            if(key==='1'){
+                this.getPendSubmit(head,pagination)
             }
-        )
+            if(key==='2'){
+                this.getStatisticPage(head,paginationStatis)
+            }
     }
     handleTableChange(pagination){
         let {tabKey,head}=this.state
@@ -125,7 +130,7 @@ class PositiveProcessStatistics extends Component{
     /**获取待提交表格数据*/
     getPendSubmit(params,pagination){
         let size=pagination?pagination.pageSize:10,page=pagination?pagination.current:1
-        params=params?params:null
+        params=params?params:{}
         this.setState({
             loadingSubmit: true
         })
@@ -159,7 +164,14 @@ class PositiveProcessStatistics extends Component{
     /**获取已统计表格数据*/
     getStatisticPage(params,pagination){
         let size=pagination?pagination.pageSize:10,page=pagination?pagination.current:1
-        params=params?params:null
+        
+  
+        let da={
+            periodCode:this.state.periodCode,
+            lineCode:this.state.lineCode
+        }
+        params=(params['periodCode']||params['startTime']||params['endTime']||params['lineCode'])?params:da
+         
         this.setState({
             loadingStatis:true
         })
@@ -182,7 +194,7 @@ class PositiveProcessStatistics extends Component{
                 }
                 this.setState({
                     dataStatistic: res.list,
-                    pagination: { current: res.page ? res.page : 0, total: res.total ? res.total : 0 },
+                    paginationStatis: { current: res.page ? res.page : 0, total: res.total ? res.total : 0 },
                 })
             }
             this.setState({
@@ -234,7 +246,7 @@ class PositiveProcessStatistics extends Component{
                         </TabPane>
                         <TabPane tab='已统计' key='2'>
                             <PositiveStatisticDone loadingStatis={this.state.loadingStatis} 
-                                url={this.url} getPagination={this.getPagination} pagination={this.state.pagination}
+                                url={this.url} getPagination={this.getPagination} pagination={this.state.paginationStatis}
                                 handleTableChange={this.handleTableChange}  dataStatistic={dataStatistic}
                             />
                         </TabPane>
