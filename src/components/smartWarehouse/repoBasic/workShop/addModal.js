@@ -20,7 +20,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,siteName} = this.state, {title,flag} = this.props;
+        let {visible,plantCode,plantName} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -32,12 +32,12 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>供应商代码：</div>
-                        <Input placeholder={'请输入供应商代码'} name={'siteName'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <div>代码(车间号)：</div>
+                        <Input placeholder={'请输入代码(车间号)'} name={'plantName'} value={plantName} style={{width:200}} onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <div>供应商名称：</div>
-                        <Input placeholder={'请输入供应商名称'} name={'name'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <div>车间名称：</div>
+                        <Input placeholder={'请输入车间名称'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -56,9 +56,10 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {siteName,code} = record;
+            let {plantName,plantCode,code} = record;
             this.setState({
-                siteName,
+                plantName,
+                plantCode,
                 code
             });
         }

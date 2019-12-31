@@ -1,15 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
-import {Input, Modal, message} from "antd";
+import {Input, Modal, message, Select} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
+const {Option} = Select;
 
 class AddModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
+            allTypeData: []
         };
         this.handleSave = this.handleSave.bind(this);
         this.inputChange = this.inputChange.bind(this);
@@ -20,24 +22,39 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,siteName} = this.state, {title,flag} = this.props;
+        let {visible,plantCode,allTypeData,materialName} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
-                       centered={true} width={400}
+                       centered={true} width={500}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
                            <SaveButton key={'save'} handleSave={this.handleSave}/>
                        ]}
                 >
-                    <div className={'check-item'}>
-                        <div>供应商代码：</div>
-                        <Input placeholder={'请输入供应商代码'} name={'siteName'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                    <div className={'basis-data-flex'}>
+                        <Select placeholder={'请选择所属物料大类'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                            {
+                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                            }
+                        </Select>
+
+                        <Select placeholder={'请选择所属物料小类'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                            {
+                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                            }
+                        </Select>
                     </div>
-                    <div className={'check-item'}>
-                        <div>供应商名称：</div>
-                        <Input placeholder={'请输入供应商名称'} name={'name'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+
+                    <div className={'basis-data-flex'}>
+                        <Select placeholder={'请选择物料名称'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                            {
+                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                            }
+                        </Select>
+
+                        <Input placeholder={'请输入安全库存值'} name={'materialName'} value={materialName} style={{width:200}} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -56,9 +73,10 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {siteName,code} = record;
+            let {plantName,plantCode,code} = record;
             this.setState({
-                siteName,
+                plantName,
+                plantCode,
                 code
             });
         }
@@ -115,12 +133,6 @@ class AddModal extends React.Component {
             url = this.props.url.checkSite.update;
         }
         return {data,method,url};
-    }
-
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
     }
 }
 

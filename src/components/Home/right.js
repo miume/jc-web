@@ -35,11 +35,18 @@ import CheckPlan from "../equipmentManagement/equipmentCheck/checkPlan/checkPlan
 import CheckQuery from "../equipmentManagement/equipmentCheck/checkQuery/checkQuery";
 import CheckTemplate from "../equipmentManagement/equipmentCheck/checkTemplate/checkTemplate";
 
-import OtherStockOut from '../smartWarehouse/otherStockOut/stockOut';
+import OtherStockOut from '../smartWarehouse/stockOut/stockOut';
 import OriginalRecord from '../smartWarehouse/originalRecord/originalRecord';
 import DataStatistics from '../smartWarehouse/dataStatistics/dataStatistics';
 import DataQuery from '../smartWarehouse/dataQuery/dataQuery';
 import Suppliers from "../smartWarehouse/repoBasic/supplier/supplier";
+import WorkShop from '../smartWarehouse/repoBasic/workShop/workShop';
+import Category from '../smartWarehouse/repoBasic/category/category';
+import SubCategory from '../smartWarehouse/repoBasic/subCategory/subCategory';
+import Material from '../smartWarehouse/repoBasic/material/material';
+import OutCategory from '../smartWarehouse/repoBasic/outCategory/outCategory';
+import OutPoint from '../smartWarehouse/repoBasic/outPoint/outPoint';
+import SafetyStock from '../smartWarehouse/repoBasic/safetyStock/safetyStock';
 // import LibraryManage from '../smartWarehouse/libraryManage/library';
 // import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
@@ -582,6 +589,27 @@ class Right extends React.Component {
             }, {
                 path: '/repoBasicSupplier',
                 component: Suppliers
+            }, {
+                path: '/repoBasicWorkshop',
+                component: WorkShop
+            }, {
+                path: '/repoBasicCategory',
+                component: Category
+            }, {
+                path: '/repoBasicSubcategory',
+                component: SubCategory
+            }, {
+                path: '/repoBasicMaterial',
+                component: Material
+            }, {
+                path: '/repoBasicOutCategory',
+                component: OutCategory
+            }, {
+                path: '/repoBasicOutPoint',
+                component: OutPoint
+            }, {
+                path: '/repoBasicSafety',
+                component: SafetyStock
             }
         ];
         return (

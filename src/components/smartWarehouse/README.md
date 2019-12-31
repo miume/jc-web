@@ -4,4 +4,12 @@
 - 盘库管理（libraryManage）
 - 入库管理（enterStorage）
 - 红单管理（redListManage）
-- 物料基础（baseData）
+- 基础数据（baseData）
+    - 供应商 Supplier
+    - 车间信息 WorkShop
+    - 物料大类 Category
+    - 物料小类 Subcategory
+    - 物料信息 Material
+    - 出库类别 OutCategory
+    - 出库点   OutPoint
+    - 安全库存 SafetyStock

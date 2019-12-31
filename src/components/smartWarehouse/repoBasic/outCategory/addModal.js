@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
-import {Input, Modal, message} from "antd";
+import {Input, Modal, message, Divider} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 
@@ -20,7 +20,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,siteName} = this.state, {title,flag} = this.props;
+        let {visible,deliveryTypeName} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -32,12 +32,8 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>供应商代码：</div>
-                        <Input placeholder={'请输入供应商代码'} name={'siteName'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
-                    </div>
-                    <div className={'check-item'}>
-                        <div>供应商名称：</div>
-                        <Input placeholder={'请输入供应商名称'} name={'name'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <div>出库类别：</div>
+                        <Input placeholder={'请输入出库类别'} name={'deliveryTypeName'} value={deliveryTypeName} style={{width:200}} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -56,10 +52,10 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {siteName,code} = record;
+            let {deliveryTypeName,id} = record;
             this.setState({
-                siteName,
-                code
+                deliveryTypeName,
+                id
             });
         }
         this.setState({
@@ -101,26 +97,20 @@ class AddModal extends React.Component {
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {deliveryTypeName,id} = this.state,
             data = {
-                code,
-                siteName
+                id,
+                deliveryTypeName
             }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
-            message.info('请将站点名称填写完整！');
+        if(!deliveryTypeName) {
+            message.info('请将出库类别填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
             method = 'put';
             url = this.props.url.checkSite.update;
         }
         return {data,method,url};
-    }
-
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
     }
 }
 

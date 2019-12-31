@@ -1,26 +1,30 @@
 import React from 'react';
 import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
-import {Input, Modal, message} from "antd";
+import {Input, Modal, message, Select} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
+const {Option} = Select;
 
 class AddModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
+            allTypeData: []
         };
+        this.getAllType = this.getAllType.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
+        this.selectChange = this.selectChange.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
     }
 
     render() {
-        let {visible,siteName} = this.state, {title,flag} = this.props;
+        let {visible,subTypeName,subTypeCode,plantCode,allTypeData} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -32,12 +36,20 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>供应商代码：</div>
-                        <Input placeholder={'请输入供应商代码'} name={'siteName'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <div>&nbsp;代码(车间号)：</div>
+                        <Input placeholder={'请输入代码(车间号)'} name={'subTypeCode'} value={subTypeCode} style={{width:200}} onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <div>供应商名称：</div>
-                        <Input placeholder={'请输入供应商名称'} name={'name'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <div>物料小类名称：</div>
+                        <Input placeholder={'请输入物料小类名称'} name={'subTypeName'} value={subTypeName} style={{width:200}} onChange={this.inputChange}/>
+                    </div>
+                    <div className={'check-item'}>
+                        <div style={{width:98,textAlign: 'right'}}>所属大类：</div>
+                        <Select placeholder={'请选择所属大类'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                            {
+                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                            }
+                        </Select>
                     </div>
                 </Modal>
             </span>
@@ -56,15 +68,29 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {siteName,code} = record;
+            let {subTypeCode,subTypeName,plantCode,code} = record;
             this.setState({
-                siteName,
+                subTypeCode,
+                subTypeName,
+                plantCode,
                 code
             });
         }
         this.setState({
             visible: true
         });
+        this.getAllType();
+    }
+
+    /**获取所有物料大类*/
+    getAllType() {
+        let data = [{
+            id: 1,
+            typeName: '物料名称'
+        }]
+        this.setState({
+            allTypeData: data
+        })
     }
 
     /**取消事件*/
@@ -72,6 +98,12 @@ class AddModal extends React.Component {
         this.setState({
             visible: false
         });
+    }
+
+    selectChange(value) {
+        this.setState({
+            typeCode: value
+        })
     }
 
     inputChange(e) {
@@ -101,13 +133,15 @@ class AddModal extends React.Component {
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {subTypeName,code,subTypeCode,plantCode} = this.state,
             data = {
                 code,
-                siteName
+                subTypeName,
+                subTypeCode,
+                plantCode
             }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
-            message.info('请将站点名称填写完整！');
+        if(!subTypeCode || !subTypeName || !plantCode) {
+            message.info('请将新增信息填写完整！');
             return false
         }
         if(code) {

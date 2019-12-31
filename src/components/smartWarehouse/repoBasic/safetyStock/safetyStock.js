@@ -7,7 +7,7 @@ import AddModal from "./addModal";
 import axios from 'axios';
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 
-class Suppliers extends React.Component {
+class SafetyStock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,36 +27,56 @@ class Suppliers extends React.Component {
             dataIndex: 'index',
             width: '10%'
         },{
-            title: '代码(厂商代号)',
-            key: 'typeName',
-            dataIndex: 'typeName',
-            width: '20%'
+            title: '物料大类',
+            key: 'materialTypeName',
+            dataIndex: 'materialTypeName',
+            width: '10%'
         },{
-            title: '供应商名字',
-            key: 'materialSupplierName',
-            dataIndex: 'materialSupplierName',
-            width: '40%'
+            title: '物料小类',
+            key: 'subTypeName',
+            dataIndex: 'subTypeName',
+            width: '10%'
         },{
-            title: '自动标记',
-            key: 'autoFlag',
-            dataIndex: 'autoFlag',
+            title: '供应商',
+            key: 'supplier',
+            dataIndex: 'supplier',
+            width: '10%'
+        },{
+            title: '物料名称',
+            key: 'materialName',
+            dataIndex: 'materialName',
+            width: '10%'
+        },{
+            title: '单位',
+            key: 'unit',
+            dataIndex: 'unit',
+            width: '10%'
+        },{
+            title: '代码',
+            key: 'materialNameCode',
+            dataIndex: 'materialNameCode',
+            width: '10%'
+        },{
+            title: '安全库存',
+            key: 'safetyStockValue',
+            dataIndex: 'safetyStockValue',
             width: '10%'
         },{
             title: '操作',
-            key: 'id',
-            dataIndex: 'id',
+            key: 'code',
+            dataIndex: 'code',
             width: '20%',
             render: (text,record) => {
                 let {deleteFlag,updateFlag} = this.state;
                 return (
-                <span>
-                    <AddModal flag={updateFlag} record={record} title={'编辑'} url={this.url} getTableParams={this.getTableParams}/>
-                    {updateFlag && deleteFlag ? <Divider type={"vertical"}/> : ''}
-                    <span className={deleteFlag ? '' : 'hide'}>
-                        <Popconfirm title="确认删除?" onConfirm={()=> this.deleteByIds(text)} okText="确定" cancelText="取消" >
-                            <span className='blue'>删除</span>
-                        </Popconfirm>
-                    </span>
+                    <span>
+                        <AddModal flag={updateFlag} record={record} title={'编辑'} url={this.url} getTableParams={this.getTableParams}/>
+                        {updateFlag && deleteFlag ? <Divider type={"vertical"}/> : ''}
+                        <span className={deleteFlag ? '' : 'hide'}>
+                            <Popconfirm title="确认删除?" onConfirm={()=> this.deleteByIds(text)} okText="确定" cancelText="取消" >
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             }
@@ -88,7 +108,7 @@ class Suppliers extends React.Component {
                     <AddModal flag={addFlag} title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
                                  cancel={this.cancel} flag={deleteFlag}/>
-                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入供应商名称'}/>
+                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入车间名称'}/>
                     <div className='clear'></div>
                     <Table dataSource={data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
                            onChange={this.handleTableChange} size={'small'} bordered rowKey={record => record.id}/>
@@ -216,4 +236,4 @@ class Suppliers extends React.Component {
     }
 }
 
-export default Suppliers;
+export default SafetyStock;

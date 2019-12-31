@@ -1,4 +1,5 @@
 import React from 'react';
+import './basisData.css';
 import CommonBaseData from '../../BlockQuote/baseData';
 
 class BaseData extends React.Component{

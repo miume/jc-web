@@ -20,7 +20,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,siteName} = this.state, {title,flag} = this.props;
+        let {visible,typeCode,typeName} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -32,12 +32,12 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>供应商代码：</div>
-                        <Input placeholder={'请输入供应商代码'} name={'siteName'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <div>物料大类代码：</div>
+                        <Input placeholder={'请输入物料大类代码'} name={'typeCode'} value={typeCode} style={{width:200}} onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <div>供应商名称：</div>
-                        <Input placeholder={'请输入供应商名称'} name={'name'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <div>物料大类名称：</div>
+                        <Input placeholder={'请输入物料大类名称'} name={'typeName'} value={typeName} style={{width:200}} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -56,9 +56,10 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {siteName,code} = record;
+            let {typeName,typeCode,code} = record;
             this.setState({
-                siteName,
+                typeName,
+                typeCode,
                 code
             });
         }
@@ -101,13 +102,14 @@ class AddModal extends React.Component {
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {typeCode,typeName,code} = this.state,
             data = {
                 code,
-                siteName
+                typeCode,
+                typeName
             }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
-            message.info('请将站点名称填写完整！');
+        if(!typeName || !typeCode) {
+            message.info('请将新增信息填写完整！');
             return false
         }
         if(code) {

@@ -67,33 +67,28 @@ class OtherStockOut extends React.Component{
             recordDataSource:[],
             loading: true
         };
-        this.url = JSON.parse(localStorage.getItem('url'));
         this.handleChange = this.handleChange.bind(this);
         this.getApplyTableData = this.getApplyTableData.bind(this);
         this.getStockOutData = this.getStockOutData.bind(this);
     }
 
-    render(){
+    render() {
+        this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
         let {outType,dataSource,loading,recordDataSource,selectedRowKeys} = this.state;
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <Tabs defaultActiveKey='1-1' onChange={this.handleChange} >
-                    <TabPane key='1-1' tab={<span><i className="fa fa-leaf" aria-hidden="true"></i> &nbsp;原材料出库申请</span>}>
+                    <TabPane key='1-1' tab={<span><i className="fa fa-leaf" aria-hidden="true"></i> &nbsp;出库申请</span>}>
                         <RawMaterialApplication index={1} url={this.url} data={dataSource} fetch={this.getApplyTableData}
                                                 loading={loading} outType={outType}/>
                     </TabPane>
-                    <TabPane key='1-3' tab={<span><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;成品出库申请</span>}>
-                        <RawMaterialApplication index={2} url={this.url} data={dataSource} fetch={this.getApplyTableData}
-                                                loading={loading} outType={outType}/>
-                    </TabPane>
-                    <TabPane key='2-1' tab={<span><i className="fa fa-leaf" aria-hidden="true"></i> &nbsp;原材料出库记录</span>}>
+
+                    <TabPane key='2-1' tab={<span><i className="fa fa-leaf" aria-hidden="true"></i> &nbsp;出库单查询</span>}>
                         <RawMaterialOut index={3} url={this.url} data={recordDataSource} fetch={this.getStockOutData} keys={selectedRowKeys} loading={loading}/>
                     </TabPane>
-                    <TabPane key='2-3' tab={<span><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;成品出库记录</span>}>
-                        <RawMaterialOut index={4} url={this.url} data={recordDataSource} fetch={this.getStockOutData} keys={selectedRowKeys} loading={loading}/>
-                     </TabPane>
+
                 </Tabs>
             </div>
         );

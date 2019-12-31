@@ -1,0 +1,13 @@
+.stock-out-flex {
+    display: flex;
+    justify-content: space-around;
+}
+
+.stock-out-table {
+    margin-top: 20px;
+}
+
+.stock-out-application {
+    display: flex;
+    flex-direction: row-reverse;
+}
