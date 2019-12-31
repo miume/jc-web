@@ -5,6 +5,7 @@ import SearchCell from '../../../BlockQuote/newSearchSell';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import AddModal from "./addModal";
 import axios from 'axios';
+import {getOperations,judgeOperation} from "../../../commom/getOperations";
 
 class Suppliers extends React.Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class Suppliers extends React.Component {
             selectedRowKeys: [],
             searchContent: ''
         };
+        this.operations = [];
         this.pagination = {
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
@@ -45,17 +47,20 @@ class Suppliers extends React.Component {
             dataIndex: 'code',
             width: '20%',
             render: (text,record) => {
+                let {deleteFlag,updateFlag} = this.state;
                 return (
                     <span>
-                        <AddModal record={record} title={'编辑'} url={this.url} getTableParams={this.getTableParams}/>
-                        <Divider type={"vertical"}/>
-                        <Popconfirm title="确认删除?" onConfirm={()=> this.deleteByIds(text)} okText="确定" cancelText="取消" >
-                            <span className='blue'>删除</span>
-                        </Popconfirm>
+                        <AddModal flag={updateFlag} record={record} title={'编辑'} url={this.url} getTableParams={this.getTableParams}/>
+                        <span className={deleteFlag ? '' : 'hide'}>
+                            <Popconfirm title="确认删除?" onConfirm={()=> this.deleteByIds(text)} okText="确定" cancelText="取消" >
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             }
         }];
+
         this.back = this.back.bind(this);
         this.reset = this.reset.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -68,19 +73,20 @@ class Suppliers extends React.Component {
     }
 
     render() {
-        let current = JSON.parse(localStorage.getItem('dataEntry')), {selectedRowKeys,data} = this.state;
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url'));
-        let rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-        };
+        let {selectedRowKeys,data,addFlag,deleteFlag} = this.state,
+            rowSelection = {
+                selectedRowKeys,
+                onChange: this.onSelectChange,
+            };
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.back}/>
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
+                    <AddModal flag={addFlag} title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
-                                 cancel={this.cancel} flag={true}/>
+                                 cancel={this.cancel} flag={deleteFlag}/>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'站点名称'}/>
                     <div className='clear'></div>
                     <Table dataSource={data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
@@ -91,7 +97,13 @@ class Suppliers extends React.Component {
     }
 
     componentDidMount() {
-        this.getTableParams()
+        this.getTableParams();
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag: judgeOperation(operations,'SAVE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            deleteFlag: judgeOperation(operations,'DELETE')
+        })
     }
 
     /**确定获取表格数据的参数*/
@@ -194,6 +206,12 @@ class Suppliers extends React.Component {
 
     back() {
         this.props.history.push('/repoBasic');
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 

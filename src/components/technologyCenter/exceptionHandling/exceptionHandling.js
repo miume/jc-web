@@ -12,6 +12,7 @@ import AddModal from './addModal';
 import DeleteByIds from "../../BlockQuote/deleteByIds";
 import ExceptionTable from "./exceptionTable";
 import './exceptionHandling.css';
+import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
 
 // const data = [{
 //     index: 1,
@@ -38,10 +39,7 @@ class ExceptionHandling extends React.Component {
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===this.current.path)[0].operations:null;
-        let addFlag = home.judgeOperation(this.operation,'SAVE');
-        let deleteFlag = home.judgeOperation(this.operation,'DELETE');
+        let {addFlag,deleteFlag,updateFlag} = this.state;
         return (
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
@@ -49,7 +47,7 @@ class ExceptionHandling extends React.Component {
                     <AddModal flag={addFlag} url={this.url} getTableData = {this.getTableData}/>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}
                                  flag={deleteFlag} />
-                    <ExceptionTable url={this.url} update={addFlag} deleteFlag={deleteFlag} selectedRowKeys={this.state.selectedRowKeys}
+                    <ExceptionTable url={this.url} update={updateFlag} deleteFlag={deleteFlag} selectedRowKeys={this.state.selectedRowKeys}
                                     data={this.state.dataSource} getTableData = {this.getTableData} handleDelete={this.deleteByIds}
                                     onSelectChange={this.onSelectChange}/>
                 </Spin>
@@ -62,6 +60,12 @@ class ExceptionHandling extends React.Component {
             page: 1,
             size: 10
         });
+        let {menuId} = this.current,operations = getSecondsOperations(menuId);
+        this.setState({
+            addFlag: judgeOperation(operations,'SAVE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            deleteFlag: judgeOperation(operations,'DELETE')
+        })
     }
 
     /**获取表格数据*/

@@ -13,6 +13,7 @@ import {Spin, Tabs, message} from "antd";
 import ProcessTable from "./processTable";
 import './processParameters.css';
 import SearchCell from "../../BlockQuote/search";
+import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
 
 const {TabPane} = Tabs;
 // const data = [{
@@ -90,10 +91,7 @@ class processParameters extends React.Component {
         this.status = ['未提交','待审核','审核中','已通过','已驳回','已发布'];
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===this.current.path)[0].operations:null;
-        let deleteFlag = home.judgeOperation(this.operation,'DELETE'),
-            {loading,selectedRowKeys,tabsList} = this.state,
+        let {loading,selectedRowKeys,tabsList,addFlag,deleteFlag,updateFlag} = this.state,
             addDisabled = tabsList && tabsList.length  > 1 ? false : true;
         return (
             <div>
@@ -104,7 +102,9 @@ class processParameters extends React.Component {
                         addDisabled ?
                             <SearchCell name={'请输入工序或车间'} flag={true} searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.reset}/> :
                             <div className={addDisabled ? 'hide' : ''}>
-                                <NewButton handleClick={this.handleAdd} name={'新增'} className='fa fa-plus' />
+                                <span className={addFlag ? '' : 'hide'}>
+                                    <NewButton handleClick={this.handleAdd} name={'新增'} className='fa fa-plus' />
+                                </span>
                                 <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds}
                                              cancel={this.confirmCancel} flag={deleteFlag} />
                                 <SearchCell name={'请输入工序或车间'} type={1} flag={true} searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.reset}/>
@@ -114,7 +114,7 @@ class processParameters extends React.Component {
                     <div className='clear' ></div>
                     <div>
                     {
-                       this.renderTabs(tabsList,addDisabled)
+                       this.renderTabs(tabsList,addDisabled,updateFlag,deleteFlag)
                     }
                     </div>
                 </Spin>
@@ -133,6 +133,13 @@ class processParameters extends React.Component {
             });
             this.fetch({},status);
         }
+        //确定界面操作权限
+        let {menuId} = this.current, operations = getSecondsOperations(menuId);
+        this.setState({
+            addFlag: judgeOperation(operations,'SAVE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            deleteFlag: judgeOperation(operations,'DELETE')
+        })
     }
 
     judgeTabsPath(roleList) {
@@ -159,17 +166,15 @@ class processParameters extends React.Component {
         }
     }
 
-    renderTabs(tabsList,addDisabled) {
-        let addFlag = home.judgeOperation(this.operation,'SAVE'),
-            deleteFlag = home.judgeOperation(this.operation,'DELETE'),
-            {data,selectedRowKeys} = this.state;
+    renderTabs(tabsList,addDisabled,updateFlag,deleteFlag) {
+        let {data,selectedRowKeys} = this.state;
         return (
             tabsList ?
                 <Tabs defaultActiveKey={tabsList[0]['id']} onChange={this.tabChange}>
                     {
                         tabsList.map(e =>
                             <TabPane tab={e.title} key={e.id}>
-                                <ProcessTable status={e.id} url={this.url} data={data} fetch={this.fetch} update={addFlag} onSelectChange={this.onSelectChange}
+                                <ProcessTable status={e.id} url={this.url} data={data} fetch={this.fetch} update={updateFlag} onSelectChange={this.onSelectChange}
                                               deleteFlag={deleteFlag} selectedRowKeys={selectedRowKeys} handleAdd={this.handleAdd} addDisabled={addDisabled}/>
                             </TabPane>
                         )

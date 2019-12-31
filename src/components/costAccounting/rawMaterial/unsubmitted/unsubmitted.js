@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, message} from "antd";
+import {Table, message, Divider} from "antd";
 import axios from 'axios';
 import DeleteById from "../../../BlockQuote/deleteById";
 
@@ -47,10 +47,12 @@ class UnSubmitted extends React.Component {
             dataIndex: 'code',
             width: '20%',
             render: (text) => {
+                let {updateFlag,deleteFlag} = this.props;
                 return (
                     <span>
-                        <span className='blue' onClick={() => this.props.handleClick(text)}>编辑</span>
-                        <DeleteById id={text} handleDelete={() => this.handleDelete(text)} flag={true}/>
+                        <span className={updateFlag ? 'blue' : 'hide'} onClick={() => this.props.handleClick(text)}>编辑</span>
+                        {updateFlag && deleteFlag ? <Divider type="vertical" /> : ''}
+                        <DeleteById id={text} handleDelete={() => this.handleDelete(text)} flag={deleteFlag}/>
                     </span>
                 )
             }

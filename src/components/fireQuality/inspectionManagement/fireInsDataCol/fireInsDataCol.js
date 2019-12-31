@@ -8,6 +8,7 @@ import axios from "axios";
 import SearchCell from "./search";
 import moment from "moment";
 import NewButton from "../../../BlockQuote/newButton";
+import {getOperations, judgeOperation} from "../../../commom/getOperations";
 
 // const departmentData = [{
 //     code: 1,
@@ -109,9 +110,9 @@ class FireInsDataCol extends Component{
     }
 
     render(){
-        const current = JSON.parse(localStorage.getItem('dataEntry')), menus = JSON.parse(localStorage.getItem('menus'));
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url'));
-        let {loading,dataSource,departmentData,productionData,productData,selectedRowKeys} = this.state;
+        let {loading,dataSource,departmentData,productionData,productData,selectedRowKeys,importFlag,exportFlag} = this.state;
         const rowSelection = {
             onChange: this.onSelectChange,
             selectedRowKeys
@@ -119,11 +120,13 @@ class FireInsDataCol extends Component{
 
         return (
             <div>
-                <BlockQuote name={'数据整理'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
                     <div>
-                        <NewButton name={'导出'} className={'fa fa-plus'} flagConfirm={disabled} handleClick={this.export}/>
-                        <ImportFile url={this.url} getTableData={this.getTableParams} />
+                        <span className={exportFlag ? '' : 'hide'}>
+                            <NewButton name={'导出'} className={'fa fa-plus'} flagConfirm={disabled} handleClick={this.export}/>
+                        </span>
+                        <ImportFile url={this.url} flag={importFlag} getTableData={this.getTableParams} />
                         <SearchCell flag={true} name={'请输入'} searchEvent={this.searchEvent} reset={this.reset}
                                     departmentData={departmentData} productionData={productionData} productData={productData}/>
                     </div>
@@ -144,7 +147,12 @@ class FireInsDataCol extends Component{
         });
         this.getDepartmentData();
         this.getProcessData();
-        this.getProductData()
+        this.getProductData();
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            importFlag: judgeOperation(operations,'UPLOAD'),
+            exportFlag: judgeOperation(operations,'DOWNLOAD'),
+        })
     }
 
     /**获取所有送检部门数据*/

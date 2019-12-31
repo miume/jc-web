@@ -8,24 +8,25 @@ import Statistics from './statistics/statistics';
 import moment from "moment";
 import axios from "axios";
 import './excipientStatistics.css';
+import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
 
 const {TabPane} = Tabs;
-const data = [{
-    code:1,
-    index:1,
-    periodName: '周',
-    lineName: 2,
-    start: '2019-10-01',
-    end: '2019-10-01',
-    region:"入库量",
-    count:100,
-    ammonia:55,
-    alkali:45,
-    solution:"12#氨碱使用量",
-    weight:100,
-    ammConcent:5,
-    alkConcent:5,
-}];
+// const data = [{
+//     code:1,
+//     index:1,
+//     periodName: '周',
+//     lineName: 2,
+//     start: '2019-10-01',
+//     end: '2019-10-01',
+//     region:"入库量",
+//     count:100,
+//     ammonia:55,
+//     alkali:45,
+//     solution:"12#氨碱使用量",
+//     weight:100,
+//     ammConcent:5,
+//     alkConcent:5,
+// }];
 
 class ExcipientStatistics extends React.Component{
     constructor(props){
@@ -63,12 +64,14 @@ class ExcipientStatistics extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let {loading,currentStaticPeriod,staticPeriod,unSubmittedData,submittedData,startTime,endTime} = this.state;
+        let {loading,currentStaticPeriod,staticPeriod,unSubmittedData,submittedData,startTime,endTime,addFlag,deleteFlag,updateFlag} = this.state;
         return(
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
                 <Spin spinning={loading} wrapperClassName='rightDiv-content'>
-                    <NewButton name={'新增'} className={'fa fa-plus'} handleClick={this.handleClick}/>
+                    <span className={addFlag ? '' : 'hide'}>
+                        <NewButton name={'新增'} className={'fa fa-plus'} handleClick={this.handleClick}/>
+                    </span>
                     <Button type='primary' onClick={this.statisticalAnalysis}>统计分析</Button>
                     <Search flag={true} currentStaticPeriod={currentStaticPeriod} staticPeriod={staticPeriod} startTime={startTime} endTime={endTime}
                             selectChange={this.selectChange} reset={this.reset} getTableData = {this.getUnSubmittedData} endDateChange={this.endDateChange}
@@ -76,7 +79,8 @@ class ExcipientStatistics extends React.Component{
                     <div className='clear' ></div>
                     <Tabs defaultActiveKey={'1'} onChange={this.tabChange}>
                         <TabPane tab={'待提交'} key={'1'}>
-                            <Submitted data={unSubmittedData} url={this.url} handleClick={this.handleClick} getUnSubmittedData={this.getUnSubmittedData}/>
+                            <Submitted data={unSubmittedData} url={this.url} handleClick={this.handleClick} getUnSubmittedData={this.getUnSubmittedData}
+                                       deleteFlag={deleteFlag} updateFlag={updateFlag}/>
                         </TabPane>
                         <TabPane tab={'已统计'} key={'2'}>
                             <Statistics data={submittedData} getUnSubmittedData={this.getUnSubmittedData} url={this.url}/>
@@ -89,6 +93,12 @@ class ExcipientStatistics extends React.Component{
 
     componentDidMount() {
         this.getAllStaticPeriod();
+        let {menuId} = this.current, operations = getSecondsOperations(menuId);
+        this.setState({
+            addFlag: judgeOperation(operations,'SAVE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            deleteFlag: judgeOperation(operations,'DELETE')
+        })
     }
 
     /**获取所有统计周期数据*/

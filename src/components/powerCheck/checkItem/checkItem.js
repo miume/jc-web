@@ -6,8 +6,8 @@ import SearchCell from '../../BlockQuote/newSearchSell';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import AddModal from "./addModal";
 import CheckItemTable from "./checkItemTable";
-import Home from "../../commom/fns";
 import axios from 'axios';
+import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
 
 // const data = [{
 //     index: 1,
@@ -47,27 +47,34 @@ class CheckItem extends React.Component {
     }
 
     render() {
-        let current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys,data} = this.state;
+        this.current = JSON.parse(localStorage.getItem('current'));
         this.url = JSON.parse(localStorage.getItem('url'));
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        let {selectedRowKeys,data,addFlag,deleteFlag,updateFlag} = this.state;
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent}/>
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
+                    <AddModal title={'新增'} flag={addFlag} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
-                                 cancel={this.cancel} flag={Home.judgeOperation(this.operation,'DELETE')}/>
+                                 cancel={this.cancel} flag={deleteFlag}/>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'设备名/点检项目'}/>
                     <div className='clear'></div>
                     <CheckItemTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange} pagination={this.pagination}
-                                    url={this.url} handleTableChange={this.handleTableChange} getTableParams={this.getTableParams}/>
+                                    url={this.url} handleTableChange={this.handleTableChange} getTableParams={this.getTableParams}
+                                    deleteFlag={deleteFlag} updateFlag={updateFlag}/>
                 </Spin>
             </div>
         );
     }
 
     componentDidMount() {
-        this.getTableParams()
+        this.getTableParams();
+        let {menuId} = this.current, operations = getSecondsOperations(menuId);
+        this.setState({
+            addFlag: judgeOperation(operations,'SAVE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            deleteFlag: judgeOperation(operations,'DELETE')
+        })
     }
 
     /**确定获取表格数据的参数*/

@@ -5,10 +5,12 @@ import DeleteByIds from "../../BlockQuote/deleteByIds";
 import NewSearchCell from "../../BlockQuote/newSearchSell";
 import Add from './add'
 import axios from 'axios'
+import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
 
 class Operation extends Component{
     constructor(props){
-        super(props)
+        super(props);
+        this.operations = [];
         this.columns=[{
             title:'序号',
             dataIndex:'index',
@@ -30,15 +32,18 @@ class Operation extends Component{
             key:'operation',
             width:'20%',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag} = this.state;
                 return(
                     <span>
                         <Add detailFlag={true} record={record} getTableData={this.getTableData} url={this.url}/>
-                        <Divider type={'vertical'}/>
-                        <Add editflag={true} record={record} getTableData={this.getTableData} url={this.url}/>
-                        <Divider type={'vertical'}/>
-                        <Popconfirm title={'确定删除吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleDelete(record.code)}>
-                            <span className={'blue'}>删除</span>
-                        </Popconfirm>
+                        {updateFlag ? <Divider type="vertical" /> : ''}
+                        <Add editFlag={updateFlag} record={record} getTableData={this.getTableData} url={this.url}/>
+                        {updateFlag && deleteFlag ? <Divider type="vertical" /> : ''}
+                        <span className={deleteFlag ? '' : 'hide'}>
+                            <Popconfirm title={'确定删除吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleDelete(record.code)}>
+                                <span className={'blue'}>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             }
@@ -62,7 +67,13 @@ class Operation extends Component{
         this.reset=this.reset.bind(this);
     }
     componentDidMount() {
-        this.getTableData()
+        this.getTableData();
+        let {menuId} = this.current, operations = getSecondsOperations(menuId);
+        this.setState({
+            addFlag: judgeOperation(operations,'SAVE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            deleteFlag: judgeOperation(operations,'DELETE')
+        })
     }
     componentWillUnmount() {
         this.setState=()=>{
@@ -162,19 +173,19 @@ class Operation extends Component{
        this.getTableData('')
     }
     render(){
-        const current=JSON.parse(localStorage.getItem(('current')))
+        this.current = JSON.parse(localStorage.getItem(('current')));
         this.url=JSON.parse(localStorage.getItem('url'))
-        let {loading,selectedRowKeys,dataSource}=this.state
+        let {loading,selectedRowKeys,dataSource,addFlag,deleteFlag}=this.state
         const rowSelection={
             selectedRowKeys,
             onChange:this.selectChange
-        }
+        };
         return(
             <div>
-                <BlockQuote menu={current.menuParent} name={current.menuName}/>
+                <BlockQuote menu={this.current.menuParent} name={this.current.menuName}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
-                    <Add url={this.url} getTableData={this.getTableData}/>
-                    <DeleteByIds flag={true} selectedRowKeys={selectedRowKeys}
+                    <Add flag={addFlag} url={this.url} getTableData={this.getTableData}/>
+                    <DeleteByIds flag={deleteFlag} selectedRowKeys={selectedRowKeys}
                                  deleteByIds={this.deleteByIds} cancel={this.cancel}/>
                      <NewSearchCell placeholder={'请输入部门名称'}
                                 searchEvent={this.searchEvent}

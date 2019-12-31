@@ -62,7 +62,7 @@ class PrintModal extends Component {
 
     render() {
         return (
-            <span>
+            <span className={this.props.printFlag?'':'hide'}>
                 <span className={'blue'} onClick={this.getPrint}>打印</span>
                 <Modal
                     className="printModal"
@@ -84,7 +84,7 @@ class PrintModal extends Component {
                             bordered
                             size={'small'}
                             pagination={false}
-                            scroll={{y: 650}}
+                            scroll={{y: 450}}
                         />
                     </div>
 
