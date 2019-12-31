@@ -51,13 +51,16 @@ class CheckItemTable extends React.Component {
             dataIndex:'code',
             width: '15%',
             render: ((text,record) => {
+                let {updateFlag,deleteFlag} = this.props;
                 return (
                     <span>
-                        <AddModal record={record} title={'编辑'} url={this.props.url} getTableParams={this.props.getTableParams}/>
-                        <Divider type={"vertical"}/>
-                        <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
-                            <span className='blue'>删除</span>
-                        </Popconfirm>
+                        <AddModal record={record} flag={updateFlag} title={'编辑'} url={this.props.url} getTableParams={this.props.getTableParams}/>
+                        {updateFlag && deleteFlag ? <Divider type="vertical" /> : ''}
+                        <span className={deleteFlag ? '' : 'hide'}>
+                            <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             })

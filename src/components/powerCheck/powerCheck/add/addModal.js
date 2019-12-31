@@ -81,14 +81,14 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,selectedRowKeys,siteCode,data,siteData} = this.state, {title} = this.props, disabled = title !== '新增' ? true : false,
+        let {visible,selectedRowKeys,siteCode,data,siteData} = this.state, {title,flag} = this.props, disabled = title !== '新增' ? true : false,
             rowSelection = {
                 type: 'radio',
                 selectedRowKeys,
                 onChange: this.onSelectChange,
             };
         return (
-            <span>
+            <span className={flag ? '' : 'hide'}>
                 {this.renderButton(title)}
                 <Modal title={'选择点检内容'} visible={visible} maskClosable={false} closable={false}
                        centered={true} width={700}

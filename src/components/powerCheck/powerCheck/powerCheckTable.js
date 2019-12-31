@@ -48,16 +48,17 @@ class PowerCheckTable extends React.Component {
             dataIndex:'code',
             width: '20%',
             render: ((text,record) => {
-                let status = record.status;
+                let status = record.status, {updateFlag,deleteFlag} = this.props;
                 return (
                     <span>
-                        <AddModal record={record} title={'编辑'} status={status} url={this.props.url} handleCancel={this.props.getTableParams}/>
-                        <Divider type={'vertical'}/>
-                        <AddModal record={record} title={'详情'} disabled={true} url={this.props.url}/>
-                        <Divider type={"vertical"}/>
-                        <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
+                        <AddModal record={record} flag={updateFlag} title={'编辑'} status={status} url={this.props.url} handleCancel={this.props.getTableParams}/>
+                        <AddModal record={record} flag={true} title={'详情'} disabled={true} url={this.props.url}/>
+                        <span className={deleteFlag ? '' : 'hide'}>
+                            <Divider type={"vertical"}/>
+                            <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(text)} okText="确定" cancelText="取消" >
                             <span className='blue'>删除</span>
                         </Popconfirm>
+                        </span>
                     </span>
                 )
             })

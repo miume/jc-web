@@ -1,6 +1,6 @@
 import React ,{Component}from 'react'
 import NewButton from "../../BlockQuote/newButton";
-import {Modal,Input,message} from 'antd'
+import {Modal, Input, message} from 'antd'
 import CancleButton from "../../BlockQuote/cancleButton";
 import axios from "axios";
 import './operationMessage.css'
@@ -23,8 +23,8 @@ class Add extends Component{
         this.setState({
             visible:true
         })
-        let {record,editflag,detailFlag}=this.props
-        if(editflag||detailFlag){
+        let {record,editFlag,detailFlag}=this.props
+        if(editFlag||detailFlag){
             this.setState({
                 title:record.title,
                 content:record.content
@@ -33,20 +33,21 @@ class Add extends Component{
     }
     /**判断展示新增，详情还是编辑*/
     show() {
-        let {editflag, detailFlag} = this.props
+        let {editFlag, detailFlag} = this.props
         if (detailFlag) {
             return <span className={'blue'} onClick={this.showModal}>详情</span>
-        } else if (editflag) {
-            return <span className={'blue'} onClick={this.showModal}>编辑</span>
+        } else if (editFlag) {
+            return (
+                <span className={'blue'} onClick={this.showModal}>编辑</span>
+            )
         } else {
             return <NewButton name={'新增'} className={'fa fa-plus'} handleClick={this.showModal}/>
         }
     }
-    showTitle(){
-        let {editflag, detailFlag} = this.props
+    showTitle(editFlag, detailFlag){
         if (detailFlag) {
             return '详情'
-        } else if (editflag) {
+        } else if (editFlag) {
             return '编辑'
         } else {
             return '新增'
@@ -90,11 +91,11 @@ class Add extends Component{
         })
     }
     cancel(){
-        let {record,editflag}=this.props
+        let {record,editFlag}=this.props
         this.setState({
             visible:false
         })
-        if(editflag){
+        if(editFlag){
             this.setState({
                 title:record.name,
                 content:record.unit
@@ -108,12 +109,12 @@ class Add extends Component{
         }
     }
     render(){
-        let {visible,title,content}=this.state,{editflag,detailFlag,record}=this.props
+        let {visible,title,content}=this.state,{editFlag,detailFlag,flag}=this.props
         return(
-            <span>
+            <span className={editFlag || detailFlag || flag? '' : 'hide' }>
                     {this.show()}
                     <Modal
-                        title={this.showTitle()}
+                        title={this.showTitle(editFlag, detailFlag)}
                         visible={visible}
                         maskClosable={false}
                         closable={false}

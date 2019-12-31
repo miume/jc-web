@@ -53,6 +53,7 @@ class ExceptionTable extends React.Component {
                 return (
                     <span>
                         {this.judgeEditor(update,record)}
+                        {update && deleteFlag ? <Divider type="vertical" /> : ''}
                         {this.deleteFlag(deleteFlag,record)}
                     </span>
                 )
@@ -77,11 +78,8 @@ class ExceptionTable extends React.Component {
     /**判断编辑操作*/
     judgeEditor(flag,record) {
         return (
-            <span className={flag?'':'hide'}>
-                <AddModal flag={flag} url={this.props.url}
-                          data={record} title={'编辑'} getTableData={this.props.getTableData}/>
-                <Divider type="vertical" />
-            </span>
+            <AddModal flag={flag} url={this.props.url}
+                      data={record} title={'编辑'} getTableData={this.props.getTableData}/>
         )
     }
 

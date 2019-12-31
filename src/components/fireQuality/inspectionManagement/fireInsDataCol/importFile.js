@@ -19,7 +19,7 @@ class ImportFile extends Component{
     }
 
     render(){
-        let {visible,fileList} = this.state,
+        let {visible,fileList} = this.state, {flag} = this.props,
             props = {
                 onRemove: file => {
                     this.setState(state => {
@@ -35,7 +35,7 @@ class ImportFile extends Component{
                 fileList
             };
         return (
-            <span>
+            <span className={flag ? '' : 'hide'}>
                 <NewButton name={'导入检验状态'} className={'fa fa-plus'} handleClick={this.showModal}/>
                 <Modal
                     title={'导入数据'}
