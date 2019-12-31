@@ -11,8 +11,7 @@ class AddModalRight extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectList: [],
-            // selectDefaultValue: ""
+            selectList: []
         };
 
     }
@@ -77,8 +76,7 @@ class AddModalRight extends React.Component {
             if (res) {
                 var dataSource = res;
                 this.setState({
-                    selectList:dataSource,
-                    // selectDefaultValue: dataSource.length>0?dataSource[0].code:null
+                    selectList:dataSource
                 })
 
             }else{
