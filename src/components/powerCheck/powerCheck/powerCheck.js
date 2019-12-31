@@ -1,12 +1,12 @@
 import React from 'react';
 import BlockQuote from "../../BlockQuote/blockquote";
 import AddModal from "./add/addModal";
-import Home from "../../commom/fns";
 import {Spin, message} from "antd";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
 import SearchCell from "../../BlockQuote/newSearchSell";
 import PowerCheckTable from "./powerCheckTable";
 import axios from "axios";
+import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
 
 // const data = [{
 //     index: 1,
@@ -29,6 +29,7 @@ class PowerCheck extends React.Component {
             selectedRowKeys: [],
             searchContent: ''
         };
+        this.operations = [];
         this.pagination = {
             pageSize: 10,
             current: 1,
@@ -47,28 +48,34 @@ class PowerCheck extends React.Component {
     }
 
     render() {
-        const current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys, data} = this.state;
+        this.current = JSON.parse(localStorage.getItem('current'));
         this.url = JSON.parse(localStorage.getItem('url'));
-        this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
+        let {selectedRowKeys,data,addFlag,deleteFlag,updateFlag} = this.state;
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent}/>
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
+                    <AddModal title={'新增'} flag={addFlag} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
-                                 cancel={this.cancel} flag={Home.judgeOperation(this.operation, 'DELETE')}/>
+                                 cancel={this.cancel} flag={deleteFlag}/>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'点检名称'}/>
                     <div className='clear'></div>
                     <PowerCheckTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
                                      url={this.url} handleTableChange={this.handleTableChange} pagination={this.pagination}
-                                     getTableParams={this.getTableParams}/>
+                                     getTableParams={this.getTableParams} deleteFlag={deleteFlag} updateFlag={updateFlag}/>
                 </Spin>
             </div>
         );
     }
 
     componentDidMount() {
-        this.getTableParams()
+        this.getTableParams();
+        let {menuId} = this.current, operations = getSecondsOperations(menuId);
+        this.setState({
+            addFlag: judgeOperation(this.operations,'SAVE'),
+            updateFlag: judgeOperation(this.operations,'UPDATE'),
+            deleteFlag: judgeOperation(this.operations,'DELETE')
+        })
     }
 
     /**确定获取表格数据的参数*/

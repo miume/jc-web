@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
-import {Input, Modal, message} from "antd";
+import {Input, Modal, message, Divider} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 
@@ -20,9 +20,9 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,siteName} = this.state, {title} = this.props;
+        let {visible,siteName} = this.state, {title,flag} = this.props;
         return (
-            <span>
+            <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
                        centered={true} width={400}
@@ -48,7 +48,10 @@ class AddModal extends React.Component {
         return (
             title === '新增'?
                 <NewButton name='新增' className='fa fa-plus' handleClick={this.handleClick}/> :
-                <span className={'blue'} onClick={this.handleClick}>编辑</span>
+                <span>
+                    <span className={'blue'} onClick={this.handleClick}>编辑</span>
+                    <Divider type={"vertical"}/>
+                </span>
         )
     }
 

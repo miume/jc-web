@@ -1,7 +1,6 @@
 import React from 'react';
-import {message, Table} from "antd";
+import {Divider, message, Table} from "antd";
 import DeleteById from "../../../BlockQuote/deleteById";
-import Search from "../search";
 import axios from "axios";
 
 class UnSubmitted extends React.Component {
@@ -49,10 +48,12 @@ class UnSubmitted extends React.Component {
             dataIndex: 'head.code',
             width: '20%',
             render: (text) => {
+                let {updateFlag,deleteFlag} = this.props;
                 return (
                     <span>
-                        <span className='blue' onClick={() => this.props.handleClick(text)}>编辑</span>
-                        <DeleteById id={text} handleDelete={this.handleDelete} flag={true}/>
+                        <span className={updateFlag ? 'blue' : 'hide'} onClick={() => this.props.handleClick(text)}>编辑</span>
+                        {updateFlag && deleteFlag ? <Divider type="vertical" /> : ''}
+                        <DeleteById id={text} handleDelete={this.handleDelete} flag={deleteFlag}/>
                     </span>
                 )
             }

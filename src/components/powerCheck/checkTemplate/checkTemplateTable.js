@@ -44,15 +44,18 @@ class CheckTemplateTable extends React.Component {
             dataIndex:'code',
             width: '15%',
             render: ((text,record) => {
+                let {updateFlag,deleteFlag,addFlag} = this.props;
                 return (
                     <span>
-                        <AddModal record={record} title={'编辑'} url={this.props.url} getTableParams={this.props.getTableParams}/>
-                        <Divider type={'vertical'}/>
-                        <AddTableModal record={record} title={'新建点检'} url={this.props.url}/>
-                        <Divider type={"vertical"}/>
-                        <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
-                            <span className='blue'>删除</span>
-                        </Popconfirm>
+                        <AddModal record={record} flag={updateFlag} title={'编辑'} url={this.props.url} getTableParams={this.props.getTableParams}/>
+                        {addFlag && updateFlag ? <Divider type="vertical" /> : ''}
+                        <AddTableModal record={record} flag={addFlag} title={'新建点检'} url={this.props.url}/>
+                        {addFlag && deleteFlag ? <Divider type="vertical" /> : ''}
+                        <span className={deleteFlag ? '' : 'hide'}>
+                            <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             })

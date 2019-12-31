@@ -64,9 +64,9 @@ class AddTableModal extends React.Component {
 
     render() {
         let {visible,tableData,siteName,modelName,checkDate,classNum,note,operator,operatorData} = this.state,
-            {title,disabled,status} = this.props;
+            {title,disabled,status,flag} = this.props;
         return (
-            <span>
+            <span className={flag ? '' : 'hide'}>
                 {this.renderButton(title,status)}
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
                        centered={true} width={800}
@@ -126,7 +126,9 @@ class AddTableModal extends React.Component {
         } else if(title === '保存') {
             return <SaveButton handleSave={this.handleClick}/>
         } else if(title === '编辑'){
-            return <span className={status ? '' : 'blue'} onClick={status ? null : this.handleClick}>{title}</span>
+            return (
+                <span className={status ? '' : 'blue'} onClick={status ? null : this.handleClick}>{title}</span>
+                )
         } else {
             return <span className={'blue'} onClick={this.handleClick}>{title}</span>
         }

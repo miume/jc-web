@@ -53,9 +53,9 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,tableData,modelName,frequency,siteCode,batchNumber,effectiveDate,siteData,disabledCode} = this.state, {title} = this.props, disabled = title === '编辑' ? true : false;
+        let {visible,tableData,modelName,frequency,siteCode,batchNumber,effectiveDate,siteData,disabledCode} = this.state, {title,flag} = this.props, disabled = title === '编辑' ? true : false;
         return (
-            <span>
+            <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
                        centered={true} width={800}
