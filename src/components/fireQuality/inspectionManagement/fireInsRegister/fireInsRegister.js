@@ -8,12 +8,17 @@ import RegisterTable from '../fireInsRegister/table';
 import AddModal from "../fireInsRegister/addModal";
 
 import "../fireInsRegister/fireInsRegister.css"
+import {getOperations, judgeOperation} from "../../../commom/getOperations";
 
 
 class FireInsRegister extends Component {
 
     componentDidMount() {
-        this.getTableParams()
+        this.getTableParams();
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag: judgeOperation(operations,'SAVE')
+        })
     }
 
     componentWillUnmount() {
@@ -43,17 +48,19 @@ class FireInsRegister extends Component {
     }
 
     render() {
-        const current = JSON.parse(localStorage.getItem('dataEntry'))
+        this.current = JSON.parse(localStorage.getItem('dataEntry'))
         this.url = JSON.parse(localStorage.getItem('url'))
         return (
             <div>
-                <BlockQuote name="送检登记" menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal
-                        title={'新增'}
-                        url={this.url}
-                        getTableParams={this.getTableParams}
-                    />
+                    <span className={this.state.addFlag?'':'hide'}>
+                        <AddModal
+                            title={'新增'}
+                            url={this.url}
+                            getTableParams={this.getTableParams}
+                        />
+                    </span>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'批号'}/>
                     <div className='clear'></div>
                     <RegisterTable dataSource={this.state.dataSource}

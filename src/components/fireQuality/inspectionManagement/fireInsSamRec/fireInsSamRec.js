@@ -8,6 +8,7 @@ import axios from "axios";
 
 import SamRecTable from "../fireInsSamRec/table"
 import SearchCell from "../../../BlockQuote/newSearchSell";
+import {getOperations, judgeOperation} from "../../../commom/getOperations";
 
 
 const data = [];
@@ -28,6 +29,12 @@ class FireInsSamRec extends Component {
 
     componentDidMount() {
         this.getTableParams()
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            deleteFlag: judgeOperation(operations,'DELETE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            printFlag: judgeOperation(operations,'PRINT')
+        })
     }
 
     componentWillUnmount() {
@@ -57,17 +64,22 @@ class FireInsSamRec extends Component {
     }
 
     render() {
-        const current = JSON.parse(localStorage.getItem('dataEntry'))
+        this.current = JSON.parse(localStorage.getItem('dataEntry'))
         this.url = JSON.parse(localStorage.getItem('url'))
         return (
             <div>
-                <BlockQuote name="样品接收" menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName={'rightDiv-content'}>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}
-                                 cancel={this.deleteCancel} flag={true}/>
+                    <span className={this.state.deleteFlag?'':'hide'}>
+                        <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}
+                                     cancel={this.deleteCancel} flag={true}/>
+                    </span>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'批号'}/>
                     <div className='clear'></div>
                     <SamRecTable
+                        deleteFlag={this.state.deleteFlag}
+                        updateFlag={this.state.updateFlag}
+                        printFlag={this.state.printFlag}
                         dataSource={this.state.dataSource}
                         selectedRowKeys={this.state.selectedRowKeys}
                         onSelectChange={this.onSelectChange}
