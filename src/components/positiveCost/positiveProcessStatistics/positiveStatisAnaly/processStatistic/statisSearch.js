@@ -7,7 +7,7 @@ const {Option}=Select
         super(props)
     }
     render(){
-        let {lineCode,periodCode,timeData,startTime}=this.props
+        let {lineCode,periodCode,timeData,startTime,lineNameData,periods}=this.props
         return(
             <div className='searchCell'>
                 <Select value={periodCode} onChange={this.props.selectChange} style={{width:'200px',marginRight:'10px'}} placeholder='请选择周期类型'>
@@ -19,23 +19,19 @@ const {Option}=Select
                         }):null
                     }
                 </Select>
-                <Select 
-                    style={{width:'200px',marginRight:'10px'}}
-                    placeholder='请选择时间'
-                    value={startTime}
-                    showSearch 
-                    optionFilterProp="children"  
-                    onChange={this.props.onChange}
-                    filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                >
+                <Select placeholder={'请选择周期开始时间'} style={{width:'200px',marginRight:'10px'}} onChange={this.props.onChange} value={periods}
+                        dropdownMatchSelectWidth={false} dropdownStyle={{width: 400}}>
                     {
-                        timeData?timeData.map((item,index)=>{
-                            return(
-                                <Option key={index} value={item.beginTime} name={item.periods}>{item.beginTime}</Option>
-                            )
-                        }):null
+                        lineNameData ?
+                            lineNameData.map((e,index) =>
+                                <Option key={index} value={`${e.periods}/${e.beginTime}/${e.endTime}`} name='periods' disabled={e.disabled}>
+                                    <div>
+                                        <span style={{padding: '0 10',display:'inline-block',width: 40}}>{e.periods}</span>
+                                        <span style={{padding: '0 10',display:'inline-block',width: 170}}>{e.beginTime}</span>
+                                        <span style={{padding: '0 10',display:'inline-block',width: 170}}>{e.endTime}</span>
+                                    </div>
+                                </Option>
+                            ) : null
                     }
                 </Select>
                 <span className={this.props.lineFlag?'':'hide'}>

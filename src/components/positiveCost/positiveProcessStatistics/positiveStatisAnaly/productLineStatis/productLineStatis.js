@@ -115,9 +115,7 @@ import axios from 'axios'
             let res = data.data.data;
             if(res){
                 this.setState({
-                    timeData:res,
-                    startTime:res[0]&&res[0].beginTime?res[0].beginTime:undefined,
-                    periods:res[0]&&res[0].periods?res[0].periods:undefined
+                   lineNameData:res
                 })
             }
         })
@@ -149,8 +147,7 @@ import axios from 'axios'
                         res:res,
                         data:res.list
                     })
-                }
-                
+                }      
             }
             else{
                 message.error(data.data.message)
@@ -165,15 +162,13 @@ import axios from 'axios'
         this.setState({
             periodCode:value
         })
+        this.getStartTime(value)
     }
-    onChange(value,name) {
-        let {periodCode}=this.state
-        name=name.props.name
+    onChange(value) {
+        value=value.split('/')[0]
         this.setState({
-            periods:name,
-            startTime:value
-        })
-        this.getStartTime(periodCode)
+            periods:value
+        })   
       }
 
    
@@ -191,12 +186,12 @@ import axios from 'axios'
         this.getStartTime(nextProps.periodCode)
     }
     render(){
-        let {staticPeriod}=this.props,{periodCode,loading,timeData,startTime,res,data}=this.state
+        let {staticPeriod}=this.props,{periodCode,loading,lineNameData,res,data,periods}=this.state
         return(
             <Spin spinning={loading}>
-                <Search onChange={this.onChange} timeData={timeData} selectChange={this.selectChange}
+                <Search onChange={this.onChange}  selectChange={this.selectChange}
                         staticPeriod={staticPeriod} periodCode={periodCode} getTableData={this.getTableData}
-                        startTime={startTime}
+                         lineNameData={lineNameData} periods={periods}
                 />
                 <div className='clear'></div>
                 <Table 
