@@ -12,7 +12,7 @@ class AddModalRight extends React.Component {
         super(props);
         this.state = {
             selectList: [],
-            selectDefaultValue: ""
+            // selectDefaultValue: ""
         };
 
     }
@@ -78,9 +78,7 @@ class AddModalRight extends React.Component {
                 var dataSource = res;
                 this.setState({
                     selectList:dataSource,
-                    selectDefaultValue: dataSource.length>0?dataSource[0].code:null
-                },() => {
-                    this.props.getDeptCode(dataSource.length>0?dataSource[0].code:0)
+                    // selectDefaultValue: dataSource.length>0?dataSource[0].code:null
                 })
 
             }else{
@@ -95,7 +93,7 @@ class AddModalRight extends React.Component {
         const selectList = this.state.selectList;
         if(selectList && selectList.length) {
             return (
-                <Select onChange={this.selectChange} defaultValue={this.state.selectDefaultValue}
+                <Select onChange={this.selectChange}
                         style={{marginRight: 10}} className="addModalRight_down_select">
                     {this.renderOption(selectList)}
                 </Select>
