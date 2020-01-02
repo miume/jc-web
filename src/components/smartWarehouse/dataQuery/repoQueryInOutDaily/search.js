@@ -55,7 +55,7 @@ class Search extends Component {
 
     render() {
         return (
-            <div>
+            <div className="repoQueryOutDaily_search">
                 <span>物料大类：</span>
                 <Select
                     className="repoQueryOutDaily_search_select"
