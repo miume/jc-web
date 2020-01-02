@@ -81,7 +81,6 @@ class RepoQueryInOutDaily extends React.Component {
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-
                     <Search
                         getCondition1={this.getCondition1}
                         getCondition2={this.getCondition2}
