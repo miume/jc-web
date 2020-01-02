@@ -3,6 +3,7 @@ import {Modal, Table, message, LINK} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 import "../fireInsSamRec/fireInsSamRec.css"
 import axios from "axios";
+import PrintFlag from './printFlag'
 
 
 class PrintModal extends Component {
@@ -11,7 +12,7 @@ class PrintModal extends Component {
         this.state = {
             visible: false,
             dataSource: [],
-            printRef: null
+            printId :""
         }
         this.getPrint = this.getPrint.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -26,6 +27,7 @@ class PrintModal extends Component {
             dataIndex: 'col2',
             width: '84%',
             render: (text, record) => {
+                const printId = `print_data${record.col1}`;
                 return (
                     <div>
                         <div style={{fontFamily:"Arial Normal,Arial",fontStyle:"normal",color:"#333333",lineHeight:"normal"}}>
@@ -33,14 +35,6 @@ class PrintModal extends Component {
                             <div style={{fontSize:"8px"}}>检验项目：</div>
                             <div style={{fontSize:"10px"}}>{record.col3}</div>
                             <div style={{fontSize:"8px"}}>送检时间：&nbsp;{record.col2}</div>
-                        </div>
-                        <div className="printModal_print">
-                            <div id="print_data" style={{fontFamily:"Arial Normal,Arial",fontStyle:"normal",color:"#333333",lineHeight:"normal"}}>
-                                <div style={{fontSize:"15px"}}>{record.col4}</div>
-                                <div style={{fontSize:"8px"}}>检验项目：</div>
-                                <div style={{fontSize:"8px"}}>{record.col3}</div>
-                                <div style={{fontSize:"8px"}}>送检时间：&nbsp;{record.col2}</div>
-                            </div>
                         </div>
                     </div>
                 )
@@ -50,13 +44,32 @@ class PrintModal extends Component {
             key: 'col4',
             dataIndex: 'col4',
             width: '8%',
-            render: (() => {
+            render: (text,record) => {
+                const items = record.col3.split(',');
+                var print_data = "";
+                var print_data_items = [];
+                if (items.length > 4){
+                    for (var i = 0; i < items.length; i++) {
+                        if (print_data === ""){
+                            print_data = items[i]
+                        } else{
+                            print_data = print_data + "," + items[i]
+                        }
+                        if ((i+1)%4 === 0 && i !== 0){
+                            print_data_items.push(print_data);
+                            print_data = ""
+                        }
+                        if (i === items.length-1 && (i+1)%4 !== 0){
+                            print_data_items.push(print_data)
+                        }
+                    }
+                } else {
+                    print_data_items.push(record.col3)
+                }
                 return (
-                    <span>
-                        <span className={'blue'} onClick={this.print}>打印</span>
-                    </span>
+                    <PrintFlag key={record.col1} record={record} printDataItems={print_data_items}/>
                 )
-            })
+            }
         }]
     }
 
@@ -127,25 +140,6 @@ class PrintModal extends Component {
         }).catch(() => {
             message.info('查询失败，请联系管理员！');
         });
-    }
-    print = () => {
-        const el = document.getElementById("print_data");
-        const iframe = document.createElement('IFRAME');
-        let doc = null;
-        iframe.setAttribute('style', 'position:absolute;width:0px;height:0px;left:500px;top:500px;');
-        document.body.appendChild(iframe);
-        doc = iframe.contentWindow.document;
-        // 引入打印的专有CSS样式，根据实际修改
-        doc.write('<link media="print" rel="stylesheet" type="text/css" href="../fireInsSamRec/fireInsSamRec.css">');
-        doc.write(el.innerHTML);
-        doc.close();
-        // 获取iframe的焦点，从iframe开始打印
-        iframe.contentWindow.focus();
-        iframe.contentWindow.print();
-        if (navigator.userAgent.indexOf("MSIE") > 0)
-        {
-            document.body.removeChild(iframe);
-        }
     }
 
     cancel = () => {
