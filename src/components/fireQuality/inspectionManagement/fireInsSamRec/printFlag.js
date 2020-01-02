@@ -38,7 +38,6 @@ class PrintFlag extends Component {
 
     print = () => {
         const printId = `print_data${this.props.record.col1}`;
-        console.log(printId)
         const el = document.getElementById(printId);
         const iframe = document.createElement('IFRAME');
         let doc = null;
