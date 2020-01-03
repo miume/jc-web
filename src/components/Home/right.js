@@ -638,8 +638,7 @@ class Right extends React.Component {
             },{
                 path: '/repoQueryInOutAccount',
                 component: RepoQueryInOutAccount
-            }
-        ];
+            }];
         return (
             <div className="rightDiv">
                 <Switch>

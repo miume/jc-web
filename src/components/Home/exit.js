@@ -38,7 +38,7 @@ class Exit extends Component {
     }
     /**查看版本发布手册 */
     versionInstruction(){
-        window.open('../../../instruction/versionRelease.html','_blank');
+        window.open('../../../changeLog/更新日志.html','_blank');
     }
     /**点击弹出待办事项 */
     drawerEvent(){
