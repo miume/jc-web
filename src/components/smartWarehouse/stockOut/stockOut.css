@@ -1,6 +1,9 @@
+.stock-out {
+    padding: 5px 15px;
+}
 .stock-out-flex {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .stock-out-table {
@@ -10,4 +13,10 @@
 .stock-out-application {
     display: flex;
     flex-direction: row-reverse;
+}
+
+.stock-out-icon {
+    font-size: 20px;
+    font-weight: 800;
+    color: red;
 }

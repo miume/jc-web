@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, DatePicker, Select} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
+import moment from "moment";
 const {Option} = Select;
 
 class Search extends React.Component {
@@ -13,9 +14,11 @@ class Search extends React.Component {
         this.search = this.search.bind(this);
         this.dateChange = this.dateChange.bind(this);
         this.getAllType = this.getAllType.bind(this);
+        this.selectChange = this.selectChange.bind(this);
     }
 
     render() {
+        let {date,supplier} = this.state;
         return (
             <div className={'stock-out-application'}>
                 <div>
@@ -25,12 +28,12 @@ class Search extends React.Component {
 
                 <div>
                     <span>出库日期: </span>
-                    <DatePicker placeholder={'请选择日期'} onChange={this.dateChange} style={{marginRight: 10}}/>
+                    <DatePicker placeholder={'请选择日期'} value={date ? moment(date) : null} onChange={this.dateChange} style={{marginRight: 10}}/>
                 </div>
 
                 <div>
                     <span>领用单位: </span>
-                    <Select placeholder={'请选择供货单位'} style={{width:200,marginRight: 10}}></Select>
+                    <Select placeholder={'请选择供货单位'} value={supplier} style={{width:200,marginRight: 10}} onChange={this.selectChange}></Select>
                 </div>
             </div>
         )
@@ -51,13 +54,31 @@ class Search extends React.Component {
         })
     }
 
+    selectChange(value) {
+        this.setState({
+            supplier: value
+        })
+    }
+
     /**搜索事件*/
     search() {
-
+        let {date,supplier} = this.state,
+            params = {
+                date,
+                supplier
+            };
+        this.props.search(params);
     }
 
     reset() {
-
+        this.setState({
+            date: undefined,
+            supplier: undefined
+        });
+        this.props.search({
+            date: '',
+            supplier: ''
+        });
     }
 
 }

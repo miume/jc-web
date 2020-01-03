@@ -221,3 +221,7 @@ input::-webkit-input-placeholder{
     height: 80vh;
     overflow: auto;
 }
+
+.update-password {
+    margin-bottom: 10px;
+}

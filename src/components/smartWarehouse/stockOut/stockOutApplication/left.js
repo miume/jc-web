@@ -49,18 +49,14 @@ class Left extends React.Component {
     }
 
     render() {
-        let {selectedRowKeys} = this.state,
-            rowSelection = {
-                selectedRowKeys,
-                onChange: this.selectChange.bind(this)
-            };
+        let {data,data1,rowSelection} = this.props;
         return (
             <div style={{width: '48%'}}>
-                <Table columns={this.columns} pagination={false}
+                <Table columns={this.columns} pagination={false} dataSource={data}
                        bordered size={'small'} rowKey={record => record.id}/>
 
-                <Table columns={this.columns1} pagination={false} className={'stock-out-table'}
-                       bordered size={'small'} rowKey={record => record.id} rowSelection={rowSelection}/>
+                <Table columns={this.columns1} pagination={false} className={'stock-out-table'}  dataSource={data1}
+                       bordered size={'small'} rowKey={record => record.id} rowSelection={rowSelection} scroll={{y:'46vh'}}/>
             </div>
         )
     }
