@@ -6,3 +6,7 @@
 .repoQueryInventoryDaily_search {
     float: right;
 }
+
+.repoQueryInventoryDaily_edit{
+    height: 200px;
+}

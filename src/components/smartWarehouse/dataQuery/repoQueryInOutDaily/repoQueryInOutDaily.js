@@ -5,12 +5,14 @@ import axios from 'axios';
 import InDaily from './inDaily'
 import OutDaily from './outDaily'
 import Search from './search'
+import Check from './check'
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 
 var data1 = []
 var data2 = []
 for (var i = 0; i < 20; i++) {
     data1.push({
+        code:i,
         col1: i+1,
         col2: (i+1)%2,
         col3: '2019年11月11日',
@@ -25,6 +27,7 @@ for (var i = 0; i < 20; i++) {
         col12: 'kg'
     })
     data2.push({
+        code:i,
         col1: i+1,
         col2: (i+1)%2,
         col3: '2019年11月11日',
@@ -56,6 +59,7 @@ class RepoQueryInOutDaily extends React.Component {
         super(props);
         this.state = {
             loading: false,
+            selectedRowKeys: [],
             searchContent: '',
             dataSource:[],
             tabKey:'1',
@@ -81,6 +85,13 @@ class RepoQueryInOutDaily extends React.Component {
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                    <Check
+                        flag={0}
+                        tabKey={this.state.tabKey}
+                        url={this.url}
+                        selectedRowKeys={this.state.selectedRowKeys}
+                        getTableParams={this.getTableParams}
+                    />
                     <Search
                         getCondition1={this.getCondition1}
                         getCondition2={this.getCondition2}
@@ -96,10 +107,26 @@ class RepoQueryInOutDaily extends React.Component {
                     <div className='clear'></div>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         <TabPane tab='入库日报' key='1'>
-                            <InDaily pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
+                            <InDaily
+                                tabKey={this.state.tabKey}
+                                url={this.url}
+                                getTableParams={this.getTableParams}
+                                selectedRowKeys={this.state.selectedRowKeys}
+                                onSelectChange={this.onSelectChange}
+                                pagination={this.pagination}
+                                dataSource={this.state.dataSource}
+                                handleTableChange={this.handleTableChange}/>
                         </TabPane>
                         <TabPane tab='出库日报' key='2'>
-                            <OutDaily pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
+                            <OutDaily
+                                tabKey={this.state.tabKey}
+                                url={this.url}
+                                getTableParams={this.getTableParams}
+                                selectedRowKeys={this.state.selectedRowKeys}
+                                onSelectChange={this.onSelectChange}
+                                pagination={this.pagination}
+                                dataSource={this.state.dataSource}
+                                handleTableChange={this.handleTableChange}/>
                         </TabPane>
                     </Tabs>
                 </Spin>
@@ -108,10 +135,14 @@ class RepoQueryInOutDaily extends React.Component {
     }
 
 
+    onSelectChange = (selectedRowKeys) => {
+        this.setState({selectedRowKeys: selectedRowKeys});
+    }
     tabChange = (key) => {
         this.setState({
             searchContent: undefined,
-            tabKey:key
+            tabKey:key,
+            selectedRowKeys:[]
         });
         this.pagination.current = 1;
         this.getTableParams('',key)
@@ -133,11 +164,13 @@ class RepoQueryInOutDaily extends React.Component {
     getTableData = (params,key) => {
         if (key==="1"){
             this.setState({
-                dataSource:data1
+                dataSource:data1,
+                selectedRowKeys:[]
             })
         } else{
             this.setState({
-                dataSource:data2
+                dataSource:data2,
+                selectedRowKeys:[]
             })
         }
         console.log(params)

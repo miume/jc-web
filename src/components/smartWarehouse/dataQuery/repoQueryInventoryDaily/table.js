@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table} from "antd";
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
+import Edit from './edit'
 
 class InventoryDailyTable extends React.Component {
 
@@ -80,7 +81,14 @@ class InventoryDailyTable extends React.Component {
             title: '操作',
             key: 'code',
             dataIndex: 'code',
-            width: '5%'
+            width: '5%',
+            render: (text,index) => {
+                return (
+                    <span>
+                        <Edit url={this.props.url}/>
+                    </span>
+                )
+            }
         }];
     }
 
