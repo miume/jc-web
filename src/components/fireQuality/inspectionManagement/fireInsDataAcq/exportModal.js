@@ -151,6 +151,7 @@ class ExportModal extends Component {
     /**选择检验项目和表格数据，以导出文件*/
     export() {
         let { batches, testItem ,testItemData} = this.state
+        console.log(batches.length,testItem.length)
         if (batches.length === 0 || testItem.length === 0) {
             message.error('信息选择不完整!')
             return
