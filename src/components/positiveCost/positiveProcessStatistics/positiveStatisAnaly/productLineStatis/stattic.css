@@ -1,0 +1,15 @@
+.positive-statis{
+    display: flex;
+    flex-wrap:wrap;
+    /* justify-content: space-around; */
+    margin:auto;
+}
+.positive-statis span{
+    display:inline-block;
+    width:140px;
+    text-align:right
+}
+.positive-statis div{
+    
+    width: 230px;
+}

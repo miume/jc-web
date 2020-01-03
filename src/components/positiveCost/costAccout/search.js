@@ -11,13 +11,13 @@ class Search extends Component{
         let  {lineNameData,periods,selectChange,periodCode,staticPeriod} = this.props; //es6数组去重
         return(
             <div className={this.props.flag?'searchCell':'hide'}>
-                <Select  style={{width:'120px',marginRight:'10px'}} onChange={this.props.selectChange} placeholder='请选择产线'>
+                <Select  style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectChange} placeholder='请选择核算对象'>
                     
                          <Option key={0} value={0} name='lineCode'>产线</Option>
                          <Option key={1} value={1} name='lineCode'>车间</Option>
                     
                 </Select>
-                <Select value={periodCode} style={{width:'120px',marginRight:'10px'}} onChange={this.props.selectChange}>
+                <Select value={periodCode} style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectChange}>
                         {
                             staticPeriod?staticPeriod.map(e=>{
                                 return(

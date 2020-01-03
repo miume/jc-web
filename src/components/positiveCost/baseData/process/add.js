@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import NewButton from '../../../BlockQuote/newButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
 import {Modal,Row,Col,Input,message} from 'antd'
-import AddModal from './addModal'
 import axios from 'axios'
 class ProcessAdd extends Component{
     constructor(props){
@@ -79,11 +78,13 @@ class ProcessAdd extends Component{
         })
     }
     render(){
-        let {processName}=this.state;
+        let {processName}=this.state,{addFlag,updateFlag}=this.props
         return(
             <span>
-                {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>
-                :<NewButton name='新增工序' className='fa fa-plus' handleClick={this.showModal}/>}
+                {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                :<span className={addFlag?'':'hide'}>
+                    <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>
+                </span>}
                 <Modal
                     title={this.props.editflag?'编辑工序':'新增工序'}
                     visible={this.state.visible}

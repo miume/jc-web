@@ -6,6 +6,7 @@ import Search from './search'
 import PositivePendSubmit from './positivePendSubmit/positivePentSubmit'
 import PositiveStatisticDone from './positiveStatisticDone/positiveStatisDone'
 import axios from 'axios'
+import {judgeOperation,getSecondsOperations} from '../../commom/getOperations'
 const { TabPane } = Tabs;
 class PositiveProcessStatistics extends Component{
     constructor(props){
@@ -18,7 +19,6 @@ class PositiveProcessStatistics extends Component{
             tabKey:'1'
         }
         this.getPeriod=this.getPeriod.bind(this);
-        this.judgeOperation=this.judgeOperation.bind(this);
         this.handleAdd=this.handleAdd.bind(this);
         this.statisticalAnalysis=this.statisticalAnalysis.bind(this);
         this.confirm=this.confirm.bind(this);
@@ -33,6 +33,12 @@ class PositiveProcessStatistics extends Component{
         this.getPeriod()
         this.getLine()
         this.getPendSubmit()
+        let {menuId}=this.current,operations=getSecondsOperations(menuId)
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     componentWillUnmount() {
         this.setState=()=>{
@@ -219,27 +225,25 @@ class PositiveProcessStatistics extends Component{
             line: line
         })
     }
-    judgeOperation(operation,operationCode){
-        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
-        return flag.length?true:false
-    }
+
     render(){
         let {periodStatis,periodCode,time,length,line,lineCode,dataStatistic,dataSubmit,head}=this.state
-        const current=JSON.parse(localStorage.getItem('current'))
+        this.current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
-        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         return(
             <div>
-                <Blockquote name={current.menuName} menu={current.menuParent}/>
+                <Blockquote name={this.current.menuName} menu={this.current.menuParent}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd}/>
+                    <span className={this.state.addFlag?'':'hide'}>
+                          <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd} />
+                    </span>
                     <NewButton name='统计分析' handleClick={this.statisticalAnalysis}/>
-                    <Search flag={this.judgeOperation(this.operation,'QUERY')} periodStatis={periodStatis} line={line}
+                    <Search flag={true} periodStatis={periodStatis} line={line}
                             periodCode={periodCode} time={time} length={length} confirm={this.confirm} lineCode={lineCode}/>
                     <div className='clear'></div>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         <TabPane tab='待提交' key='1'>
-                            <PositivePendSubmit history={this.props.history} loadingSubmit={this.state.loadingSubmit}  head={head}
+                            <PositivePendSubmit history={this.props.history} deleteFlag={this.state.deleteFlag} updateFlag={this.state.updateFlag} loadingSubmit={this.state.loadingSubmit}  head={head}
                                 url={this.url} getPagination={this.getPagination} pagination={this.state.pagination} getPendSubmit={this.getPendSubmit}
                                 handleTableChange={this.handleTableChange} dataSubmit={dataSubmit} line={line} periodStatis={periodStatis}
                             />

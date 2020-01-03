@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs ,message} from 'antd'
+import { Tabs ,message,Spin} from 'antd'
 import Blockquote from '../../../BlockQuote/blockquote'
 import CancleButton from '../../../BlockQuote/cancleButton'
 import SaveButton from '../../../BlockQuote/saveButton'
@@ -23,7 +23,8 @@ class PositiveAdd extends Component {
     constructor(props) {
         super(props)
         this.state={
-            processData:[]
+            processData:[],
+            loading:false
         }
         this.back = this.back.bind(this);
         this.getAllProcess = this.getAllProcess.bind(this);
@@ -200,7 +201,7 @@ class PositiveAdd extends Component {
     disabledDate(current) {
         let {giveEndDate}=this.state
         //小于给定时间不能选
-        return  current && current < moment(giveEndDate);
+        return  current && current < moment(giveEndDate).add(1,'d');
       }
     save(f) {
         this.setState({
@@ -253,7 +254,7 @@ class PositiveAdd extends Component {
         this.props.history.push({ pathname: '/positiveProcess' })
     }
     render() {
-        let { processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData,headEdit,tabKey,giveEndDate} = this.state
+        let { loading,processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData,headEdit,tabKey,giveEndDate} = this.state
         this.url = JSON.parse(localStorage.getItem('url'))
         this.tabData = [
             { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData} processId={tabKey} /> },
@@ -271,7 +272,7 @@ class PositiveAdd extends Component {
         return (
             <div>
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='正极成本' menu2='在制品管理' returnDataEntry={this.back} />
-                <div className='rightDiv-content'>
+                <Spin spinning={loading} wrapperClassName='rightDiv-content'>
                     <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis} flagConfirm={this.props.location.editFlag?true:flagConfirm} headEdit={headEdit}
                         lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getPeriods} editFlag={this.props.location.editFlag}
                         disabledDate={this.disabledDate} giveEndDate={giveEndDate}
@@ -288,12 +289,13 @@ class PositiveAdd extends Component {
                         </Tabs> : null
                         }
                     </div>
+                </Spin>
                     <span style={{ bottom: '10px', position: 'absolute', left: '15px' }}><CancleButton /></span>
                     <span style={{ bottom: '0', position: 'absolute', right: '15px' }}>
                     <SaveButton handleSave={this.save} />
                     <NewButton name='提交' handleClick={this.submit} />
                     </span>
-                </div>
+                
             </div>
         )
     }

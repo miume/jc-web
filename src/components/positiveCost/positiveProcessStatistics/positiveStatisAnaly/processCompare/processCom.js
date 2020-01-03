@@ -37,50 +37,47 @@ class PositiveProcessCom extends Component{
                 lineCode:lineCode
             }
         }).then(data=>{
-            let res=data.data.data
+            let res=data.data.data, xData=[],name=[1,2,3,4,5,6,7,8,9],series=[],
+            data10=[[],[],[],[],[],[],[],[],[]]
            if(res){
-                let xData=[],name=[],
-                    data10=[[],[],[],[],[],[],[],[],[]]
                 for(let i=0;i<res.length;i++){
                     if(res[i].list){
-                        data10[0].push(res[i].list[0].statValue)
-                        name.push(res[i].list[0].processName)
-
-                        data10[1].push(res[i].list[1].statValue)
-                        name.push(res[i].list[1].processName)
-
-                        data10[2].push(res[i].list[2].statValue)
-                        name.push(res[i].list[2].processName)
-
-                        data10[3].push(res[i].list[3].statValue)
-                        name.push(res[i].list[3].processName)
-
-                        data10[4].push(res[i].list[4].statValue)
-                        name.push(res[i].list[4].processName)
-
-                        data10[5].push(res[i].list[5].statValue)
-                        name.push(res[i].list[5].processName)
-
-                        data10[6].push(res[i].list[6].statValue)
-                        name.push(res[i].list[6].processName)
-
-                        data10[7].push(res[i].list[7].statValue)
-                        name.push(res[i].list[7].processName)
-
-                        data10[8].push(res[i].list[8].statValue)
-                        name.push(res[i].list[8].processName)
+                        for(let j=0;j<res[i].list.length;j++){
+                            data10[j].push(res[i].list[j].statValue)
+                            name[j]=(res[i].list[j].processName)
+                        }
                     }
                     xData.push(res[i].time)
                 } 
-                name=[...new Set(name)]    
-                this.setState({
-                    xData:xData,
-                    name:name,
-                    data10:data10
+            }
+            name=[...new Set(name)] 
+            
+            for(let i=0;i<name.length;i++){
+                series.push({
+                    name:name[i],
+                    type:'line',
+                    label: labelOption,
+                    data:data10[i]
                 })
             }
+            let labelOption = {
+                normal: {
+                    show: true,
+                    formatter: '{c}  {name|{a}}',
+                    fontSize: 16,
+                    rich: {
+                        name: {
+                            textBorderColor: '#fff'
+                        }
+                    }
+                }
+            }
+            
             this.setState({
-                loading:false
+                loading:false,
+                xData:xData,
+                name:name,
+                series:series
             })
         })
     }
@@ -98,28 +95,8 @@ class PositiveProcessCom extends Component{
     }
   
     getOption(){
-        let {xData,name,data10}=this.state,
-            series=[]
-            for(let i=0;i<name.length;i++){
-                series.push({
-                    name:name[i],
-                    type:'line',
-                    label: labelOption,
-                    data:data10[i]
-                })
-            }
-        let labelOption = {
-            normal: {
-                show: true,
-                formatter: '{c}  {name|{a}}',
-                fontSize: 16,
-                rich: {
-                    name: {
-                        textBorderColor: '#fff'
-                    }
-                }
-            }
-        }
+        let {xData,name,data10,series}=this.state
+           
         const option={
             tooltip:{
                 trigger:'axis'

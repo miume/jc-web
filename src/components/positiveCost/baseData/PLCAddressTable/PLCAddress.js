@@ -5,6 +5,7 @@ import DeleteByIds from '../../../BlockQuote/deleteByIds'
 import  PLCAddressAdd from './add'
 import SearchCell from '../../../BlockQuote/search'
 import axios from 'axios'
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class PLCAddress extends Component{
     constructor(props){
         super(props);
@@ -46,20 +47,22 @@ class PLCAddress extends Component{
             width:'28%',
             align:'center',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag}=this.state
                 return(
                     <span>
-                        < PLCAddressAdd editflag={true} record={record} url={this.url} code={record.code}/>
-                        <Divider type='vertical'></Divider>
-                        <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.code)} okText='确定' cancelText='取消'>
-                        <span className='blue'>删除</span>
-                        </Popconfirm>
+                        < PLCAddressAdd editflag={true}  updateFlag={updateFlag} record={record} url={this.url} code={record.code}/>
+                        {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.code)} okText='确定' cancelText='取消'>
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 );
             }
         }]
         this.returnBaseInfoPositive=this.returnBaseInfoPositive.bind(this);
         this.onSelectChange=this.onSelectChange.bind(this);
-        this.judgeOperation=this.judgeOperation.bind(this);
         this.getTableData=this.getTableData.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
@@ -69,6 +72,12 @@ class PLCAddress extends Component{
     }
     componentDidMount(){
         this.getTableData()
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -169,19 +178,14 @@ class PLCAddress extends Component{
     searchEvent(){
         this.getTableData()
     }
-    /*用来判断改用户有哪些操作权限*/
-    judgeOperation(operation,operationCode){
-        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
-        return flag.length>0?true:false
-     }
+    
     //返回正极成本的基础数据部分
     returnBaseInfoPositive(){
         this.props.history.push({pathname:'/baseDataPositiveCost'});
     }
     render(){
-        const current=JSON.parse(localStorage.getItem('current'));
-        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null 
-        this.url=JSON.parse(localStorage.getItem('url'))
+        this.current=JSON.parse(localStorage.getItem('postiveBase'));
+        this.url = JSON.parse(localStorage.getItem('url'));
         const {selectedRowKeys}=this.state
         const rowSelection={
             selectedRowKeys,
@@ -189,9 +193,9 @@ class PLCAddress extends Component{
         }
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='PLC地址表' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name='PLC地址表' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    < PLCAddressAdd url={this.url} getTableData={this.getTableData}/>
+                    < PLCAddressAdd addFlag={this.state.addFlag} url={this.url} getTableData={this.getTableData}/>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={true} deleteByIds={this.deleteByIds}
                             cancel={this.cancel}/>
                     <SearchCell name='请PLC地址' flag={true} searchEvent={this.searchEvent}

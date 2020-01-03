@@ -206,7 +206,7 @@ class Detail extends Component{
         }
         else if(id===2){//预混(犁刀混)
             return (
-                <span style={{float:'right'}}> 
+                <span style={{float:'right',marginBottom:'10px'}}> 
                     <span >总已混量 : {sub&&sub.tMix?sub.tMix:undefined}</span>
                     <span >总消耗量 : {sub&&sub.tCom?sub.tCom:undefined}</span>
                     <span >总结存量 : {sub&&sub.tBal?sub.tBal:undefined}</span>
@@ -226,7 +226,8 @@ class Detail extends Component{
                         }
                     </div>
                     {/* <hr style={{width:'100%',backgroundColor:'#e8e8e8'}}/> */}
-                    <Divider style={{margin:'10px 0'}}/>
+                    {/* <div className={'clear'}></div> */}
+                   <span className={dataBottom&&dataBottom.length!==0?'':'hide'}> <Divider  style={{margin:'10px 0'}}/></span>
                     <div>
                         <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : </span>
                         <span style={{float:'right'}}> 
@@ -279,7 +280,7 @@ class Detail extends Component{
                         }):null
                     }
                 </span>
-                <Divider style={{width:'100%'}}/>
+                <Divider/>
                 <span style={{float:'right',marginRight:'10px'}}> 
                     <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : {sub&&sub.totals?sub.totals:undefined}</span>&nbsp;&nbsp;
                 </span>

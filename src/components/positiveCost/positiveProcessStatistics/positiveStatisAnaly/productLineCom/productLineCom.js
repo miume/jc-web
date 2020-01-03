@@ -36,41 +36,45 @@ class ProductLineCom extends Component{
                 materialFlag:materialFlag
             }
         }).then(data=>{
-            let res=data.data.data
+            let res=data.data.data, xData=[],name=[1,2,3,4,5,6],
+            data10=[[],[],[],[],[],[]],series=[]
            if(res){
-            let xData=[],name=[],
-            data10=[[],[],[],[],[],[]]
-        for(let i=0;i<res.length;i++){
-            if(res[i].lines&&res[i].value){
-                data10[0].push(res[i].value[0])
-                name.push(res[i].lines[0].name)
-
-                data10[1].push(res[i].value[1])
-                name.push(res[i].lines[1].name)
-
-                data10[2].push(res[i].value[2])
-                name.push(res[i].lines[2].name)
-
-                data10[3].push(res[i].value[3])
-                name.push(res[i].lines[3].name)
-
-                data10[4].push(res[i].value[4])
-                name.push(res[i].lines[4].name)
-
-                data10[5].push(res[i].value[5])
-                name.push(res[i].lines[5].name)
-
+                for(let i=0;i<res.length;i++){
+                    if(res[i].lines.length!==0&&res[i].value.length!==0){
+                        for(let j=0;j<res[i].lines.length;j++){
+                            data10[j].push(res[i].value[j])
+                            name[j]=(res[i].lines[j].name)
+                        }
+                        xData.push(res[i].time)
+                    }
+                    
+                } 
+           }
+           name=[...new Set(name)]   
+           let labelOption = {
+            normal: {
+                show: true,
+                formatter: '{c}  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                        textBorderColor: '#fff'
+                        }
+                    }
+                }
             }
-            xData.push(res[i].time)
-        } 
-            name=[...new Set(name)]    
+            for(let i=0;i<name.length;i++){
+                series.push({
+                    name:name[i],
+                    type:'line',
+                    label: labelOption,
+                    data:data10[i]
+                })
+            }
             this.setState({
                 xData:xData,
                 name:name,
-                data10:data10
-            })
-           }
-            this.setState({
+                series:series,
                 loading:false
             })
         })
@@ -91,30 +95,9 @@ class ProductLineCom extends Component{
     }
 
     getOption(){
-        let {xData,name,data10}=this.state,
-        series=[]
-        for(let i=0;i<name.length;i++){
-            series.push({
-                name:name[i],
-                type:'line',
-                label: labelOption,
-                data:data10[i]
-            })
-        }
-        let labelOption = {
-            normal: {
-                show: true,
-                formatter: '{c}  {name|{a}}',
-                fontSize: 16,
-                rich: {
-                    name: {
-                        textBorderColor: '#fff'
-                    }
-                }
-            }
-        }
+        let {xData,name,series}=this.state
         const option={
-            color: ['#003366', '#dc150c','#1890ff'],
+            color: ['#003366', '#dc150c','#1890ff','green','purple','orange'],
             tooltip:{
                 trigger:'axis'
             },

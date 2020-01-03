@@ -15,8 +15,8 @@ class PositiveProcess extends Component{
             width:"5%"
         },{
             title:'周期类型',
-            key:'period',
-            dataIndex:'period',
+            key:'periodName',
+            dataIndex:'periodName',
             width:"7%"
         },{
             title:'开始时间',
