@@ -593,7 +593,6 @@ class Right extends React.Component {
             }, {
                 path: '/repoBasicSupplier',
                 component: Suppliers
-<<<<<<< HEAD
             }, {
                 path: '/repoBasicWorkshop',
                 component: WorkShop
@@ -615,7 +614,6 @@ class Right extends React.Component {
             }, {
                 path: '/repoBasicSafety',
                 component: SafetyStock
-=======
             },{
                 path: '/repoRecordWater',
                 component: RepoRecordWater
@@ -625,7 +623,6 @@ class Right extends React.Component {
             },{
                 path: '/repoQueryInOutDaily',
                 component: RepoQueryInOutDaily
->>>>>>> 7840f91cfd0263abdfc3c8fc54a7a0a7200f6d67
             }
         ];
         return (

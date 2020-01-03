@@ -1,5 +1,6 @@
 import React from 'react';
-import {Icon, Table} from "antd";
+import {Icon, Select, Table} from "antd";
+import Submit from "../../../BlockQuote/checkSubmit";
 
 class Right extends React.Component {
     constructor(props) {
@@ -7,7 +8,8 @@ class Right extends React.Component {
         this.state = {
 
         };
-        this.delete = this.delete.bind(this);
+        this.selectChange = this.selectChange.bind(this);
+        this.applySaveAndReview = this.applySaveAndReview.bind(this);
 
         this.columns = [{
             title: '序号',
@@ -35,22 +37,46 @@ class Right extends React.Component {
             dataIndex: 'id',
             width: '15%',
             render: (text) => {
-                return <Icon type="close" onClick={() => this.delete(text)}/>
+                return <Icon type="close" className={'stock-out-icon'} onClick={() => this.props.delete(text)}/>
             }
         }]
     }
 
     render() {
+        let {data} = this.props;
         return (
-            <div style={{width: '48%'}}>
-                <Table columns={this.columns} pagination={false}
-                       bordered size={'small'} rowKey={record => record.id}/>
+            <div style={{width: '50%'}}>
+                <Table columns={this.columns} pagination={false} dataSource={data}
+                       bordered size={'small'} rowKey={record => record.id} scroll={{y:'52vh'}}/>
+                <div className={'stock-out-flex'} style={{marginTop: 10}}>
+                    <div>
+                        <span>产线：</span>
+                        <Select placeholder={'请选择产线'} style={{width: 110}} onChange={this.selectChange}></Select>
+                    </div>
+                    <div>
+                        <span>出库点：</span>
+                        <Select placeholder={'请选择出库点'} style={{width: 110}} onChange={this.selectChange}></Select>
+                    </div>
+                    <div>
+                        <span>出库类别：</span>
+                        <Select placeholder={'请选择出库类别'} style={{width: 110}} onChange={this.selectChange}></Select>
+                    </div>
+                    <Submit url={this.props.url} applySaveAndReview={this.applySaveAndReview}/>
+                </div>
             </div>
         )
     }
 
-    delete(id) {
+    selectChange(value,option) {
+        let name = option.props.name;
+        this.setState({
+            [name]: value
+        })
+    }
 
+    /**送审*/
+    applySaveAndReview(process,urgent) {
+        console.log(process,urgent)
     }
 }
 
