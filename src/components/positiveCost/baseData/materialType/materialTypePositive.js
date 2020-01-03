@@ -5,7 +5,7 @@ import {Spin,Table,Popconfirm,Divider,message} from 'antd'
 import DeleteByIds from '../../../BlockQuote/deleteByIds'
 import SearchCell from '../../../BlockQuote/search'
 import axios from 'axios'
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class MaterialTypePositive extends Component{
     constructor(props){
         super(props);
@@ -67,17 +67,21 @@ class MaterialTypePositive extends Component{
             key:'operation',
             width:'18%',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag}=this.state
                 let data=record.weightDTOS,line=[]
                 for(let i=0;i<data.length;i++){
                     line.push(`${data[i].lineCode}-${data[i].lineName}`)
                 }
                 return(
                     <span>
-                        <MaterialTypeAdd editflag={true} line={line} record={record}  getTableData={this.getTableData} url={this.url}/>
-                        <Divider type='vertical'></Divider>
-                        <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.materialCode)} okText='确定' cancelText='取消'>
-                        <span className='blue'>删除</span>
-                        </Popconfirm>
+                        <MaterialTypeAdd updateFlag={updateFlag} editflag={true} line={line} record={record}  getTableData={this.getTableData} url={this.url}/>
+                        
+                        {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.materialCode)} okText='确定' cancelText='取消'>
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 );
             }
@@ -91,7 +95,6 @@ class MaterialTypePositive extends Component{
         };
         this.returnBaseInfoPositive=this.returnBaseInfoPositive.bind(this);
         this.onSelectChange=this.onSelectChange.bind(this);
-        this.judgeOperation=this.judgeOperation.bind(this);
         this.getTableData=this.getTableData.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
@@ -101,6 +104,12 @@ class MaterialTypePositive extends Component{
     }
     componentDidMount(){
         this.getTableData()
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -204,15 +213,10 @@ class MaterialTypePositive extends Component{
     searchEvent(){
         this.getTableData()
     }
-    /*用来判断改用户有哪些操作权限*/
-    judgeOperation(operation,operationCode){
-        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
-        return flag.length>0?true:false
-     }
+
     render(){
-        const current=JSON.parse(localStorage.getItem('current'));
-        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null 
-        this.url=JSON.parse(localStorage.getItem('url'))
+        this.current=JSON.parse(localStorage.getItem('postiveBase'));
+        this.url = JSON.parse(localStorage.getItem('url'));
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,
@@ -220,9 +224,9 @@ class MaterialTypePositive extends Component{
         }
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='物料种类' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name='物料种类' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <MaterialTypeAdd getTableData={this.getTableData} url={this.url}/>
+                    <MaterialTypeAdd addFlag={this.state.addFlag} getTableData={this.getTableData} url={this.url}/>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={true} deleteByIds={this.deleteByIds}
                             cancel={this.cancel}/>
                     <SearchCell name='请输入物料种类' flag={true} searchEvent={this.searchEvent}

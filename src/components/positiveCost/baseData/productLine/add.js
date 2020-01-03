@@ -59,7 +59,7 @@ class ProductLineAdd extends Component{
                 message.info(data.data.message)
             }
         }).catch(error=>{
-            console.log('操作失败，请联系管理员!')
+            message.error('操作失败，请联系管理员!')
         })
         this.handleCancel()
     }
@@ -88,12 +88,13 @@ class ProductLineAdd extends Component{
         })
     }
     render(){
-        let {productLineName}=this.state;
-        // console.log(productLineName)
+        let {productLineName}=this.state,{addFlag,updateFlag}=this.props
         return(
             <span>
-                {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>
-                :<NewButton name='新增生产线' className='fa fa-plus' handleClick={this.showModal}/>}
+                {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                :<span className={addFlag?'':'hide'}>
+                    <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>
+                </span>}
                 <Modal
                     title={this.props.editflag?'编辑生产线':'新增生产线'}
                     visible={this.state.visible}

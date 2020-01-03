@@ -13,58 +13,100 @@ class PositiveCostAccount extends Component{
         }
         this.columns=[{
             title:'核算对象',
-            key:'id',
-            dataIndex:'id',
+            key:'costObject',
+            dataIndex:'costObject',
+            width:'6%'
         },{
             title:'周期名称',
             key:'periodName',
             dataIndex:'periodName',
+            width:'6%'
         },{
             title:'期数',
             key:'periods',
             dataIndex:'periods',
+            width:'4%'
         },{
             title:'开始时间',
             key:'startTime',
             dataIndex:'startTime',
+            width:'6%'
         },{
             title:'结束时间',
             key:'endTime',
             dataIndex:'endTime',
+            width:'6%'
         },{
             title:'原料领用(T)',
-            key:'materialRequisition',
-            dataIndex:'materialRequisition',
+            key:'rawMaterialFeedStock',
+            dataIndex:'rawMaterialFeedStock',
+            width:'11%',
+            render:(text)=>{
+                let da=text?text.split(' '):undefined
+                return(
+                    da?da.map((item,index)=>{
+                        return(
+                            <span style={{display:'block'}} key={index}>{item}</span>
+                        )
+                    }):null
+                )
+            }
         },{
             title:'原料结存(T)',
-            key:'materialBalance',
-            dataIndex:'materialBalance',
+            key:'rawMaterialBalance',
+            dataIndex:'rawMaterialBalance',
+            width:'11%',
+            render:(text)=>{
+                let da=text?text.split(' '):undefined
+                return(
+                    da?da.map((item,index)=>{
+                        return(
+                            <span style={{display:'block'}} key={index}>{item}</span>
+                        )
+                    }):null
+                )
+            }
         },{
             title:'上期前段在制品(T)',
-            key:'lastMaterialInProcessFirst',
-            dataIndex:'lastMaterialInProcessFirst',
+            key:'lastGoodsInProcessFirst',
+            dataIndex:'lastGoodsInProcessFirst',
+            width:'6%'
         },{
             title:'本期前段在制品(T)',
             key:'currentGoodsInProcessFirst',
             dataIndex:'currentGoodsInProcessFirst',
+            width:'6%'
         },{
             title:'上期后段在制品(T)',
             key:'lastGoodsInProcessSecond',
             dataIndex:'lastGoodsInProcessSecond',
+            width:'6%'
         },{
             title:'本期后段在制品(T)',
             key:'currentGoodsInProcessSecond',
             dataIndex:'currentGoodsInProcessSecond',
+            width:'6%'
         },{
             title:'成品入库(T)',
             key:'productStorage',
             dataIndex:'productStorage',
+            width:'5%'
         },{
             title:'单耗(T)',
             key:'unitConsumption',
             dataIndex:'unitConsumption',
+            width:'11%',
+            render:(text)=>{
+                let da=text?text.split(' '):undefined
+                return(
+                    da?da.map((item,index)=>{
+                        return(
+                            <span style={{display:'block'}} key={index}>{item}</span>
+                        )
+                    }):null
+                )
+            }
         }]
-        this.judgeOpertion=this.judgeOpertion.bind(this);
         this.selectChange=this.selectChange.bind(this);
         this.getPeriod=this.getPeriod.bind(this);
         this.getTimeByPeriod=this.getTimeByPeriod.bind(this);
@@ -158,9 +200,12 @@ class PositiveCostAccount extends Component{
                 if(res[0]===2){
                     message.error('不存在上期的产线统计数据，基础数据不全!');
                 }
-                if(res&&res.list){
+                if(res){
+                    for(let i=0;i<res.length;i++){
+                        res[i]['index']=i+1
+                    }
                     this.setState({
-                        data:res.list
+                        data:res
                     })
                 }
             }
@@ -178,13 +223,9 @@ class PositiveCostAccount extends Component{
             message.error('操作失败，请联系管理员!')
         })
     }
-    judgeOpertion(operation,operationCode){
-        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
-        return flag.length?true:false
-    }
+
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
-        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         this.url=JSON.parse(localStorage.getItem('url'))
         let {lineNameData,data,periods,periodCode,staticPeriod}=this.state
         return(
@@ -198,7 +239,7 @@ class PositiveCostAccount extends Component{
                     <div className='clear'></div> 
                     <Table
                         dataSource={data}
-                        rowKey={record=>record.id}
+                        rowKey={record=>record.index}
                         columns={this.columns} 
                         size='small'
                         bordered/>

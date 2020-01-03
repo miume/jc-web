@@ -106,7 +106,6 @@ class MaterialTypeAdd extends Component{
     }
     handleAdd(){
         let {materialName,types,line,processCode,processName}=this.state
-        console.log(materialName,types,line,processCode)
         if(!materialName||(types===undefined)||line.length===0||!processCode){
             message.error('信息填写不完整!')
             return
@@ -163,17 +162,19 @@ class MaterialTypeAdd extends Component{
         })
     }
     lineChange(value){
-        console.log(value)
         this.setState({
             line:value
         })
     }
 
     render(){
+        let {addFlag,updateFlag}=this.props
         return(
             <span>
-                {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>
-                :<NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>}
+                {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                :<span className={addFlag?'':'hide'}>
+                    <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>
+                </span>}
                 <Modal
                     title={this.props.editflag?'编辑':'新增'}
                     visible={this.state.visible}

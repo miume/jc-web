@@ -15,9 +15,7 @@ class Add extends Component{
         this.handleAdd=this.handleAdd.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
     }
-    componentDidMount(){
-        //console.log(this.props.record)
-    }
+  
     showModal(){
         this.setState({
             visible:true
@@ -73,10 +71,13 @@ class Add extends Component{
         })
     }
     render(){
+        let {addFlag,updateFlag}=this.props
         return(
             <span>
-                {this.props.editFlag?<span className='blue' onClick={this.showModal}>编辑</span>
-                :<NewButton name='新增产品线' handleClick={this.showModal}/>}
+                {
+                    this.props.editFlag?<span  className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                    :<span className={addFlag?'':'hide'}><NewButton  name='新增' className='fa fa-plus' handleClick={this.showModal}/></span>
+                }
                 <Modal
                     title={this.props.editFlag?'编辑':'新增'}
                     visible={this.state.visible}

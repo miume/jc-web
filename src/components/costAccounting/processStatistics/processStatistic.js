@@ -7,6 +7,7 @@ import NewButton from '../../BlockQuote/newButton'
 import Search from './search'
 import PendSubmit from './pendSubmit/pendSubmit'
 import StatisticDone from './statisticDone/ststisticDone'
+import { getSecondsOperations, judgeOperation } from '../../commom/getOperations';
 
 const { TabPane } = Tabs;
 
@@ -14,6 +15,12 @@ class ProcessStatistics extends Component {
     componentDidMount() {
         this.getStaPeriod()
         this.getAllProcess()
+        let {menuId}=this.current,operations=getSecondsOperations(menuId)
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     constructor(props) {
         super(props);
@@ -37,7 +44,6 @@ class ProcessStatistics extends Component {
             loadingStatis: false
         }
         this.getStaPeriod = this.getStaPeriod.bind(this);
-        this.judgeOperation = this.judgeOperation.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.statisticalAnalysis = this.statisticalAnalysis.bind(this);
         this.getPendSubmit = this.getPendSubmit.bind(this);
@@ -244,10 +250,7 @@ class ProcessStatistics extends Component {
         }
     }
 
-    judgeOperation(operation, operationCode) {
-        var flag = operation ? operation.filter(e => e.operationCode === operationCode) : []
-        return flag.length ? true : false
-    }
+
     handleAdd() {
         let { process, staticPeriod} = this.state
         this.props.history.push({
@@ -284,20 +287,22 @@ class ProcessStatistics extends Component {
         })
     }
     render() {
-        const current = JSON.parse(localStorage.getItem('current'));
-        this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
+        this.current = JSON.parse(localStorage.getItem('current'));
+        this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path ===this. current.path)[0].operations : null;
         this.url = JSON.parse(localStorage.getItem('url'))
         return (
             <div>
-                <Blockquote name={current.menuName} menu={current.menuParent} />
+                <Blockquote name={this.current.menuName} menu={this.current.menuParent} />
                 <div className='rightDiv-content'>
-                    <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd} />
+                    <span className={this.state.addFlag?'':'hide'}>
+                          <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd} />
+                    </span>
                     <Button type='primary' onClick={this.statisticalAnalysis} >统计分析</Button>
-                    <Search flag={this.judgeOperation(this.operation, 'QUERY')} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} dateStartChange={this.dateStartChange} dateEndChange={this.dateEndChange} search={this.search} reset={this.reset} selectChange={this.selectChange} startDate={this.state.startDate} endDate={this.state.endDate} />
+                    <Search flag={true} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} dateStartChange={this.dateStartChange} dateEndChange={this.dateEndChange} search={this.search} reset={this.reset} selectChange={this.selectChange} startDate={this.state.startDate} endDate={this.state.endDate} />
                     <div className='clear'></div>
                     <Tabs defaultActiveKey="1" onChange={this.tabsChange}>
                         <TabPane tab='待提交' key='1'>
-                            <PendSubmit history={this.props.history} getPagination={this.getPagination} getPendSubmit={this.getPendSubmit} loadingSubmit={this.state.loadingSubmit} pagination={this.state.pagination} url={this.url} periodCode={this.state.periodCode} dataSubmit={this.state.dataSubmit} startTime={this.state.startTime} endTime={this.state.endTime} search={this.search} handleTableChange={this.handleTableChange} process={this.state.process} staticPeriod={this.state.staticPeriod} />
+                            <PendSubmit deleteFlag={this.state.deleteFlag} updateFlag={this.state.updateFlag} history={this.props.history} getPagination={this.getPagination} getPendSubmit={this.getPendSubmit} loadingSubmit={this.state.loadingSubmit} pagination={this.state.pagination} url={this.url} periodCode={this.state.periodCode} dataSubmit={this.state.dataSubmit} startTime={this.state.startTime} endTime={this.state.endTime} search={this.search} handleTableChange={this.handleTableChange} process={this.state.process} staticPeriod={this.state.staticPeriod} />
                         </TabPane>
                         <TabPane tab='已统计' key='2' >
                             <StatisticDone getStatisticPage={this.getStatisticPage} getPagination={this.getPagination} pagination={this.state.paginationStatis} url={this.url} handleTableChange={this.handleTableChange} periodCode={this.state.periodCode} loadingStatis={this.state.loadingStatis} dataStatistic={this.state.dataStatistic} startTime={this.state.startTime} endTime={this.state.endTime} search={this.search} />

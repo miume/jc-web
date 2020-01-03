@@ -35,11 +35,12 @@ class PositivePendSubmit extends Component{//待提交
             dataIndex:'operation',
             key:'operation',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag}=this.props
                 return(
                     <span>
-                        <span className={this.judgeOperation(this.operation,'UPDATE')?'blue':'hide'} onClick={()=>this.handleEdit(record.head.code)}>编辑</span>
-                        {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical'/>:''}
-                        <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
+                        <span className={updateFlag?'blue':'hide'} onClick={()=>this.handleEdit(record.head.code)}>编辑</span>
+                        {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
                             <Popconfirm title='确定删除?' onConfirm={() => this.handleDelete(record.head.code)} okText="确定" cancelText="再想想" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>

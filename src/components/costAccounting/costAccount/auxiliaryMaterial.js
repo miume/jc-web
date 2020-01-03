@@ -61,16 +61,12 @@ class AuxiliaryMaterial extends Component{
             key:'unitConsumption',
             dataIndex:'unitConsumption',
         }]
-        this.judgeOperation=this.judgeOperation.bind(this);
         this.timeChange=this.timeChange.bind(this)
         this.selectChange=this.selectChange.bind(this);
         this.confirm=this.confirm.bind(this);
         this.lineChange=this.lineChange.bind(this);
     }
-    judgeOperation(operation,operationCode){
-        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
-        return flag.length?true:false
-    }
+
     timeChange(value){
         this.setState({
             time:value
@@ -126,7 +122,6 @@ class AuxiliaryMaterial extends Component{
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-       // flag={this.judgeOperation(this.operation,'QUERY')}
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>

@@ -3,7 +3,7 @@ import {Spin,Table,Popconfirm,Divider,message} from 'antd'
 import Blockquote from '../../../BlockQuote/blockquote'
 import StatisticalPeriodAdd from './add'
 import axios from 'axios'
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class StatisticalPeriodCost extends Component{
     constructor(props){
         super(props);
@@ -40,13 +40,16 @@ class StatisticalPeriodCost extends Component{
             width:'18%',
             align:'center',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag}=this.state
                 return(
                     <span>
-                        <StatisticalPeriodAdd editflag={true} record={record} code={record.code} getTableData={this.getTableData} url={this.url} data={this.state.dataSource}/>
-                        <Divider type='vertical'></Divider>
-                        <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.code)} okText='确定' cancelText='取消'>
-                            <span className='blue'>删除</span>
-                        </Popconfirm>
+                        <StatisticalPeriodAdd editflag={true} updateFlag={updateFlag} record={record} code={record.code} getTableData={this.getTableData} url={this.url} data={this.state.dataSource}/>
+                        {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.code)} okText='确定' cancelText='取消'>
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 );
             }
@@ -56,6 +59,12 @@ class StatisticalPeriodCost extends Component{
     }
     componentDidMount(){
         this.getTableData()
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -88,7 +97,6 @@ class StatisticalPeriodCost extends Component{
         })
     }
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url. positiveStatic.delete}`,
             method:"delete",
@@ -108,13 +116,13 @@ class StatisticalPeriodCost extends Component{
         this.props.history.push({pathname:'/baseDataPositiveCost'});
     }
     render(){
-        const current=JSON.parse(localStorage.getItem('current'));
+        this.current=JSON.parse(localStorage.getItem('postiveBase'));
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='统计周期' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name='统计周期' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <StatisticalPeriodAdd getTableData={this.getTableData} url={this.url} data={this.state.dataSource} editflag={false}/>
+                    <StatisticalPeriodAdd addFlag={this.state.addFlag} getTableData={this.getTableData} url={this.url} data={this.state.dataSource} editflag={false}/>
                     <Table
                     rowKey={record=>record.code}
                     dataSource={this.state.dataSource}

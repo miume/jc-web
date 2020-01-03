@@ -74,7 +74,6 @@ class StatisticalPeriodAdd extends Component{
     inputChange(e){
      let name=e.target.name;
      let  value=e.target.value;
-     //console.log(name,value)
      this.setState({
          [name]:value
      })
@@ -104,11 +103,13 @@ class StatisticalPeriodAdd extends Component{
         }
     }
     render(){
-        let {cycleName,defaultDuration,startTime}=this.state;
+        let {cycleName,defaultDuration,startTime}=this.state,{addFlag,updateFlag}=this.props
         return(
             <span>
-                {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>
-                :<NewButton name='新增周期' className='fa fa-plus' handleClick={this.showModal}/>}
+                {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                :<span className={addFlag?'':'hide'}>
+                    <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>
+                </span>}
                 <Modal
                     title={this.props.editflag?'编辑周期':'新增周期'}
                     visible={this.state.visible}

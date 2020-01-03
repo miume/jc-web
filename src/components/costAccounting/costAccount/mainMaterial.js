@@ -59,16 +59,12 @@ class MainMaterial extends Component{
             key:'unitConsumption',
             dataIndex:'unitConsumption',
         }]
-        this.judgeOpertion=this.judgeOpertion.bind(this);
         this.timeChange=this.timeChange.bind(this);
         this.selectChange=this.selectChange.bind(this);
         this.confirm=this.confirm.bind(this);
         this.lineChange=this.lineChange.bind(this);
     }
-    judgeOpertion(operation,operationCode){
-        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
-        return flag.length?true:false
-    }
+ 
 
     timeChange(value){
         this.setState({

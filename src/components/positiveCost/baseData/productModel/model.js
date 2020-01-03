@@ -4,8 +4,7 @@ import NewButton from '../../../BlockQuote/newButton'
 import {Spin,Table,Divider,Popconfirm} from 'antd'
 import Add from './add'
 import axios from 'axios'
-import Header from 'antd/lib/calendar/Header';
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class ModelPositiveCost extends Component{//产品型号
     constructor(props){
         super(props)
@@ -29,13 +28,16 @@ class ModelPositiveCost extends Component{//产品型号
             key:'operation',
             width:'35%',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag}=this.state
                 return(
                     <span>
-                        <Add editFlag={true} url={this.url} record={record} getTableData={this.getTableData}/>
-                        <Divider type='vertical'/>
-                        <Popconfirm title='确定删除?' okText='确定' cancelText='取消' onConfirm={()=>this.handleDelete(record.code)}>
-                            <span className='blue' >删除</span>
-                        </Popconfirm>
+                        <Add editFlag={true} updateFlag={updateFlag} url={this.url} record={record} getTableData={this.getTableData}/>
+                        {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.code)} okText='确定' cancelText='取消'>
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             }
@@ -45,6 +47,12 @@ class ModelPositiveCost extends Component{//产品型号
     }
     componentDidMount(){
         this.getTableData()
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -95,13 +103,13 @@ class ModelPositiveCost extends Component{//产品型号
         this.props.history.push({pathname:'/baseDataPositiveCost'});
     }
     render(){
-        const current=JSON.parse(localStorage.getItem('current'));
-        this.url=JSON.parse(localStorage.getItem('url'))
+        this.current=JSON.parse(localStorage.getItem('postiveBase'));
+        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
-                <BlockQuote menu={current.menuParent} name='产品型号' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} />
+                <BlockQuote menu={this.current.menuParent} name='产品型号' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} />
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <Add url={this.url} getTableData={this.getTableData}/>
+                    <Add addFlag={this.state.addFlag} url={this.url} getTableData={this.getTableData}/>
                     <Table 
                     dataSource={this.state.data}
                     rowKey={record=>record.index}
