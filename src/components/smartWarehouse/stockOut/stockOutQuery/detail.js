@@ -14,77 +14,47 @@ class Detail extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '5%'
+            width: '10%'
         },{
-            title: '出库单号',
-            key: 'stockOutRecordHeadCode',
-            dataIndex: 'stockOutRecordHeadCode',
-            width: '7%'
-        },{
-            title: '出库日期',
+            title: '出库时间',
             key: 'date',
             dataIndex: 'date',
-            width: '7%'
+            width: '15%'
         },{
             title: '物料大类',
             key: 'typeName',
             dataIndex: 'typeName',
-            width: '7%'
+            width: '10%'
         },{
             title: '物料小类',
             key: 'subTypeName',
             dataIndex: 'subTypeName',
-            width: '7%'
+            width: '10%'
         },{
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
-            width: '7%'
+            width: '10%'
         },{
             title: '供货单位',
             key: 'supplier',
             dataIndex: 'supplier',
-            width: '7%'
-        },{
-            title: '领用单位',
-            key: 'unit',
-            dataIndex: 'unit',
-            width: '7%'
-        },{
-            title: '批号',
-            key: 'batch',
-            dataIndex: 'batch',
-            width: '7%'
-        },{
-            title: '使用产线',
-            key: 'line',
-            dataIndex: 'line',
-            width: '7%'
-        },{
-            title: '出库类别',
-            key: 'deliveryTypeName',
-            dataIndex: 'deliveryTypeName',
-            width: '7%'
-        },{
-            title: '出库点',
-            key: 'deliveryPoint',
-            dataIndex: 'deliveryPoint',
-            width: '7%'
+            width: '15%'
         },{
             title: '分组号',
             key: 'groupName',
             dataIndex: 'groupName',
-            width: '7%'
+            width: '10%'
         },{
             title: '重量',
             key: 'weight',
             dataIndex: 'weight',
-            width: '6%'
+            width: '10%'
         }, {
             title: '状态',
             key: 'status',
             dataIndex: 'status',
-            width: '7%'
+            width: '10%'
         }]
     }
 

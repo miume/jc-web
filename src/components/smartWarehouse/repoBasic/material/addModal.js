@@ -52,12 +52,6 @@ class AddModal extends React.Component {
                         </Select>
                     </div>
                      <div className={'basis-data-flex'}>
-                        <Select placeholder={'请选择供应商'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
-                            {
-                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
-                            }
-                        </Select>
-
                         <Select placeholder={'请选择计量单位'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
                             {
                                 allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
@@ -80,6 +74,10 @@ class AddModal extends React.Component {
                             onChange={this.checkBoxChange}
                         />
                     </div>
+
+                    <Checkbox>
+                            参与流量统计
+                    </Checkbox>
                 </Modal>
             </span>
         );

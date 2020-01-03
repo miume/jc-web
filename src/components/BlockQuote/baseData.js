@@ -7,7 +7,7 @@ import Blockquote from "../positiveCost/baseData/otherBaseInfo/otherBaseInfo";
 const ICON = ['fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-leaf fa-5x',
     'fa fa-shopping-cart fa-5x','fa fa-code-fork fa-5x',
     'fa fa-cube fa-5x','fa fa-exclamation-triangle fa-5x',
-    'fa fa-crosshairs fa-5x'];
+    'fa fa-crosshairs fa-5x','fa fa-superpowers fa-5x','fa fa-grav fa-5x'];
 
 class BaseData extends Component {
     constructor(props) {

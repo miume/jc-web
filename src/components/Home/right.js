@@ -160,6 +160,8 @@ import RepoQueryInventoryDaily from "../smartWarehouse/dataQuery/repoQueryInvent
 import RepoQueryInventoryQuery from "../smartWarehouse/dataQuery/repoQueryInventoryQuery/repoQueryInventoryQuery"
 import RepoQueryInOutQuery from "../smartWarehouse/dataQuery/repoQueryInOutQuery/repoQueryInOutQuery"
 import RepoQueryInOutAccount from "../smartWarehouse/dataQuery/repoQueryInOutAccount/repoQueryInOutAccount"
+import Unit from "../smartWarehouse/repoBasic/unit/unit";
+import SluggishPeriod from "../smartWarehouse/repoBasic/sluggishPeriod/sluggishPeriod";
 class Right extends React.Component {
     render() {
         const data = [{
@@ -617,6 +619,12 @@ class Right extends React.Component {
             }, {
                 path: '/repoBasicSafety',
                 component: SafetyStock
+            }, {
+                path: '/unit',
+                component: Unit
+            }, {
+                path: '/sluggishPeriod',
+                component: SluggishPeriod
             },{
                 path: '/repoRecordWater',
                 component: RepoRecordWater

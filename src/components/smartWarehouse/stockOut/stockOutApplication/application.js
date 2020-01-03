@@ -13,9 +13,11 @@ for(let i = 0; i < 20; i++) {
     data1.push({
         id: i,
         index: i,
+        unit: `单位${i}`,
         materialName: `物料名称${i}`,
         batch: `批号${i}`,
-        weight: `重量${i}`
+        weight: `重量${i}`,
+        groupNum: 0
     })
 }
 
