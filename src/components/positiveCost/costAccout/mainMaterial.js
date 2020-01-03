@@ -197,10 +197,10 @@ class PositiveCostAccount extends Component{
                 if(res[0]===1){
                     message.error('不存在本期的产线统计数据，基础数据不全!');
                 }
-                if(res[0]===2){
+               else if(res[0]===2){
                     message.error('不存在上期的产线统计数据，基础数据不全!');
                 }
-                if(res){
+                else{
                     for(let i=0;i<res.length;i++){
                         res[i]['index']=i+1
                     }
