@@ -34,17 +34,22 @@ class Left extends React.Component {
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
-            width: '30%'
+            width: '20%'
         },{
             title: '批号',
             key: 'batch',
             dataIndex: 'batch',
-            width: '30%'
+            width: '40%'
+        },{
+            title: '单位',
+            key: 'unit',
+            dataIndex: 'unit',
+            width: '15%'
         },{
             title: '重量',
             key: 'weight',
             dataIndex: 'weight',
-            width: '30%'
+            width: '15%'
         }]
     }
 
