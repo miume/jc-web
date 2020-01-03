@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import {Table,Spin,message} from 'antd'
 import Search from '../processStatistic/statisSearch'
 import axios from 'axios'
-
+import './stattic.css'
  class PositiveProductLine extends Component{
     constructor(props){
         super(props)
@@ -202,13 +202,20 @@ import axios from 'axios'
                     return(
                         <div className={data.length===0?'hide':''}>
                             合计 : &nbsp;&nbsp;&nbsp;
-                            <span >
-                            前驱体原料重量 : {res&&res['前驱体']['feedstock']?res['前驱体']['feedstock']:''} &nbsp;&nbsp;&nbsp; 碳酸锂原料重量 : {res&&res['碳酸锂']['feedstock']?res['碳酸锂']['feedstock']:''} &nbsp;&nbsp;&nbsp;预混料原料重量 : {res&&res['预混料']['feedstock']?res['预混料']['feedstock']:''} &nbsp;&nbsp;&nbsp;
-                            烧结料原料重量 : {res&&res['烧结料']['feedstock']?res['烧结料']['feedstock']:''} &nbsp;&nbsp;&nbsp; 前驱体原料结存 : {res&&res['前驱体']['balance']?res['前驱体']['balance']:''} &nbsp;&nbsp;&nbsp;碳酸锂原料结存 : {res&&res['碳酸锂']['balance']?res['碳酸锂']['balance']:''} &nbsp;&nbsp;&nbsp;
-                            前段在制品重量 : {res&&res['前段在制品重量']?res['前段在制品重量']:''} &nbsp;&nbsp;&nbsp; 后段在制品重量 : {res&&res['后段在制品重量']?res['后段在制品重量']:''} &nbsp;&nbsp;&nbsp;产品重量 : {res&&res['产品重量']?res['产品重量']:''} &nbsp;&nbsp;&nbsp;
-                            </span>
+                            <div className={'positive-statis'}>
+                                <div ><span>前驱体原料重量 :</span>&nbsp; {res&&res['前驱体']['feedstock']!==undefined?res['前驱体']['feedstock']:''} </div>
+                                <div ><span>碳酸锂原料重量 :</span>&nbsp; {res&&res['碳酸锂']['feedstock']!==undefined?res['碳酸锂']['feedstock']:''} </div>
+                                <div ><span>预混料原料重量 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
+                                <div > <span>烧结料原料重量 : </span>&nbsp;{res&&res['烧结料']['feedstock']!==undefined?res['烧结料']['feedstock']:''} </div>
+                                <div ><span>前驱体原料结存 : </span>&nbsp;{res&&res['前驱体']['balance']!==undefined?res['前驱体']['balance']:''} </div>
+                                <div ><span>碳酸锂原料结存 : </span>&nbsp;{res&&res['碳酸锂']['balance']!==undefined?res['碳酸锂']['balance']:''} </div>
+                                <div ><span>前段在制品重量 :</span>&nbsp; {res&&res['前段在制品重量']!==undefined?res['前段在制品重量']:''} </div>
+                                <div ><span>后段在制品重量 : </span>&nbsp;{res&&res['后段在制品重量']!==undefined?res['后段在制品重量']:''} </div>
+                                <div ><span>产品重量 :</span>&nbsp; {res&&res['产品重量']!==undefined?res['产品重量']:''} </div>
+                            </div>
                         </div>
                     )}}
+                    pagination={false}
                 size='small'
                 bordered/>
             </Spin>
