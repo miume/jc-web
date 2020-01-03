@@ -46,6 +46,7 @@ class RepoQueryInventoryQuery extends React.Component {
             condition1: null,
             condition2: null,
             condition3: null,
+            condition4: null,
         };
         this.operations = [];
         this.pagination = {
@@ -68,11 +69,13 @@ class RepoQueryInventoryQuery extends React.Component {
                         getCondition1={this.getCondition1}
                         getCondition2={this.getCondition2}
                         getCondition3={this.getCondition3}
+                        getCondition4={this.getCondition4}
                         searchEvent={this.searchEvent}
                         reset={this.reset}
                         condition1={this.state.condition1}
                         condition2={this.state.condition2}
                         condition3={this.state.condition3}
+                        condition4={this.state.condition4}
                     />
                     <div className='clear'></div>
                     <InventoryQueryTable pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
@@ -150,13 +153,19 @@ class RepoQueryInventoryQuery extends React.Component {
             condition3: value,
         })
     }
+    getCondition4 = (value,option) => {
+        this.setState({
+            condition4: value,
+        })
+    }
 
     /**搜索事件*/
     searchEvent = () => {
-        const {condition1,condition2,condition3} = this.state;
+        const {condition1,condition2,condition3,condition4} = this.state;
         console.log(condition1)
         console.log(condition2)
         console.log(condition3)
+        console.log(condition4)
 
 
         // this.setState({
@@ -172,6 +181,7 @@ class RepoQueryInventoryQuery extends React.Component {
             condition1:null,
             condition2:null,
             condition3:null,
+            condition4:null,
         });
         // this.pagination.current = 1;
         // const tabKey = this.state.tabKey;

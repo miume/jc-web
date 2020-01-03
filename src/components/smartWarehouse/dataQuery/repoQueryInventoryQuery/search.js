@@ -23,6 +23,10 @@ for (var i = 0; i < 10; i++) {
         code: i+1,
         name: `2019011${i}`
     })
+    data4.push({
+        code: i+1,
+        name: `2019011${i}`
+    })
 }
 
 const {Option} = Select;
@@ -33,6 +37,7 @@ class Search extends Component {
             data1:[],
             data2:[],
             data3:[],
+            data4:[],
         };
     }
 
@@ -40,6 +45,7 @@ class Search extends Component {
         this.getData1();
         this.getData2();
         this.getData3();
+        this.getData4();
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -86,7 +92,7 @@ class Search extends Component {
                         }):null
                     }
                 </Select>
-                <span>供应商：</span>
+                <span>物料名称：</span>
                 <Select
                     className="repoQueryInventoryQuery_search_select"
                     onChange={this.props.getCondition3}
@@ -94,6 +100,24 @@ class Search extends Component {
                 >
                     {
                         this.state.data3?this.state.data3.map(item => {
+                            return (
+                                <Option
+                                    key={item.code} value={item.code}
+                                >
+                                    {item.name}
+                                </Option>
+                            )
+                        }):null
+                    }
+                </Select>
+                <span>供应商：</span>
+                <Select
+                    className="repoQueryInventoryQuery_search_select"
+                    onChange={this.props.getCondition4}
+                    value={this.props.condition4}
+                >
+                    {
+                        this.state.data4?this.state.data4.map(item => {
                             return (
                                 <Option
                                     key={item.code} value={item.code}
@@ -128,6 +152,12 @@ class Search extends Component {
     getData3 = () => {
         this.setState({
             data3:data3
+        })
+
+    }
+    getData4 = () => {
+        this.setState({
+            data4:data4
         })
 
     }

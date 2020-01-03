@@ -75,7 +75,7 @@ class RepoQueryInventoryDaily extends React.Component {
                         condition3={this.state.condition3}
                     />
                     <div className='clear'></div>
-                    <InventoryDailyTable pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
+                    <InventoryDailyTable url={this.url} pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
                 </Spin>
             </div>
         );

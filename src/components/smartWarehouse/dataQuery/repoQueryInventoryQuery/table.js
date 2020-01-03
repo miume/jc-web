@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table} from "antd";
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
+import Detail from "./detail";
 
 class InventoryQueryTable extends React.Component {
 
@@ -50,17 +51,17 @@ class InventoryQueryTable extends React.Component {
             title: '物料名称',
             key: 'col7',
             dataIndex: 'col7',
-            width: '8%'
+            width: '7%'
         },{
             title: '供应商',
             key: 'col8',
             dataIndex: 'col8',
-            width: '8%'
+            width: '7%'
         },{
             title: '检验状态',
             key: 'col9',
             dataIndex: 'col9',
-            width: '8%'
+            width: '7%'
         },{
             title: '单位',
             key: 'col10',
@@ -70,12 +71,24 @@ class InventoryQueryTable extends React.Component {
             title: '实际重量',
             key: 'col11',
             dataIndex: 'col11',
-            width: '8%'
+            width: '7%'
         },{
             title: '可用重量',
             key: 'col12',
             dataIndex: 'col12',
-            width: '8%'
+            width: '7%'
+        },{
+            title: '操作',
+            key: 'col12',
+            dataIndex: 'col12',
+            width: '5%',
+            render: (text,index) => {
+                return (
+                    <span>
+                        <Detail url={this.props.url}/>
+                    </span>
+                )
+            }
         }];
     }
 
