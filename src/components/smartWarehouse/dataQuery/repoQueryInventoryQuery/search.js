@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {DatePicker, Select, Button, message} from "antd";
 // import NewButton from "../../BlockQuote/newButton";
-import './repoQueryInOutDaily.css'
+import './repoQueryInventoryQuery.css'
 import NewButton from "../../../BlockQuote/newButton";
 
 
@@ -21,7 +21,7 @@ for (var i = 0; i < 10; i++) {
     })
     data3.push({
         code: i+1,
-        name: `供货单位${i}`
+        name: `2019011${i}`
     })
     data4.push({
         code: i+1,
@@ -55,10 +55,10 @@ class Search extends Component {
 
     render() {
         return (
-            <div className="repoQueryOutDaily_search">
+            <div className="repoQueryInventoryQuery_search">
                 <span>物料大类：</span>
                 <Select
-                    className="repoQueryOutDaily_search_select"
+                    className="repoQueryInventoryQuery_search_select"
                     onChange={this.props.getCondition1}
                     value={this.props.condition1}
                 >
@@ -76,7 +76,7 @@ class Search extends Component {
                 </Select>
                 <span>物料小类：</span>
                 <Select
-                    className="repoQueryOutDaily_search_select"
+                    className="repoQueryInventoryQuery_search_select"
                     onChange={this.props.getCondition2}
                     value={this.props.condition2}
                 >
@@ -92,9 +92,9 @@ class Search extends Component {
                         }):null
                     }
                 </Select>
-                <span>供货单位：</span>
+                <span>物料名称：</span>
                 <Select
-                    className="repoQueryOutDaily_search_select"
+                    className="repoQueryInventoryQuery_search_select"
                     onChange={this.props.getCondition3}
                     value={this.props.condition3}
                 >
@@ -110,9 +110,9 @@ class Search extends Component {
                         }):null
                     }
                 </Select>
-                <span>入库日期：</span>
+                <span>供应商：</span>
                 <Select
-                    className="repoQueryOutDaily_search_select"
+                    className="repoQueryInventoryQuery_search_select"
                     onChange={this.props.getCondition4}
                     value={this.props.condition4}
                 >

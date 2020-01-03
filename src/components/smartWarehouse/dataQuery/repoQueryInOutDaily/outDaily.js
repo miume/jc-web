@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table} from "antd";
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
+import Check from "./check";
 
 class OutDaily extends React.Component {
 
@@ -35,7 +36,7 @@ class OutDaily extends React.Component {
             title: '批号',
             key: 'col4',
             dataIndex: 'col4',
-            width: '18%'
+            width: '15%'
         },{
             title: '大类',
             key: 'col5',
@@ -50,12 +51,12 @@ class OutDaily extends React.Component {
             title: '物料名称',
             key: 'col7',
             dataIndex: 'col7',
-            width: '10%'
+            width: '7%'
         },{
             title: '供应商',
             key: 'col8',
             dataIndex: 'col8',
-            width: '10%'
+            width: '7%'
         },{
             title: '领料单位',
             key: 'col9',
@@ -67,7 +68,7 @@ class OutDaily extends React.Component {
             dataIndex: 'col10',
             width: '7%'
         },{
-            title: '袋号',
+            title: '袋数',
             key: 'col11',
             dataIndex: 'col11',
             width: '5%'
@@ -76,14 +77,41 @@ class OutDaily extends React.Component {
             key: 'col12',
             dataIndex: 'col12',
             width: '5%'
+        },{
+            title: '操作',
+            key: 'code',
+            dataIndex: 'code',
+            width: '5%',
+            render:(text,record) => {
+                return (
+                    <Check
+                        record={record}
+                        flag={1}
+                        tabKey={this.props.tabKey}
+                        url={this.props.url}
+                        getTableParams={this.props.getTableParams}
+                    />
+                )
+            }
         }];
     }
 
     render() {
+        let rowSelection = {
+            selectedRowKeys: this.props.selectedRowKeys,
+            onChange: this.props.onSelectChange,
+        };
         return (
             <div>
-                <Table dataSource={this.props.dataSource} columns={this.columns}  pagination={this.props.pagination}
-                       onChange={this.props.handleTableChange} size={'small'} bordered rowKey={record => record.col1}/>
+                <Table rowKey={record => record.code}
+                       rowSelection={rowSelection}
+                       dataSource={this.props.dataSource}
+                       columns={this.columns}
+                       pagination={this.props.pagination}
+                       onChange={this.props.handleTableChange}
+                       size={'small'}
+                       bordered
+                />/>
             </div>
         );
     }

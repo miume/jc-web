@@ -2,20 +2,18 @@ import React from 'react';
 import BlockQuote from "../../../BlockQuote/blockquote";
 import {Spin, message, Table, Tabs, Popconfirm} from "antd";
 import axios from 'axios';
-import InDaily from './inDaily'
-import OutDaily from './outDaily'
+import InAccount from './inAccount'
+import OutAccount from './outAccount'
 import Search from './search'
-import Check from './check'
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 
 var data1 = []
 var data2 = []
 for (var i = 0; i < 20; i++) {
     data1.push({
-        code:i,
         col1: i+1,
         col2: (i+1)%2,
-        col3: '2019年11月11日',
+        col3: '物料名称',
         col4: `批号${i+1000}`,
         col5: '大类',
         col6: `小类`,
@@ -24,28 +22,26 @@ for (var i = 0; i < 20; i++) {
         col9: '合格',
         col10: (i+1)%5,
         col11: i*10,
-        col12: 'kg'
+        col12: '2019年11月11日',
+        col13: 'admin'
     })
     data2.push({
-        code:i,
         col1: i+1,
         col2: (i+1)%2,
-        col3: '2019年11月11日',
+        col3: '物料名称',
         col4: `批号${i+1000}`,
         col5: '大类',
         col6: `小类`,
         col7: '物料名称',
         col8: '供应商',
-        col9: '领料单位',
-        col10: '出料单位',
-        col11: (i+1)%5,
-        col12: i*10,
+        col9: '合格',
+        col10: '2019年11月11日'
     })
 }
 
 
 const { TabPane } = Tabs;
-class RepoQueryInOutDaily extends React.Component {
+class RepoQueryInOutAccount extends React.Component {
 
     componentDidMount = () => {
         this.getTableParams(undefined,"1");
@@ -59,14 +55,10 @@ class RepoQueryInOutDaily extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            selectedRowKeys: [],
             searchContent: '',
             dataSource:[],
             tabKey:'1',
             condition1: null,
-            condition2: null,
-            condition3: null,
-            condition4: null,
         };
         this.operations = [];
         this.pagination = {
@@ -85,48 +77,19 @@ class RepoQueryInOutDaily extends React.Component {
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <Check
-                        flag={0}
-                        tabKey={this.state.tabKey}
-                        url={this.url}
-                        selectedRowKeys={this.state.selectedRowKeys}
-                        getTableParams={this.getTableParams}
-                    />
                     <Search
                         getCondition1={this.getCondition1}
-                        getCondition2={this.getCondition2}
-                        getCondition3={this.getCondition3}
-                        getCondition4={this.getCondition4}
                         searchEvent={this.searchEvent}
                         reset={this.reset}
                         condition1={this.state.condition1}
-                        condition2={this.state.condition2}
-                        condition3={this.state.condition3}
-                        condition4={this.state.condition4}
                     />
                     <div className='clear'></div>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
-                        <TabPane tab='入库日报' key='1'>
-                            <InDaily
-                                tabKey={this.state.tabKey}
-                                url={this.url}
-                                getTableParams={this.getTableParams}
-                                selectedRowKeys={this.state.selectedRowKeys}
-                                onSelectChange={this.onSelectChange}
-                                pagination={this.pagination}
-                                dataSource={this.state.dataSource}
-                                handleTableChange={this.handleTableChange}/>
+                        <TabPane tab='入库台账' key='1'>
+                            <InAccount pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
                         </TabPane>
-                        <TabPane tab='出库日报' key='2'>
-                            <OutDaily
-                                tabKey={this.state.tabKey}
-                                url={this.url}
-                                getTableParams={this.getTableParams}
-                                selectedRowKeys={this.state.selectedRowKeys}
-                                onSelectChange={this.onSelectChange}
-                                pagination={this.pagination}
-                                dataSource={this.state.dataSource}
-                                handleTableChange={this.handleTableChange}/>
+                        <TabPane tab='出库台账' key='2'>
+                            <OutAccount pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
                         </TabPane>
                     </Tabs>
                 </Spin>
@@ -135,14 +98,10 @@ class RepoQueryInOutDaily extends React.Component {
     }
 
 
-    onSelectChange = (selectedRowKeys) => {
-        this.setState({selectedRowKeys: selectedRowKeys});
-    }
     tabChange = (key) => {
         this.setState({
             searchContent: undefined,
-            tabKey:key,
-            selectedRowKeys:[]
+            tabKey:key
         });
         this.pagination.current = 1;
         this.getTableParams('',key)
@@ -164,13 +123,11 @@ class RepoQueryInOutDaily extends React.Component {
     getTableData = (params,key) => {
         if (key==="1"){
             this.setState({
-                dataSource:data1,
-                selectedRowKeys:[]
+                dataSource:data1
             })
         } else{
             this.setState({
-                dataSource:data2,
-                selectedRowKeys:[]
+                dataSource:data2
             })
         }
         console.log(params)
@@ -217,29 +174,13 @@ class RepoQueryInOutDaily extends React.Component {
             condition1: value,
         })
     }
-    getCondition2 = (value,option) => {
-        this.setState({
-            condition2: value,
-        })
-    }
-    getCondition3 = (value,option) => {
-        this.setState({
-            condition3: value,
-        })
-    }
-    getCondition4 = (value,option) => {
-        this.setState({
-            condition4: value,
-        })
-    }
+
 
     /**搜索事件*/
     searchEvent = () => {
-        const {condition1,condition2,condition3,condition4} = this.state;
+        const {condition1} = this.state;
         console.log(condition1)
-        console.log(condition2)
-        console.log(condition3)
-        console.log(condition4)
+
 
 
         // this.setState({
@@ -253,9 +194,7 @@ class RepoQueryInOutDaily extends React.Component {
     reset = () => {
         this.setState({
             condition1:null,
-            condition2:null,
-            condition3:null,
-            condition4:null,
+
         });
         // this.pagination.current = 1;
         // const tabKey = this.state.tabKey;
@@ -268,4 +207,4 @@ class RepoQueryInOutDaily extends React.Component {
 
 }
 
-export default RepoQueryInOutDaily;
+export default RepoQueryInOutAccount;

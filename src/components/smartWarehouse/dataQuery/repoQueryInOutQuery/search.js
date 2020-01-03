@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {DatePicker, Select, Button, message} from "antd";
+import {Input, Select, Button, message} from "antd";
 // import NewButton from "../../BlockQuote/newButton";
-import './repoQueryInOutDaily.css'
+import './repoQueryInOutQuery.css'
 import NewButton from "../../../BlockQuote/newButton";
 
 
@@ -21,7 +21,7 @@ for (var i = 0; i < 10; i++) {
     })
     data3.push({
         code: i+1,
-        name: `供货单位${i}`
+        name: `2019011${i}`
     })
     data4.push({
         code: i+1,
@@ -38,6 +38,7 @@ class Search extends Component {
             data2:[],
             data3:[],
             data4:[],
+            data5:"",
         };
     }
 
@@ -58,7 +59,7 @@ class Search extends Component {
             <div className="repoQueryOutDaily_search">
                 <span>物料大类：</span>
                 <Select
-                    className="repoQueryOutDaily_search_select"
+                    className="repoQueryOutQuery_search_select"
                     onChange={this.props.getCondition1}
                     value={this.props.condition1}
                 >
@@ -76,7 +77,7 @@ class Search extends Component {
                 </Select>
                 <span>物料小类：</span>
                 <Select
-                    className="repoQueryOutDaily_search_select"
+                    className="repoQueryOutQuery_search_select"
                     onChange={this.props.getCondition2}
                     value={this.props.condition2}
                 >
@@ -94,7 +95,7 @@ class Search extends Component {
                 </Select>
                 <span>供货单位：</span>
                 <Select
-                    className="repoQueryOutDaily_search_select"
+                    className="repoQueryOutQuery_search_select"
                     onChange={this.props.getCondition3}
                     value={this.props.condition3}
                 >
@@ -112,7 +113,7 @@ class Search extends Component {
                 </Select>
                 <span>入库日期：</span>
                 <Select
-                    className="repoQueryOutDaily_search_select"
+                    className="repoQueryOutQuery_search_select"
                     onChange={this.props.getCondition4}
                     value={this.props.condition4}
                 >
@@ -128,6 +129,14 @@ class Search extends Component {
                         }):null
                     }
                 </Select>
+                <span>批号：</span>
+                <Input
+                    className="repoQueryOutQuery_search_input"
+                    key="input"
+                    placeholder="请输入批号"
+                    onChange={this.props.getCondition5}
+                    value={this.props.condition5}
+                />
                 <NewButton name="查询" handleClick={this.props.searchEvent}/>
                 <Button type={'primary'} onClick={this.props.reset} className={'button'}>
                     <i className="fa fa-repeat" aria-hidden="true"></i>
@@ -153,14 +162,13 @@ class Search extends Component {
         this.setState({
             data3:data3
         })
-
     }
     getData4 = () => {
         this.setState({
             data4:data4
         })
-
     }
+
 
 }
 

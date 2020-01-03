@@ -7,21 +7,19 @@ import Query from "./stockOutQuery/query";
 const {TabPane} = Tabs;
 
 class OtherStockOut extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
-        let current = JSON.parse(localStorage.getItem('current'));
+        let current = JSON.parse(localStorage.getItem('current')),
+            url = JSON.parse(localStorage.getItem('url'));
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <Tabs defaultActiveKey={'1'}>
                     <TabPane key={'1'} tab={'出库申请'}>
-                        <Application/>
+                        <Application url={url}/>
                     </TabPane>
                     <TabPane key={'2'} tab={'出库单查询'}>
-                        <Query />
+                        <Query url={url}/>
                     </TabPane>
                 </Tabs>
             </div>

@@ -17,6 +17,7 @@
     height: 500px;
 }
 .printModal_print{
+    /*display: none;*/
     display: none;
 }
 
@@ -30,20 +31,8 @@
         display: none;
     }
     body, article {
-        width: 100%;
+        width: 30% !important;
         margin-left: 0;
         padding-left: 0;
     }
-    /*@page {*/
-        /*width: 50em;*/
-
-    /*}*/
-    /*@page :left {*/
-        /*margin-left: -10px ;*/
-    /*}*/
-
-
-    /*@page :right {*/
-        /*margin-left: 0 ;*/
-    /*}*/
 }

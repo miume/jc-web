@@ -156,7 +156,10 @@ import BaseConfigure from '../costAccounting/precursorCostBasisData/other/other'
 import RepoRecordWater from '../smartWarehouse/originalRecord/repoRecordWater/repoRecordWater'
 import RepoRecordAccount from '../smartWarehouse/originalRecord/repoRecordAccount/repoRecordAccount'
 import RepoQueryInOutDaily from '../smartWarehouse/dataQuery/repoQueryInOutDaily/repoQueryInOutDaily'
-
+import RepoQueryInventoryDaily from "../smartWarehouse/dataQuery/repoQueryInventoryDaily/repoQueryInventoryDaily"
+import RepoQueryInventoryQuery from "../smartWarehouse/dataQuery/repoQueryInventoryQuery/repoQueryInventoryQuery"
+import RepoQueryInOutQuery from "../smartWarehouse/dataQuery/repoQueryInOutQuery/repoQueryInOutQuery"
+import RepoQueryInOutAccount from "../smartWarehouse/dataQuery/repoQueryInOutAccount/repoQueryInOutAccount"
 class Right extends React.Component {
     render() {
         const data = [{
@@ -623,8 +626,19 @@ class Right extends React.Component {
             },{
                 path: '/repoQueryInOutDaily',
                 component: RepoQueryInOutDaily
-            }
-        ];
+            },{
+                path: '/repoQueryInventoryDaily',
+                component: RepoQueryInventoryDaily
+            },{
+                path: '/repoQueryInventoryQuery',
+                component: RepoQueryInventoryQuery
+            },{
+                path: '/repoQueryInOutQuery',
+                component: RepoQueryInOutQuery
+            },{
+                path: '/repoQueryInOutAccount',
+                component: RepoQueryInOutAccount
+            }];
         return (
             <div className="rightDiv">
                 <Switch>
