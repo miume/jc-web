@@ -3,9 +3,13 @@
  * currentId：三级菜单的menuId
  * */
 export const getOperations = (parentId,currentId) => {
-    let menus = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : [],
-        menuList = menus.length ? menus.filter(e => e.menuId === parentId)?menus.filter(e => e.menuId === parentId)[0]['menuList']:[] : [],
-        operations = menuList.length ? menuList.filter(e => e.menuId === currentId)?menuList.filter(e => e.menuId === currentId)[0]['operations']:[] : [];
+    let menus = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : [];
+    console.log(menus)
+    console.log(menus.filter(e => e.menuId === parentId))
+    let menuList = menus.length ? menus.filter(e => e.menuId === parentId)?menus.filter(e => e.menuId === parentId)[0]['menuList']:[] : [];
+    console.log(menuList)
+    let operations = menuList.length ? menuList.filter(e => e.menuId === currentId)?menuList.filter(e => e.menuId === currentId)[0]['operations']:[] : [];
+
     return operations;
 };
 

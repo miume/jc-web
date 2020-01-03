@@ -16,6 +16,8 @@ class FireInsRegister extends Component {
     componentDidMount() {
         this.getTableParams();
         let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        console.log(openKeys)
+        console.log(menuId)
         this.setState({
             addFlag: judgeOperation(operations,'SAVE')
         })
