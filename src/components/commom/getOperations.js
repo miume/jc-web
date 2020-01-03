@@ -6,6 +6,10 @@ export const getOperations = (parentId,currentId) => {
     let menus = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : [],
         menuList = menus.filter(e => e.menuId === parentId)[0]['menuList']?menus.filter(e => e.menuId === parentId)[0]['menuList']:[],
         operations = menuList.filter(e => e.menuId === currentId)[0]['operations']?menuList.filter(e => e.menuId === currentId)[0]['operations']:[];
+    console.log(menus)
+    console.log(menus.filter(e => e.menuId === parentId))
+    console.log(menuList)
+
     return operations;
 };
 
