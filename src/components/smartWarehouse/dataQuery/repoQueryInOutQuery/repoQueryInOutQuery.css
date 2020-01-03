@@ -1,0 +1,12 @@
+.repoQueryOutQuery_search_select{
+    width: 130px;
+    margin-right: 20px !important;
+}
+.repoQueryOutQuery_search_input{
+    width: 160px !important;
+    margin-right: 20px !important;
+}
+
+.repoQueryOutQuery_search {
+    float: right;
+}
