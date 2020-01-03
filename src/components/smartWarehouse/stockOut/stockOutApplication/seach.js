@@ -41,6 +41,15 @@ class Search extends React.Component {
                 </div>
 
                 <div>
+                    <span>物料名称: </span>
+                    <Select placeholder={'请选择物料名称'} style={{width:150}} value={materialName} onChange={this.selectChange}>
+                        {
+                            allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id} name={'materialName'}>{e.name}</Option>) : null
+                        }
+                    </Select>
+                </div>
+
+                <div>
                     <span>供货单位: </span>
                     <Select placeholder={'请选择供货单位'} style={{width:150}} value={supplier} onChange={this.selectChange}>
                         {
@@ -49,15 +58,8 @@ class Search extends React.Component {
                     </Select>
                 </div>
 
-                <div>
-                    <span>物料名称: </span>
-                    <Select placeholder={'请选择物料名称'} style={{width:150}} value={materialName} onChange={this.selectChange}>
-                        {
-                            allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id} name={'materialName'}>{e.name}</Option>) : null
-                        }
-                    </Select>
-                </div>
                 <div style={{lineHeight: '35px'}}>
+                    组单出库：
                     <Switch checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={this.checkedChange}/>
                 </div>
                 <div>

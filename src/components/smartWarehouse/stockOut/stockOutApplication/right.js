@@ -15,17 +15,27 @@ class Right extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '10%'
+            width: '9%'
+        },{
+            title: '分组号',
+            key: 'groupNum',
+            dataIndex: 'groupNum',
+            width: '9%'
         },{
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
-            width: '15%'
+            width: '12%'
         },{
             title: '批号',
             key: 'batch',
             dataIndex: 'batch',
-            width: '50%'
+            width: '30%'
+        },{
+            title: '单位',
+            key: 'unit',
+            dataIndex: 'unit',
+            width: '10%'
         },{
             title: '重量',
             key: 'weight',
@@ -35,7 +45,7 @@ class Right extends React.Component {
             title: '操作',
             key: 'id',
             dataIndex: 'id',
-            width: '15%',
+            width: '10%',
             render: (text) => {
                 return <Icon type="close" className={'stock-out-icon'} onClick={() => this.props.delete(text)}/>
             }
