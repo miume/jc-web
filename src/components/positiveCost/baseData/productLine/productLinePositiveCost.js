@@ -29,7 +29,7 @@ class ProductLinePositiveCost extends Component{
             width:'18%',
             render:(text,record)=>{
                 return (
-                    <Switch checked={record.flag} onChange={()=>this.switchChange(record.position)}/>
+                    <Switch checked={record.flag} onChange={()=>this.switchChange(record)}/>
                 )
             }
         },{
@@ -82,9 +82,7 @@ class ProductLinePositiveCost extends Component{
             }
         }).then(data=>{
             let res=data.data.data
-
             if(res){
-
                 for(let i=0;i<res.length;i++){
                     res[i]['index']=i+1;
                 }
@@ -100,24 +98,28 @@ class ProductLinePositiveCost extends Component{
         }).catch(error=>{
         })
     }
-    switchChange(position){
+    switchChange(record){
+        let data={
+            code:record.code,
+            flag:!record.flag
+        }
         axios({
-            url:`${this.url.fireMageNumber}/isEnable`,
-            method:"put",
+            url:this.url.positiveProductline.update,
+            method:'put',
             headers:{
-                'Authorization': this.url.Authorization
+                'Authorization':this.url.Authorization
             },
-            params:{
-                position:position
-            }
-        }).then((data)=>{
+            data:data
+        }).then(data=>{
             if(data.data.code===0){
                 message.info('操作成功!')
-                this.getTableData();
+                this.getTableData()
             }
             else{
-                message.error('操作失败，请联系管理员!')
+                message.info(data.data.message)
             }
+        }).catch(error=>{
+            message.error('操作失败，请联系管理员!')
         })
     }
     handleDelete = (id)=>{

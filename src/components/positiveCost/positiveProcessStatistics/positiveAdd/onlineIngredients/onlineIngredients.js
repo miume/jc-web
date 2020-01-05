@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Table} from 'antd'
+import {Table,Input} from 'antd'
 import '../positiveAdd.css'
 class OnlineIngredients extends Component{//在线原料
     constructor(props){
@@ -23,13 +23,23 @@ class OnlineIngredients extends Component{//在线原料
             title:'领料量',
             dataIndex:'receive',
             key:'receive',
-            width:'25%'
+            width:'25%',
+            render:(text,record)=>{
+                return(
+                    <Input value={record.receive} name={`${record.index-1}-${'receive'}`} onChange={this.inputChange}/>
+                )
+            }
         },]
+        this.inputChange=this.inputChange.bind(this);
+    }
+    inputChange(e){
+        this.props.inputChange(e,this.props.processId)
     }
     render(){
         this.tableData = this.props.tagTableData&&this.props.tagTableData[0]&&this.props.tagTableData[0].materials?this.props.tagTableData[0].materials:[]
         this.data=[]
         this.dataBottom=[]
+        let length=0
         if (this.tableData && this.tableData.length) {
             for (let i = 0; i < this .tableData.length; i++) {
                 if( this.tableData[i]['flag']===true){
@@ -41,6 +51,7 @@ class OnlineIngredients extends Component{//在线原料
                     this.dataBottom.push(this.tableData[i])
                 }
             }
+            length=this.data.length
         }
         return(
             <div>
@@ -55,13 +66,15 @@ class OnlineIngredients extends Component{//在线原料
                 />
                 <div style={{marginTop:'20px'}}>
                    <span  className='positive-process-add-onLine'>
-                   {
-                        this.dataBottom?this.dataBottom.map(item=>{
-                            return(
-                                <span className='positive-process-add-onLine-font' key={item.code}>{item.materialName} (kg) : <span className={'positive-process-add-crush-span'}>{item.value}</span></span>
-                            )
-                        }):null
-                    }
+                          {
+                            this.dataBottom?this.dataBottom.map((item,index)=>{
+                                return(
+                                    <span className='positive-process-add-onLine-font' key={index}>
+                                        {item.materialName} : <Input placeholder='请输入' name={`${length+index}-${'value'}`} onChange={this.inputChange} key={item.code} defaultValue={item.value} style={{width:'150px',marginRight:'20px'}} suffix="kg"/>
+                                    </span>
+                                )
+                            }):null
+                          }
                    </span>
                 </div>
             </div>

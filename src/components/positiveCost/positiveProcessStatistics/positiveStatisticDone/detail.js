@@ -76,8 +76,8 @@ class Detail extends Component{
             width:'20%'
         },{
             title:'进料量(kg)',
-            dataIndex:'inMat',
-            key:'inMat',
+            dataIndex:'receive',
+            key:'receive',
             width:'20%'
         },{
             title:'消耗量(kg)',
@@ -113,8 +113,8 @@ class Detail extends Component{
             width:'15%'
         },{
             title:'进料量(kg)',
-            dataIndex:'inMat',
-            key:'inMat',
+            dataIndex:'receive',
+            key:'receive',
             width:'15%'
         },{
             title:'消耗量(kg)',
@@ -207,9 +207,9 @@ class Detail extends Component{
         else if(id===2){//预混(犁刀混)
             return (
                 <span style={{float:'right',marginBottom:'10px'}}> 
-                    <span >总已混量 : {sub&&sub.tMix?sub.tMix:undefined}</span>
-                    <span >总消耗量 : {sub&&sub.tCom?sub.tCom:undefined}</span>
-                    <span >总结存量 : {sub&&sub.tBal?sub.tBal:undefined}</span>
+                    <span >总已混量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
+                    <span >总消耗量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
+                    <span >总结存量 : {sub&&sub.tBal!==undefined?sub.tBal:undefined}</span>
                 </span>
             )
         }
@@ -217,6 +217,10 @@ class Detail extends Component{
             return (
                 <div >
                      <div style={{float:'left'}}>  
+                        <span className={id===8?'':'hide'}>
+                            <span >周期内包装袋数 : {sub&&sub.bags!==undefined?sub.bags:undefined}</span>
+                            <span >产成品入库 : {sub&&sub.productStorage!==undefined?sub.productStorage:undefined}</span>
+                        </span>
                         {
                             dataBottom?dataBottom.map((item,index)=>{
                                 return(
@@ -225,15 +229,13 @@ class Detail extends Component{
                             }):null
                         }
                     </div>
-                    {/* <hr style={{width:'100%',backgroundColor:'#e8e8e8'}}/> */}
-                    {/* <div className={'clear'}></div> */}
                    <span className={dataBottom&&dataBottom.length!==0?'':'hide'}> <Divider  style={{margin:'10px 0'}}/></span>
                     <div>
                         <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : </span>
                         <span style={{float:'right'}}> 
-                            <span >总进料量 : {sub&&sub.tFee?sub.tFee:undefined}</span>
-                            <span >总消耗量 : {sub&&sub.tCom?sub.tCom:undefined}</span>
-                            <span >总结存量 : {sub&&sub.tBal?sub.tBal:undefined}</span>
+                            <span >总进料量 : {sub&&sub.tFee!==undefined?sub.tFee:undefined}</span>
+                            <span >总消耗量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
+                            <span >总结存量 : {sub&&sub.tBal!==undefined?sub.tBal:undefined}</span>
                         </span>
                     </div>
                 </div>
@@ -253,11 +255,11 @@ class Detail extends Component{
                     </span>
                     <span style={{float:'right'}}> 
                         <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : </span>
-                        <span >总入炉排数 : {sub&&sub.tIn?sub.tIn:undefined}</span>
-                        <span >总出炉排数 : {sub&&sub.tOut?sub.tOut:undefined}</span>
-                        <span >总进料量 : {sub&&sub.tFee?sub.tFee:undefined}</span>
-                        <span >总消耗量 : {sub&&sub.tCom?sub.tCom:undefined}</span>
-                        <span >总结存量 : {sub&&sub.tBal?sub.tBal:undefined}</span>
+                        <span >总入炉排数 : {sub&&sub.tIn!==undefined?sub.tIn:undefined}</span>
+                        <span >总出炉排数 : {sub&&sub.tOut!==undefined?sub.tOut:undefined}</span>
+                        <span >总进料量 : {sub&&sub.tFee!==undefined?sub.tFee:undefined}</span>
+                        <span >总消耗量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
+                        <span >总结存量 : {sub&&sub.tBal!==undefined?sub.tBal:undefined}</span>
                     </span>
                </span>
             )
@@ -282,7 +284,7 @@ class Detail extends Component{
                 </span>
                 <Divider/>
                 <span style={{float:'right',marginRight:'10px'}}> 
-                    <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : {sub&&sub.totals?sub.totals:undefined}</span>&nbsp;&nbsp;
+                    <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : {sub&&sub.tBal!==undefined?sub.tBal:undefined}</span>&nbsp;&nbsp;
                 </span>
             </div>
         )

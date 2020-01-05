@@ -17,6 +17,7 @@ import WorkShopMaterial from './workShopMaterials/workShopMaterials'
 import WareHouseMaterial from './wareHouseMaterial/wareHouseMaterial'
 import axios from 'axios'
 import moment from 'moment'
+import '../../../costAccounting/rawMaterial/rawMaterial.css'
 const { TabPane } = Tabs;
 
 class PositiveAdd extends Component {
@@ -24,7 +25,8 @@ class PositiveAdd extends Component {
         super(props)
         this.state={
             processData:[],
-            loading:false
+            loading:false,
+            tabKey:'1'
         }
         this.back = this.back.bind(this);
         this.getAllProcess = this.getAllProcess.bind(this);
@@ -182,21 +184,33 @@ class PositiveAdd extends Component {
         let {addData}=this.state,value = e.target.value,
             inputData = e.target.name.split('-'),
             index = inputData[0],    //定位到是第几条数据
-            name = inputData[1]  
+            name = inputData[1] 
         if (value[value.length - 1] !== '.') {
             value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
         }
-        addData.processes[key-1].materials[index]['value'] =value
+        if(key==='1'){
+            addData.processes[key-1].materials[index][name] =value
+        }
+        else{
+            addData.processes[key-1].materials[index]['value'] =value
+        }
+        this.setState({
+            addData:addData
+        })
     }
     inputChange1(e,key){
         let {addData}=this.state,value = e.target.value,
         inputData = e.target.name.split('-'),
         index = inputData[0],    //定位到是第几条数据
         name = inputData[1]  
-    if (value[value.length - 1] !== '.') {
-        value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
-    }
-    addData.processes[key-1].others[index]['value'] =value
+        
+        if (value[value.length - 1] !== '.') {
+            value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
+        }
+        addData.processes[key-1].others[index]['value'] =value
+        this.setState({
+            addData:addData
+        })
     }
     disabledDate(current) {
         let {giveEndDate}=this.state
@@ -257,7 +271,7 @@ class PositiveAdd extends Component {
         let { loading,processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData,headEdit,tabKey,giveEndDate} = this.state
         this.url = JSON.parse(localStorage.getItem('url'))
         this.tabData = [
-            { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData} processId={tabKey} /> },
+            { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
             { component: <PremixedCoulterMixed productLine={productLine} tagTableData={tagTableData} processId={tabKey}/> },
             { component: <PremixedStorageBin productLine={productLine} tagTableData={tagTableData} processId={tabKey}/> },
             { component: <PreBuring productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
@@ -272,7 +286,7 @@ class PositiveAdd extends Component {
         return (
             <div>
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='正极成本' menu2='在制品管理' returnDataEntry={this.back} />
-                <Spin spinning={loading} wrapperClassName='rightDiv-content'>
+                <Spin spinning={loading} wrapperClassName='rightDiv-add-content'>
                     <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis} flagConfirm={this.props.location.editFlag?true:flagConfirm} headEdit={headEdit}
                         lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getPeriods} editFlag={this.props.location.editFlag}
                         disabledDate={this.disabledDate} giveEndDate={giveEndDate}
@@ -290,12 +304,13 @@ class PositiveAdd extends Component {
                         }
                     </div>
                 </Spin>
-                    <span style={{ bottom: '10px', position: 'absolute', left: '15px' }}><CancleButton /></span>
-                    <span style={{ bottom: '0', position: 'absolute', right: '15px' }}>
-                    <SaveButton handleSave={this.save} />
-                    <NewButton name='提交' handleClick={this.submit} />
-                    </span>
-                
+                <div className={'raw-material-add-footer-bottom'} >
+                        <CancleButton />
+                        <div>
+                            <SaveButton handleSave={this.save} />
+                            <NewButton name='提交' handleClick={this.submit} />
+                        </div>
+                </div>
             </div>
         )
     }
