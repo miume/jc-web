@@ -181,6 +181,11 @@ class PositiveProcess extends Component{
                      data:res
                  })
              }
+             else{
+                 this.setState({
+                     data:[]
+                 })
+             }
              this.setState({
                 loading:false
             })

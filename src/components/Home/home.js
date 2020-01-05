@@ -717,7 +717,8 @@ class Home extends Component {
                 all: `${server}/jc/common/anodeProductionLine/all`,
                 add: `${server}/jc/common/anodeProductionLine/add`,
                 update: `${server}/jc/common/anodeProductionLine/update`,
-                delete: `${server}/jc/common/anodeProductionLine/delete`
+                delete: `${server}/jc/common/anodeProductionLine/delete`,
+                byFlag:`${server}/jc/common/anodeProductionLine/byFlag`
             },
             /**正极基础工序*/
             positiveProcess: {

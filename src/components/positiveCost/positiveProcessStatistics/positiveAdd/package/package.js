@@ -57,6 +57,8 @@ class Package extends Component{//包装
             }
             length=this.data.length
         }
+        
+        this.da=this.dataBottom.splice(this.dataBottom.length-1,1)//单独显示周期内包装袋数
         return(
             <div>
                  <Table
@@ -71,19 +73,6 @@ class Package extends Component{//包装
                  <div style={{marginTop:'20px'}}>
                     <span className='positive-process-add-onLine'>
                         {
-                            this.dataBottom?this.dataBottom.map((item,index)=>{
-                                return(
-                                    <span key={index} className='positive-process-add-onLine-font'>
-                                        <span className={'positive-process-add-span1'}>{item.materialName}</span> : &nbsp;
-                                        {
-                                            item.dateType===1?<Input name={`${length+index}-${item.materialName}`} onChange={this.inputChange} placeholder='请输入' key={item.code} defaultValue={item.value} style={{width:'150px',marginRight:'20px'}} />
-                                            : <span className={'positive-process-add-crush-span'}>{item.value}</span>
-                                        }
-                                    </span>
-                                )
-                            }):null
-                        }
-                        {
                             this.otherData?this.otherData.map((item,index)=>{
                                 return(
                                     <span key={index} className='positive-process-add-onLine-font'>
@@ -96,6 +85,33 @@ class Package extends Component{//包装
                                 )
                             }):null
                         }
+                         {
+                            this.da?this.da.map((item,index)=>{
+                                return(
+                                    <span key={index} className='positive-process-add-onLine-font'>
+                                        <span className={'positive-process-add-span1'}>{item.materialName}</span> : &nbsp;
+                                        {
+                                            item.dateType===1?<Input name={`${10+index}-${item.materialName}`} onChange={this.inputChange} placeholder='请输入' key={item.code} defaultValue={item.value} style={{width:'150px',marginRight:'20px'}} />
+                                            : <span className={'positive-process-add-crush-span'}>{item.value}</span>
+                                        }
+                                    </span>
+                                )
+                            }):null
+                        }
+                        {
+                            this.dataBottom?this.dataBottom.map((item,index)=>{
+                                return(
+                                    <span key={index} className='positive-process-add-onLine-font'>
+                                        <span className={'positive-process-add-span1'}>{item.materialName}</span> : &nbsp;
+                                        {
+                                            item.dateType===1?<Input name={`${length+index}-${item.materialName}`} onChange={this.inputChange} placeholder='请输入' key={item.code} defaultValue={item.value} style={{width:'150px',marginRight:'20px'}} />
+                                            : <span className={'positive-process-add-crush-span'}>{item.value}</span>
+                                        }
+                                    </span>
+                                )
+                            }):null
+                        }
+                     
                     </span>
                </div>
              
