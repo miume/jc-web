@@ -161,11 +161,13 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        let {editFlag}=this.props
+        let {editFlag,addFlag,updateFlag}=this.props
         return(
             <span>
-               {this.props.editFlag? <span className='blue' onClick={this.showModal}>编辑</span>
-               :<AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />}
+                 {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                :<span className={addFlag?'':'hide'}>
+                    <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>
+                </span>}
                 <Modal
                     visible={this.state.visible}
                     closable={false}

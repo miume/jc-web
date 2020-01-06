@@ -1,7 +1,6 @@
 import React from "react";
 import {Modal, Input,message,Select,Checkbox,Col } from 'antd';
 import axios from 'axios';
-import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import NewButton from "../../../BlockQuote/newButton";
 import '../tankValue/tank.css'
@@ -167,6 +166,7 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        let {addFlag,updateFlag}=this.props
         const options = [
             { label: 'Ni', value: 'Ni' },
             { label: 'Co', value: 'Co' },
@@ -174,8 +174,10 @@ class AddModal extends React.Component{
           ];
         return(
             <span>
-                {this.props.editFlag?<span onClick={this.showModal} className='blue'>编辑</span>
-                :<AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />}
+                {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                :<span className={addFlag?'':'hide'}>
+                    <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>
+                </span>}
                 <Modal
                     visible={this.state.visible}
                     closable={false}

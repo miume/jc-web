@@ -6,7 +6,7 @@ import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
 import AddModal from "./addModal"
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class RawMaterialName extends React.Component{
     url;
     constructor(props){
@@ -93,13 +93,16 @@ class RawMaterialName extends React.Component{
             align:'center',
             width: '12.5%',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag}=this.state
                 return(
                     <span>
-                        <AddModal editFlag={true} fetch={this.fetch} code={record.code}/>
-                        <Divider type="vertical" />
-                        <Popconfirm title="确定删除？" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="取消">
-                            <span className="blue" href="#">删除</span>
-                        </Popconfirm>
+                        <AddModal editFlag={true} updateFlag={updateFlag} fetch={this.fetch} code={record.code}/>
+                        {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.code)} okText='确定' cancelText='取消'>
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             }
@@ -163,6 +166,12 @@ class RawMaterialName extends React.Component{
 
     componentDidMount(){
         this.fetch();
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     fetch = (params={},flag)=>{
         this.setState({
@@ -245,23 +254,23 @@ class RawMaterialName extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
-        const {  selectedRowKeys } = this.state;
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
+        const {  selectedRowKeys,addFlag,deleteFlag } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
           };
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回'
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
-                    <AddModal fetch={this.fetch}/>
+                    <AddModal fetch={this.fetch} addFlag={addFlag}/>
                     <DeleteByIds 
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.start}
                         cancel={this.cancel}
-                        flag={true}
+                        flag={deleteFlag}
                     />
                     <SearchCell name="请输入原材料名称" flag={true}/>
                     <div className='clear' ></div>

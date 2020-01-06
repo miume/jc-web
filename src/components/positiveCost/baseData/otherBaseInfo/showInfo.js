@@ -3,6 +3,7 @@ import {Button,Input,Popconfirm,message,Spin} from 'antd'
 import '../statisticalPeriod/add.css'
 import SaveButton from '../../../BlockQuote/saveButton'
 import axios from 'axios'
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class ShowInfo extends Component{
     constructor(props){
         super(props);
@@ -31,6 +32,10 @@ class ShowInfo extends Component{
     }
     componentDidMount(){
         this.getCurrent()
+        let {openKeys,menuId} = this.props.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -88,7 +93,6 @@ class ShowInfo extends Component{
             }
             for(let key in data){
                 if(data[key]===undefined){
-                    console.log(key,data[key])
                     message.error('信息填写不完整!')
                     return
                 }
@@ -113,7 +117,7 @@ class ShowInfo extends Component{
                 message.error('操作失败，请联系管理员!')
             }
         }).catch(()=>{
-
+            message.error('操作失败，请联系管理员!')
         })
     }
     inputChange(e){
@@ -136,10 +140,10 @@ class ShowInfo extends Component{
     }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'))
-        let {loading,flag,bagWeight,bowlFillWeight,bowlNum,burningLossRate,smashWeight,
+        let {addFlag,updateFlag,loading,flag,bagWeight,bowlFillWeight,bowlNum,burningLossRate,smashWeight,
             presinteringWeight,secondSinteringWeight,highMixingMachineWeight,
             matchingCoefficientPrecursors,matchingCoefficientLithiumCarbonate,matchingCoefficientHopPocket}=this.state
-        return(
+            return(
             <Spin spinning={loading} wrapperClassName={'rightDiv-Content'}>
                 <div className='fontAttribute'>
                     <div className='fontAttribute'>
@@ -188,7 +192,7 @@ class ShowInfo extends Component{
                         </Popconfirm>
                     </div>
                     :<div style={{textAlign:'center',marginTop:'50px'}}>
-                        <Button type='primary' onClick={this.edit}>修改</Button>
+                       <span className={updateFlag?'':'hide'}> <Button type='primary' onClick={this.edit}>修改</Button></span>
                     </div>
                 }
             </Spin>

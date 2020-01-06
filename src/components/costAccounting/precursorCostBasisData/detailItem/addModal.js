@@ -117,7 +117,6 @@ class AddModal extends React.Component{
         })
     }
     checkChange = (value)=>{
-        console.log(value)
         this.setState({
             metal:value
         })
@@ -129,6 +128,7 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        let {addFlag}=this.props
         const plainOptions =this.state.types===1? [{
             label:"氨",value:"氨"
         },{
@@ -142,7 +142,9 @@ class AddModal extends React.Component{
         }];
         return(
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                <span className={addFlag?'':'hide'}>
+                    <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                </span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}

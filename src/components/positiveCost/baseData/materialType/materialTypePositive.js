@@ -215,9 +215,9 @@ class MaterialTypePositive extends Component{
     }
 
     render(){
-        this.current=JSON.parse(localStorage.getItem('postiveBase'));
+        this.current=JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url'));
-        const {selectedRowKeys}=this.state;
+        let {selectedRowKeys,deleteFlag}=this.state;
         const rowSelection={
             selectedRowKeys,
             onChange:this.onSelectChange
@@ -227,7 +227,7 @@ class MaterialTypePositive extends Component{
                 <Blockquote menu={this.current.menuParent} name='物料种类' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <MaterialTypeAdd addFlag={this.state.addFlag} getTableData={this.getTableData} url={this.url}/>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={true} deleteByIds={this.deleteByIds}
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}flag={deleteFlag} deleteByIds={this.deleteByIds}
                             cancel={this.cancel}/>
                     <SearchCell name='请输入物料种类' flag={true} searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} fetch={this.getTableData}/>

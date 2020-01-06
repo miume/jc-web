@@ -12,12 +12,12 @@ class BaseConfigure extends Component{
         this.props.history.push({pathname:'/precursorCostBasisData'});
     }
     render(){
-        const current=JSON.parse(localStorage.getItem('current'));
+        this.current=JSON.parse(localStorage.getItem('dataEntry'));
 
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='基础配置' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
-                <ShowInfo/>
+                <Blockquote menu={this.current.menuParent} name='基础配置' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
+                <ShowInfo current={this.current}/>
             </div>
         );
     }

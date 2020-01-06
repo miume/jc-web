@@ -49,7 +49,7 @@ class Search extends Component {
     /**子组件在接收到props变化时，执行此函数，此处setState不会引起第二次渲染*/
     componentWillReceiveProps(nextProps) {
         
-        if(this.props.editFlag){//编辑头表变化
+        if(this.props.editFlag){//编辑操作，编辑头表变化
             if(this.props.headEdit!=nextProps.headEdit){
                 this.setState({
                     periodCode: nextProps.headEdit.periodCode,
@@ -60,7 +60,7 @@ class Search extends Component {
                 })
             }
         }
-        else{
+        else{//新增操作
             if (this.props.headPeriod !== nextProps.headPeriod) {//传过来的统计周期那些值有变化
                 this.setState({
                     periodCode: nextProps.headPeriod.periodCode,

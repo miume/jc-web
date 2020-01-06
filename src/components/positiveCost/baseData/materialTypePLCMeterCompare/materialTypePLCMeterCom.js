@@ -143,7 +143,6 @@ class MaterialTypePLCMeterCom extends Component{
         })
     }
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.positivePlcCompare.delete}`,
             method:"delete",
@@ -207,9 +206,9 @@ class MaterialTypePLCMeterCom extends Component{
         })
     }
     render(){
-        this.current=JSON.parse(localStorage.getItem('postiveBase'));
+        this.current=JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url'));
-        const {selectedRowKeys}=this.state
+        const {selectedRowKeys,deleteFlag,addFlag}=this.state
         const rowSelection={
             selectedRowKeys,
             onChange:this.onSelectChange
@@ -218,8 +217,8 @@ class MaterialTypePLCMeterCom extends Component{
             <div>
                 <Blockquote menu={this.current.menuParent} name='物料种类PLC仪表对照表' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <MaterialTypePLCMeterComAdd addFlag={this.state.addFlag} url={this.url} getTableData={this.getTableData}/>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={true} />
+                    <MaterialTypePLCMeterComAdd addFlag={addFlag} url={this.url} getTableData={this.getTableData}/>
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={this.state.deleteFlag} />
                     <SearchCell name='请输入物料种类'   flag={true} searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange} fetch={this.getTableData}/>
                     <Table
