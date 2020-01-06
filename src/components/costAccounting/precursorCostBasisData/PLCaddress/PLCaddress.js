@@ -7,7 +7,7 @@ import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
 import Edit from "./edit";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class PLCaddress extends React.Component{
     url;
     constructor(props){
@@ -66,13 +66,16 @@ class PLCaddress extends React.Component{
             align:'center',
             width: '20%',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag}=this.state
                 return(
                     <span>
-                        <Edit code={record.code} fetch={this.fetch}/>
-                        <Divider type="vertical"/>
-                        <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.code)} okText="确定" cancelText="取消">
-                            <span className="blue" href="#">删除</span>
-                        </Popconfirm>
+                        <Edit code={record.code} fetch={this.fetch} updateFlag={updateFlag}/>
+                        {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.code)} okText='确定' cancelText='取消'>
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             }
@@ -110,10 +113,6 @@ class PLCaddress extends React.Component{
                 loading: false,
             });
             message.info(data.data.message);
-            // if((this.pagination.total-1)%10===0){
-            //     this.pagination.current = this.pagination.current-1
-            // }
-            // this.handleTableChange(this.pagination);
             this.fetch();
         }).catch((error)=>{
             message.info(error.data);
@@ -127,6 +126,12 @@ class PLCaddress extends React.Component{
 
     componentDidMount(){
         this.fetch();
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     handleTableChange(pagination){
         let {searchFlag}=this.state
@@ -208,28 +213,25 @@ class PLCaddress extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
-        const {  selectedRowKeys } = this.state;
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
+        let {  selectedRowKeys,addFlag,deleteFlag } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回'
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
-                    <AddModal fetch={this.fetch}/>
+                    <AddModal fetch={this.fetch} addFlag={addFlag}/>
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.start}
                         cancel={this.cancel}
-                        flag={true}
+                        flag={deleteFlag}
                     /> &nbsp;&nbsp;&nbsp;
                      {/* <Upload > */}
                         <Button type='primary'>

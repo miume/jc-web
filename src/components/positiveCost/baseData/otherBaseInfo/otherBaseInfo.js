@@ -7,17 +7,18 @@ class OtherBaseInfo extends Component{
         super(props);
         this.returnBaseInfoPositive=this.returnBaseInfoPositive.bind(this);
     }
+
     //返回正极成本的基础数据部分
     returnBaseInfoPositive(){
         this.props.history.push({pathname:'/baseDataPositiveCost'});
     }
     render(){
-        const current=JSON.parse(localStorage.getItem('current'));
+        this.current=JSON.parse(localStorage.getItem('dataEntry'))
         
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='其他基本数据' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
-                <ShowInfo/>
+                <Blockquote menu={this.current.menuParent} name='其他基本数据' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <ShowInfo current={this.current}/>
             </div>
         );
     }

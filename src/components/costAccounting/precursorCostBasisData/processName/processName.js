@@ -3,7 +3,7 @@ import '../../../Home/page.css';
 import { Table, Popconfirm, message, InputNumber, Input, Form, Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import axios from "axios";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 const EditableContext = React.createContext();
 
 class EditableCell extends React.Component {
@@ -92,6 +92,7 @@ class ProcessName extends React.Component {
             width: '25%',
             render: (text, record) => {
                 const editable = this.isEditing(record)
+                let {updateFlag}=this.state
                 return (
                     <span>
                         <span>
@@ -114,7 +115,7 @@ class ProcessName extends React.Component {
                                     </Popconfirm>
                                 </span>
                             ) : (
-                                    <span className='blue' onClick={() => this.edit(record.code)}>编辑</span>
+                                    <span className={updateFlag?'blue':'hide'} onClick={() => this.edit(record.code)}>编辑</span>
                                 )
 
                             }
@@ -140,6 +141,10 @@ class ProcessName extends React.Component {
 
     componentDidMount() {
         this.fetch();
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
 
     fetch = () => {
@@ -238,10 +243,10 @@ class ProcessName extends React.Component {
             };
         });
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回'
                     returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <div className='clear' ></div>

@@ -63,6 +63,7 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        let {addFlag}=this.props
         // const options = [
         //     { label: 'Apple', value: 'Apple' },
         //     { label: 'Pear', value: 'Pear' },
@@ -70,7 +71,9 @@ class AddModal extends React.Component{
         //   ];
         return(
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                <span className={addFlag?'':'hide'}>
+                    <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                </span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}

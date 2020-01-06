@@ -36,7 +36,7 @@ class Operation extends Component{
                 return(
                     <span>
                         <Add detailFlag={true} record={record} getTableData={this.getTableData} url={this.url}/>
-                        {updateFlag ? <Divider type="vertical" /> : ''}
+                        {updateFlag || deleteFlag? <Divider type="vertical" /> : ''}
                         <Add editFlag={updateFlag} record={record} getTableData={this.getTableData} url={this.url}/>
                         {updateFlag && deleteFlag ? <Divider type="vertical" /> : ''}
                         <span className={deleteFlag ? '' : 'hide'}>

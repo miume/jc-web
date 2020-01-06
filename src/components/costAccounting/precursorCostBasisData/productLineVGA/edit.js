@@ -66,7 +66,6 @@ class Edit extends React.Component{
                 detail[res.lines[i].code]["value"] = res.lines[i].value;
                 detail[res.lines[i].code]["checkbox"] = true;
             }
-            // console.log(detail);
             this.setState({
                 detail:detail,
                 vgaName:res.vgaPoint.code,
@@ -114,12 +113,10 @@ class Edit extends React.Component{
                 i++
             };
         };
-        // console.log(data)
         var count = 0
         for(var i=0;i<data.length;i++){
             count+=parseFloat(data[i].weightValue)
         };
-        // console.log(count)
         if(count != 1){
             message.error("所选项权重相加应等于1");
             return
@@ -132,7 +129,6 @@ class Edit extends React.Component{
             },
             data:data
         }).then((data)=>{
-            // console.log(data);
             if(data.data.code!=0){
                 message.error(data.data.message);
                 return
@@ -152,9 +148,10 @@ class Edit extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        let {updateFlag}=this.props
         return (
             <span>
-                <span className="blue" onClick={this.showModal}>编辑</span>
+                <span  className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}

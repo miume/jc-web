@@ -184,7 +184,7 @@ class PLCAddress extends Component{
         this.props.history.push({pathname:'/baseDataPositiveCost'});
     }
     render(){
-        this.current=JSON.parse(localStorage.getItem('postiveBase'));
+        this.current=JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url'));
         const {selectedRowKeys}=this.state
         const rowSelection={
@@ -196,7 +196,7 @@ class PLCAddress extends Component{
                 <Blockquote menu={this.current.menuParent} name='PLC地址表' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     < PLCAddressAdd addFlag={this.state.addFlag} url={this.url} getTableData={this.getTableData}/>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={true} deleteByIds={this.deleteByIds}
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={this.state.deleteFlag} deleteByIds={this.deleteByIds}
                             cancel={this.cancel}/>
                     <SearchCell name='请PLC地址' flag={true} searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange} fetch={this.getTableData}/>

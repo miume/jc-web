@@ -1,7 +1,6 @@
 import React,{Component} from 'react'
 import {Modal,Select,message } from 'antd';
 import axios from 'axios';
-import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import NewButton from "../../../BlockQuote/newButton";
 import Tr from './tr'
@@ -50,15 +49,13 @@ class AddModal extends Component{
           }
           }).then((data)=>{
             const res = data.data.data;
-            console.log(detail)
+
            if(res ){
                if(res.weightDTOS){
                    for(let i =0;i<res.weightDTOS.length;i++){
-                       console.log(res.weightDTOS[i])
                        detail[res.weightDTOS[i].lineCode]['value']=parseFloat(res.weightDTOS[i].weightValue)
                        detail[res.weightDTOS[i].lineCode]['checkbox']=true
                    }
-                   console.log(detail)
                }
                this.setState({
                    dataType:res.dataType,
@@ -223,7 +220,6 @@ class AddModal extends Component{
     }
     getData = (data)=>{//复选框
         let detail = this.state.detail;
-        console.log(detail,data.target.value)
         detail[data.target.value]["checkbox"] = data.target.checked;
         this.setState({
             detail:detail
@@ -237,11 +233,13 @@ class AddModal extends Component{
         })
     }
     render(){
-        let {nameFlag,typeFlag}=this.state,{editFlag}=this.props
+        let {nameFlag,typeFlag}=this.state,{editFlag,updateFlag,addFlag}=this.props
         return(
             <span>
-                {this.props.editFlag?<span className='blue' onClick={this.showModal}>编辑</span>
-                :<AddButton handleClick={this.showModal} name= '新增' className='fa fa-plus' />}
+                {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                :<span className={addFlag?'':'hide'}>
+                    <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>
+                </span>}
                 <Modal
                     visible={this.state.visible}
                     closable={false}

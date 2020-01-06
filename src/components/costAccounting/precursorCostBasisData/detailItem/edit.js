@@ -170,6 +170,7 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        let {updateFlag}=this.props
         const plainOptions =this.state.types===1? [{
             label:"氨",value:"氨"
         },{
@@ -183,7 +184,7 @@ class AddModal extends React.Component{
         }];
         return(
             <span>
-                <span className="blue" onClick={this.showModal}>编辑</span>
+                <span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}

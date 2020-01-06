@@ -108,7 +108,7 @@ class ProcessPositiveCost extends Component{
         this.props.history.push({pathname:'/baseDataPositiveCost'});
     }
     render(){
-        this.current=JSON.parse(localStorage.getItem('postiveBase'));
+        this.current=JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
