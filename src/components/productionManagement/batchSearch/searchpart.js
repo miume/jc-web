@@ -12,7 +12,6 @@ export default class SearchPart extends React.Component{
     }
     handleInputChange=(e)=>{
         this.setState({InputValue:e.target.value})
-        console.log(e.target.value)
     }
     render(){
         return(
@@ -44,17 +43,12 @@ export default class SearchPart extends React.Component{
             params={
                 condition:this.state.InputValue,
             }
-        //this.props.getTableData(params)
-        //this.props.handleSearch()
-        console.log(params)
     }
     getFetch = () => {
         /**重置时清除搜索框的值 */
         this.setState({
             InputValue:'',
         })
-        //this.props.handleSearch()
-        //this.props.getTableData()
     }
 }
 

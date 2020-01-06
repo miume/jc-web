@@ -11,7 +11,6 @@ class Tr extends React.Component{
         }
         getFieldDecorator('keys', { initialValue: array });
         const keys = getFieldValue('keys');
-        console.log(this.props)
         return(
             keys.map((k,index) => {
                 return(

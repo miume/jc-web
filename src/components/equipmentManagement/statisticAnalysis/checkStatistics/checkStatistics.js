@@ -1,11 +1,9 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
 import "./checkStatistics.css"
-//import DepTree from "../../equipmentBasicData/equpimentAssignment/depTree";
 import DepTree from '../../../BlockQuote/department'
 import NewButton from '../../../BlockQuote/newButton'
-import axios from "axios";
-import {message,Calendar, Badge,Input} from "antd";
+import {Calendar, Badge,Input} from "antd";
 function getListData(value) {
     let listData;
     switch (value.date()) {
@@ -90,17 +88,16 @@ class CheckStatistics extends React.Component{
                             <Input />
                             <NewButton name='确定' />
                         </div>
-                        <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} onPanelChange={this.onPanelChange} />                       
+                        <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} onPanelChange={this.onPanelChange} />
                     </div>
                 </div>
-             
+
             </div>
         )
     }
 
     /**获取右侧数据*/
     getRightData = (params) => {
-        console.log(params)
         // this.setState({
         //     deptCode:code
         // })
@@ -121,8 +118,7 @@ class CheckStatistics extends React.Component{
         // });
     };
     onPanelChange=(value,mode)=>{
-        console.log(mode);
-        console.log(value);
+
     }
     inputChange(e){
 

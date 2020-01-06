@@ -63,7 +63,6 @@ class Maintenance extends React.Component {
             }
         }).then((data)=>{
             const result=data.data.data;
-            console.log(result)
         })
         const data = [{
             index: 1,

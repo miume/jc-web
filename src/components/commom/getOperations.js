@@ -4,9 +4,8 @@
  * */
 export const getOperations = (parentId,currentId) => {
     let menus = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : [];
-    let menuList = menus.length ? menus.filter(e => e.menuId === parentId)?menus.filter(e => e.menuId === parentId)[0]['menuList']:[] : [];
-    let operations = menuList.length ? menuList.filter(e => e.menuId === currentId)?menuList.filter(e => e.menuId === currentId)[0]['operations']:[] : [];
-
+    let menuList = menus.length ? menus.filter(e => e.menuId === parentId) ? menus.filter(e => e.menuId === parentId)[0]['menuList'] : [] : [];
+    let operations = menuList.length ? menuList.filter(e => e.menuId === currentId) ? menuList.filter(e => e.menuId === currentId)[0]['operations'] : [] : [];
     return operations;
 };
 

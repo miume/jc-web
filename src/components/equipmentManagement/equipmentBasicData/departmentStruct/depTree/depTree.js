@@ -282,7 +282,6 @@ class DepTree extends Component {
         if(saveData&&saveData.code&&saveData.code===code){
             saveData.code = parseInt(code)
             saveData.parentCode = null;
-            console.log(saveData)
             axios({
                 url : `${this.props.url.equipmentDept.dept}`,
                 method:'put',

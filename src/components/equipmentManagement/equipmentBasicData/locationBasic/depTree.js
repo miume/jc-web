@@ -41,7 +41,6 @@ class DepTree extends React.Component{
 
     /**获取参数*/
     getParams=(selectedkeys,e)=>{
-        console.log(selectedkeys)
         this.setState({
             deptId:parseInt(selectedkeys[0]),
             depName:e.node.props.value,

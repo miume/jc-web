@@ -100,7 +100,6 @@ class Distribution extends React.Component {
         }else{
             authIds.push(code)
         }
-        console.log(authIds)
         this.setState({
             authIds:authIds
         })

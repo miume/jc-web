@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import {Table} from 'antd';
 import Detail from "./MaintdetailModal"
 import "./batchSearch.css"
@@ -78,26 +77,7 @@ class MaintenanceModal extends React.Component {
             visible: false,
         });
     };
-    handleClickDetail=(record)=>{
-        console.log(record)
-        const param=record.plancode;
-        axios({
-            url:this.url.eqMaintenanceQuery.recordDetail,
-            method:"get",
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-            params:{
-                id:param,
-            }
-        }).then((data)=>{
-            const result=data.data.data;
-            console.log(result)
-        })
-        this.setState({
-            visible: true,
-        })
-    }
+
     render() {
         return (
             <div style={{height: '520px'}}>

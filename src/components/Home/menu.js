@@ -51,7 +51,7 @@ class Menu1List extends React.Component {
       menuParent:menuParent,
       path:path,
       menuId: menuId
-    }
+    };
     /**selectedKeys 用来实时控制点击的二级菜单选中 */
     localStorage.setItem('selectedKeys',path)
     /**存取最近一次访问的二级菜单 */
@@ -84,38 +84,7 @@ class Menu1List extends React.Component {
   }
 
   render() {
-    // const menu = [
-    //   {
-    //       id: 1,
-    //       title:"userRights",
-    //       icon: 'boss',
-    //       name: '用户权限',
-    //       menu2: [
-    //         {name: '操作管理',id:1,path: '/OperationManagement'},
-    //         {name: '菜单管理',id:2,path: '/menu',},
-    //         {name: '角色管理',id:3,path: '/role'},
-    //         {name: '用户管理',id:4,path: '/user'},
-    //         {name: '部门管理',id:5,path: '/departManagement'}
-    //       ]
-    //   },
-    //   {
-    //       id: 2,
-    //       icon: 'job',
-    //       title:"information",
-    //       name: '质量流程',
-    //       menu2 : [
-    //         {name: '数据录入',id:6,path: '/dataEntry'},
-    //         // {name: '制程检验',id:7,path: '/processInspection'},
-    //         {name: '流程管理',id:8,path: '/management'},
-    //         {name: '流程创建',id:9,path: '/process',},
-    //         {name: '任务执行',id:10,path: '/role'},
-    //         {name: '中间品检测',id:11,path: '/InterProduct'},
-    //         {name: '进货检验报告',id:12,path: '/PurchaseCheckReport'},
-    //         {name: '基本信息',id:13,path: '/baseInfo'},
-    //         // {name: '样品送检',id:14,path: '/sampleInspection'},
-    //       ]
-    //  }
-    // ];
+
     return (
       /**判断localStorage中的数据是否存在，存在则渲染菜单，否则渲染验证组件 */
       <div className={localStorage.getItem('menuList')?'':'hide'}>
