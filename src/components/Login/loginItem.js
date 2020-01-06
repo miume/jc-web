@@ -13,7 +13,6 @@ class LoginItem extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.remindLogin = this.remindLogin.bind(this);
-        this.dataProcessing = this.dataProcessing.bind(this);
         this.handleInfo=this.handleInfo.bind(this);
     }
 
@@ -77,29 +76,6 @@ class LoginItem extends React.Component {
         } else {
             document.cookie = '';
         }
-    }
-
-    /**登陆成功后对返回的数据进行处理 */
-    dataProcessing(data){
-        let i = 1, quickAccess = [],menus=[];
-        console.log(data)
-        data.menuList.forEach(e=>{
-            e.menuList.forEach(e1=>{
-                menus.push(e1)
-                if(i <= 6) {
-                    quickAccess.push({
-                        openKeys:e.menuId,
-                        menuParent:e.menuName,
-                        menuName:e1.menuName,
-                        path:e1.path,
-                        menuId: e1.menuId
-                    });
-                    i++;
-                }
-            })
-        });
-        localStorage.setItem('menus',JSON.stringify(menus));
-        localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
     }
 
     /**监控用户名和密码的问题*/

@@ -64,10 +64,11 @@ class Login extends React.Component {
           menus.push(e1)
           if(i <= 6){
             quickAccess.push({
-              openKeys:e.menuId,
-              menuParent:e.menuName,
-              menuName:e1.menuName,
-              path:e1.path
+                openKeys:e.menuId,
+                menuParent:e.menuName,
+                menuName:e1.menuName,
+                path:e1.path,
+                menuId: e1.menuId
             });
             i++;
           }
