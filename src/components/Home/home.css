@@ -103,7 +103,7 @@ html, body, .parent {
 }
 .userName{
     cursor: pointer;
-    width: 115px;
+    width: 150px;
 }
 /**修改全局input placeholder里面字体的大小和颜色 */
 input::-webkit-input-placeholder{
