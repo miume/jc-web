@@ -1,0 +1,34 @@
+.repoStatisticsFlow_month_top{
+    height: 50px;
+    width: 100%;
+}
+.repoStatisticsFlow_month_top_select{
+    width: 150px;
+    margin-right: 20px !important;
+}
+.repoStatisticsFlow_month_middle{
+    height: 300px;
+    width: 100%;
+}
+.repoStatisticsFlow_month_bottom{
+    height: 150px;
+    width: 100%;
+}
+.repoStatisticsFlow_month_table {
+    width: 100% !important;
+    text-align: center
+}
+
+
+.repoStatisticsFlow_month_line{
+    width: 100%;
+}
+
+.repoStatisticsFlow_year_bar{
+    width: 100%;
+}
+.repoStatisticsFlow_year_table {
+    width: 100% !important;
+    text-align: center
+}
+
