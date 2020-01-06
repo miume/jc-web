@@ -1,0 +1,38 @@
+.repoStatisticsDull_search_select{
+    width: 150px;
+    margin-right: 20px !important;
+}
+
+.repoStatisticsDull_search {
+    float: right;
+}
+.repoStatisticsDull_search_input{
+    width: 160px !important;
+    margin-right: 20px !important;
+}
+
+.repoStatisticsDull_edit{
+    height: 200px;
+}
+
+.repoStatisticsDull_bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 80%;
+    padding-top: 10px;
+}
+.repoStatisticsDull_pie {
+    width: 49%;
+
+}
+.repoStatisticsDull_table {
+    width: 49%;
+
+}
+.repoStatisticsDull_divider {
+    height: 100% !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
