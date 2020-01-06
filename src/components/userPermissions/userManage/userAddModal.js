@@ -99,11 +99,11 @@ class UserAddModal extends React.Component{
 
                         <Select placeholder="请选择所属部门" style={{fontSize:"14px"}} size="large">
                            {
-                               this.props.deparment.map(de=>{
+                               this.props.deparment?this.props.deparment.map(de=>{
                                  return(
                                 <Option key={de.id} value={de.id}>{de.departmentName}</Option>
                                  );
-                            })
+                            }):null
                            }
                         </Select>
                         )}

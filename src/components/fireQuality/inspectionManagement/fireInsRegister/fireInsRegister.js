@@ -16,8 +16,6 @@ class FireInsRegister extends Component {
     componentDidMount() {
         this.getTableParams();
         let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
-        console.log(openKeys)
-        console.log(menuId)
         this.setState({
             addFlag: judgeOperation(operations,'SAVE')
         })
@@ -67,12 +65,13 @@ class FireInsRegister extends Component {
                     </span>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'批号'}/>
                     <div className='clear'></div>
-                    <RegisterTable dataSource={this.state.dataSource}
-                                   handleTableChange={this.handleTableChange}
-                                   getTableParams={this.getTableParams}
-                                   url={this.url}
-                                   total={this.state.total}
-                                   pagination={this.pagination}
+                    <RegisterTable
+                        dataSource={this.state.dataSource}
+                        handleTableChange={this.handleTableChange}
+                        getTableParams={this.getTableParams}
+                        url={this.url}
+                        total={this.state.total}
+                        pagination={this.pagination}
                     />
                 </Spin>
             </div>
