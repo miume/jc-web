@@ -1,68 +1,13 @@
 import React,{Component} from 'react'
-import BlockQuote from "../../BlockQuote/blockquote";
-import DataPart from "../../qualityProcess/dataEntry/dataPart";
-
-const icon=['fa fa-industry fa-5x','fa fa-wrench fa-5x','fa fa-tasks fa-5x',
-    'fa fa-tint fa-5x','fa fa-sitemap fa-5x'];
+import CommonBaseData from '../../BlockQuote/baseData';
 
 class FireQuaBase extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
 
-        };
-        this.click = this.click.bind(this);
-        this.getData = this.getData.bind(this);
+    render() {
+        this.current = localStorage.getItem('current')?JSON.parse(localStorage.getItem('current')):null;
+        return (
+            <CommonBaseData current={this.current}/>
+        );
     }
-
-    render(){
-        this.current = JSON.parse(localStorage.getItem('current'))?JSON.parse(localStorage.getItem('current')):null
-        return(
-            <div>
-                <BlockQuote menu={this.current.menuParent} name={this.current.menuName}/>
-                <div className='dataEntry'>
-                    <div className='card-parent'>
-                        {
-                            this.state.data ? this.state.data.map(d=>
-                                <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
-                            ):null
-                        }
-                    </div>
-                </div>
-            </div>
-        )
-    }
-    componentDidMount(){
-        this.getData()
-    }
-
-    click(e) {
-        let path = e.currentTarget.id.split('-')
-        const dataEntry={
-            openKeys:this.current.menuId,
-            menuName:path[1],
-            menuParent:this.current.menuName,
-            path:path[0]
-        };
-        localStorage.setItem('dataEntry',JSON.stringify(dataEntry))
-        this.props.history.push({pathname:path[0]})
-    }
-
-    getData(){
-        const menus=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===this.current.path)[0]:[];
-        var data=menus&&menus.menuList?
-            menus.menuList.sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
-                return ({
-                    id : m.menuId,
-                    name : m.menuName,
-                    path : `${m.path}-${m.menuName}`,
-                    className : icon[index]
-                })
-            }):[];
-        this.setState({
-            data:data
-        })
-    }
-
 }
 export default FireQuaBase

@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import BlockQuote from "./blockquote";
 import {withRouter} from 'react-router-dom'
 import DataPart from "../qualityProcess/dataEntry/dataPart";
-import Blockquote from "../positiveCost/baseData/otherBaseInfo/otherBaseInfo";
 
 const ICON = ['fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-leaf fa-5x',
     'fa fa-shopping-cart fa-5x','fa fa-code-fork fa-5x',
