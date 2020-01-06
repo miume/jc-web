@@ -182,7 +182,7 @@ class RepoStatisticsDull extends React.Component {
     }
     getCondition3 = (e) => {
         this.setState({
-            condition3: e.targer.value,
+            condition3: e.target.value,
         })
     }
 

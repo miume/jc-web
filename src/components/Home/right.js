@@ -163,6 +163,7 @@ import RepoQueryInOutAccount from "../smartWarehouse/dataQuery/repoQueryInOutAcc
 import Unit from "../smartWarehouse/repoBasic/unit/unit";
 import SluggishPeriod from "../smartWarehouse/repoBasic/sluggishPeriod/sluggishPeriod";
 import RepoStatisticsDull from "../smartWarehouse/dataStatistics/repoStatisticsDull/repoStatisticsDull";
+import RepoStatisticsFlow from "../smartWarehouse/dataStatistics/repoStatisticsFlow/repoStatisticsFlow";
 class Right extends React.Component {
     render() {
         const data = [{
@@ -650,6 +651,9 @@ class Right extends React.Component {
             },{
                 path: '/repoStatisticsDull',
                 component: RepoStatisticsDull
+            },{
+                path: '/repoStatisticsFlow',
+                component: RepoStatisticsFlow
             }];
         return (
             <div className="rightDiv">
