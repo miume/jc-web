@@ -3,7 +3,7 @@ import Blockquote from "../../BlockQuote/blockquote";
 import axios from "axios";
 import { Table,Switch,Icon,Spin } from 'antd';
 import Edit from "./edit";
-
+import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
 class BatchRule extends React.Component{
     url
     constructor(props){
@@ -47,7 +47,6 @@ class BatchRule extends React.Component{
             align:'center',
             width: '6%',
             render:(text,record)=>{
-                // console.log(record)
                 return(
                     <Switch checked={record.ruleFlag} onChange={this.switchChange.bind(this,record)} checkedChildren={<Icon type="check" />}
                     unCheckedChildren={<Icon type="close" />}/>
@@ -60,9 +59,10 @@ class BatchRule extends React.Component{
             align:'center',
             width: '6%',
             render:(text,record)=>{
+                let {updateFlag} = this.state;
                 return(
                     <span>
-                        <Edit getTableData={this.getTableData} code={record.code}/>
+                        <Edit getTableData={this.getTableData} updateFlag={updateFlag} code={record.code}/>
                     </span>
                 )
             }
@@ -70,6 +70,10 @@ class BatchRule extends React.Component{
     }
     componentDidMount() {
         this.getTableData();
+        let {menuId} = this.current, operations = getSecondsOperations(menuId);
+        this.setState({
+            updateFlag: judgeOperation(operations,'UPDATE'),
+        })
     }
     componentWillUnmount() {
         this.setState = (state, callback) => {
@@ -77,7 +81,6 @@ class BatchRule extends React.Component{
         }
     }
     switchChange = (info,e)=>{
-        // console.log(e,info)
         axios({
             url:`${this.url.productionBatchRule.updateState}`,
             method:"put",
@@ -99,14 +102,11 @@ class BatchRule extends React.Component{
             headers:{
                 'Authorization': this.Authorization
             },
-            // params: params,
-            // type: 'json',
         }).then((data)=>{
             var res = data.data.data;
             for(var i = 1; i<=res.length; i++){
                 res[i-1]['index']=i;
             }
-            // console.log(res);
             this.setState({
                 dataSource:res,
                 year:res[0].defaultValue,
@@ -125,11 +125,10 @@ class BatchRule extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        this.current = JSON.parse(localStorage.getItem('current')) ;
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="批次规则" />
+                <Blockquote menu={this.current.menuParent} name="批次规则" />
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <strong>代码示例：</strong><strong>{this.state.year}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.productType}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.month}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.serialNum}</strong>&nbsp;&nbsp;&nbsp;
