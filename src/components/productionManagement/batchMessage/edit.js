@@ -216,11 +216,11 @@ class Edit extends React.Component{
     render(){
         let {serialNum,year,month,yearVal,monthVal,startTime,serialNumVal,processVal,productLineVal,
             materialTypeVal,slotNumVal,slotVal,timePointVal,productTypeVal,productNumVal,
-            setPeople,setTime,modifyPeople,modifyTime,endTime,jumpBatch}=this.state
+            setPeople,setTime,modifyPeople,modifyTime,endTime,jumpBatch}=this.state,{updateFlag}=this.props
         return(
             <span>
-                {!this.props.statusFlag?<span className="blue" onClick={this.showModal}>编辑</span>
-                :<span className='notClick' >编辑</span>}
+                {!this.props.statusFlag?<span className={updateFlag?'blue':'hide'}onClick={this.showModal}>编辑</span>
+                :<span className={updateFlag?'notClick':'hide'} >编辑</span>}
                 <Modal
                     visible={this.state.visible}
                     closable={false}

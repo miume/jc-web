@@ -7,6 +7,7 @@ import SearchCell from '../../BlockQuote/search';
 import AddModal from "./addModal"
 import Edit from './edit'
 import BatchInfoTrace from './batchTrace/batchTrace'
+import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
 class BatchMessage extends React.Component {
     componentWillUnmount() {
         this.setState = () => {
@@ -98,15 +99,17 @@ class BatchMessage extends React.Component {
             align: 'center',
             width: '11.11%',
             render: (text, record) => {
+                let {deleteFlag,updateFlag} = this.state;
                 return (
                     <span>
-                        <Edit fetch={this.fetch} statusFlag={record.statusFlag} code={record.code} url={this.url}/>
-                        <Divider type="vertical" />
+                        <Edit fetch={this.fetch} updateFlag={updateFlag} statusFlag={record.statusFlag} code={record.code} url={this.url}/>
+                        {updateFlag && deleteFlag ? <Divider type="vertical" /> : ''}
                         {!record.statusFlag?
-                            <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
+                            <span className={deleteFlag ? '' : 'hide'}><Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>
-                            :<span className='notClick' >删除</span>
+                            </span>
+                            :<span className={deleteFlag ? 'notClick' : 'hide'}  >删除</span>
                         }
                     </span>
                 )
@@ -121,6 +124,12 @@ class BatchMessage extends React.Component {
     }
     componentDidMount() {
         this.fetch();
+        let {menuId} = this.current, operations = getSecondsOperations(menuId);
+        this.setState({
+            addFlag: judgeOperation(operations,'SAVE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            deleteFlag: judgeOperation(operations,'DELETE')
+        })
     }
     handleTableChange(pagination) {
         this.pagination = pagination
@@ -297,18 +306,18 @@ class BatchMessage extends React.Component {
         })
     }
     render() {
-        const current = JSON.parse(localStorage.getItem('current'));
-        const { selectedRowKeys } = this.state;
+        this.current = JSON.parse(localStorage.getItem('current'));
+        let { selectedRowKeys,addFlag,deleteFlag } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
         return (
             <div>
-                <Blockquote name={current.menuName} menu={current.menuParent} />
+                <Blockquote name={this.current.menuName} menu={this.current.menuParent} />
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal fetch={this.fetch} />
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={true} />&nbsp;&nbsp;&nbsp;
+                    <AddModal fetch={this.fetch} addFlag={addFlag}/>
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={deleteFlag} />&nbsp;&nbsp;&nbsp;
                     <BatchInfoTrace batchData={this.state.batchData} handleBack={this.handleBack} onRef={(ref)=>{ this.child = ref}} 
                                     showModal={this.showModal} visiable={this.state.visiable1}
                                     selectedRowKeys={this.state.selectedRowKeys}/>
