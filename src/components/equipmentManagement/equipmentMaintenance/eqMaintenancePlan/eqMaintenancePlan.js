@@ -6,7 +6,7 @@ import ContentTable from './blockCompontent/contenttable'
 import './blockCompontent/style.css'
 import Blockquote from "../../../BlockQuote/blockquote";
 import Department from '../../../BlockQuote/department';
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class EqMaintenancePlan extends React.Component{
     componentWillUnmount() {
         this.setState = () => {
@@ -52,12 +52,11 @@ class EqMaintenancePlan extends React.Component{
 
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-
+        this.current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        let {addFlag,deleteFlag,updateFlag} = this.state;
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="保养计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name="保养计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div className='equipment'>
                     <Department
                         key="depTree"
@@ -84,6 +83,7 @@ class EqMaintenancePlan extends React.Component{
                             searchReset={this.searchReset}
                             selectEvent={this.selectEvent}
                             statusId={this.state.selectContent}
+                            addFlag={addFlag}
                         />
                         <ContentTable
                             url={this.url}
@@ -103,11 +103,21 @@ class EqMaintenancePlan extends React.Component{
                             current={this.state.current}
                             condition={this.state.condition}
                             getTableSize={this.getTableSize}
+                            deleteFlag={deleteFlag}
+                            updateFlag={updateFlag}
                         />
                     </Spin>
                 </div>
             </div>
         )
+    }
+    componentDidMount() {
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     /**返回数据录入页面 */
     returnDataEntry(){

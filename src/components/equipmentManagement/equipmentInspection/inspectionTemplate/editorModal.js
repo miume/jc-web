@@ -176,10 +176,11 @@ class EditorModal extends React.Component {
 
     /**根据父组件传过来的title*渲染新增按钮和编辑文本*/
     renderTitle(title) {
+        let {updateFlag,addFlag}=this.props
         if(title === '新增') {
-            return <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus'/>
+            return  <span className={addFlag?'':'hide'}><NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus'/></span>
         } else {
-            return <span className='blue' onClick={this.handleClick}>编辑</span>;
+            return <span className={updateFlag?'blue':'hide'} onClick={this.handleClick}>编辑</span>;
         }
     }
 

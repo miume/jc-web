@@ -9,6 +9,7 @@ class ButtonToDd extends Component {
     }
 
     render(){
+        let {addFlag} = this.props;
         return(
             <div className='Buttontodo'style={{display:'flex'}}>
                 <Addmaintenance
@@ -23,6 +24,7 @@ class ButtonToDd extends Component {
                     Device={this.props.Device}
                     MaintenanceType={this.props.MaintenanceType}
                     statusId={this.props.statusId}
+                    addFlag={addFlag}
                 />
                 <Searchpart
                     id='searchpart'

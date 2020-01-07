@@ -8,7 +8,7 @@ import home from "../../../commom/fns";
 import RightTable from "./rightTable";
 import DepTree from "../../../BlockQuote/department";
 import EditorModal from "./editorModal";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class InspectionTemplate extends React.Component {
     constructor(props) {
         super(props);
@@ -44,11 +44,11 @@ class InspectionTemplate extends React.Component {
         let date = new Date().toLocaleDateString().split('/').join('-');
         const menuList1 = JSON.parse(localStorage.getItem('menuList'))
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('equipmentInspection'));
-        const operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.menuName === current.menuParent)[0].menuList : null;
-        this.operation = operation.filter(e => e.path === current.path)[0].operations;
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
+        const operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.menuName === this.current.menuParent)[0].menuList : null;
+        this.operation = operation.filter(e => e.path === this.current.path)[0].operations;
         const {Option} = Select;
-        let {deptCode,deviceName } = this.state;
+        let {deptCode,deviceName ,addFlag,deleteFlag,updateFlag} = this.state;
         let record = {
             deptCode: deptCode,
             workshop: deviceName,
@@ -59,7 +59,7 @@ class InspectionTemplate extends React.Component {
         };
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="巡检模板" menu2='返回' returnDataEntry={this.returnDataEntry}
+                <Blockquote menu={this.current.menuParent} name="巡检模板" menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
                 <div className="equipment">
                     <DepTree
@@ -72,7 +72,7 @@ class InspectionTemplate extends React.Component {
                         <div>
                             <div className="checkP_buttons">
                                 <div className="checkp-left">
-                                    <EditorModal title={'新增'} record={record}
+                                    <EditorModal title={'新增'} record={record} addFlag={addFlag}
                                          url={this.url} searchEvent={this.searchEvent}/>
                                 </div>
                                 <div className="check_right">
@@ -83,7 +83,7 @@ class InspectionTemplate extends React.Component {
                                     </Select>&nbsp;&nbsp;&nbsp;&nbsp;
                                     <SearchCell
                                         name='请输入模版名称'
-                                        flag={home.judgeOperation(this.operation, 'QUERY')}
+                                        flag={true}
                                         fetch={this.reset}
                                         searchContentChange={this.searchContentChange}
                                         searchEvent = {this.searchEvent}
@@ -104,6 +104,8 @@ class InspectionTemplate extends React.Component {
                                     handleTableChange={this.handleTableChange}
                                     status={this.state.status}
                                     deleteByIds={this.deleteByIds}
+                                    updateFlag={updateFlag}
+                                    deleteFlag={deleteFlag}
                                 />
                             </div>
                         </div>
@@ -112,7 +114,14 @@ class InspectionTemplate extends React.Component {
             </div>
         )
     }
-
+    componentDidMount() {
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
+    }
     /**点击切换部门*/
     clickDepartment(params) {
         /**存储部门名称和部门id*/

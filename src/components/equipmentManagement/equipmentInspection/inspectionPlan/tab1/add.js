@@ -183,8 +183,9 @@ class AddModal extends React.Component {
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
+        let {addFlag}=this.props
         return (
-            <span className={this.props.status === 1 ? '' : 'hide'}>
+            <span className={this.props.status === 1 &&addFlag? '' : 'hide'}>
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus'/>
                 <Modal
                     visible={this.state.visible}

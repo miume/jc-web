@@ -5,15 +5,21 @@ import {Spin} from "antd";
 import InspectionTable from "./inspectionTable";
 import AddModal from "./tab1/add";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class InspectionRight extends React.Component{
     componentWillUnmount() {
         this.setState(() => {
             return;
         })
     }
-
-    co
+    componentDidMount() {
+        let {openKeys,menuId} = this.props.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -36,7 +42,7 @@ class InspectionRight extends React.Component{
         this.handleTableChange = this.handleTableChange.bind(this);
     }
     render() {
-        const {status} = this.props;
+        const {status,} = this.props,{addFlag,deleteFlag,updateFlag}=this.state
         return (
             <div className='equipment'>
                 <DepTree
@@ -47,12 +53,12 @@ class InspectionRight extends React.Component{
                 />
                 <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
                     <div>
-                        <AddModal status={status} deptCode={this.props.deptCode} deptName={this.props.deviceName} getTableData={this.searchEvent}/>
+                        <AddModal addFlag={addFlag} status={status} deptCode={this.props.deptCode} deptName={this.props.deviceName} getTableData={this.searchEvent}/>
                         <DeleteByIds
                             selectedRowKeys={this.state.selectedRowKeys}
                             cancel={this.cancel}
                             deleteByIds={this.deleteByIds}
-                            flag={status === 1 ? true : false}
+                            flag={status === 1 &&deleteFlag? true : false}
                         />
                         <SearchCell
                             name='请输入计划名称'
@@ -71,6 +77,8 @@ class InspectionRight extends React.Component{
                         pagination={this.pagination}
                         rightTableData={this.props.rightTableData}
                         handleTableChange={this.handleTableChange}
+                        updateFlag={updateFlag}
+                        deleteFlag={deleteFlag}
                     />
                 </Spin>
             </div>

@@ -410,18 +410,6 @@ class Right extends React.Component {
                 path: "/eqcomponentSearch",
                 component: EqcomponentSearch
             }, {
-                path: "/equipmentInspection",
-                component: EquipmentInspection
-            }, {
-                path: "/inspectionTemplate",
-                component: InspectionTemplate
-            }, {
-                path: "/inspectionPlan",
-                component: InspectionPlan
-            }, {
-                path: "/inspectionQuery",
-                component: InspectionQuery
-            }, {
                 path: "/locationBasic",
                 component: LocationBasic
             }, {
