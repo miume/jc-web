@@ -13,7 +13,8 @@ class DetailModal extends Component {
             deptName: "",
             username: "",
             plainOptions: [],
-            checkedList: []
+            checkedList: [],
+            series:""
 
         }
         this.getDetail = this.getDetail.bind(this);
@@ -30,7 +31,7 @@ class DetailModal extends Component {
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={700}
+                    width={800}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} flag={true}/>,
                     ]}
@@ -44,6 +45,7 @@ class DetailModal extends Component {
                             <span>{`备注：${this.state.username}`}</span>
                         </div>
                         <Divider/>
+                        <span className="detailModal_middle_series">{`序列号：${this.state.series}`}</span>
                         <div>检测项目：</div>
                         <div className="detailModal_down">
                             <Checkbox.Group style={{width:"100%"}} value={this.state.checkedList}>
@@ -86,6 +88,7 @@ class DetailModal extends Component {
             const items = res.items;
             var plainOptions = []
             var checkedList = []
+            var series = "";
             for (var i = 0; i < items.length; i++) {
                 const item = items[i];
                 if (item.flag){
@@ -94,6 +97,9 @@ class DetailModal extends Component {
                         name:item.name
                     })
                     checkedList.push(item.code)
+                    series = series + "1";
+                }else{
+                    series = series + "0";
                 }
 
             }
@@ -105,7 +111,8 @@ class DetailModal extends Component {
                 batchNumber: res.batch,
                 deptName: res.deptName,
                 username: res.checkPeople,
-                visible: true
+                visible: true,
+                series:series
             })
             // message.info(data.data.message)
 
