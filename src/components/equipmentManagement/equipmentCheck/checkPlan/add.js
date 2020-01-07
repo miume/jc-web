@@ -19,7 +19,6 @@ class Add extends React.Component{
     handleAdd = () => {
         this.setState({visible: true
         })
-        console.log(this.props.deptCode)
         this.fresh()
 
     }
@@ -69,29 +68,26 @@ class Add extends React.Component{
         this.setState({visible: false})
     }
     render(){
-        // console.log(this.props)
+        let {addFlag}=this.props
         return(
             <span>
-            <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus'/>
-            <Modal
-                visible={this.state.visible}
-                closable={false}
-                centered={true}
-                maskClosable={false}
-                width="1000px"
-                height="464"
-                title="新增数据"
-                footer={[
-                    <CancleButton key='cancel' handleCancel={this.onCanCel} />]}
-            >
-                <TTable parentCode={this.props.parentCode} dataSource={this.state.rightTableData} url={this.props.url} deptId={this.props.deptCode} deviceName={this.props.deviceName}
-                         fetch={this.props.fetch} fresh={this.fresh}/>
-
-
-
-
-
-            </Modal>
+                <span className={addFlag?'':'hide'}>
+                    <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus'/>
+                </span>
+                <Modal
+                    visible={this.state.visible}
+                    closable={false}
+                    centered={true}
+                    maskClosable={false}
+                    width="1000px"
+                    height="464"
+                    title="新增数据"
+                    footer={[
+                        <CancleButton key='cancel' handleCancel={this.onCanCel} />]}
+                >
+                    <TTable parentCode={this.props.parentCode} dataSource={this.state.rightTableData} url={this.props.url} deptId={this.props.deptCode} deviceName={this.props.deviceName}
+                            fetch={this.props.fetch} fresh={this.fresh}/>
+                </Modal>
             </span>
         )
     }

@@ -31,6 +31,7 @@ class EARightBottom1 extends Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+        let {updateFlag,deleteFlag}=this.props
         return (
             <div className="eA-right-bottom">
                    <div className="eq-aM-search">  </div>
@@ -41,7 +42,7 @@ class EARightBottom1 extends Component {
                     searchContentChange={this.searchContentChange}
                     searchEvent={this.props.searchEvent}
                     fetch={this.props.comFlag?this.props.searchResetCom:this.props.searchReset}
-                    flag={home.judgeOperation(this.operation, 'QUERY')}/>
+                    flag={true}/>
                 </div>
                 <EARightTable
                     getRightData={this.props.getRightData}
@@ -55,6 +56,8 @@ class EARightBottom1 extends Component {
                     fetch={this.props.fetch}
                     handleTableChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
+                    updateFlag={updateFlag}
+                    deleteFlag={deleteFlag}
                 />
             </div>
         )

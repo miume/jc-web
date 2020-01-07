@@ -29,8 +29,8 @@ class TheTable extends React.Component{
         key: 'operation',
         width: '15%',
         render: (text, record) => {
-            let {url,deptId,deptName} = this.props;
-            return <Editor url={url} deptId={deptId} deptName={deptName} record={record} getTableData={this.props.getTableData}/>
+            let {url,deptId,deptName,updateFlag} = this.props;
+            return <Editor url={url} updateFlag={updateFlag} deptId={deptId} deptName={deptName} record={record} getTableData={this.props.getTableData}/>
         }
     }];
     /**rowKey={record => record.code}用于选定需要批量删除的数据的ID*/

@@ -33,9 +33,10 @@ class Edit extends React.Component {
     }
 
     render() {
+        let {updateFlag}=this.props
         return (
             <span>
-                <span className="blue" onClick={this.handleEdit}>编辑</span>
+                <span className={updateFlag?'blue':'hide'} onClick={this.handleEdit}>编辑</span>
                     <Modal
                         title="数据详情"
                         visible={this.state.visible}

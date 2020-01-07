@@ -95,7 +95,7 @@ class PositiveCostAccount extends Component{
             title:'单耗(T)',
             key:'unitConsumption',
             dataIndex:'unitConsumption',
-            width:'11%',
+            width:'11.5%',
             render:(text)=>{
                 let da=text?text.split(' '):undefined
                 return(
@@ -241,6 +241,7 @@ class PositiveCostAccount extends Component{
                         dataSource={data}
                         rowKey={record=>record.index}
                         columns={this.columns} 
+                        pagination={false}
                         size='small'
                         bordered/>
                 </Spin>

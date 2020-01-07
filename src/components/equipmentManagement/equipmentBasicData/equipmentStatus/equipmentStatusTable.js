@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table} from 'antd';
+import {Table,Divider} from 'antd';
 import DeletaSpan from './deletaSpan'
 import './equipmentStatus.css'
 import Edit from './edit';
@@ -45,19 +45,21 @@ class equipmentStatusTable extends React.Component {
         align: 'center',
         width: '25%',
         render: (text, record) => {
+            let {deleteFlag,updateFlag}=this.props
             return (
                 <span>
                     <Edit
                         fetch={this.props.fetch}
                         url={this.props.url}
                         record={record}
-                        editFlag={true}
+                        updateFlag={updateFlag}
                     />
+                     {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
                     <DeletaSpan
                         record={record}
                         getFetch={this.getFetch}
                         handleDelete={this.props.handleDelete}
-                        flag={this.props.judgeOperation(this.props.operation, 'DELETE')}
+                        flag={deleteFlag}
                     />
                 </span>
             )

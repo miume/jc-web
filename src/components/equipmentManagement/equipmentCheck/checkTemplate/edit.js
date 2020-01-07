@@ -175,9 +175,10 @@ class Edit extends React.Component{
                 sm: { span: 20, offset: 4 },
             },
         };
+        let {updateFlag}=this.props
         return(
             <span>
-                <span onClick={this.showModal} className="blue">编辑</span>
+                <span onClick={this.showModal} className={updateFlag?'blue':'hide'}>编辑</span>
                 <Modal
                     title='编辑' visible={this.state.visible}
                     closable={false} centered={true}

@@ -360,7 +360,7 @@ class CheckQuery extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;
+        const current = JSON.parse(localStorage.getItem('dataEntry')) ;
         const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
         this.operation=operation.filter(e=>e.path===current.path)[0].operations
 

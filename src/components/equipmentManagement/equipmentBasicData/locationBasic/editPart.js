@@ -25,9 +25,10 @@ class EditPart extends React.Component {
     }
 
     render=()=> {
+        let {updateFlag}=this.props
         return (
             <div >
-                <span className="blue" onClick={this.showModal}>编辑</span>
+                <span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
                 <Modal
                     visible={this.state.visible}
                     title="编辑数据"

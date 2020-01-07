@@ -24,7 +24,7 @@ class EARight extends Component {
 
     render() {
         const { TabPane } = Tabs;
-
+        let {updateFlag,deleteFlag}=this.props
         return (
             <div className="eA-right-top">
                 <Tabs defaultActiveKey="部件" onChange={this.callback}>
@@ -45,6 +45,8 @@ class EARight extends Component {
                             modifySearchContent={this.props.modifySearchContent}
                             searchEvent={this.props.searchEvent}
                             searchReset={this.props.searchReset}
+                            updateFlag={updateFlag}
+                            deleteFlag={deleteFlag}
                         />
                     </TabPane>
                     <TabPane tab="配件" key="配件">
@@ -64,6 +66,8 @@ class EARight extends Component {
                             modifySearchContent={this.props.modifySearchContent}
                             searchEvent={this.props.searchEvent}
                             searchReset={this.props.searchReset}
+                            updateFlag={updateFlag}
+                            deleteFlag={deleteFlag}
                         />
                     </TabPane>
 

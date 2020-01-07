@@ -6,7 +6,7 @@ import {message, Spin} from "antd";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import ProcessTable from "./processTable";
 import axios from "axios";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class EquipmentProcessName extends React.Component {
     constructor(props) {
         super(props);
@@ -32,14 +32,15 @@ class EquipmentProcessName extends React.Component {
     render() {
         let {selectedRowKeys,deptName,deptId,rightTableData,loading} = this.state;
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current'));
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
+        let {addFlag,deleteFlag,updateFlag}=this.state
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="工序名称" menu2='返回' returnDataEntry={this.returnDataEntry}
+                <Blockquote menu={this.current.menuParent} name="工序名称" menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
                 <div className='equipment'>
                     <DepTree
@@ -54,14 +55,14 @@ class EquipmentProcessName extends React.Component {
                             deptName={deptName}
                             deptId={deptId}
                             url={this.url}
-                            flag={true}
+                            flag={addFlag}
                             getTableData={this.getTableData}
                         />
                         <DeleteByIds
                             selectedRowKeys={this.state.selectedRowKeys}
                             deleteByIds={this.deleteByIds}
                             cancel={this.cancel}
-                            flag={true}
+                            flag={deleteFlag}
                         />
                         <ProcessTable
                             url={this.url}
@@ -72,6 +73,8 @@ class EquipmentProcessName extends React.Component {
                             rightTableData={rightTableData}
                             getTableData={this.getTableData}
                             handleTableChange={this.handleTableChange}
+                            updateFlag={updateFlag}
+                            deleteFlag={deleteFlag}
                         />
                     </Spin>
                 </div>
@@ -159,6 +162,14 @@ class EquipmentProcessName extends React.Component {
         this.setState = () => {
             return;
         }
+    }
+    componentDidMount() {
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
 }
 

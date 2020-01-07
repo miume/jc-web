@@ -28,9 +28,12 @@ class AddModal extends React.Component {
     }
 
     render() {
+        let {flag}=this.props
         return (
             <span>
-                <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
+                <span className={flag?'':'hide'}>
+                    <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
+                </span>
                 <Modal
                     visible={this.state.visible}
                     title="新增"

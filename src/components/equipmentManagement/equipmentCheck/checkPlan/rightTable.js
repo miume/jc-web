@@ -10,10 +10,7 @@ class RightTable extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
-
-
         this.handleDelete = this.handleDelete.bind(this)
-
     }
 
     handleDelete = (id) => {
@@ -96,6 +93,7 @@ class RightTable extends React.Component {
                             pagination={this.props.pagination}
                             handleDelete={this.handleDelete}
                             flag={record.detailNum}
+                            deleteFlag={this.props.deleteFlag}
                         />
                     </span>
                 );

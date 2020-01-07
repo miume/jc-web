@@ -5,7 +5,7 @@ import axios from "axios";
 import SearchCell from "../../../BlockQuote/search";
 import TheTable from "./theTable";
 import {Spin} from "antd";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class UserProcessAssignment extends React.Component {
     constructor(props) {
         super(props);
@@ -28,18 +28,19 @@ class UserProcessAssignment extends React.Component {
             pageSizeOptions: ["10","20","50","100"]
         };
     }
-
+    componentDidMount() {
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
+    }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('dataEntry'));
-        let operation = JSON.parse(localStorage.getItem('menus')) ?
-            JSON.parse(localStorage.getItem('menus')).filter(e => e.menuId === current.menuParentId):[],
-            click = operation.length ? operation[0]['menuList'] : [];
-        this.operation = click.length ? click.filter(e => e.menuId === current.menuId)[0].operations: [];
-        let {deptName,deptId,rightTableData,loading} = this.state;
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
+        let {deptName,deptId,rightTableData,loading,updateFlag} = this.state;
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="用户工序分配" menu2='返回' returnDataEntry={this.returnDataEntry}
+                <Blockquote menu={this.current.menuParent} name="用户工序分配" menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
                 <div className='equipment'>
                     <DepTree
@@ -60,6 +61,7 @@ class UserProcessAssignment extends React.Component {
                             rightTableData={rightTableData}
                             handleTableChange={this.handleTableChange}
                             getTableData={this.getTableData}
+                            updateFlag={updateFlag}
                         />
                     </Spin>
                 </div>
