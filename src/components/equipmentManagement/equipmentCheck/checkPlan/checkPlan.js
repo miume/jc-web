@@ -8,7 +8,7 @@ import "./checkPlan.css"
 import Add from "./add";
 import SearchCell from "./searchCell";
 import home from "../../../commom/fns";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class CheckPlan extends React.Component {
     constructor(props) {
         super(props);
@@ -42,6 +42,19 @@ class CheckPlan extends React.Component {
         this.returnEquKey=this.returnEquKey.bind(this)
         this.firstname=this.firstname.bind(this)
         this.handleClick=this.handleClick.bind(this)
+    }
+    componentWillUnmount() {
+        this.setState = () => {
+            return;
+        }
+    }
+    componentDidMount() {
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     handleClick=()=>{
         this.setState({
@@ -137,8 +150,6 @@ class CheckPlan extends React.Component {
         }
     });
     getRightData = (code, deviceName,parentCode) => {
-        // console.log(code,deviceName)
-
         code = parseInt(code)
         this.setState({
             deptCode:code,
@@ -340,12 +351,11 @@ class CheckPlan extends React.Component {
     }
 render(){
     this.url = JSON.parse(localStorage.getItem('url'));
-    const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;
-    const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
-    this.operation = operation.filter(e=>e.path === current.path)[0].operations;
+    this.current = JSON.parse(localStorage.getItem('dataEntry')) ;
     const { Option } = Select;
+    let {addFlag,deleteFlag }=this.state
     return (<div>
-            <Blockquote menu={current.menuParent} name="点检计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+            <Blockquote menu={this.current.menuParent} name="点检计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
             <div className="checkP-DE-demo" >
                 <div className="checkP-DE-left" >
                     <div  className="checkP-eqblocka">
@@ -367,7 +377,7 @@ render(){
                     <div>
                         <div className="checkP_buttons">
                             <div className="checkp-left">
-                                <Add parentCode={this.state.parentCode} deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  departName={this.state.departName} pagination={this.state.pagination}
+                                <Add addFlag={addFlag} parentCode={this.state.parentCode} deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  departName={this.state.departName} pagination={this.state.pagination}
                                 fetch={this.getTableData}/>
                             </div>
                             <div className="check_right">
@@ -378,7 +388,7 @@ render(){
                                 </Select>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <SearchCell
                                     name='计划编号/设备编号...'
-                                    flag={home.judgeOperation(this.operation, 'QUERY')}
+                                    flag={true}
                                     searchEvent={this.searchEvent}
                                     searchContentChange={this.searchContentChange}
                                     fetch={this.getTableData}
@@ -388,6 +398,7 @@ render(){
                             </div>
                         </div>
                         <RightTable
+                            deleteFlag={deleteFlag}
                             dataSource={this.state.rightTableData}
                             operation={this.operation}
                             pagination={this.state.pagination}

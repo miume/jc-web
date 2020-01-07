@@ -5,7 +5,6 @@ class DeletaSpan extends React.Component {
     render() {
         return (
             <span className={this.props.flag?'':'hide'}>
-                <Divider type="vertical" />
                 <Popconfirm
                     title="确认删除?"
                     onConfirm={() => this.props.handleDelete(this.props.code)}

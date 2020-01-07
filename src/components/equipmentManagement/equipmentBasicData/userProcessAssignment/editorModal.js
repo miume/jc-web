@@ -22,10 +22,10 @@ class Editor extends React.Component {
 
     render() {
         let {deptName,record} = this.props, userName = record ? record.user.name : '',
-            {visible,processData,checkedValues} = this.state;
+            {visible,processData,checkedValues} = this.state,{updateFlag}=this.props
         return (
             <span>
-                <span className={'blue'} onClick={this.showModal}>编辑</span>
+                <span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
                 <Modal
                     visible={visible}
                     title="编辑" closable={false} width='450px'

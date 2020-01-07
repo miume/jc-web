@@ -170,6 +170,7 @@ class AddBut extends React.Component{
                 sm: { span: 20, offset: 4 },
             },
         };
+        let {addFlag}=this.props
         getFieldDecorator('keys', { initialValue: [0] });
         const keys = getFieldValue('keys');
         const formItems = keys.map((k,index)=>(
@@ -220,7 +221,9 @@ class AddBut extends React.Component{
         ))
         return(
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                <span className={addFlag?'':'hide'}>
+                    <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                </span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}

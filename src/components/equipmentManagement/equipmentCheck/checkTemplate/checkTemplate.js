@@ -8,7 +8,7 @@ import TreeCard from "./treeCard";
 import axios from 'axios';
 import Detail from "./details";
 import Edit from "./edit";
-
+import {judgeOperation,getOperations} from "../../../commom/getOperations";
 class CheckTemplate extends React.Component{
     url
     status
@@ -35,7 +35,6 @@ class CheckTemplate extends React.Component{
         };
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancel=this.cancel.bind(this);
-        this.judgeOperation = this.judgeOperation.bind(this);
         this.getTableData = this.getTableData.bind(this);
         this.getTreeData = this.getTreeData.bind(this);
         this.pagination = {
@@ -94,15 +93,18 @@ class CheckTemplate extends React.Component{
             align:'center',
             width: '15%',
             render:(text,record)=>{
+                let {deleteFlag,updateFlag}=this.state
                 return (
                     <span>
-                        <Edit getTableData={this.getTableData} deptmentCode={this.state.deptCode} info={this.state.lineData} deptCode={record.deviceSpotcheckModelsDetails.code} code = {record.deviceSpotcheckModelsHead.code} deptName={this.state.deptName} deviceName={this.state.deviceName}/>
-                        <Divider type="vertical" />
+                        <Edit getTableData={this.getTableData} updateFlag={updateFlag}  deptmentCode={this.state.deptCode} info={this.state.lineData} deptCode={record.deviceSpotcheckModelsDetails.code} code = {record.deviceSpotcheckModelsHead.code} deptName={this.state.deptName} deviceName={this.state.deviceName}/>
+                        {updateFlag?<Divider type='vertical'/>:''}
                         <Detail code = {record.deviceSpotcheckModelsHead.code} deptName={this.state.deptName} deviceName={this.state.deviceName}/>
-                        <Divider type="vertical" />
-                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.deviceSpotcheckModelsHead.code)} okText="确定" cancelText="取消" >
-                            <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'} href="#">删除</span>
-                        </Popconfirm>
+                        {deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.deviceSpotcheckModelsHead.code)} okText='确定' cancelText='取消'>
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
                 )
             }
@@ -130,7 +132,12 @@ class CheckTemplate extends React.Component{
                 })
             }
         })
-
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
     componentWillUnmount() {
         this.setState = (state, callback) => {
@@ -258,36 +265,29 @@ class CheckTemplate extends React.Component{
         })
     }
 
-    judgeOperation(operation,operationCode){
-        if(operation===null) return false
-        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
-        return flag.length>0?true:false
-    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const { loading, selectedRowKeys } = this.state;
-        const current = JSON.parse(localStorage.getItem('equipmentCheck'));
-        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
-        this.operation = operation.filter(e=>e.path === current.path)[0].operations
+        let { loading, selectedRowKeys ,addFlag,deleteFlag} = this.state;
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
           };
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div className='equipment'>
                     <Spin spinning={this.state.loading} wrapperClassName={'equipment-left'}>
                     <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></Spin>
                     {/*右边表格部分*/}
                     <Spin spinning={this.state.tableLoading} wrapperClassName='equipment-right'>
-                        <AddBut getTableData={this.getTableData} info={this.state.lineData} deptCode={this.state.deptCode} deviceName={this.state.deviceName} deptName={this.state.deptName}/>
+                        <AddBut addFlag={addFlag} getTableData={this.getTableData} info={this.state.lineData} deptCode={this.state.deptCode} deviceName={this.state.deviceName} deptName={this.state.deptName}/>
                         <DeleteByIds
                             selectedRowKeys={this.state.selectedRowKeys}
                             loading={loading}
                             cancel={this.cancel}
                             deleteByIds={this.deleteByIds}
-                            flag={this.judgeOperation(this.operation,'DELETE')}
+                            flag={deleteFlag}
                         />
                         <div className='clear'></div>
                         <Table rowSelection={rowSelection} size="small" rowKey={record => record.deviceSpotcheckModelsHead.code} dataSource={this.state.dataSource}

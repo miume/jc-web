@@ -49,6 +49,7 @@ class TheTable extends React.Component{
         editable: 1,
         width: '21%',
         render: (text, record) => {
+            let {deleteFlag ,updateFlag}=this.props
             return (
                 <div style={{display:'flex'}}>
                     <EditPart
@@ -60,13 +61,15 @@ class TheTable extends React.Component{
                         deptCode={this.props.deptCode}
                         getTableData={this.props.fetch}
                         pagination={this.props.pagination}
+                        updateFlag={updateFlag}
                     />
+                    {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
                     <DeletaSpan
                         url={this.props.url}
                         code={record.code}
                         handleDelete={this.handleDelete}
                         record={record}
-                        flag={'1'}
+                        flag={deleteFlag}
                     />
                 </div>
             )

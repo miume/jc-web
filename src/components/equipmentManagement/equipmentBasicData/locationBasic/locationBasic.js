@@ -8,7 +8,8 @@ import AddModal from "./addModal";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import TheTable from './theTable'
 import DepTree from "../../../BlockQuote/department";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
+import { updateLocale } from "moment";
 class LocationBasic extends React.Component{
     constructor(props){
         super(props);
@@ -44,14 +45,18 @@ class LocationBasic extends React.Component{
             return ;
         }
     }
+    componentDidMount() {
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('dataEntry'));
-        let operation = JSON.parse(localStorage.getItem('menus')) ?
-            JSON.parse(localStorage.getItem('menus')).filter(e => e.menuId === current.menuParentId):[],
-            click = operation.length ? operation[0]['menuList'] : [];
-        this.operation = click.length ? click.filter(e => e.menuId === current.menuId)[0].operations: [];
-        const { selectedRowKeys } = this.state;
+        this.current = JSON.parse(localStorage.getItem('dataEntry'));
+        const { selectedRowKeys,addFlag,deleteFlag ,updateFlag} = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -60,7 +65,7 @@ class LocationBasic extends React.Component{
         return (
 
             <div>
-                <Blockquote menu={current.menuParent} name={current.menuName} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name={this.current.menuName} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div className='equipment'>
                     {/*左边树部分*/}
                     <DepTree
@@ -76,14 +81,14 @@ class LocationBasic extends React.Component{
                             deptCode={this.state.deptCode}
                             pagination={this.state.pagination}
                             url={this.url}
-                            flag={home.judgeOperation(this.operation,'SAVE')}
+                            flag={addFlag}
                             getTableData={this.fetch}
                         />
                         <DeleteByIds
                             selectedRowKeys={this.state.selectedRowKeys}
                             deleteByIds={this.deleteByIds}
                             cancel={this.cancel}
-                            flag={home.judgeOperation(this.operation,'DELETE')}
+                            flag={deleteFlag}
                         />
                         <TheTable
                             url={this.url}
@@ -95,6 +100,8 @@ class LocationBasic extends React.Component{
                             fetch = {this.fetch}
                             rightTableData={this.state.rightTableData}
                             getTableData={this.getTableData}
+                            updateFlag={updateFlag}
+                            deleteFlag={deleteFlag}
                         />
                     </Spin>
                 </div>

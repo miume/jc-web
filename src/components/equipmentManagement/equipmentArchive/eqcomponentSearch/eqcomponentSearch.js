@@ -3,14 +3,20 @@ import Blockquote from "../../../BlockQuote/blockquote";
 import EARight from "./right/eARight";
 import axios from "axios";
 import {message} from "antd";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class EqcomponentSearch extends React.Component{
     componentWillUnmount() {
         this.setState = () => {
             return;
         }
     }
-
+    componentDidMount(){
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -18,14 +24,12 @@ class EqcomponentSearch extends React.Component{
             rightTableData3: [],
             depCode: -1,
             deviceName: '',
-
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
             flag:0
         };
         this.getTableData = this.getTableData.bind(this)
         this.getTableData2 = this.getTableData2.bind(this)
-
         this.modifySearchContent = this.modifySearchContent.bind(this)
         this.handleTableChange = this.handleTableChange.bind(this)
         this.searchEvent = this.searchEvent.bind(this)
@@ -53,14 +57,16 @@ class EqcomponentSearch extends React.Component{
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        this.current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        let {updateFlag,deleteFlag}=this.state
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="部件/配件关联查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name="部件/配件关联查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding: '15px'}}>
                     <div>
                         <EARight
+                            updateFlag={updateFlag}
+                            deleteFlag={deleteFlag}
                             url={this.url}
                             operation={this.operation}
                             depCode={this.state.depCode}
@@ -102,8 +108,6 @@ class EqcomponentSearch extends React.Component{
             })
         }
     };
-
-
 
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */

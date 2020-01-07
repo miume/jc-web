@@ -42,7 +42,7 @@ class Detail extends React.Component{
                 })
             }
         }).catch((err)=>{
-            console.log(err)
+           
         })
     }
     /**处理一条详情记录 */

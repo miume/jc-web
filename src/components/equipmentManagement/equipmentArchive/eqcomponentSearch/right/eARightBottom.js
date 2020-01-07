@@ -24,13 +24,12 @@ class EARightBottom extends Component {
     }
 
     render() {
-        const current = JSON.parse(localStorage.getItem('current'));
-        this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
         var selectedRowKeys = this.state.selectedRowKeys;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+        let {updateFlag,deleteFlag}=this.props
         return (
             <div className="eA-right-bottom">
                    <div className="eq-aM-search">  </div>
@@ -41,7 +40,7 @@ class EARightBottom extends Component {
                     searchContentChange={this.searchContentChange}
                     searchEvent={this.props.searchEvent}
                     fetch={this.props.comFlag?this.props.searchResetCom:this.props.searchReset}
-                    flag={home.judgeOperation(this.operation, 'QUERY')}/>
+                    flag={true}/>
                 </div>
                 <EARightTable
                     getRightData={this.props.getRightData}
@@ -55,6 +54,8 @@ class EARightBottom extends Component {
                     fetch={this.props.fetch}
                     handleTableChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
+                    updateFlag={updateFlag}
+                    deleteFlag={deleteFlag}
                 />
             </div>
         )

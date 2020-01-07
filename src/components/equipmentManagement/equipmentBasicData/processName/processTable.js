@@ -25,25 +25,24 @@ class ProcessTable extends React.Component{
         key: 'operation',
         width: '40%',
         render: (text, record) => {
+            let {deleteFlag,updateFlag}=this.props
             return (
                 <span>
                     <AddModal
                         deptName={this.props.deptName}
                         deptId={record.deptCode}
                         url={this.props.url}
-                        flag={true}
+                        flag={updateFlag}
                         code = {record.code}
                         processName={record.processName}
                         getTableData={this.props.getTableData}
                     />
-                    <Divider type="vertical" />
-                    <Popconfirm
-                        title="确认删除?"
-                        onConfirm={() => this.handleDelete(record.code)}
-                        okText="确定"
-                        cancelText="取消" >
-                        <span className='blue'>删除</span>
-                    </Popconfirm>
+                    {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.code)} okText='确定' cancelText='取消'>
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                        </span>
                 </span>
             )
         }

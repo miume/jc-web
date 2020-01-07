@@ -7,7 +7,7 @@ import EquipmentStatusTable from './equipmentStatusTable'
 import home from "../../../commom/fns";
 import axios from "axios";
 import {message, Spin} from "antd";
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class EquipmentStatus extends React.Component{
     url;
     operation
@@ -39,50 +39,55 @@ class EquipmentStatus extends React.Component{
 
     componentDidMount() {
         this.fetch();
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
 
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-        const {  selectedRowKeys } = this.state;
+        this.current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        const {  selectedRowKeys,addFlag,deleteFlag,updateFlag } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
         return(
             <div>
-                <Blockquote menu={current.menuParent} name="设备状态"  menu2='返回' returnDataEntry={this.returnEqipmentBasicData} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name="设备状态"  menu2='返回' returnDataEntry={this.returnEqipmentBasicData} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddModal
                         url={this.url}
                         fetch={this.fetch}
-                        flag={home.judgeOperation(this.operation,'SAVE')}
+                        flag={addFlag}
                     />
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.deleteByIds}
                         cancel={this.cancel}
-                        flag={home.judgeOperation(this.operation,'DELETE')}
+                        flag={deleteFlag}
                     />
                     <SearchCell
                         name='请输入状态名称'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
-                        flag={home.judgeOperation(this.operation,'QUERY')}
+                        flag={true}
                     />
                     <div className='clear' ></div>
                     <EquipmentStatusTable
                         handleDelete={this.handleDelete}
                         url={this.url}
                         rowSelection={rowSelection}
-                        judgeOperation = {home.judgeOperation}
-                        operation = {this.operation}
                         fetch={this.fetch}
                         data={this.state.dataSource}
                         modifyDataSource={this.modifyDataSource}
                         modifySelectedRowKeys={this.modifySelectedRowKeys}
+                        updateFlag={updateFlag}
+                        deleteFlag={deleteFlag}
                     />
                 </Spin>
             </div>

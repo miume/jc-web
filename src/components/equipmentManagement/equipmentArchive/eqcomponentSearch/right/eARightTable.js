@@ -54,6 +54,7 @@ class EARightTable extends Component {
         align: 'center',
         width: '25%',
         render: (text, record) => {
+            let {updateFlag,deleteFlag}=this.props
             return (
                 <span>
                     <Fittings
@@ -68,18 +69,21 @@ class EARightTable extends Component {
                         url={this.props.url}
                         comFlag={true}
                     />
-                    <Divider type="vertical"/>
+                    {updateFlag||deleteFlag?<Divider type='vertical'/>:''}
                     <Edit
                         url={this.props.url}
                         comFlag={true}
                         record={record}
                         depCode={this.props.depCode}
                         fetch={this.props.fetch}
+                        updateFlag={updateFlag}
                     />
+                    {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
                     <Delete
                         record={record}
                         flag={true}
                         handleDelete={this.handleDelete}
+                        flag={deleteFlag}
                     />
                 </span>
             )
@@ -139,6 +143,7 @@ class EARightTable extends Component {
         align: 'center',
         width: '28%',
         render: (text, record) => {
+            let {updateFlag,deleteFlag}=this.props
             return (
                 <span>
                     <EqComponent
@@ -162,7 +167,7 @@ class EARightTable extends Component {
                         record={record}
                         url={this.props.url}
                     />
-                    <Divider type="vertical"/>
+                    {updateFlag||deleteFlag?<Divider type='vertical'/>:''}
                     <Edit
                         deviceName={this.props.deviceName}
                         getRightData={this.props.getRightData}
@@ -170,12 +175,13 @@ class EARightTable extends Component {
                         record={record}
                         getTableData={this.props.getTableData}
                         depCode={this.props.depCode}
+                        updateFlag={updateFlag}
                     />
+                    {updateFlag&&deleteFlag?<Divider type='vertical'/>:''}
                     <Delete
                         url={this.props.url}
                         record={record}
-                        flag={true}
-                        // flag={this.props.judgeOperation(this.props.operation,'DELETE')}
+                        flag={deleteFlag}
                         handleDelete={this.handleDelete}
                     />
                 </span>
