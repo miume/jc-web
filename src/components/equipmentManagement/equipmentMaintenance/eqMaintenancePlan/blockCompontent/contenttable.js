@@ -65,6 +65,7 @@ class ContentTable extends React.Component {
         align: 'center',
         width: '19%',
         render: (text,record) => {
+            let {deleteFlag,updateFlag} = this.props;
             return (
                 <span>
                 <EditorofMain
@@ -78,8 +79,9 @@ class ContentTable extends React.Component {
                     getTableData={this.props.getTableData}
                     url={this.props.url}
                     condition={this.props.condition}
+                    updateFlag={updateFlag}
                 />
-                <Divider type="vertical"/>
+                {updateFlag?<Divider type='vertical' />:''}
                 <DetailofMain
                     url={this.props.url}
                     editorRecord={record}
@@ -87,13 +89,17 @@ class ContentTable extends React.Component {
                     deviceName={this.props.deviceName}
                     getTableData={this.props.getTableData}
                 />
-                <Divider type="vertical"/>
+                {deleteFlag?<Divider type='vertical' />:''}
                     {
-                        text ?
-                            <span>删除</span> :
-                            <Popconfirm title="确认删除?" onConfirm={() =>this.handleDel(record.code)} okText="确定" cancelText="取消" >
-                                <span className='blue'>删除</span>
-                            </Popconfirm>
+                        <span className={deleteFlag?'':'hide'}>
+                            {
+                                text ?
+                                <span>删除</span> :
+                                <Popconfirm title="确认删除?" onConfirm={() =>this.handleDel(record.code)} okText="确定" cancelText="取消" >
+                                    <span className='blue'>删除</span>
+                                </Popconfirm>
+                            }
+                        </span>
                     }
                 </span>
             )

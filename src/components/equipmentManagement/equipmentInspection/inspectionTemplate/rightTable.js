@@ -62,14 +62,15 @@ class RightTable extends React.Component{
             key: 'operation',
             align: 'left',
             render: (text, record) => {
+                let {deleteFlag,updateFlag}=this.props
                 return (
                     <span>
-                        <EditorModal record={record} url={this.props.url}/>
-                        {home.judgeOperation(this.props.operation,'UPDATE')?<Divider type='vertical' />:''}
+                        <EditorModal record={record} url={this.props.url} updateFlag={updateFlag}/>
+                        {updateFlag?<Divider type='vertical' />:''}
                         <DetailModal record={record} url={this.props.url}/>
                     {/*删除*/}
-                   {home.judgeOperation(this.props.operation,'DELETE')?<Divider type='vertical' />:''}
-                        <span className={home.judgeOperation(this.props.operation,'DELETE')?'':'hide'}>
+                   {deleteFlag?<Divider type='vertical' />:''}
+                        <span className={deleteFlag?'':'hide'}>
                             <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>
@@ -86,7 +87,7 @@ class RightTable extends React.Component{
         return(
             <div>
                 <div className="ins-tem-deleteByIds">
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={1}/>
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={this.props.deleteFlag}/>
                 </div>
                     <Table
                         rowKey={record => record.code}

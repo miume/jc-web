@@ -4,15 +4,13 @@ import "./eqMaintenanceDataEntry.css"
 import Eqblock from "../../equipmentBasicData/equpimentAssignment/eqblock";
 import axios from "axios";
 import Right from './right'
-
+import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class LeftLayout extends React.Component{
     componentWillUnmount() {
         this.setState = () => {
             return;
         }
     }
-    operation
-
     constructor(props) {
         super(props);
         this.state = {
@@ -30,6 +28,12 @@ class LeftLayout extends React.Component{
 
     componentDidMount() {
         this.fetch( );
+        let {openKeys,menuId} = this.props.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
     }
 
     /**获取所有设备名称*/
@@ -113,7 +117,7 @@ class LeftLayout extends React.Component{
     render(){
         this.url = this.props.url;
         this.current=this.props.current
-        this.operation = this.props.operation
+        let {addFlag,deleteFlag,updateFlag}=this.state
         return(
                 <div className='equipment'>
                     <Spin spinning={this.state.loading} wrapperClassName='equipment-left'>
@@ -139,15 +143,17 @@ class LeftLayout extends React.Component{
                     </Spin>
                     <Right url={this.url}
                            tableLoading = {this.state.tableLoading}
-                           operation={this.operation}
-                           current={this.current}
                            deviceData={this.state.deviceData}
                            dataSource={this.state.dataSource}
                            deviceName={this.state.deviceName}
                            getTableData={this.getTableData}
                            fetch={this.fetch}
                            handleTableChange={this.handleTableChange}
-                           />
+                           current={this.props.current}
+                           addFlag={addFlag}
+                           deleteFlag={deleteFlag}
+                           updateFlag={updateFlag}
+                        />
                 </div>
         )
 

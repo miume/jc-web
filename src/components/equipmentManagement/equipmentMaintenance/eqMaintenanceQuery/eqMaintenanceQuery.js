@@ -32,12 +32,11 @@ class EqMaintenanceQuery extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        this.current = JSON.parse(localStorage.getItem('dataEntry')) ;
 
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="设备查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name="设备查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <Tabs onChange={this.tabsChange} style={{paddingLeft:'15px',paddingRight:'15px'}}>
                     <Tabs.TabPane key={1} tab="待保养">
                         <WillMaintain
@@ -48,6 +47,7 @@ class EqMaintenanceQuery extends React.Component{
                             rightTableData={this.state.rightTableData}
                             depName={this.state.depName}
                             loading = {this.state.loading}
+                            current={this.current}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane key={2} tab="已接单">

@@ -5,7 +5,7 @@ import home from "../../../../commom/fns";
 import './willMaintain.css'
 import DepTree from "../../../../BlockQuote/department";
 import {Spin} from "antd";
-
+import {judgeOperation,getOperations} from '../../../../commom/getOperations'
 class WillMaintain extends React.Component{
     componentWillUnmount() {
         this.setState(() => {
@@ -34,7 +34,7 @@ class WillMaintain extends React.Component{
         this.handleTableChange = this.handleTableChange.bind(this);
     }
     render() {
-
+        let {deleteFlag} = this.state;
         return (
             <div className='equipment-query'>
                 <DepTree
@@ -50,7 +50,7 @@ class WillMaintain extends React.Component{
                             fetch={this.fetch}
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
-                            flag={home.judgeOperation(this.props.operation,'QUERY')}
+                            flag={true}
                             type={1}
                         />
                     </div>
@@ -61,12 +61,18 @@ class WillMaintain extends React.Component{
                         pagination={this.pagination}
                         rightTableData={this.props.rightTableData}
                         handleTableChange={this.handleTableChange}
+                        deleteFlag={deleteFlag}
                     />
                 </Spin>
             </div>
         );
     }
-
+    componentDidMount() {
+        let {openKeys,menuId} = this.props.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            deleteFlag:judgeOperation(operations,'DELETE'),
+        })
+    }
     getTableData = (params) => {
         params['statusId'] = 1;
         this.props.getTableData(params)

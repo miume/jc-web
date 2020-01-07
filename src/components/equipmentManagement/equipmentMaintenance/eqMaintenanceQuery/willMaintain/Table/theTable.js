@@ -59,6 +59,7 @@ class TheTable extends React.Component {
             key: 'move',
             width: '15%',
             render: (text, record) => {
+                let {deleteFlag}=this.props
                 return (
                     <div style={{display:'flex'}}>
                         <Details
@@ -68,6 +69,7 @@ class TheTable extends React.Component {
                         <Delete
                             handleDelete={this.handleDelete}
                             record={record}
+                            deleteFlag={deleteFlag}
                         />
                     </div>
                 )

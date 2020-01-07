@@ -63,7 +63,7 @@ class InspectionTable extends React.Component {
             align:'center',
             width: '20%',
             render:(text,record)=>{
-                const {status} = this.props;
+                const {status,} = this.props;
                 return this.renderOperation(text,record,status);
             }
         }]
@@ -85,15 +85,18 @@ class InspectionTable extends React.Component {
 
     renderOperation(text,record,status) {
         if(status === 1) {
+            let {deleteFlag,updateFlag}=this.props
             return(
                 <span>
-                        <Edit planId={record.devicePatrolPlanRecordHead.code} getTableData={this.props.searchEvent}/>
-                        <Divider type="vertical" />
+                        <Edit updateFlag={updateFlag} planId={record.devicePatrolPlanRecordHead.code} getTableData={this.props.searchEvent}/>
+                        {updateFlag?<Divider type='vertical' />:''}
                         <Details code={record.devicePatrolPlanRecordHead.code}/>
-                        <Divider type="vertical" />
-                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.devicePatrolPlanRecordHead.code)} okText="确定" cancelText="取消" >
-                            <span className={'blue'}>删除</span>
-                        </Popconfirm>
+                        {deleteFlag?<Divider type='vertical' />:''}
+                        <span className={deleteFlag?'':'hide'}>
+                            <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.devicePatrolPlanRecordHead.code)} okText="确定" cancelText="取消" >
+                                <span className={'blue'}>删除</span>
+                            </Popconfirm>
+                        </span>
                     </span>
             )
         }

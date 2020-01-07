@@ -7,6 +7,7 @@ import ImportFile from './importFile'
 import axios from "axios";
 import NewButton from '../../../BlockQuote/newButton'
 import moment from 'moment'
+import {getOperations, judgeOperation} from "../../../commom/getOperations";
 class FireInsDataAcq extends Component{
     constructor(props){
         super(props)
@@ -53,6 +54,11 @@ class FireInsDataAcq extends Component{
     }
     componentDidMount() {
         this.getTableData()
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            importFlag: judgeOperation(operations,'UPLOAD'),
+            exportFlag: judgeOperation(operations,'DOWNLOAD'),
+        })
     }
     componentWillUnmount() {
         this.setState=()=>{
@@ -112,15 +118,15 @@ class FireInsDataAcq extends Component{
         this.props.history.push({pathname:"/inspectionManagement"})
     }
     render(){
-        const current=JSON.parse(localStorage.getItem('dataEntry'));
+        this.current=JSON.parse(localStorage.getItem('dataEntry'));
         this.url=JSON.parse(localStorage.getItem('url'));
-        let {loading,dataSource,searchContent}=this.state;
+        let {loading,dataSource,searchContent,importFlag,exportFlag}=this.state;
         return(
             <div>
-                <BlockQuote name={'数据采集'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name={'数据采集'} menu={this.current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
-                    <ExportFile url={this.url} getTableData={this.getTableData}/>
-                    <ImportFile url={this.url} getTableData={this.getTableData} />
+                    <ExportFile url={this.url} getTableData={this.getTableData} exportFlag={exportFlag}/>
+                    <ImportFile url={this.url} getTableData={this.getTableData} importFlag={importFlag}/>
 
                     <span className={'searchCell'}>
                         <DatePicker placeholder={'请选择日期'} value={searchContent?moment(searchContent):null} onChange={this.dateChange}/>&nbsp;&nbsp;&nbsp;

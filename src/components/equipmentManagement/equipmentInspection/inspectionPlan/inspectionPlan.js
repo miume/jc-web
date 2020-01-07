@@ -28,14 +28,14 @@ class InspectionPlan extends React.Component{
 
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
+        this.current = JSON.parse(localStorage.getItem('dataEntry')) ;
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="巡检计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name="巡检计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <Tabs defaultActiveKey='1' onChange={this.tabsChange}>
                     {/*tab是选项卡头显示文字,key是对应activeKey，activeKey是当前激活 tab 面板的 key */}
                     <TabPane tab={'待巡检'} key='1'>
-                        <InspectionRight status={1} loading={this.state.loading} getTableData={this.getTableData} deviceName={this.state.deviceName}
+                        <InspectionRight status={1} current={this.current} loading={this.state.loading} getTableData={this.getTableData} deviceName={this.state.deviceName}
                                          url={this.url} rightTableData={this.state.rightTableData} deptCode={this.state.checkPlan}/>
                     </TabPane>
                     <TabPane tab={'已接单'} key='2'>

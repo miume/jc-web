@@ -77,10 +77,10 @@ class ExportFile extends Component{
         this.child.cancel()
     }
     render(){
-        let {visible,processData,modelData}=this.state
+        let {visible,processData,modelData}=this.state,{exportFlag}=this.props
         return(
             <span>
-                <NewButton name={'导出'} className={'fa fa-plus'} handleClick={this.showModal}/>
+                <span className={exportFlag?'':'hide'}><NewButton name={'导出'} className={'fa fa-plus'} handleClick={this.showModal}/></span>
                 <Modal
                     title={'导出'}
                     visible={visible}

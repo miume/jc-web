@@ -235,9 +235,10 @@ class Addmaintenancebutton extends React.Component {
             onChange: this.selectChange
         };
         const dateFormat = 'YYYY-MM-DD';
+        let {addFlag} = this.props;
         return(
             <span className='left_buttons'>
-                <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
+                <span className={addFlag?'':'hide'}><AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' /></span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}

@@ -84,10 +84,10 @@ class ImportFile extends Component{
         this.child.cancel()
     }
     render(){
-        let {visible,processData,modelData}=this.state
+        let {visible,processData,modelData}=this.state,{importFlag}=this.props
         return(
             <span>
-                <NewButton name={'导入'} className={'fa fa-plus'} handleClick={this.showModal}/>
+                 <span className={importFlag?'':'hide'}><NewButton name={'导入'} className={'fa fa-plus'} handleClick={this.showModal}/></span>
                 <Modal
                     title={'导入'}
                     visible={visible}

@@ -47,9 +47,10 @@ class EditorofMain extends React.Component{
             selectedRowKeys: this.state.selectedRowKeys,
             onChange: this.selectChange
         };
+        let {updateFlag}=this.props
         return(
             <span>
-                <span onClick={this.handleMaintanceEditor} className="blue">编辑</span>
+                <span onClick={this.handleMaintanceEditor} className={updateFlag?"blue":'hide'}>编辑</span>
                 <Modal title='编辑' visible={this.state.editorVisible}
                        width="1100px"
                        closable={false}

@@ -15,8 +15,6 @@ class  Right extends React.Component{
     }
 
     url
-    operation
-
     constructor(props){
         super(props);
         this.state = {
@@ -89,18 +87,17 @@ class  Right extends React.Component{
             key:'operation',
             align:'left',
             render: (text,record) => {
-                // let update = home.judgeOperation(this.operation,'UPDATE');
+                let {deleteFlag,updateFlag}=this.props
                 return (
                     <span>
-                        <Add editorFlag={true} flag={true} deviceName={this.props.deviceName} code={record.code} url={this.props.url} getTableData={this.props.getTableData } fetch={this.props.fetch}
+                        <Add editorFlag={true} flag={deleteFlag} deviceName={this.props.deviceName} code={record.code} url={this.props.url} getTableData={this.props.getTableData } fetch={this.props.fetch}
                                   maintenanceContent={record.maintenanceContent}
                                   maintenanceFrequency={record.maintenanceFrequency}
                                   maintenanceItems={record.maintenanceItems}
                                   optType={record.optType}
                         />
-                        {/*{home.judgeOperation(this.operation,'DELETE')?*/}
-                        <Divider type='vertical' />
-                        <span className={home.judgeOperation(this.operation,'DELETE')?'':'hide'}>
+                        {updateFlag&&deleteFlag?<Divider type='vertical' />:''}
+                        <span className={deleteFlag?'':'hide'}>
                             <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>
@@ -245,24 +242,24 @@ class  Right extends React.Component{
         this.props.getTableData(params); //调用父组件方法获取表格数据
     }
 
+
     /**通过id查询详情 */
     render() {
         /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
         this.current=this.props.current
-        this.operation = this.props.operation
         this.status = JSON.parse(localStorage.getItem('status'));
         const {selectedRowKeys} = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange:this.onSelectChange,
-        }, addFlag = true;
+        };
         this.pagination.total = this.props.dataSource.length;
-        // const addFlag = home.judgeOperation(this.operation,'SAVE');
+        let {addFlag,deleteFlag}=this.props
         return (
             <Spin spinning={this.props.tableLoading} wrapperClassName="equipment-right">
-                <Add deviceData={this.props.deviceData} flag={true}  url={this.props.url} getTableData={this.props.getTableData} deviceName={this.props.deviceName} />
+                <Add deviceData={this.props.deviceData} flag={addFlag}  url={this.props.url} getTableData={this.props.getTableData} deviceName={this.props.deviceName} />
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
-                             flag={true}
+                             flag={deleteFlag}
                 />
                 <SearchCell name='请输入保养数据或保养内容' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
                             fetch={this.reset} flag={true} />
