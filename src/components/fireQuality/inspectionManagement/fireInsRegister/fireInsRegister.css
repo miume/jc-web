@@ -113,27 +113,30 @@
 
 
 .detailModal_scala{
-    height: 300px;
+    height: 400px;
 }
 .detailModal_top {
     width: 100%;
-    height: 10%;
+    height: 8%;
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 .detailModal_middle{
     width: 100%;
-    height: 10%;
+    height: 8%;
     /*display: flex;*/
     /*flex-direction: row;*/
     /*justify-content: center;*/
 }
 .detailModal_middle span{
     padding-top: 10px !important;
-    padding-left: 75px;
+    padding-left: 88px;
     width: 100%;
     height: 100%;
+}
+.detailModal_middle_series {
+    padding-bottom: 5px !important;
 }
 .detailModal_top_maxSpan {
     width: 54% !important;
@@ -143,7 +146,7 @@
 }
 .detailModal_down {
     width: 100%;
-    height: 55%;
+    height: 60%;
     padding-top: 10px;
     overflow: auto;
 
