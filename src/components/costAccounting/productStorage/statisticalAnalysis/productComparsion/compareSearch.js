@@ -3,12 +3,13 @@ import {Select,message} from 'antd'
 import NewButton from '../../../../BlockQuote/newButton'
 import axios from "axios";
 
-const {Option}=Select;
-class Search extends Component{//工序对比分析
+const {Option} = Select;
+class Search extends Component {
     constructor(props){
         super(props)
         this.state = {
-            lineNameData: []
+            lineNameData: [],
+            lines: []
         };
         this.search = this.search.bind(this);
         this.linesChange = this.linesChange.bind(this);
@@ -57,7 +58,10 @@ class Search extends Component{//工序对比分析
     /**监控统计周期变化*/
     periodsChange(value) {
         this.setState({
-            periodCode: value
+            periodCode: value,
+            lineNameData: [],
+            lineName: undefined,
+            params: {}
         });
         this.getPeriodAndTime(value);
     }
@@ -98,7 +102,7 @@ class Search extends Component{//工序对比分析
             let res = data.data.data;
             if(res && res.length) {
                 for(let i = 0; i < res.length; i++) {
-                    res[i]['lineName'] = res[i]['periodNum'];
+                    res[i]['lineName'] = res[i]['lineName'] ? res[i]['lineName'] : res[i]['periodNum'];
                 }
                 res.splice(0,0,{
                     "code": -1,
@@ -115,8 +119,8 @@ class Search extends Component{//工序对比分析
     }
 
     search() {
-        let {periodCode,lines,params} = this.state;
-        if(!periodCode || !lines.length || !params['lineName']) {
+        let {periodCode,lines,params,lineName} = this.state;
+        if(!periodCode || !lines.length || !lineName) {
             message.info('请选择完整条件！');
             return
         }
