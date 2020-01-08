@@ -1,6 +1,7 @@
 import React from 'react';
-import {Icon, Select, Table} from "antd";
+import {Icon, Input, Select, Table} from "antd";
 import Submit from "../../../BlockQuote/checkSubmit";
+import NewButton from "../../../BlockQuote/newButton";
 
 class Right extends React.Component {
     constructor(props) {
@@ -8,6 +9,8 @@ class Right extends React.Component {
         this.state = {
 
         };
+        this.search = this.search.bind(this);
+        this.inputChange = this.inputChange.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.applySaveAndReview = this.applySaveAndReview.bind(this);
 
@@ -56,8 +59,13 @@ class Right extends React.Component {
         let {data} = this.props;
         return (
             <div style={{width: '50%'}}>
-                <Table columns={this.columns} pagination={false} dataSource={data}
+                <Table columns={this.columns} pagination={false} dataSource={data} className={'stock-out-right-table'}
                        bordered size={'small'} rowKey={record => record.id} scroll={{y:'52vh'}}/>
+                <div style={{marginTop: 10}}>
+                    <span>批次信息：</span>
+                    <Input placeholder={'请输入批次信息'} style={{width: 200, marginRight: 10}} onChange={this.inputChange}/>
+                    <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
+                </div>
                 <div className={'stock-out-flex'} style={{marginTop: 10}}>
                     <div>
                         <span>产线：</span>
@@ -75,6 +83,17 @@ class Right extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    search() {
+
+    }
+
+    inputChange(e) {
+        let tar = e.target, value = tar.value;
+        this.setState({
+            batch: value
+        })
     }
 
     selectChange(value,option) {

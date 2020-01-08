@@ -13,7 +13,7 @@ class OtherStockOut extends React.Component {
             url = JSON.parse(localStorage.getItem('url'));
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
+                <BlockQuote name={current ? current.menuName : ''} menu={current ? current.menuParent : ''}></BlockQuote>
                 <Tabs defaultActiveKey={'1'}>
                     <TabPane key={'1'} tab={'出库申请'}>
                         <Application url={url}/>

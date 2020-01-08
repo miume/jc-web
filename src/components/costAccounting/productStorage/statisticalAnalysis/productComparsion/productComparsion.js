@@ -3,13 +3,13 @@ import {Spin} from 'antd'
 import Search from './compareSearch'
 import ReactEcharts from 'echarts-for-react';
 import axios from "axios";
-class ProcessCompare extends Component{//工序对比分析
+class ProcessCompare extends Component{ //产线对比曲线
     constructor(props) {
         super(props);
         this.state = {
             loading:false
         };
-        this.getOption=this.getOption.bind(this);
+        this.getOption = this.getOption.bind(this);
         this.getTableData = this.getTableData.bind(this);
     }
 

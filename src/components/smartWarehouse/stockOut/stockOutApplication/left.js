@@ -61,7 +61,7 @@ class Left extends React.Component {
                        bordered size={'small'} rowKey={record => record.id}/>
 
                 <Table columns={this.columns1} pagination={false} className={'stock-out-table'}  dataSource={data1}
-                       bordered size={'small'} rowKey={record => record.id} rowSelection={rowSelection} scroll={{y:'46vh'}}/>
+                       bordered size={'small'} rowKey={record => record.id} rowSelection={rowSelection} scroll={{y:'53vh'}}/>
             </div>
         )
     }

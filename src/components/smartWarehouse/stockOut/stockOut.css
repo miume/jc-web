@@ -1,5 +1,7 @@
 .stock-out {
     padding: 5px 15px;
+    height: 75vh;
+    overflow-y: auto;
 }
 .stock-out-flex {
     display: flex;
@@ -19,4 +21,8 @@
     font-size: 20px;
     font-weight: 800;
     color: red;
+}
+
+.stock-out-right-table {
+    height: 58vh;
 }
