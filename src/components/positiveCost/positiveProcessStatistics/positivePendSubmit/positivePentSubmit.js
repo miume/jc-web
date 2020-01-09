@@ -14,12 +14,17 @@ class PositivePendSubmit extends Component{//待提交
             title:'周期类型',
             dataIndex:'periodName',
             key:'periodName',
-            width:'15%'
+            width:'10%'
         },{
             title:'期数',
             dataIndex:'head.periods',
             key:'head.periods',
-            width:'15%'
+            width:'10%'
+        },{
+            title:'产线',
+            dataIndex:'lineNama',
+            key:'lineNama',
+            width:'10%'
         },{
             title:'开始时间',
             dataIndex:'head.beginTime',

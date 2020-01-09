@@ -55,7 +55,7 @@ class PositiveProcessStatistics extends Component{
             }
         }).then(data=>{
             let res=data.data.data
-            if(res){
+            if(res.length){
                 this.setState({
                     periodStatis:res,
                     periodCode:res[0].code,
@@ -169,15 +169,12 @@ class PositiveProcessStatistics extends Component{
     }
     /**获取已统计表格数据*/
     getStatisticPage(params,pagination){
-        let size=pagination?pagination.pageSize:10,page=pagination?pagination.current:1
-        
-  
-        let da={
+        let size=pagination?pagination.pageSize:10,page=pagination?pagination.current:1,
+        da={
             periodCode:this.state.periodCode,
             lineCode:this.state.lineCode
         }
         params=(params['periodCode']||params['startTime']||params['endTime']||params['lineCode'])?params:da
-         
         this.setState({
             loadingStatis:true
         })
@@ -227,7 +224,7 @@ class PositiveProcessStatistics extends Component{
     }
 
     render(){
-        let {periodStatis,periodCode,time,length,line,lineCode,dataStatistic,dataSubmit,head}=this.state
+        let {periodStatis,periodCode,time,length,line,lineCode,dataStatistic,dataSubmit,head,tabKey}=this.state
         this.current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
         return(
@@ -238,8 +235,8 @@ class PositiveProcessStatistics extends Component{
                           <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd} />
                     </span>
                     <NewButton name='统计分析' handleClick={this.statisticalAnalysis}/>
-                    <Search flag={true} periodStatis={periodStatis} line={line}
-                            periodCode={periodCode} time={time} length={length} confirm={this.confirm} lineCode={lineCode}/>
+                    <Search flag={true} periodStatis={periodStatis} line={line} tabKey={tabKey} getPendSubmit={this.getPendSubmit} getStatisticPage={this.getStatisticPage}
+                            periodCode={tabKey === '2' ? periodCode : undefined} time={time} length={length} confirm={this.confirm} lineCode={tabKey === '2' ? lineCode : undefined}/>
                     <div className='clear'></div>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         <TabPane tab='待提交' key='1'>
