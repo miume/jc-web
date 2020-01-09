@@ -40,6 +40,7 @@ class Menu extends React.Component{
       this.searchEvent = this.searchEvent.bind(this);
       this.judgeOperation = this.judgeOperation.bind(this);
       this.getAllMenus = this.getAllMenus.bind(this);
+      this.onSelectChange = this.onSelectChange.bind(this);
       this.treeDataProcessing = this.treeDataProcessing.bind(this);
 
       this.pagination = {
