@@ -94,7 +94,7 @@ class AddModal extends React.Component {
                        centered={true} width={700}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
-                           <AddTableModal key={'save'} title={'保存'} url={this.props.url} getTableParams={this.props.getTableParams} id={selectedRowKeys[0]} handleCancel={this.handleSave}/>
+                           <AddTableModal key={'save'} title={'保存'} flag={true} url={this.props.url} getTableParams={this.props.getTableParams} id={selectedRowKeys[0]} handleCancel={this.handleSave}/>
                        ]}>
                     <div className='check-template-add'>
                         <div>点检站点：</div>
