@@ -72,9 +72,9 @@ class PowerCheck extends React.Component {
         this.getTableParams();
         let {menuId} = this.current, operations = getSecondsOperations(menuId);
         this.setState({
-            addFlag: judgeOperation(this.operations,'SAVE'),
-            updateFlag: judgeOperation(this.operations,'UPDATE'),
-            deleteFlag: judgeOperation(this.operations,'DELETE')
+            addFlag: judgeOperation(operations,'SAVE'),
+            updateFlag: judgeOperation(operations,'UPDATE'),
+            deleteFlag: judgeOperation(operations,'DELETE')
         })
     }
 

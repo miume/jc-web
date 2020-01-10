@@ -102,7 +102,7 @@ class PowerCheckTemplate extends React.Component {
             let res = data.data.data;
             if(res && res.list) {
                 let result = [];
-                result['total'] = res.total ? res.total : 0;
+                this.pagination.total = res.total ? res.total : 0;
                 for(let i = 0; i < res.list.length; i++) {
                     let {model,siteName} = res['list'][i];
                     model['index'] = (res['page'] - 1) * 10 + i + 1;
