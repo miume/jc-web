@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Table} from 'antd'
+import {Table,Input} from 'antd'
 class PremixedCoulterMixed extends Component{//预混(犁刀混)
     constructor(props){
         super(props)
@@ -12,23 +12,37 @@ class PremixedCoulterMixed extends Component{//预混(犁刀混)
             title:'物料类型',
             dataIndex:'materialName',
             key:'materialName',
-            width:'20%'
+            width:'15%'
         },{
             title:'产线',
             dataIndex:'productLine',
             key:'productLine',
-            width:'20%'
+            width:'15%'
+        },{
+            title:'次数',
+            dataIndex:'value',
+            key:'value',
+            width:'15%',
+            render:(text,record)=>{
+                return(
+                    <Input value={record.value} name={`${record.index-1}-${'value'}`} onChange={this.inputChange}/>
+                )
+            }
         },{
             title:'已混量(kg)',
             dataIndex:'mix',
             key:'mix',
-            width:'20%'
+            width:'15%'
         },{
             title:'结存量(kg)',
             dataIndex:'balance',
             key:'balance',
-            width:'20%'
+            width:'15%'
         }]
+        this.inputChange=this.inputChange.bind(this);
+    }
+    inputChange(e){
+        this.props.inputChange(e,this.props.processId)
     }
     render(){
         this.tableData = this.props.tagTableData&&this.props.tagTableData[1]&&this.props.tagTableData[1].materials?this.props.tagTableData[1].materials:[]

@@ -272,7 +272,7 @@ class PositiveAdd extends Component {
         this.url = JSON.parse(localStorage.getItem('url'))
         this.tabData = [
             { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
-            { component: <PremixedCoulterMixed productLine={productLine} tagTableData={tagTableData} processId={tabKey}/> },
+            { component: <PremixedCoulterMixed productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
             { component: <PremixedStorageBin productLine={productLine} tagTableData={tagTableData} processId={tabKey}/> },
             { component: <PreBuring productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
             { component: <Crush productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },

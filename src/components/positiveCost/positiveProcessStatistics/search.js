@@ -9,7 +9,7 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      periodFlag: true, //为真意味着使用父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
+        periodFlag: true, //为了一开始的渲染，一旦select了，此标志为false
         lineCodeFlag:true
     };
     this.startChange = this.startChange.bind(this);
@@ -23,6 +23,7 @@ class Search extends Component {
           return
       }
   }
+ 
 /**开始日期变化*/
   startChange(date, dateString) {
     let {length,time}=this.props,{periodFlag}=this.state,
@@ -54,6 +55,7 @@ class Search extends Component {
      if(option.props.name==='lineCode'){
          this.setState({
              lineCode:value,
+             lineCodeFlag:false
          })
      }
      else{//统计周期下拉变化
@@ -63,7 +65,8 @@ class Search extends Component {
              periodCode: value,
              periodFlag: false,
              length:length,
-             time:time
+             time:time,
+             periodFlag:false
          });
      }
   }
@@ -84,6 +87,7 @@ class Search extends Component {
     }
 
     reset() {
+      if(this.props.tabKey==='2'){//已统计，周期和产线要有默认值，待提交不需要
         this.setState({
             startTime: undefined,
             endTime: undefined,
@@ -92,15 +96,32 @@ class Search extends Component {
             startDate: null,
             endDate: null
         })
+        this.props.getStatisticPage({
+            periodCode: this.props.periodCode,
+            lineCode: this.props.lineCode,
+        })
+      }
+      else{
+        this.setState({
+            startTime: undefined,
+            endTime: undefined,
+            periodCode: undefined,
+            lineCode: undefined,
+            startDate: null,
+            endDate: null
+        })
+        this.props.getPendSubmit({})
+      }
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (this.props.periodCode != nextProps.periodCode) {
-            this.setState({
-                periodCode: nextProps.periodCode
-            })
+        if (this.props.periodCode !== nextProps.periodCode) {
+                this.setState({
+                    periodCode: nextProps.periodCode
+                })
+           
         }
-        if (this.props.lineCode != nextProps.lineCode) {
+        if (this.props.lineCode !== nextProps.lineCode) {
             this.setState({
                 lineCode: nextProps.lineCode
             })
@@ -108,7 +129,7 @@ class Search extends Component {
     }
 
     render() {
-        let {line, periodStatis} = this.props, {lineCode, endDate, periodCode, startDate} = this.state
+        let {line, periodStatis,tabKey} = this.props, {lineCode, endDate, periodCode, startDate} = this.state
         return (
             <span className={this.props.flag ? "searchCell" : "hide"}>
         <span>开始时间 : </span>
@@ -161,8 +182,7 @@ class Search extends Component {
               : null}
         </Select>
         <NewButton name="确定" handleClick={this.confirm}/>
-        <Button type={'primary'} onClick={this.reset} className={'button'}><i className="fa fa-repeat"
-                                                                              aria-hidden="true"></i> 重置</Button>
+        <Button type={'primary'} onClick={this.reset} className={'button'}><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
       </span>
         );
     }
