@@ -128,6 +128,7 @@ class ProcessTable extends React.Component {
         return (
             <span>
                 {this.judgeEditor(update,code)}
+                <Divider type='vertical'/>
                 <DeleteById id={code} handleDelete={this.handleDelete} flag={deleteFlag}/>
             </span>
         )
