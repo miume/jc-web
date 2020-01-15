@@ -63,25 +63,10 @@ class ExportModal extends Component {
         })
     }
     selectChange(value, name) {
-        let { processCode, modelCode } = this.state
         name = name.props.name
         this.setState({
             [name]: value
         })
-        // if (name === 'processCode' && modelCode) {
-        //     let params = {
-        //         processCode: value,
-        //         productCode: modelCode
-        //     }
-        //     this.getAllByProcessByProdut(params)
-        // }
-        // if (name === 'modelCode' && processCode) {
-        //     let params = {
-        //         processCode: processCode,
-        //         productCode: value
-        //     }
-        //     this.getAllByProcessByProdut(params)
-        // }
     }
     getAllByProcessByProdut(params) {
         axios({
@@ -116,10 +101,7 @@ class ExportModal extends Component {
                 productCode: modelCode,
                 startTime: date
             }
-        // if (processCode === undefined || processCode === '' || modelCode === undefined || modelCode === '' || date === '' || date === undefined) {
-        //     message.error('信息选择不完整!')
-        //     return
-        // }
+
         axios({
             url: this.props.url.dateConllection.getByProcessByProduct,
             method: 'get',
@@ -140,8 +122,12 @@ class ExportModal extends Component {
         })
     }
     onSelectChange(selectedRowKeys, record) {
-        let { batches } = this.state
-        batches.push(record[0].batch)
+        // let { batches } = this.state
+        // batches.push(record[0].batch)
+        let batches = [];
+        for(let i = 0; i < record.length; i++) {
+            batches.push(record[i].batch)
+        }
         this.setState({
             batches: batches,
             selectedRowKeys: selectedRowKeys
@@ -194,7 +180,6 @@ class ExportModal extends Component {
             testItem:[],
             processCode:undefined,
             modelCode:undefined,
-            // testItemData:[],
             batches:[],
             date:null,
             selectedRowKeys:[]
