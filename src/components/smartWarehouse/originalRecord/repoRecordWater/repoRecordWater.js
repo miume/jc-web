@@ -1,6 +1,6 @@
 import React from 'react';
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Spin, message, Table, Tabs, Popconfirm} from "antd";
+import {Spin, Tabs} from "antd";
 import SearchCell from '../../../BlockQuote/newSearchSell';
 import axios from 'axios';
 import InWater from './inWater'
@@ -92,59 +92,64 @@ class RepoRecordWater extends React.Component {
             params = {
                 condition: value === undefined ? searchContent : value,
                 size: pageSize,
-                page: current
+                current: current
             };
         this.getTableData(params,key);
     }
 
     /**获取表格数据*/
     getTableData = (params,key) => {
-        if (key==="1"){
-            this.setState({
-                dataSource:data1
-            })
+        var url=""
+        if (key==="2"){
+            url = this.url.repoRecordWater.outPages
         } else{
-            this.setState({
-                dataSource:data2
-            })
+            url = this.url.repoRecordWater.inPages
         }
-        console.log(params)
-        console.log(key)
-
-
-
-        // this.setState({
-        //     loading: true
-        // });
-        // axios({
-        //     url: `${this.url.checkSite.page}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params
-        // }).then(data => {
-        //     let res = data.data.data;
-        //     if(res && res.list) {
-        //         this.pagination.total = res['total'] ? res['total'] : 0;
-        //         for(let i = 0; i < res.list.length; i++) {
-        //             res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list
-        //         })
-        //     }
-        //     this.setState({
-        //         loading: false
-        //     })
-        // })
+        this.setState({
+            loading: true
+        });
+        axios({
+            url: url,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                materialCode: params.condition,
+            },
+            data:{
+                current:params.current,
+                size:params.size
+            },
+        }).then(data => {
+            let res = data.data.data;
+            console.log(res)
+            if(res && res.records) {
+                this.pagination.total = res['total'] ? res['total'] : 0;
+                var dataSource =[];
+                for(let i = 0; i < res.records.length; i++) {
+                    dataSource.push({
+                        col1: (res['current'] - 1) * 10 + i + 1,
+                        col2: res.records[i].materialCode,
+                        col3: res.records[i].createdTime,
+                        col4: res.records[i].createdPerson
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource
+                })
+            }
+            this.setState({
+                loading: false
+            })
+        })
     }
 
 
     handleTableChange = (pagination) => {
         this.pagination = pagination;
         const tabKey = this.state.tabKey;
-        this.getTableParams(undefined,tabKey);
+        this.getTableParams('',tabKey);
     }
 
     /**搜索事件*/
@@ -153,7 +158,7 @@ class RepoRecordWater extends React.Component {
             searchContent
         });
         this.pagination.current = 1;
-        this.getTableParams(searchContent)
+        this.getTableParams(searchContent,this.state.tabKey)
     }
 
     /**重置事件*/

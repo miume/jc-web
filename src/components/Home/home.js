@@ -943,6 +943,11 @@ class Home extends Component {
             anodeCostAccount:{
                 getDate:`${server}/jc/common/anodeCostAccount/getDate`,
                 confirm:`${server}/jc/common/anodeCostAccount/confirm`
+            },
+            /**进出流水*/
+            repoRecordWater:{
+                inPages:`${server}/jc/repo/SwmsStockInJournalAccount/pages`,
+                outPages:`${server}/jc/repo/SwmsStockOutJournalAccount/pages`
             }
     };
 
