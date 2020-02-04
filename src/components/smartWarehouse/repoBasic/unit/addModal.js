@@ -20,7 +20,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,deliveryTypeName} = this.state, {title,flag} = this.props;
+        let {visible,measureUnit,measureUnitDesc} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -32,10 +32,10 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <Input placeholder={'请输入计量单位'} name={'deliveryTypeName'} value={deliveryTypeName} style={{width:300}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入计量单位'} name={'measureUnit'} value={measureUnit}  onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <Input placeholder={'请输入计量单位中文含义'} name={'deliveryTypeName'} value={deliveryTypeName} style={{width:300}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入计量单位中文含义'} name={'measureUnitDesc'} value={measureUnitDesc} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -54,9 +54,10 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {deliveryTypeName,id} = record;
+            let {measureUnit,measureUnitDesc,id} = record;
             this.setState({
-                deliveryTypeName,
+                measureUnit,
+                measureUnitDesc,
                 id
             });
         }
@@ -92,25 +93,31 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code==='000000'){
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                }
+                else{
+                    message.info(data.data.data)
+                }
             })
         }
     }
 
     saveDataProcessing() {
-        let {deliveryTypeName,id} = this.state,
+        let {measureUnit,measureUnitDesc,id} = this.state,
             data = {
                 id,
-                deliveryTypeName
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!deliveryTypeName) {
-            message.info('请将出库类别填写完整！');
+                measureUnit,
+                measureUnitDesc
+            }, method = 'post', url = `${this.props.url.SwmsBasicMeasureUnit}/add`;
+        if(!measureUnit||!measureUnitDesc) {
+            message.info('请将信息填写完整！');
             return false
         }
         if(id) {
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = `${this.props.url.SwmsBasicMeasureUnit}/${id}`;
         }
         return {data,method,url};
     }

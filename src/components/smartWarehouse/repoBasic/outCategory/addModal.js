@@ -32,8 +32,7 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>出库类别：</div>
-                        <Input placeholder={'请输入出库类别'} name={'deliveryTypeName'} value={deliveryTypeName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入出库类别'} name={'deliveryTypeName'} value={deliveryTypeName} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -66,7 +65,8 @@ class AddModal extends React.Component {
     /**取消事件*/
     handleCancel() {
         this.setState({
-            visible: false
+            visible: false,
+            deliveryTypeName:undefined
         });
     }
 
@@ -90,8 +90,13 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code==='000000'){
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                }
+               else{
+                message.info(data.data.data);
+               }
             })
         }
     }
@@ -101,14 +106,14 @@ class AddModal extends React.Component {
             data = {
                 id,
                 deliveryTypeName
-            }, method = 'post', url = this.props.url.checkSite.add;
+            }, method = 'post', url = `${this.props.url.swmsBasicDeliveryTypeInfo}/add`;
         if(!deliveryTypeName) {
             message.info('请将出库类别填写完整！');
             return false
         }
         if(id) {
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = `${this.props.url.swmsBasicDeliveryTypeInfo}/${id}`;
         }
         return {data,method,url};
     }
