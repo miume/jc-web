@@ -93,13 +93,17 @@ class RepoQueryInOutDaily extends React.Component {
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <Check
-                        flag={0}
-                        tabKey={this.state.tabKey}
-                        url={this.url}
-                        selectedRowKeys={this.state.selectedRowKeys}
-                        getTableParams={this.getTableParams}
-                    />
+                    {
+                        this.state.tabKey==="1"?
+                            <Check
+                                flag={0}
+                                tabKey={this.state.tabKey}
+                                url={this.url}
+                                selectedRowKeys={this.state.selectedRowKeys}
+                                getTableParams={this.getTableParams}
+                            />:null
+
+                    }
                     <Search
                         url={this.url}
                         getCondition1={this.getCondition1}
