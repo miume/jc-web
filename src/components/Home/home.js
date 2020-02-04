@@ -948,7 +948,37 @@ class Home extends Component {
             repoRecordWater:{
                 inPages:`${server}/jc/repo/SwmsStockInJournalAccount/pages`,
                 outPages:`${server}/jc/repo/SwmsStockOutJournalAccount/pages`
-            }
+            },
+            /**智能仓库-基础数据-供应商 */
+            supplier: {
+                pages: `${server}/jc/repo/SwmsBasicSupplierInfo/pages`,
+                supplier: `${server}/jc/repo/SwmsBasicSupplierInfo`
+            },
+            /**智能仓库-基础数据-车间信息 */
+            plant: {
+                pages: `${server}/jc/repo/swmsBasicPlanInfo/pages`,
+                plant: `${server}/jc/repo/swmsBasicPlanInfo`
+            },
+            /**智能仓库-基础数据-物料大类 */
+            material: {
+                pages: `${server}/jc/repo/swmsBasicMaterialType/pages`,
+                material: `${server}/jc/repo/swmsBasicMaterialType`
+            },
+            /**智能仓库-基础数据-物料小类 */
+            subMaterial: {
+                pages: `${server}/jc/repo/swmsBasicMaterialSubType/pages`,
+                subMaterial: `${server}/jc/repo/swmsBasicMaterialSubType`
+            },
+            /**智能仓库-基础数据-物料信息 */
+            materialInfoSto: {
+                pages: `${server}/jc/repo/SwmsBasicMaterialInfo/pages`,
+                materialInfo: `${server}/jc/repo/SwmsBasicMaterialInfo`
+            },
+            /**智能仓库-基础数据-计量单位 */
+            unit: {
+                pages: `${server}/jc/repo/SwmsBasicMeasureUnit/pages`,
+                unit: `${server}/jc/repo/SwmsBasicMeasureUnit`
+            },
     };
 
         localStorage.setItem('status', JSON.stringify(status));
