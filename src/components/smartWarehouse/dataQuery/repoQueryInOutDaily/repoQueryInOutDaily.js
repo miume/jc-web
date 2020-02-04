@@ -7,6 +7,7 @@ import OutDaily from './outDaily'
 import Search from './search'
 import Check from './check'
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
+import './repoQueryInOutDaily.css'
 
 var data1 = []
 var data2 = []
@@ -60,13 +61,20 @@ class RepoQueryInOutDaily extends React.Component {
         this.state = {
             loading: false,
             selectedRowKeys: [],
-            searchContent: '',
+            searchContent: {
+                condition1:'',
+                condition2:'',
+                condition3:'',
+                condition4:'',
+                condition5:''
+            },
             dataSource:[],
             tabKey:'1',
             condition1: null,
             condition2: null,
             condition3: null,
-            condition4: null,
+            condition4: undefined,
+            condition5: undefined
         };
         this.operations = [];
         this.pagination = {
@@ -85,24 +93,30 @@ class RepoQueryInOutDaily extends React.Component {
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <Check
-                        flag={0}
-                        tabKey={this.state.tabKey}
-                        url={this.url}
-                        selectedRowKeys={this.state.selectedRowKeys}
-                        getTableParams={this.getTableParams}
-                    />
+                    {
+                        this.state.tabKey==="1"?
+                            <Check
+                                flag={0}
+                                tabKey={this.state.tabKey}
+                                url={this.url}
+                                selectedRowKeys={this.state.selectedRowKeys}
+                                getTableParams={this.getTableParams}
+                            />:null
+
+                    }
                     <Search
+                        url={this.url}
                         getCondition1={this.getCondition1}
                         getCondition2={this.getCondition2}
                         getCondition3={this.getCondition3}
-                        getCondition4={this.getCondition4}
+                        getCondition4and5={this.getCondition4and5}
                         searchEvent={this.searchEvent}
                         reset={this.reset}
                         condition1={this.state.condition1}
                         condition2={this.state.condition2}
                         condition3={this.state.condition3}
                         condition4={this.state.condition4}
+                        condition5={this.state.condition5}
                     />
                     <div className='clear'></div>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
@@ -155,54 +169,73 @@ class RepoQueryInOutDaily extends React.Component {
             params = {
                 condition: value === undefined ? searchContent : value,
                 size: pageSize,
-                page: current
+                current: current
             };
         this.getTableData(params,key);
     }
 
     /**获取表格数据*/
     getTableData = (params,key) => {
-        if (key==="1"){
-            this.setState({
-                dataSource:data1,
-                selectedRowKeys:[]
-            })
+        var url=""
+        if (key==="2"){
+            url = this.url.repoQueryInOutDaily.pagesOut
         } else{
-            this.setState({
-                dataSource:data2,
-                selectedRowKeys:[]
-            })
+            url = this.url.repoQueryInOutDaily.pagesIn
         }
-        console.log(params)
-        console.log(key)
-
-
-
-        // this.setState({
-        //     loading: true
-        // });
-        // axios({
-        //     url: `${this.url.checkSite.page}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params
-        // }).then(data => {
-        //     let res = data.data.data;
-        //     if(res && res.list) {
-        //         this.pagination.total = res['total'] ? res['total'] : 0;
-        //         for(let i = 0; i < res.list.length; i++) {
-        //             res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list
-        //         })
-        //     }
-        //     this.setState({
-        //         loading: false
-        //     })
-        // })
+        this.setState({
+            loading: true
+        });
+        axios({
+            url: url,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                typeId: params.condition.condition1,
+                subTypeId: params.condition.condition2,
+                supplierId: params.condition.condition3,
+                startTime: params.condition.condition4,
+                endTime: params.condition.condition5
+            },
+            data:{
+                current:params.current,
+                size:params.size
+            },
+        }).then(data => {
+            let res = data.data.data;
+            console.log(res)
+            if(res && res.records) {
+                this.pagination.total = res['total'] ? res['total'] : 0;
+                var dataSource =[];
+                for(let i = 0; i < res.records.length; i++) {
+                    var nowTime = (new Date()).getTime();
+                    var preTime = new Date(res.records[i].createdDay).getTime();
+                    var aging = Math.floor((nowTime - preTime)/86400000);
+                    dataSource.push({
+                        code: res.records[i].id,
+                        col1: (res['current'] - 1) * 10 + i + 1,
+                        col2: aging.toString() + "天",
+                        col3: res.records[i].createdDay,
+                        col4: res.records[i].materialBatch,
+                        col5: res.records[i].typeName,
+                        col6: res.records[i].subTypeName,
+                        col7: res.records[i].materialName,
+                        col8: res.records[i].supplierName,
+                        col9: key==="2"?res.records[i].deptName:res.records[i].checkStatus,
+                        col10: res.records[i].bagCounts,
+                        col11: res.records[i].weight,
+                        col12: res.records[i].measureUnit
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource
+                })
+            }
+            this.setState({
+                loading: false
+            })
+        })
     }
 
 
@@ -227,26 +260,29 @@ class RepoQueryInOutDaily extends React.Component {
             condition3: value,
         })
     }
-    getCondition4 = (value,option) => {
+    getCondition4and5 = (date, dateString) => {
+        console.log(dateString)
         this.setState({
-            condition4: value,
+            condition4: dateString[0],
+            condition5: dateString[1]
         })
     }
 
     /**搜索事件*/
     searchEvent = () => {
-        const {condition1,condition2,condition3,condition4} = this.state;
-        console.log(condition1)
-        console.log(condition2)
-        console.log(condition3)
-        console.log(condition4)
-
-
-        // this.setState({
-        //     searchContent
-        // });
-        // this.pagination.current = 1;
-        // this.getTableParams(searchContent)
+        const {condition1,condition2,condition3,condition4,condition5} = this.state;
+        var searchContent = {
+            condition1:condition1,
+            condition2:condition2,
+            condition3:condition3,
+            condition4:condition4,
+            condition5:condition5
+        }
+        this.setState({
+            searchContent
+        });
+        this.pagination.current = 1;
+        this.getTableParams(searchContent,this.state.tabKey)
     }
 
     /**重置事件*/
@@ -255,11 +291,12 @@ class RepoQueryInOutDaily extends React.Component {
             condition1:null,
             condition2:null,
             condition3:null,
-            condition4:null,
+            condition4:undefined,
+            condition5:undefined
         });
-        // this.pagination.current = 1;
-        // const tabKey = this.state.tabKey;
-        // this.getTableParams('',tabKey)
+        this.pagination.current = 1;
+        const tabKey = this.state.tabKey;
+        this.getTableParams('',tabKey)
     }
 
     back = () => {

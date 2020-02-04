@@ -31,7 +31,10 @@ class OutDaily extends React.Component {
             title: '出库日期',
             key: 'col3',
             dataIndex: 'col3',
-            width: '12%'
+            width: '12%',
+            render:(text)=>{
+                return <span title={text} className='text-decoration'>{text.split(" ")[0] + "..."}</span>
+            }
         },{
             title: '批号',
             key: 'col4',
@@ -51,67 +54,46 @@ class OutDaily extends React.Component {
             title: '物料名称',
             key: 'col7',
             dataIndex: 'col7',
-            width: '7%'
+            width: '8%'
         },{
             title: '供应商',
             key: 'col8',
             dataIndex: 'col8',
-            width: '7%'
+            width: '8%'
         },{
             title: '领料单位',
             key: 'col9',
             dataIndex: 'col9',
-            width: '7%'
-        },{
-            title: '出料单位',
-            key: 'col10',
-            dataIndex: 'col10',
-            width: '7%'
+            width: '8%'
         },{
             title: '袋数',
-            key: 'col11',
-            dataIndex: 'col11',
-            width: '5%'
+            key: 'col10',
+            dataIndex: 'col10',
+            width: '6%'
         },{
             title: '重量',
+            key: 'col11',
+            dataIndex: 'col11',
+            width: '6%'
+        },{
+            title: '计量单位',
             key: 'col12',
             dataIndex: 'col12',
-            width: '5%'
-        },{
-            title: '操作',
-            key: 'code',
-            dataIndex: 'code',
-            width: '5%',
-            render:(text,record) => {
-                return (
-                    <Check
-                        record={record}
-                        flag={1}
-                        tabKey={this.props.tabKey}
-                        url={this.props.url}
-                        getTableParams={this.props.getTableParams}
-                    />
-                )
-            }
+            width: '7%'
         }];
     }
 
     render() {
-        let rowSelection = {
-            selectedRowKeys: this.props.selectedRowKeys,
-            onChange: this.props.onSelectChange,
-        };
         return (
             <div>
                 <Table rowKey={record => record.code}
-                       rowSelection={rowSelection}
                        dataSource={this.props.dataSource}
                        columns={this.columns}
                        pagination={this.props.pagination}
                        onChange={this.props.handleTableChange}
                        size={'small'}
                        bordered
-                />/>
+                />
             </div>
         );
     }
