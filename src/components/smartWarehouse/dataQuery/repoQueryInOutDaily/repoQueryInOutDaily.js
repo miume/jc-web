@@ -221,7 +221,7 @@ class RepoQueryInOutDaily extends React.Component {
                         col9: key==="2"?res.records[i].deptName:res.records[i].checkStatus,
                         col10: res.records[i].bagCounts,
                         col11: res.records[i].weight,
-                        col12: key==="2"?"暂定":res.records[i].measureUnit
+                        col12: res.records[i].measureUnit
                     })
                 }
                 this.setState({

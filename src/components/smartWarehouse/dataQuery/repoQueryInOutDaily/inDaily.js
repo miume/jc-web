@@ -67,13 +67,16 @@ class InDaily extends React.Component {
             width: '7%',
             render:(text,record) => {
                 if (text===0){
-                    return <span>在库中</span>
+                    return <span>待检</span>
                 }
                 if (text===1){
-                    return <span>待出库</span>
+                    return <span>合格</span>
                 }
                 if (text===2){
-                    return <span>已出库</span>
+                    return <span>不合格</span>
+                }
+                if (text===3){
+                    return <span>让步接收</span>
                 }
             }
         },{

@@ -114,7 +114,7 @@ class OutDaily extends React.Component {
                        onChange={this.props.handleTableChange}
                        size={'small'}
                        bordered
-                />/>
+                />
             </div>
         );
     }
