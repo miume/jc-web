@@ -954,10 +954,16 @@ class Home extends Component {
                 inPages:`${server}/jc/repo/SwmsStockInLedgers/pages`,
                 outPages:`${server}/jc/repo/SwmsStockOutLedgers/pages`
             },
+            /**进出日报*/
+            repoQueryInOutDaily:{
+                pagesIn:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/pagesIn`,
+                pagesOut:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/pagesOut`
+            },
             /**智能仓库-基础数据-供应商 */
             supplier: {
                 pages: `${server}/jc/repo/SwmsBasicSupplierInfo/pages`,
-                supplier: `${server}/jc/repo/SwmsBasicSupplierInfo`
+                supplier: `${server}/jc/repo/SwmsBasicSupplierInfo`,
+                getAll: `${server}/jc/repo/SwmsBasicSupplierInfo/getAll`
             },
             /**智能仓库-基础数据-车间信息 */
             plant: {
@@ -967,12 +973,14 @@ class Home extends Component {
             /**智能仓库-基础数据-物料大类 */
             material: {
                 pages: `${server}/jc/repo/swmsBasicMaterialType/pages`,
-                material: `${server}/jc/repo/swmsBasicMaterialType`
+                material: `${server}/jc/repo/swmsBasicMaterialType`,
+                getAll: `${server}/jc/repo/swmsBasicMaterialType/getAll`
             },
             /**智能仓库-基础数据-物料小类 */
             subMaterial: {
                 pages: `${server}/jc/repo/swmsBasicMaterialSubType/pages`,
-                subMaterial: `${server}/jc/repo/swmsBasicMaterialSubType`
+                subMaterial: `${server}/jc/repo/swmsBasicMaterialSubType`,
+                getAll: `${server}/jc/repo/swmsBasicMaterialSubType/getAll`
             },
             /**智能仓库-基础数据-物料信息 */
             materialInfoSto: {

@@ -31,7 +31,10 @@ class InDaily extends React.Component {
             title: '入库日期',
             key: 'col3',
             dataIndex: 'col3',
-            width: '12%'
+            width: '12%',
+            render:(text)=>{
+                return <span title={text} className='text-decoration'>{text.split(" ")[0] + "..."}</span>
+            }
         },{
             title: '批号',
             key: 'col4',
@@ -61,7 +64,18 @@ class InDaily extends React.Component {
             title: '检验状态',
             key: 'col9',
             dataIndex: 'col9',
-            width: '7%'
+            width: '7%',
+            render:(text,record) => {
+                if (text===0){
+                    return <span>在库中</span>
+                }
+                if (text===1){
+                    return <span>待出库</span>
+                }
+                if (text===2){
+                    return <span>已出库</span>
+                }
+            }
         },{
             title: '袋数',
             key: 'col10',

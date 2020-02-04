@@ -31,7 +31,10 @@ class OutDaily extends React.Component {
             title: '出库日期',
             key: 'col3',
             dataIndex: 'col3',
-            width: '12%'
+            width: '12%',
+            render:(text)=>{
+                return <span title={text} className='text-decoration'>{text.split(" ")[0] + "..."}</span>
+            }
         },{
             title: '批号',
             key: 'col4',
@@ -64,18 +67,18 @@ class OutDaily extends React.Component {
             width: '7%'
         },{
             title: '出料单位',
-            key: 'col10',
-            dataIndex: 'col10',
+            key: 'col12',
+            dataIndex: 'col12',
             width: '7%'
         },{
             title: '袋数',
-            key: 'col11',
-            dataIndex: 'col11',
+            key: 'col10',
+            dataIndex: 'col10',
             width: '5%'
         },{
             title: '重量',
-            key: 'col12',
-            dataIndex: 'col12',
+            key: 'col11',
+            dataIndex: 'col11',
             width: '5%'
         },{
             title: '操作',
