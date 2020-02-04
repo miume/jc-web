@@ -20,7 +20,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,siteName} = this.state, {title,flag} = this.props;
+        let {visible,materialSupplierName,materialSupplierCode} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -32,12 +32,10 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>供应商代码：</div>
-                        <Input placeholder={'请输入供应商代码'} name={'siteName'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入供应商代码'} name={'materialSupplierCode'} value={materialSupplierCode} onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <div>供应商名称：</div>
-                        <Input placeholder={'请输入供应商名称'} name={'name'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入供应商名称'} name={'materialSupplierName'} value={materialSupplierName} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -56,10 +54,11 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {siteName,code} = record;
+            let {materialSupplierCode,id,materialSupplierName} = record;
             this.setState({
-                siteName,
-                code
+                materialSupplierName,
+                materialSupplierCode,
+                id
             });
         }
         this.setState({
@@ -94,25 +93,32 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code === '000000') {
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                } else {
+                    message.info(data.data.data);
+                }
             })
         }
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {materialSupplierCode,materialSupplierName,id} = this.state,
             data = {
-                code,
-                siteName
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
+                id,
+                materialSupplierCode,
+                materialSupplierName,
+                autoFlag: true
+            }, method = 'post', url = this.props.url.supplier.supplier + '/add';
+        if(!materialSupplierName) {
             message.info('请将站点名称填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
+            delete data['autoFlag'];
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = this.props.url.supplier.supplier + `/${id}`;
         }
         return {data,method,url};
     }

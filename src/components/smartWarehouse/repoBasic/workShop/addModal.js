@@ -32,12 +32,10 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>代码(车间号)：</div>
-                        <Input placeholder={'请输入代码(车间号)'} name={'plantName'} value={plantName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入代码(车间号)'} name={'plantName'} value={plantName} onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <div>车间名称：</div>
-                        <Input placeholder={'请输入车间名称'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入车间名称'} name={'plantCode'} value={plantCode} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -56,11 +54,11 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {plantName,plantCode,code} = record;
+            let {plantName,plantCode,id} = record;
             this.setState({
                 plantName,
                 plantCode,
-                code
+                id
             });
         }
         this.setState({
@@ -95,25 +93,27 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
+                message.info(data.data.mesg);
                 this.props.getTableParams();
             })
         }
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {plantName,plantCode,id} = this.state,
             data = {
-                code,
-                siteName
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
-            message.info('请将站点名称填写完整！');
+                id,
+                plantName,
+                plantCode
+            }, method = 'post', url = this.props.url.plant.plant + '/add';
+        if(!plantName) {
+            message.info('请将车间名称填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
+            delete data['autoFlag'];
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = this.props.url.plant.plant + `/${id}`;
         }
         return {data,method,url};
     }

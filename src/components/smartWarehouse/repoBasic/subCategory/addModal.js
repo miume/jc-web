@@ -24,7 +24,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,subTypeName,subTypeCode,plantCode,allTypeData} = this.state, {title,flag} = this.props;
+        let {visible,subTypeName,subTypeCode,typeId,allTypeData} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -36,16 +36,13 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>&nbsp;代码(车间号)：</div>
-                        <Input placeholder={'请输入代码(车间号)'} name={'subTypeCode'} value={subTypeCode} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入代码(车间号)'} name={'subTypeCode'} value={subTypeCode} onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <div>物料小类名称：</div>
-                        <Input placeholder={'请输入物料小类名称'} name={'subTypeName'} value={subTypeName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入物料小类名称'} name={'subTypeName'} value={subTypeName} onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <div style={{width:98,textAlign: 'right'}}>所属大类：</div>
-                        <Select placeholder={'请选择所属大类'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属大类'} name={'typeId'} value={typeId} style={{width: '100%'}} onChange={this.selectChange}>
                             {
                                 allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
                             }
@@ -68,12 +65,12 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {subTypeCode,subTypeName,plantCode,code} = record;
+            let {subTypeCode,subTypeName,typeId,id} = record;
             this.setState({
                 subTypeCode,
                 subTypeName,
-                plantCode,
-                code
+                typeId: typeId.toString(),
+                id
             });
         }
         this.setState({
@@ -84,12 +81,14 @@ class AddModal extends React.Component {
 
     /**获取所有物料大类*/
     getAllType() {
-        let data = [{
-            id: 1,
-            typeName: '物料名称'
-        }]
-        this.setState({
-            allTypeData: data
+        axios({
+            url: `${this.props.url.material.material}/getAll`,
+            method: 'get'
+        }).then(data => {
+            let res = data.data.data;
+            this.setState({
+                allTypeData: res
+            })
         })
     }
 
@@ -102,7 +101,7 @@ class AddModal extends React.Component {
 
     selectChange(value) {
         this.setState({
-            typeCode: value
+            typeId: value
         })
     }
 
@@ -126,27 +125,33 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code === '000000') {
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                } else {
+                    message.info(data.data.data);
+                }
             })
         }
     }
 
     saveDataProcessing() {
-        let {subTypeName,code,subTypeCode,plantCode} = this.state,
+        let {subTypeName,id,subTypeCode,typeId} = this.state,
             data = {
-                code,
+                id,
                 subTypeName,
                 subTypeCode,
-                plantCode
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!subTypeCode || !subTypeName || !plantCode) {
+                typeId,
+                autoFlag: true
+            }, method = 'post', url = this.props.url.subMaterial.subMaterial + '/add';
+        if(!subTypeCode || !subTypeName || !typeId) {
             message.info('请将新增信息填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
+            delete data['autoFlag'];
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = this.props.url.subMaterial.subMaterial + `/${id}`;
         }
         return {data,method,url};
     }

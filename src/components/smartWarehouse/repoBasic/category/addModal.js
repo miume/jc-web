@@ -32,12 +32,10 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>物料大类代码：</div>
-                        <Input placeholder={'请输入物料大类代码'} name={'typeCode'} value={typeCode} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入物料大类代码'} name={'typeCode'} value={typeCode} onChange={this.inputChange}/>
                     </div>
                     <div className={'check-item'}>
-                        <div>物料大类名称：</div>
-                        <Input placeholder={'请输入物料大类名称'} name={'typeName'} value={typeName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入物料大类名称'} name={'typeName'} value={typeName} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -56,11 +54,11 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {typeName,typeCode,code} = record;
+            let {typeName,typeCode,id} = record;
             this.setState({
                 typeName,
                 typeCode,
-                code
+                id
             });
         }
         this.setState({
@@ -95,26 +93,32 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code === '000000') {
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                } else {
+                    message.info(data.data.data);
+                }
             })
         }
     }
 
     saveDataProcessing() {
-        let {typeCode,typeName,code} = this.state,
+        let {typeCode,typeName,id} = this.state,
             data = {
-                code,
+                id,
                 typeCode,
-                typeName
-            }, method = 'post', url = this.props.url.checkSite.add;
+                typeName,
+                autoFlag: true
+            }, method = 'post', url = this.props.url.material.material + '/add';
         if(!typeName || !typeCode) {
             message.info('请将新增信息填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
+            delete data['autoFlag'];
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = this.props.url.material.material + `/${id}`;
         }
         return {data,method,url};
     }

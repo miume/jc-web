@@ -12,10 +12,14 @@ class AddModal extends React.Component {
         this.state = {
             visible: false,
             allTypeData: [],
+            allSubTypeData: [],
             indeterminate: true,
             selectAllItems: [],
-            selectedItems: []
+            selectedItems: [],
+            allUnitData: []
         };
+        this.getAllUnit = this.getAllUnit.bind(this);
+        this.getAllType = this.getAllType.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -23,11 +27,12 @@ class AddModal extends React.Component {
         this.renderButton = this.renderButton.bind(this);
         this.checkBoxChange = this.checkBoxChange.bind(this);
         this.onCheckAllChange = this.onCheckAllChange.bind(this);
+        this.getAllSubMaterial = this.getAllSubMaterial.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
     }
 
     render() {
-        let {visible,materialName,allTypeData,subTypeCode,plantCode,indeterminate,checkAll,selectedItems,selectAllItems} = this.state, {title,flag} = this.props;
+        let {visible,materialName,allTypeData,allSubTypeData,allUnitData,subTypeCode,plantCode,indeterminate,checkAll,selectedItems,selectAllItems} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -45,16 +50,16 @@ class AddModal extends React.Component {
                             }
                         </Select>
 
-                        <Select placeholder={'请选择所属物料小类'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属物料小类'} name={'plantCode'} style={{width:200}} onChange={this.selectChange}>
                             {
-                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                                allSubTypeData.length ? allSubTypeData.map(e => <Option key={e.id} value={e.id}>{e.subTypeName}</Option>) : null
                             }
                         </Select>
                     </div>
                      <div className={'basis-data-flex'}>
                         <Select placeholder={'请选择计量单位'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
                             {
-                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                                allUnitData.length ? allUnitData.map(e => <Option key={e.id} value={e.id}>{e.measureUnit}</Option>) : null
                             }
                         </Select>
                     </div>
@@ -95,11 +100,14 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {plantName,plantCode,code} = record;
+            let {subTypeId,materialTypeId,measureUnit,materialName,materialNameCode,id} = record;
             this.setState({
-                plantName,
-                plantCode,
-                code
+                materialTypeId,
+                subTypeId,
+                measureUnit,
+                materialName,
+                materialNameCode,
+                id
             });
         } else {
             this.setState({
@@ -109,7 +117,36 @@ class AddModal extends React.Component {
         this.setState({
             visible: true
         });
+        this.getAllUnit();
+        this.getAllType();
         this.getAllItems();
+        this.getAllSubMaterial();
+    }
+
+    /**获取所有物料大类*/
+    getAllType() {
+        axios({
+            url: `${this.props.url.material.material}/getAll`,
+            method: 'get'
+        }).then(data => {
+            let res = data.data.data;
+            this.setState({
+                allTypeData: res
+            })
+        })
+    }
+
+    /**获取所有单位*/
+    getAllUnit() {
+        axios({
+            url: `${this.props.url.unit.unit}/getAll`,
+            method: 'get'
+        }).then(data => {
+            let res = data.data.data;
+            this.setState({
+                allUnitData: res
+            })
+        })
     }
 
     /**获取所有元素*/
@@ -117,6 +154,18 @@ class AddModal extends React.Component {
         this.setState({
             selectAllItems: ['Ca','Si','Cu','Na','Zn','BET','nih真的单纯的 v 发 v 次大扫除','你蛤宋说上到vcdvdcd'],
             selectedItems: ['Ca','Si','Cu','Na','Zn','BET'],
+        })
+    }
+
+    getAllSubMaterial() {
+        axios({
+            url: `${this.props.url.subMaterial.subMaterial}/getAll`,
+            method: 'get'
+        }).then(data => {
+            let res = data.data.data;
+            this.setState({
+                allSubTypeData: res
+            })
         })
     }
 

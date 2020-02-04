@@ -17,6 +17,8 @@ class Material extends React.Component {
         };
         this.operations = [];
         this.pagination = {
+            pageSize: 10,
+            current: 1,
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
             pageSizeOptions: ["10", "20", "50", "100"]
@@ -28,8 +30,8 @@ class Material extends React.Component {
             width: '10%'
         },{
             title: '物料大类',
-            key: 'materialTypeName',
-            dataIndex: 'materialTypeName',
+            key: 'typeName',
+            dataIndex: 'typeName',
             width: '10%'
         },{
             title: '物料小类',
@@ -38,8 +40,8 @@ class Material extends React.Component {
             width: '10%'
         },{
             title: '供应商',
-            key: 'supplier',
-            dataIndex: 'supplier',
+            key: 'supplierName',
+            dataIndex: 'supplierName',
             width: '10%'
         },{
             title: '物料名称',
@@ -48,8 +50,8 @@ class Material extends React.Component {
             width: '10%'
         },{
             title: '单位',
-            key: 'unit',
-            dataIndex: 'unit',
+            key: 'measureUnit',
+            dataIndex: 'measureUnit',
             width: '10%'
         },{
             title: '代码',
@@ -58,23 +60,33 @@ class Material extends React.Component {
             width: '10%'
         },{
             title: '元素',
-            key: 'NiFlag',
-            dataIndex: 'NiFlag',
+            key: 'niFlag',
+            dataIndex: 'niFlag',
             width: '10%',
-            // render: (text,record) => {
-            //     let res = [], {NiFlag,COFlag,MNFlag,NHFlag,AlkaliFlag} = record;
-            //     if(NiFlag) {
-            //         res.push('Ni')
-            //     } else if(COFlag) {
-            //
-            //     }
-            // }
+            render: (text,record) => {
+                let res = [], {niFlag,coFlag,mnFlag,nhFlag,alkaliFlag} = record;
+                if(niFlag) {
+                    res.push('Ni');
+                } else if(coFlag) {
+                    res.push('Co');
+                } else if(mnFlag) {
+                    res.push('Mn');
+                } else if(nhFlag) {
+                    res.push('NH');
+                } else if(alkaliFlag) {
+                    res.push('Alkali');
+                }
+                return res.join(',')
+            }
 
         },{
             title: '自动标记',
             key: 'autoFlag',
             dataIndex: 'autoFlag',
-            width: '10%'
+            width: '10%',
+            render: (text) => {
+                return text ? '否' : '是'
+            }
         },{
             title: '操作',
             key: 'id',
@@ -87,7 +99,7 @@ class Material extends React.Component {
                         <AddModal flag={updateFlag} record={record} title={'编辑'} url={this.url} getTableParams={this.getTableParams}/>
                         {updateFlag && deleteFlag ? <Divider type={"vertical"}/> : ''}
                         <span className={deleteFlag ? '' : 'hide'}>
-                            <Popconfirm title="确认删除?" onConfirm={()=> this.deleteByIds(text)} okText="确定" cancelText="取消" >
+                            <Popconfirm title="确认删除?" onConfirm={()=> this.deleteById(text)} okText="确定" cancelText="取消" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>
                         </span>
@@ -99,6 +111,7 @@ class Material extends React.Component {
         this.back = this.back.bind(this);
         this.reset = this.reset.bind(this);
         this.cancel = this.cancel.bind(this);
+        this.deleteById = this.deleteById.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.getTableData = this.getTableData.bind(this);
@@ -125,7 +138,7 @@ class Material extends React.Component {
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入物料名称'}/>
                     <div className='clear'></div>
                     <Table dataSource={data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
-                           onChange={this.handleTableChange} size={'small'} bordered rowKey={record => record.code}/>
+                           onChange={this.handleTableChange} size={'small'} bordered rowKey={record => record.id}/>
                 </Spin>
             </div>
         );
@@ -145,34 +158,34 @@ class Material extends React.Component {
     getTableParams(value) {
         let {searchContent} = this.state, {pageSize,current} = this.pagination,
             params = {
-                condition: value === undefined ? searchContent : value,
                 size: pageSize,
-                page: current
+                pages: current,
+                desc: ["id"]
             };
-        this.getTableData(params);
+        this.getTableData(params,value === undefined ? searchContent : value);
     }
 
     /**获取表格数据*/
-    getTableData(params) {
+    getTableData(params,searchContent) {
         this.setState({
             loading: true
         });
         axios({
-            url: `${this.url.checkSite.page}`,
-            method: 'get',
+            url: `${this.url.materialInfoSto.pages}?supplierName=${searchContent}`,
+            method: 'post',
             headers: {
                 'Authorization': this.url.Authorization
             },
-            params
+            data: params
         }).then(data => {
             let res = data.data.data;
-            if(res && res.list) {
+            if(res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
-                for(let i = 0; i < res.list.length; i++) {
-                    res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
+                for(let i = 0; i < res.records.length; i++) {
+                    res['records'][i]['index'] = (res['pages'] - 1) * 10 + i + 1;
                 }
                 this.setState({
-                    data: res.list
+                    data: res.records
                 })
             }
             this.setState({
@@ -187,22 +200,42 @@ class Material extends React.Component {
         })
     }
 
-    deleteByIds(id) {
-        let {selectedRowKeys} = this.state,
-            ids = typeof id === 'number' ? [id] : selectedRowKeys;
+    deleteById(id) {
         axios({
-            url:`${this.url.checkSite.deletes}`,
+            url:`${this.url.materialInfoSto.materialInfo}/${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.url.Authorization
-            },
-            data: ids
+            }
         }).then((data)=>{
-            if(data.data.code === 4) {
-                message.info('存在站点名称已被使用，不允许删除！');
-            } else {
-                message.info(data.data.message);
+            if(data.data.code === '000000') {
+                message.info(data.data.mesg);
                 this.getTableParams(); //删除后重置信息
+            } else {
+                message.info(data.data.mesg);
+            }
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
+    }
+
+    deleteByIds() {
+        let {selectedRowKeys} = this.state, ids = '';
+        selectedRowKeys.map((e,index) => {
+            index === 0 ? ids += `ids=${e}` : ids += `&ids=${e}`
+        });
+        axios({
+            url:`${this.url.materialInfoSto.materialInfo}/batchDelete?${ids}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            }
+        }).then((data)=>{
+            if(data.data.code === '000000') {
+                message.info(data.data.mesg);
+                this.getTableParams(); //删除后重置信息
+            } else {
+                message.info(data.data.mesg);
             }
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
@@ -233,7 +266,7 @@ class Material extends React.Component {
     /**重置事件*/
     reset() {
         this.setState({
-            searchContent: undefined
+            searchContent: ''
         });
         this.pagination.current = 1;
         this.getTableParams('')
