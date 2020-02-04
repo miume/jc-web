@@ -25,7 +25,7 @@ class OutAccount extends React.Component {
             title: '物料编码',
             key: 'col2',
             dataIndex: 'col2',
-            width: '18%'
+            width: '21%'
         },{
             title: '物料名称',
             key: 'col3',
@@ -48,24 +48,27 @@ class OutAccount extends React.Component {
             width: '10%'
         },{
             title: '供应商',
-            key: 'col7',
-            dataIndex: 'col7',
+            key: 'col8',
+            dataIndex: 'col8',
             width: '10%'
         },{
             title: '重量',
-            key: 'col8',
-            dataIndex: 'col8',
+            key: 'col9',
+            dataIndex: 'col9',
             width: '7%'
         },{
             title: '袋号',
-            key: 'col9',
-            dataIndex: 'col9',
-            width: '8%'
-        },{
-            title: '出库日期',
             key: 'col10',
             dataIndex: 'col10',
-            width: '12%'
+            width: '5%'
+        },{
+            title: '出库日期',
+            key: 'col12',
+            dataIndex: 'col12',
+            width: '12%',
+            render:(text)=>{
+                return <span title={text} className='text-decoration'>{text.split(" ")[0] + "..."}</span>
+            }
         }];
     }
 
