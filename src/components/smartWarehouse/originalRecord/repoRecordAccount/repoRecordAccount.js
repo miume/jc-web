@@ -7,39 +7,6 @@ import InAccount from './inAccount'
 import OutAccount from './outAccount'
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 
-var data1 = []
-var data2 = []
-for (var i = 0; i < 20; i++) {
-    data1.push({
-        col1: i+1,
-        col2: `物料编码${i+1000}`,
-        col3: '物料名称',
-        col4: '物料批号',
-        col5: '物料类型',
-        col6: `物料小类`,
-        col7: '入库车间',
-        col8: '供应商',
-        col9: i*10+i,
-        col10: (i+1)%5,
-        col11: '合格',
-        col12: '2019年11月11日',
-        col13: 'admin',
-    })
-    data2.push({
-        col1: i+1,
-        col2: `物料编码${i+1000}`,
-        col3: '物料名称',
-        col4: '物料批号',
-        col5: '物料类型',
-        col6: `物料小类`,
-        col7: '供应商',
-        col8: i*10+i,
-        col9: (i+1)%5,
-        col10: '2019年11月11日',
-    })
-}
-
-
 const { TabPane } = Tabs;
 class RepoRecordAccount extends React.Component {
 
@@ -108,59 +75,73 @@ class RepoRecordAccount extends React.Component {
             params = {
                 condition: value === undefined ? searchContent : value,
                 size: pageSize,
-                page: current
+                current: current
             };
         this.getTableData(params,key);
     }
 
     /**获取表格数据*/
     getTableData = (params,key) => {
-        if (key==="1"){
-            this.setState({
-                dataSource:data1
-            })
+        var url=""
+        if (key==="2"){
+            url = this.url.repoRecordAccount.outPages
         } else{
-            this.setState({
-                dataSource:data2
-            })
+            url = this.url.repoRecordAccount.inPages
         }
-        console.log(params)
-        console.log(key)
-
-
-
-        // this.setState({
-        //     loading: true
-        // });
-        // axios({
-        //     url: `${this.url.checkSite.page}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params
-        // }).then(data => {
-        //     let res = data.data.data;
-        //     if(res && res.list) {
-        //         this.pagination.total = res['total'] ? res['total'] : 0;
-        //         for(let i = 0; i < res.list.length; i++) {
-        //             res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list
-        //         })
-        //     }
-        //     this.setState({
-        //         loading: false
-        //     })
-        // })
+        this.setState({
+            loading: true
+        });
+        axios({
+            url: url,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                materialCode: params.condition,
+            },
+            data:{
+                current:params.current,
+                size:params.size
+            },
+        }).then(data => {
+            let res = data.data.data;
+            console.log(res)
+            if(res && res.records) {
+                this.pagination.total = res['total'] ? res['total'] : 0;
+                var dataSource =[];
+                for(let i = 0; i < res.records.length; i++) {
+                    dataSource.push({
+                        col1: (res['current'] - 1) * 10 + i + 1,
+                        col2: res.records[i].materialCode,
+                        col3: res.records[i].materialName,
+                        col4: res.records[i].materialBatch,
+                        col5: res.records[i].materialTypeName,
+                        col6: res.records[i].subTypeName,
+                        col7: res.records[i].plantName,
+                        col8: res.records[i].supplierName,
+                        col9: res.records[i].weight.toString() + res.records[i].measureUnit,
+                        col10: res.records[i].bagNum,
+                        col11: res.records[i].materialStatus,
+                        col12: res.records[i].createdTime,
+                        col13: res.records[i].createdPerson
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource
+                })
+            }
+            this.setState({
+                loading: false
+            })
+        })
     }
 
 
     handleTableChange = (pagination) => {
         this.pagination = pagination;
         const tabKey = this.state.tabKey;
-        this.getTableParams(undefined,tabKey);
+        this.getTableParams('',tabKey);
     }
 
     /**搜索事件*/
@@ -169,7 +150,7 @@ class RepoRecordAccount extends React.Component {
             searchContent
         });
         this.pagination.current = 1;
-        this.getTableParams(searchContent)
+        this.getTableParams(searchContent,this.state.tabKey)
     }
 
     /**重置事件*/

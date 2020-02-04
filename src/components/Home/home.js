@@ -949,6 +949,11 @@ class Home extends Component {
                 inPages:`${server}/jc/repo/SwmsStockInJournalAccount/pages`,
                 outPages:`${server}/jc/repo/SwmsStockOutJournalAccount/pages`
             },
+            /**进出台帐*/
+            repoRecordAccount:{
+                inPages:`${server}/jc/repo/SwmsStockInLedgers/pages`,
+                outPages:`${server}/jc/repo/SwmsStockOutLedgers/pages`
+            },
             /**智能仓库-基础数据-供应商 */
             supplier: {
                 pages: `${server}/jc/repo/SwmsBasicSupplierInfo/pages`,
