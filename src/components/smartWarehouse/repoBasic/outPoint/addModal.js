@@ -32,8 +32,7 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>出库点：</div>
-                        <Input placeholder={'请输入出库点'} name={'deliveryAddressName'} value={deliveryAddressName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入出库点'} name={'deliveryAddressName'} value={deliveryAddressName}  onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -52,11 +51,10 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {plantName,plantCode,code} = record;
+            let {deliveryAddressName,id} = record;
             this.setState({
-                plantName,
-                plantCode,
-                code
+                deliveryAddressName,
+                id
             });
         }
         this.setState({
@@ -67,7 +65,8 @@ class AddModal extends React.Component {
     /**取消事件*/
     handleCancel() {
         this.setState({
-            visible: false
+            visible: false,
+            deliveryAddressName:undefined
         });
     }
 
@@ -91,25 +90,30 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code==='000000'){
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                }
+               else{
+                message.info(data.data.data);
+               }
             })
         }
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {deliveryAddressName,id} = this.state,
             data = {
-                code,
-                siteName
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
+                id,
+                deliveryAddressName
+            }, method = 'post', url = `${this.props.url.swmsBasicDeliveryAddressInfo}/add`;
+        if(!deliveryAddressName) {
             message.info('请将站点名称填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = `${this.props.url.swmsBasicDeliveryAddressInfo}/${id}`;
         }
         return {data,method,url};
     }

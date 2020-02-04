@@ -974,6 +974,16 @@ class Home extends Component {
                 pages: `${server}/jc/repo/SwmsBasicMeasureUnit/pages`,
                 unit: `${server}/jc/repo/SwmsBasicMeasureUnit`
             },
+            /**仓库-基础-出库点*/
+            swmsBasicDeliveryAddressInfo:`${server}/jc/repo/swmsBasicDeliveryAddressInfo`,
+             /**仓库-基础-出库类别*/
+            swmsBasicDeliveryTypeInfo:`${server}/jc/repo/swmsBasicDeliveryTypeInfo`,
+            /**仓库-基础-安全库存*/
+            swmsBasicSafetyStock:`${server}/jc/repo/swmsBasicSafetyStock`,
+            /**仓库-基础-计量单位*/
+            SwmsBasicMeasureUnit:`${server}/jc/repo/SwmsBasicMeasureUnit`,
+            /**仓库-基础-呆滞期限*/
+            swmsBasicInactionStockDeadline:`${server}/jc/repo/swmsBasicInactionStockDeadline`
     };
 
         localStorage.setItem('status', JSON.stringify(status));

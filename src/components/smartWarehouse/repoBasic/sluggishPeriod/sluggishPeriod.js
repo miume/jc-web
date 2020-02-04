@@ -17,6 +17,8 @@ class SluggishPeriod extends React.Component {
         };
         this.operations = [];
         this.pagination = {
+            pageSize:10,
+            current:1,
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
             pageSizeOptions: ["10", "20", "50", "100"]
@@ -28,8 +30,8 @@ class SluggishPeriod extends React.Component {
             width: '10%'
         },{
             title: '呆滞天数',
-            key: 'days',
-            dataIndex: 'days',
+            key: 'deadline',
+            dataIndex: 'deadline',
             width: '30%'
         },{
             title: '物料小类名称',
@@ -43,8 +45,8 @@ class SluggishPeriod extends React.Component {
             width: '20%'
         },{
             title: '操作',
-            key: 'code',
-            dataIndex: 'code',
+            key: 'id',
+            dataIndex: 'id',
             width: '20%',
             render: (text,record) => {
                 let {deleteFlag,updateFlag} = this.state;
@@ -53,7 +55,7 @@ class SluggishPeriod extends React.Component {
                         <AddModal flag={updateFlag} record={record} title={'编辑'} url={this.url} getTableParams={this.getTableParams}/>
                         {updateFlag && deleteFlag ? <Divider type={"vertical"}/> : ''}
                         <span className={deleteFlag ? '' : 'hide'}>
-                            <Popconfirm title="确认删除?" onConfirm={()=> this.deleteByIds(text)} okText="确定" cancelText="取消" >
+                            <Popconfirm title="确认删除?" onConfirm={()=> this.deleteById(text)} okText="确定" cancelText="取消" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>
                         </span>
@@ -88,7 +90,7 @@ class SluggishPeriod extends React.Component {
                     <AddModal flag={addFlag} title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
                                  cancel={this.cancel} flag={deleteFlag}/>
-                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入c出库类别'}/>
+                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入物料小类名称'}/>
                     <div className='clear'></div>
                     <Table dataSource={data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
                            onChange={this.handleTableChange} size={'small'} bordered rowKey={record => record.id}/>
@@ -111,34 +113,33 @@ class SluggishPeriod extends React.Component {
     getTableParams(value) {
         let {searchContent} = this.state, {pageSize,current} = this.pagination,
             params = {
-                condition: value === undefined ? searchContent : value,
                 size: pageSize,
-                page: current
+                current: current
             };
-        this.getTableData(params);
+        this.getTableData(params,value === undefined ? searchContent : value);
     }
 
     /**获取表格数据*/
-    getTableData(params) {
+    getTableData(params,searchContent) {
         this.setState({
             loading: true
         });
         axios({
-            url: `${this.url.checkSite.page}`,
-            method: 'get',
+            url: `${this.url.swmsBasicInactionStockDeadline}/pages?subTypeName=${searchContent}`,
+            method: 'post',
             headers: {
                 'Authorization': this.url.Authorization
             },
-            params
+            data:params
         }).then(data => {
             let res = data.data.data;
-            if(res && res.list) {
+            if(res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
-                for(let i = 0; i < res.list.length; i++) {
-                    res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
+                for(let i = 0; i < res.records.length; i++) {
+                    res['records'][i]['index'] = (res['current'] - 1) * 10 + i + 1;
                 }
                 this.setState({
-                    data: res.list
+                    data: res.records
                 })
             }
             this.setState({
@@ -153,22 +154,42 @@ class SluggishPeriod extends React.Component {
         })
     }
 
-    deleteByIds(id) {
-        let {selectedRowKeys} = this.state,
-            ids = typeof id === 'number' ? [id] : selectedRowKeys;
+    deleteById(id) {
         axios({
-            url:`${this.url.checkSite.deletes}`,
+            url:`${this.url.swmsBasicInactionStockDeadline}/${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.url.Authorization
-            },
-            data: ids
+            }
         }).then((data)=>{
-            if(data.data.code === 4) {
-                message.info('存在站点名称已被使用，不允许删除！');
-            } else {
-                message.info(data.data.message);
+            if(data.data.code === '000000') {
+                message.info(data.data.mesg);
                 this.getTableParams(); //删除后重置信息
+            } else {
+                message.info(data.data.mesg);
+            }
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
+    }
+
+    deleteByIds() {
+        let {selectedRowKeys} = this.state, ids = '';
+        selectedRowKeys.map((e,index) => {
+            index === 0 ? ids += `ids=${e}` : ids += `&ids=${e}`
+        });
+        axios({
+            url:`${this.url.swmsBasicInactionStockDeadline}/batchDelete?${ids}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            }
+        }).then((data)=>{
+            if(data.data.code === '000000') {
+                message.info(data.data.mesg);
+                this.getTableParams(); //删除后重置信息
+            } else {
+                message.info(data.data.mesg);
             }
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
