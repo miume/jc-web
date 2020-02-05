@@ -1,35 +1,10 @@
 import React, {Component} from "react";
 import {DatePicker, Select, Button, message} from "antd";
-// import NewButton from "../../BlockQuote/newButton";
 import './repoQueryInOutDaily.css'
 import NewButton from "../../../BlockQuote/newButton";
 import axios from "axios";
 import moment from "moment";
 
-
-var data1 = []
-var data2 = []
-var data3 = []
-var data4 = []
-
-for (var i = 0; i < 10; i++) {
-    data1.push({
-        code: i+1,
-        name: `大类${i}`
-    })
-    data2.push({
-        code: i+1,
-        name: `小类${i}`
-    })
-    data3.push({
-        code: i+1,
-        name: `供货单位${i}`
-    })
-    data4.push({
-        code: i+1,
-        name: `2019011${i}`
-    })
-}
 
 const {Option} = Select;
 const {  RangePicker } = DatePicker;
@@ -40,7 +15,6 @@ class Search extends Component {
             data1:[],
             data2:[],
             data3:[],
-            data4:[],
             dateFormat: 'YYYY-MM-DD'
         };
     }
@@ -149,9 +123,6 @@ class Search extends Component {
                     data1: []
                 })
             }
-            this.setState({
-                loading: false
-            })
         })
 
     }
@@ -173,9 +144,6 @@ class Search extends Component {
                     data2: []
                 })
             }
-            this.setState({
-                loading: false
-            })
         })
 
     }
@@ -197,9 +165,6 @@ class Search extends Component {
                     data3: []
                 })
             }
-            this.setState({
-                loading: false
-            })
         })
 
     }

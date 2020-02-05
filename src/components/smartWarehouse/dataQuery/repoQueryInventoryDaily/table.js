@@ -82,10 +82,15 @@ class InventoryDailyTable extends React.Component {
             key: 'code',
             dataIndex: 'code',
             width: '5%',
-            render: (text,index) => {
+            render: (text,record) => {
                 return (
                     <span>
-                        <Edit url={this.props.url}/>
+                        <Edit
+                            record={record}
+                            url={this.props.url}
+                            searchContent={this.props.searchContent}
+                            getTableParams={this.props.getTableParams}
+                        />
                     </span>
                 )
             }

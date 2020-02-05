@@ -5,16 +5,6 @@ import CancleButton from '../../../BlockQuote/cancleButton';
 import SaveButton from '../../../BlockQuote/saveButton';
 import './repoQueryInventoryDaily.css'
 
-const data = [];
-for (let i = 0; i < 50; i++) {
-    data.push({
-        index:i,
-        id: i,
-        testItem: `测试`,
-        testResult: '0.001',
-        itemUnit: `kg`,
-    });
-}
 const { TextArea } = Input;
 
 class Edit extends React.Component {
@@ -63,6 +53,24 @@ class Edit extends React.Component {
         })
     }
     save = () => {
+        axios({
+            url: `${this.props.url.repoQueryInventoryDaily.edit}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params: {
+                id:this.props.record.code,
+                comments:this.state.inputValue
+            }
+        }).then(data => {
+            message.info(data.data.mesg)
+            this.props.getTableParams(this.props.searchContent)
+            this.setState({
+                visible:false,
+                inputValue:""
+            })
+        })
 
     }
     cancel = () => {
@@ -73,7 +81,8 @@ class Edit extends React.Component {
     /**通过id查询备注信息 */
     handleEdit = () => {
         this.setState({
-            visible:true
+            visible:true,
+            inputValue:this.props.record.col12
         })
     }
 
