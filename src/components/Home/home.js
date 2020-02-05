@@ -960,6 +960,11 @@ class Home extends Component {
                 pagesOut:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/pagesOut`,
                 updateByIds:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/updateByIds`
             },
+            /**库存日报*/
+            repoQueryInventoryDaily:{
+                pagesIn:`${server}/jc/repo/swms-stock-inventory-daily-reports/pagesIn`,
+                edit:`${server}/jc/repo/swms-stock-inventory-daily-reports/edit`
+            },
             /**智能仓库-基础数据-供应商 */
             supplier: {
                 pages: `${server}/jc/repo/SwmsBasicSupplierInfo/pages`,

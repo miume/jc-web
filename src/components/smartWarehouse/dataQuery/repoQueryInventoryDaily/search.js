@@ -1,45 +1,26 @@
 import React, {Component} from "react";
 import {DatePicker, Select, Button, message} from "antd";
-// import NewButton from "../../BlockQuote/newButton";
 import './repoQueryInventoryDaily.css'
 import NewButton from "../../../BlockQuote/newButton";
+import moment from "moment";
+import axios from "axios";
 
-
-var data1 = []
-var data2 = []
-var data3 = []
-var data4 = []
-
-for (var i = 0; i < 10; i++) {
-    data1.push({
-        code: i+1,
-        name: `大类${i}`
-    })
-    data2.push({
-        code: i+1,
-        name: `小类${i}`
-    })
-    data3.push({
-        code: i+1,
-        name: `2019011${i}`
-    })
-}
 
 const {Option} = Select;
+const {  RangePicker } = DatePicker;
 class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data1:[],
             data2:[],
-            data3:[],
+            dateFormat: 'YYYY-MM-DD'
         };
     }
 
     componentDidMount = () => {
         this.getData1();
         this.getData2();
-        this.getData3();
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -48,6 +29,7 @@ class Search extends Component {
     }
 
     render() {
+        const value = this.props.condition3 === undefined || this.props.condition4 === undefined || this.props.condition3 === "" || this.props.condition4 === "" ? null : [moment(this.props.condition3, this.state.dateFormat), moment(this.props.condition4, this.state.dateFormat)];
         return (
             <div className="repoQueryInventoryDaily_search">
                 <span>物料大类：</span>
@@ -60,9 +42,9 @@ class Search extends Component {
                         this.state.data1?this.state.data1.map(item => {
                             return (
                                 <Option
-                                    key={item.code} value={item.code}
+                                    key={item.id} value={item.id}
                                 >
-                                    {item.name}
+                                    {item.typeName}
                                 </Option>
                             )
                         }):null
@@ -78,32 +60,22 @@ class Search extends Component {
                         this.state.data2?this.state.data2.map(item => {
                             return (
                                 <Option
-                                    key={item.code} value={item.code}
+                                    key={item.id} value={item.id}
                                 >
-                                    {item.name}
+                                    {item.typeName}
                                 </Option>
                             )
                         }):null
                     }
                 </Select>
                 <span>入库日期：</span>
-                <Select
-                    className="repoQueryInventoryDaily_search_select"
-                    onChange={this.props.getCondition3}
-                    value={this.props.condition3}
-                >
-                    {
-                        this.state.data3?this.state.data3.map(item => {
-                            return (
-                                <Option
-                                    key={item.code} value={item.code}
-                                >
-                                    {item.name}
-                                </Option>
-                            )
-                        }):null
-                    }
-                </Select>
+                <RangePicker
+                    placeholder={["开始日期","结束日期"]}
+                    onChange={this.props.getCondition3and4}
+                    className="repoQueryInventoryDaily_search_date"
+                    value={value}
+                    format={this.state.dateFormat}
+                />
                 <NewButton name="查询" handleClick={this.props.searchEvent}/>
                 <Button type={'primary'} onClick={this.props.reset} className={'button'}>
                     <i className="fa fa-repeat" aria-hidden="true"></i>
@@ -114,22 +86,45 @@ class Search extends Component {
     }
 
     getData1 = () => {
-        this.setState({
-            data1:data1
+        axios({
+            url: `${this.props.url.material.getAll}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    data1: res
+                })
+            }else{
+                this.setState({
+                    data1: []
+                })
+            }
         })
 
     }
     getData2 = () => {
-        this.setState({
-            data2:data2
+        axios({
+            url: `${this.props.url.subMaterial.getAll}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    data2: res
+                })
+            }else{
+                this.setState({
+                    data2: []
+                })
+            }
         })
-
-    }
-    getData3 = () => {
-        this.setState({
-            data3:data3
-        })
-
     }
 
 }
