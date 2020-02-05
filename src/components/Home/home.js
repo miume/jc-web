@@ -957,7 +957,8 @@ class Home extends Component {
             /**进出日报*/
             repoQueryInOutDaily:{
                 pagesIn:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/pagesIn`,
-                pagesOut:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/pagesOut`
+                pagesOut:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/pagesOut`,
+                updateByIds:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/updateByIds`
             },
             /**智能仓库-基础数据-供应商 */
             supplier: {

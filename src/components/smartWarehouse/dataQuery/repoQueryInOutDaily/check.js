@@ -75,16 +75,23 @@ class Check extends React.Component {
         })
     }
     save = () => {
-        if (this.props.flag===0){
-            console.log(this.props.selectedRowKeys)
-        }else{
-            console.log(this.props.record.code)
-        }
-        this.props.getTableParams(undefined,this.props.tabKey)
-        this.setState({
-            visible:false
-        })
-
+        axios({
+            url: this.props.url.repoQueryInOutDaily.updateByIds,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params: {
+                status: this.state.checkStatus,
+            },
+            data:this.props.flag===0?this.props.selectedRowKeys:[this.props.record.code],
+        }).then(data => {
+            this.props.getTableParams(undefined,"1")
+            message.info(data.data.mesg)
+            this.setState({
+                visible:false
+            })
+        });
     }
     cancel = () => {
         this.setState({
