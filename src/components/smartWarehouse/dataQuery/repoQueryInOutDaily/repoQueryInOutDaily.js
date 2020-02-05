@@ -9,42 +9,6 @@ import Check from './check'
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 import './repoQueryInOutDaily.css'
 
-var data1 = []
-var data2 = []
-for (var i = 0; i < 20; i++) {
-    data1.push({
-        code:i,
-        col1: i+1,
-        col2: (i+1)%2,
-        col3: '2019年11月11日',
-        col4: `批号${i+1000}`,
-        col5: '大类',
-        col6: `小类`,
-        col7: '物料名称',
-        col8: '供应商',
-        col9: '合格',
-        col10: (i+1)%5,
-        col11: i*10,
-        col12: 'kg'
-    })
-    data2.push({
-        code:i,
-        col1: i+1,
-        col2: (i+1)%2,
-        col3: '2019年11月11日',
-        col4: `批号${i+1000}`,
-        col5: '大类',
-        col6: `小类`,
-        col7: '物料名称',
-        col8: '供应商',
-        col9: '领料单位',
-        col10: '出料单位',
-        col11: (i+1)%5,
-        col12: i*10,
-    })
-}
-
-
 const { TabPane } = Tabs;
 class RepoQueryInOutDaily extends React.Component {
 
@@ -229,7 +193,8 @@ class RepoQueryInOutDaily extends React.Component {
                     })
                 }
                 this.setState({
-                    dataSource: dataSource
+                    dataSource: dataSource,
+                    selectedRowKeys: []
                 })
             }
             this.setState({
