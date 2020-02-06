@@ -25,12 +25,12 @@ class InWater extends React.Component {
             title: '物料编码',
             key: 'col2',
             dataIndex: 'col2',
-            width: '20%'
+            width: '60%'
         },{
             title: '入库日期',
             key: 'col3',
             dataIndex: 'col3',
-            width: '40%'
+            width: '20%'
         },{
             title: '入库人',
             key: 'col4',

@@ -944,10 +944,32 @@ class Home extends Component {
                 getDate:`${server}/jc/common/anodeCostAccount/getDate`,
                 confirm:`${server}/jc/common/anodeCostAccount/confirm`
             },
+            /**进出流水*/
+            repoRecordWater:{
+                inPages:`${server}/jc/repo/SwmsStockInJournalAccount/pages`,
+                outPages:`${server}/jc/repo/SwmsStockOutJournalAccount/pages`
+            },
+            /**进出台帐*/
+            repoRecordAccount:{
+                inPages:`${server}/jc/repo/SwmsStockInLedgers/pages`,
+                outPages:`${server}/jc/repo/SwmsStockOutLedgers/pages`
+            },
+            /**进出日报*/
+            repoQueryInOutDaily:{
+                pagesIn:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/pagesIn`,
+                pagesOut:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/pagesOut`,
+                updateByIds:`${server}/jc/repo/SwmsStockInOutLedgersDayReports/updateByIds`
+            },
+            /**库存日报*/
+            repoQueryInventoryDaily:{
+                pagesIn:`${server}/jc/repo/swms-stock-inventory-daily-reports/pagesIn`,
+                edit:`${server}/jc/repo/swms-stock-inventory-daily-reports/edit`
+            },
             /**智能仓库-基础数据-供应商 */
             supplier: {
                 pages: `${server}/jc/repo/SwmsBasicSupplierInfo/pages`,
-                supplier: `${server}/jc/repo/SwmsBasicSupplierInfo`
+                supplier: `${server}/jc/repo/SwmsBasicSupplierInfo`,
+                getAll: `${server}/jc/repo/SwmsBasicSupplierInfo/getAll`
             },
             /**智能仓库-基础数据-车间信息 */
             plant: {
@@ -957,12 +979,14 @@ class Home extends Component {
             /**智能仓库-基础数据-物料大类 */
             material: {
                 pages: `${server}/jc/repo/swmsBasicMaterialType/pages`,
-                material: `${server}/jc/repo/swmsBasicMaterialType`
+                material: `${server}/jc/repo/swmsBasicMaterialType`,
+                getAll: `${server}/jc/repo/swmsBasicMaterialType/getAll`
             },
             /**智能仓库-基础数据-物料小类 */
             subMaterial: {
                 pages: `${server}/jc/repo/swmsBasicMaterialSubType/pages`,
-                subMaterial: `${server}/jc/repo/swmsBasicMaterialSubType`
+                subMaterial: `${server}/jc/repo/swmsBasicMaterialSubType`,
+                getAll: `${server}/jc/repo/swmsBasicMaterialSubType/getAll`
             },
             /**智能仓库-基础数据-物料信息 */
             materialInfoSto: {
@@ -974,6 +998,16 @@ class Home extends Component {
                 pages: `${server}/jc/repo/SwmsBasicMeasureUnit/pages`,
                 unit: `${server}/jc/repo/SwmsBasicMeasureUnit`
             },
+            /**仓库-基础-出库点*/
+            swmsBasicDeliveryAddressInfo:`${server}/jc/repo/swmsBasicDeliveryAddressInfo`,
+             /**仓库-基础-出库类别*/
+            swmsBasicDeliveryTypeInfo:`${server}/jc/repo/swmsBasicDeliveryTypeInfo`,
+            /**仓库-基础-安全库存*/
+            swmsBasicSafetyStock:`${server}/jc/repo/swmsBasicSafetyStock`,
+            /**仓库-基础-计量单位*/
+            SwmsBasicMeasureUnit:`${server}/jc/repo/SwmsBasicMeasureUnit`,
+            /**仓库-基础-呆滞期限*/
+            swmsBasicInactionStockDeadline:`${server}/jc/repo/swmsBasicInactionStockDeadline`
     };
 
         localStorage.setItem('status', JSON.stringify(status));

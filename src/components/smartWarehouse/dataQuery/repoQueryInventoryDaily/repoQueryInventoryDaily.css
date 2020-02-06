@@ -10,3 +10,8 @@
 .repoQueryInventoryDaily_edit{
     height: 200px;
 }
+
+.repoQueryInventoryDaily_search_date {
+    width: 240px;
+    margin-right: 10px !important;
+}

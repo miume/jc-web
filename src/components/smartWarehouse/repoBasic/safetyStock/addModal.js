@@ -15,14 +15,18 @@ class AddModal extends React.Component {
         };
         this.handleSave = this.handleSave.bind(this);
         this.inputChange = this.inputChange.bind(this);
+        this.selectChange=this.selectChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
+        this.getAllSubType=this.getAllSubType.bind(this);
+        this.getAllType=this.getAllType.bind(this);
+        this.getAllMaterialName=this.getAllMaterialName.bind(this)
     }
 
     render() {
-        let {visible,plantCode,allTypeData,materialName} = this.state, {title,flag} = this.props;
+        let {visible,plantCode,typeData,subTypeData,nameData,materialName,materialId,materialTypeId,subTypeId,safetyStockValue} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -34,27 +38,26 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'basis-data-flex'}>
-                        <Select placeholder={'请选择所属物料大类'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属物料大类'}  value={materialTypeId} style={{width:200}} onChange={this.selectChange}>
                             {
-                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                               typeData &&typeData.length ? typeData.map(e => <Option key={e.id} value={e.id} name={'materialTypeId'}>{e.typeName}</Option>) : null
                             }
                         </Select>
 
-                        <Select placeholder={'请选择所属物料小类'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属物料小类'}  value={subTypeId} style={{width:200}} onChange={this.selectChange}>
                             {
-                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                                subTypeData&&subTypeData.length ? subTypeData.map(e => <Option key={e.id} value={e.id} name={'subTypeId'}>{e.subTypeName}</Option>) : null
                             }
                         </Select>
                     </div>
 
                     <div className={'basis-data-flex'}>
-                        <Select placeholder={'请选择物料名称'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择物料名称'} value={materialId} style={{width:200}} onChange={this.selectChange}>
                             {
-                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                                nameData&&nameData.length ? nameData.map(e => <Option key={e.id} value={e.id}  name={'materialId'}>{e.materialName}</Option>) : null
                             }
                         </Select>
-
-                        <Input placeholder={'请输入安全库存值'} name={'materialName'} value={materialName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入安全库存值'} name={'safetyStockValue'} value={safetyStockValue} style={{width:200}} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -73,32 +76,96 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {plantName,plantCode,code} = record;
+            let {subTypeId,materialId,materialTypeId,safetyStockValue,id} = record;
             this.setState({
-                plantName,
-                plantCode,
-                code
+                subTypeId:subTypeId.toString(),
+                materialId:materialId.toString(),
+                materialTypeId:materialTypeId.toString(),
+                safetyStockValue,
+                id
             });
         }
         this.setState({
             visible: true
         });
+        this.getAllSubType()
+        this.getAllType()
+        this.getAllMaterialName()
     }
 
     /**取消事件*/
     handleCancel() {
         this.setState({
-            visible: false
+            visible: false,
+            materialId:undefined,
+            subTypeId:undefined,
+            materialTypeId:undefined,
+            safetyStockValue:undefined
         });
     }
-
+    /**获取所有物料大类*/
+    getAllType(){
+        axios({
+            url: `${this.props.url.material.material}/getAll`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    typeData: res
+                })
+            }
+        })
+    }
+      /**获取所有物料小类*/
+      getAllSubType(){
+        axios({
+            url: `${this.props.url.subMaterial.subMaterial}/getAll`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    subTypeData: res
+                })
+            }
+        })
+    }
+    /**获取所有物料名称*/
+    getAllMaterialName(){
+        axios({
+            url: `${this.props.url.materialInfoSto.materialInfo}/getAll`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    nameData: res
+                })
+            }
+        })
+    }
     inputChange(e) {
         let tar = e.target, name = tar.name, value = tar.value;
         this.setState({
             [name]: value
         })
     }
-
+    selectChange(value,name){
+        name=name.props.name
+        this.setState({
+            [name]:value
+        })
+    }
     handleSave() {
         let params = this.saveDataProcessing();
         if(params) {
@@ -112,25 +179,33 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code==='000000'){
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                }
+                else{
+                    message.info(data.data.data);
+                }
             })
         }
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {materialId,subTypeId,materialTypeId,safetyStockValue,id} = this.state,
             data = {
-                code,
-                siteName
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
-            message.info('请将站点名称填写完整！');
+                id,
+                materialId,
+                subTypeId,
+                materialTypeId,
+                safetyStockValue
+            }, method = 'post', url = `${this.props.url.swmsBasicSafetyStock}/add`;
+        if(!materialId||!subTypeId||!materialTypeId||!safetyStockValue) {
+            message.info('请将信息填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url =` ${this.props.url.swmsBasicSafetyStock}/${id}`;
         }
         return {data,method,url};
     }

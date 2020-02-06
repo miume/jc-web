@@ -15,14 +15,17 @@ class AddModal extends React.Component {
         };
         this.handleSave = this.handleSave.bind(this);
         this.inputChange = this.inputChange.bind(this);
+        this.selectChange=this.selectChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
+        this.getAllSubType=this.getAllSubType.bind(this);
+        this.getAllType=this.getAllType.bind(this);
     }
 
     render() {
-        let {visible,deliveryTypeName,allTypeData,plantCode} = this.state, {title,flag} = this.props;
+        let {visible,materialTypeId,subTypeId,typeData,subTypeData,deadline} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -34,21 +37,21 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <Select placeholder={'请选择所属物料大类'} name={'plantCode'} value={plantCode} style={{width:300}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属物料大类'} value={materialTypeId} style={{width:360}} onChange={this.selectChange}>
                             {
-                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                                typeData&&typeData.length ? typeData.map(e => <Option key={e.id} value={e.id} name={'materialTypeId'}>{e.typeName}</Option>) : null
                             }
                         </Select>
                     </div>
                     <div className={'check-item'}>
-                        <Select placeholder={'请选择所属物料小类'} name={'plantCode'} value={plantCode} style={{width:300}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属物料小类'} value={subTypeId} style={{width:360}} onChange={this.selectChange}>
                             {
-                                allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
+                                subTypeData&&subTypeData.length ? subTypeData.map(e => <Option key={e.id} value={e.id} name={'subTypeId'}>{e.typeName}</Option>) : null
                             }
                         </Select>
                     </div>
                     <div className={'check-item'}>
-                        <Input placeholder={'请输入呆滞期限(天)'} name={'deliveryTypeName'} value={deliveryTypeName} style={{width:300}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入呆滞期限(天)'} name={'deadline'} value={deadline}  onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -62,26 +65,67 @@ class AddModal extends React.Component {
                 <span className={'blue'} onClick={this.handleClick}>编辑</span>
         )
     }
+    /**获取所有物料大类*/
+    getAllType(){
+        axios({
+            url: `${this.props.url.material.material}/getAll`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    typeData: res
+                })
+            }
+        })
+    }
+      /**获取所有物料小类*/
+      getAllSubType(){
+        axios({
+            url: `${this.props.url.subMaterial.subMaterial}/getAll`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    subTypeData: res
+                })
+            }
+        })
+    }
 
     /**点击新增事件*/
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {deliveryTypeName,id} = record;
+            let {deadline,materialTypeId,subTypeId,id} = record;
             this.setState({
-                deliveryTypeName,
+                deadline,
+                materialTypeId:materialTypeId.toString(),
+                subTypeId:subTypeId.toString(),
                 id
             });
         }
         this.setState({
             visible: true
         });
+        this.getAllSubType()
+        this.getAllType()
     }
 
     /**取消事件*/
     handleCancel() {
         this.setState({
-            visible: false
+            visible: false,
+            subTypeId:undefined,
+            materialTypeId:undefined,
+            deadline:undefined
         });
     }
 
@@ -91,7 +135,12 @@ class AddModal extends React.Component {
             [name]: value
         })
     }
-
+    selectChange(value,name){
+        name=name.props.name
+        this.setState({
+            [name]:value
+        })
+    }
     handleSave() {
         let params = this.saveDataProcessing();
         if(params) {
@@ -105,25 +154,32 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
+               if(data.data.code==='000000'){
+                message.info(data.data.mesg);
                 this.props.getTableParams();
+               }
+               else{
+                   message.info(data.data.data)
+               }
             })
         }
     }
 
     saveDataProcessing() {
-        let {deliveryTypeName,id} = this.state,
+        let {deadline,materialTypeId,subTypeId,id} = this.state,
             data = {
                 id,
-                deliveryTypeName
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!deliveryTypeName) {
-            message.info('请将出库类别填写完整！');
+                deadline,
+                materialTypeId,
+                subTypeId
+            }, method = 'post', url = `${this.props.url.swmsBasicInactionStockDeadline}/add`;
+        if(!deadline||!materialTypeId||!subTypeId) {
+            message.info('请将信息填写完整！');
             return false
         }
         if(id) {
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = `${this.props.url.swmsBasicInactionStockDeadline}/${id}`;
         }
         return {data,method,url};
     }
