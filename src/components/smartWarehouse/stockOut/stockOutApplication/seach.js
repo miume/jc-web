@@ -1,13 +1,16 @@
 import React from 'react';
 import {Button, Select, Switch} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
+import axios from "axios";
 const {Option} = Select;
 
 class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            allTypeData: []
+            materialData: [],
+            allTypeData: [],
+            allSubTypeData: []
         };
         this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
@@ -19,23 +22,23 @@ class Search extends React.Component {
     }
 
     render() {
-        let {allTypeData,typeName,subTypeName,supplier,materialName} = this.state;
+        let {allTypeData,materialTypeId,subTypeId,supplier,materialName,allSubTypeData,materialData} = this.state;
         return (
             <div className={'stock-out-flex'}>
                 <div>
                     <span>物料大类: </span>
-                    <Select placeholder={'请选择物料大类'} value={typeName} style={{width:150}} onChange={this.selectChange}>
+                    <Select placeholder={'请选择物料大类'} value={materialTypeId} style={{width:150}} onChange={this.selectChange}>
                         {
-                            allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id} name={'typeName'}>{e.name}</Option>) : null
+                            allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id} name={'materialTypeId'}>{e.typeName}</Option>) : null
                         }
                     </Select>
                 </div>
 
                 <div>
                     <span>物料小类: </span>
-                    <Select placeholder={'请选择物料小类'} style={{width:150}} value={subTypeName} onChange={this.selectChange}>
+                    <Select placeholder={'请选择物料小类'} style={{width:150}} value={subTypeId} onChange={this.selectChange}>
                         {
-                            allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id} name={'subTypeName'}>{e.name}</Option>) : null
+                            allSubTypeData.length ? allSubTypeData.map(e => <Option key={e.id} name={'subTypeId'} value={e.id}>{e.subTypeName}</Option>) : null
                         }
                     </Select>
                 </div>
@@ -44,7 +47,7 @@ class Search extends React.Component {
                     <span>物料名称: </span>
                     <Select placeholder={'请选择物料名称'} style={{width:150}} value={materialName} onChange={this.selectChange}>
                         {
-                            allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id} name={'materialName'}>{e.name}</Option>) : null
+                            materialData.length ? materialData.map(e => <Option key={e.id} value={e.id} name={'materialName'}>{e.name}</Option>) : null
                         }
                     </Select>
                 </div>
@@ -76,18 +79,28 @@ class Search extends React.Component {
 
     /**获取所有物料大类*/
     getAllType() {
-        let data = [{
-            id: 1,
-            name: '物料大类'
-        }];
-        this.setState({
-            allTypeData: data
+        axios({
+            url: `${this.props.url.material.material}/getAll`,
+            method: 'get'
+        }).then(data => {
+            let res = data.data.data;
+            this.setState({
+                allTypeData: res
+            })
         })
     }
 
     /**获取所有物料小类*/
-    getAllSubType() {
-
+    getAllSubType(type) {
+        axios({
+            url: `${this.props.url.subMaterial.subMaterial}/getByType?type=${type}`,
+            method: 'get'
+        }).then(data => {
+            let res = data.data.data;
+            this.setState({
+                allSubTypeData: res
+            })
+        })
     }
 
     /**获取所有物料名称*/
@@ -98,9 +111,17 @@ class Search extends React.Component {
     /**监控select变化*/
     selectChange(value,option) {
         let name = option.props.name;
-        this.setState({
-            [name]: value
-        })
+        if(name === 'materialTypeId') {
+            this.setState({
+                materialTypeId: value,
+                subTypeId: undefined
+            });
+            this.getAllSubType(value);
+        } else {
+            this.setState({
+                [name]: value
+            });
+        }
     }
 
     checkedChange(checked) {

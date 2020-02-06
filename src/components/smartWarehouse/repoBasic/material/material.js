@@ -60,23 +60,11 @@ class Material extends React.Component {
             width: '10%'
         },{
             title: '元素',
-            key: 'niFlag',
-            dataIndex: 'niFlag',
+            key: 'metal',
+            dataIndex: 'metal',
             width: '10%',
-            render: (text,record) => {
-                let res = [], {niFlag,coFlag,mnFlag,nhFlag,alkaliFlag} = record;
-                if(niFlag) {
-                    res.push('Ni');
-                } else if(coFlag) {
-                    res.push('Co');
-                } else if(mnFlag) {
-                    res.push('Mn');
-                } else if(nhFlag) {
-                    res.push('NH');
-                } else if(alkaliFlag) {
-                    res.push('Alkali');
-                }
-                return res.join(',')
+            render: (text) => {
+                return text.join(',')
             }
 
         },{
@@ -159,7 +147,7 @@ class Material extends React.Component {
         let {searchContent} = this.state, {pageSize,current} = this.pagination,
             params = {
                 size: pageSize,
-                pages: current,
+                current: current,
                 desc: ["id"]
             };
         this.getTableData(params,value === undefined ? searchContent : value);
@@ -182,7 +170,24 @@ class Material extends React.Component {
             if(res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 for(let i = 0; i < res.records.length; i++) {
-                    res['records'][i]['index'] = (res['pages'] - 1) * 10 + i + 1;
+                    res['records'][i]['index'] = (res['current'] - 1) * 10 + i + 1;
+                    let metal = [], {niFlag,coFlag,mnFlag,nhFlag,alkaliFlag} = res['records'][i];
+                    if(niFlag) {
+                        metal.push('Ni');
+                    }
+                    if(coFlag) {
+                        metal.push('Co');
+                    }
+                    if(mnFlag) {
+                        metal.push('Mn');
+                    }
+                    if(nhFlag) {
+                        metal.push('NH');
+                    }
+                    if(alkaliFlag) {
+                        metal.push('Alkali');
+                    }
+                    res['records'][i]['metal'] = metal;
                 }
                 this.setState({
                     data: res.records

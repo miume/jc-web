@@ -18,6 +18,7 @@ class AddModal extends React.Component {
             selectedItems: [],
             allUnitData: []
         };
+        this.unitChange = this.unitChange.bind(this);
         this.getAllUnit = this.getAllUnit.bind(this);
         this.getAllType = this.getAllType.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -25,14 +26,18 @@ class AddModal extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
+        this.subTypeChange = this.subTypeChange.bind(this);
         this.checkBoxChange = this.checkBoxChange.bind(this);
+        this.streamFlagChange = this.streamFlagChange.bind(this);
         this.onCheckAllChange = this.onCheckAllChange.bind(this);
         this.getAllSubMaterial = this.getAllSubMaterial.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
+        this.materialTypeChange = this.materialTypeChange.bind(this);
     }
 
     render() {
-        let {visible,materialName,allTypeData,allSubTypeData,allUnitData,subTypeCode,plantCode,indeterminate,checkAll,selectedItems,selectAllItems} = this.state, {title,flag} = this.props;
+        let {visible,materialName,allTypeData,allSubTypeData,allUnitData,subTypeId,measureUnit,materialNameCode,
+            checkAll,selectedItems,selectAllItems,streamFlag,materialTypeId} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -44,32 +49,35 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'basis-data-flex'}>
-                        <Select placeholder={'请选择所属物料大类'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属物料大类'} name={'materialTypeId'} value={materialTypeId} style={{width:200}} onChange={this.materialTypeChange}>
                             {
                                 allTypeData.length ? allTypeData.map(e => <Option key={e.id} value={e.id}>{e.typeName}</Option>) : null
                             }
                         </Select>
 
-                        <Select placeholder={'请选择所属物料小类'} name={'plantCode'} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属物料小类'} name={'subTypeId'} style={{width:200}} value={subTypeId} onChange={this.subTypeChange}>
                             {
                                 allSubTypeData.length ? allSubTypeData.map(e => <Option key={e.id} value={e.id}>{e.subTypeName}</Option>) : null
                             }
                         </Select>
                     </div>
                      <div className={'basis-data-flex'}>
-                        <Select placeholder={'请选择计量单位'} name={'plantCode'} value={plantCode} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择计量单位'} name={'measureUnit'} value={measureUnit} style={{width:200}} onChange={this.unitChange}>
                             {
-                                allUnitData.length ? allUnitData.map(e => <Option key={e.id} value={e.id}>{e.measureUnit}</Option>) : null
+                                allUnitData.length ? allUnitData.map(e => <Option key={e.id} value={e.measureUnit}>{e.measureUnit}</Option>) : null
                             }
                         </Select>
                     </div>
                     <div className={'basis-data-flex'}>
-                        <Input placeholder={'请输入代码'} name={'subTypeCode'} value={subTypeCode} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入代码'} name={'materialNameCode'} value={materialNameCode} style={{width:200}} onChange={this.inputChange}/>
                         <Input placeholder={'请输入物料名称'} name={'materialName'} value={materialName} style={{width:200}} onChange={this.inputChange}/>
                     </div>
 
-                    <Checkbox indeterminate={indeterminate} onChange={this.onCheckAllChange} checked={checkAll}>
+                    <Checkbox onChange={this.onCheckAllChange} checked={checkAll}>
                             全选/全不选
+                    </Checkbox>
+                    <Checkbox checked={streamFlag} onChange={this.streamFlagChange}>
+                            参与流量统计
                     </Checkbox>
 
                     <div className={'basis-data-checkbox'}>
@@ -80,9 +88,7 @@ class AddModal extends React.Component {
                         />
                     </div>
 
-                    <Checkbox>
-                            参与流量统计
-                    </Checkbox>
+
                 </Modal>
             </span>
         );
@@ -100,18 +106,22 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {subTypeId,materialTypeId,measureUnit,materialName,materialNameCode,id} = record;
+            let {subTypeId,materialTypeId,measureUnit,materialName,materialNameCode,streamFlag,id,metal} = record;
             this.setState({
-                materialTypeId,
-                subTypeId,
+                materialTypeId: materialTypeId.toString(),
+                subTypeId: subTypeId.toString(),
+                selectedItems: metal,
                 measureUnit,
                 materialName,
                 materialNameCode,
+                streamFlag,
                 id
             });
+            this.getAllSubMaterial(materialTypeId);
         } else {
             this.setState({
-                checkAll: true
+                checkAll: true,
+                selectedItems: ['Ni','Co','Mn','NH3','Alkali']
             })
         }
         this.setState({
@@ -120,7 +130,6 @@ class AddModal extends React.Component {
         this.getAllUnit();
         this.getAllType();
         this.getAllItems();
-        this.getAllSubMaterial();
     }
 
     /**获取所有物料大类*/
@@ -152,20 +161,40 @@ class AddModal extends React.Component {
     /**获取所有元素*/
     getAllItems() {
         this.setState({
-            selectAllItems: ['Ca','Si','Cu','Na','Zn','BET','nih真的单纯的 v 发 v 次大扫除','你蛤宋说上到vcdvdcd'],
-            selectedItems: ['Ca','Si','Cu','Na','Zn','BET'],
+            selectAllItems: ['Ni','Co','Mn','NH3','Alkali']
         })
     }
 
-    getAllSubMaterial() {
+    getAllSubMaterial(type) {
         axios({
-            url: `${this.props.url.subMaterial.subMaterial}/getAll`,
+            url: `${this.props.url.subMaterial.subMaterial}/getByType?type=${type}`,
             method: 'get'
         }).then(data => {
             let res = data.data.data;
             this.setState({
                 allSubTypeData: res
             })
+        })
+    }
+
+    materialTypeChange(value) {
+        this.setState({
+            materialTypeId: value,
+            subTypeId: undefined
+        });
+        this.getAllSubMaterial(value);
+    }
+
+    /**监控物料小类下拉框变化*/
+    subTypeChange(value) {
+        this.setState({
+            subTypeId: value
+        })
+    }
+
+    unitChange(value) {
+        this.setState({
+            measureUnit: value
         })
     }
 
@@ -193,6 +222,13 @@ class AddModal extends React.Component {
         })
     }
 
+    streamFlagChange(e) {
+        let target = e.target;
+        this.setState({
+            streamFlag: target.checked
+        })
+    }
+
     checkBoxChange(value) {
         let {selectAllItems} = this.state;
         this.setState({
@@ -215,25 +251,41 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code === '000000') {
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                } else {
+                    message.info(data.data.data);
+                }
             })
         }
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {streamFlag,id,materialTypeId,subTypeId,measureUnit,materialName,materialNameCode,selectedItems} = this.state,
             data = {
-                code,
-                siteName
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
-            message.info('请将站点名称填写完整！');
+                id,
+                streamFlag,
+                materialTypeId,
+                subTypeId,
+                measureUnit,
+                materialName,
+                materialNameCode,
+                autoFlag: true,
+                niFlag: selectedItems.includes('Ni') ? true : false,
+                coFlag: selectedItems.includes('Co') ? true : false,
+                mnFlag: selectedItems.includes('Mn') ? true : false,
+                nhFlag: selectedItems.includes('NH3') ? true : false,
+                alkaliFlag: selectedItems.includes('Alkali') ? true : false,
+            }, method = 'post', url = this.props.url.materialInfoSto.materialInfo + '/add';
+        if(!materialTypeId && !subTypeId && !measureUnit && !materialName && !materialNameCode) {
+            message.info('请将信息填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
+            delete data['autoFlag'];
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = this.props.url.materialInfoSto.materialInfo + `/${id}`;
         }
         return {data,method,url};
     }

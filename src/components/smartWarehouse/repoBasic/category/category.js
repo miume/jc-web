@@ -118,7 +118,7 @@ class Category extends React.Component {
         let {searchContent} = this.state, {pageSize,current} = this.pagination,
             params = {
                 size: pageSize,
-                pages: current,
+                current: current,
                 desc: ["id"]
             };
         this.getTableData(params,value === undefined ? searchContent : value);
@@ -141,7 +141,7 @@ class Category extends React.Component {
             if(res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 for(let i = 0; i < res.records.length; i++) {
-                    res['records'][i]['index'] = (res['pages'] - 1) * 10 + i + 1;
+                    res['records'][i]['index'] = (res['current'] - 1) * 10 + i + 1;
                 }
                 this.setState({
                     data: res.records
