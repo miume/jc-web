@@ -164,6 +164,7 @@ import Unit from "../smartWarehouse/repoBasic/unit/unit";
 import SluggishPeriod from "../smartWarehouse/repoBasic/sluggishPeriod/sluggishPeriod";
 import RepoStatisticsDull from "../smartWarehouse/dataStatistics/repoStatisticsDull/repoStatisticsDull";
 import RepoStatisticsFlow from "../smartWarehouse/dataStatistics/repoStatisticsFlow/repoStatisticsFlow";
+import RepoStatisticsAge from '../smartWarehouse/dataStatistics/repoStatisticsAge/repoStatisticsAge'
 class Right extends React.Component {
     render() {
         const data = [{
@@ -642,6 +643,9 @@ class Right extends React.Component {
             },{
                 path: '/repoStatisticsFlow',
                 component: RepoStatisticsFlow
+            },{
+                path:'/repoStatisticsAge',
+                component:RepoStatisticsAge
             }];
         return (
             <div className="rightDiv">

@@ -1,0 +1,33 @@
+.repoStatisticsAge-turn-div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px auto;
+    width: 800px;
+}
+.repoStatisticsAge-turn-span{
+    display: inline-block;
+    width: 66px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    vertical-align:middle;
+}
+.repoStatisticsAge-turn-font-span{
+    display: inline-block;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+}
+.repoStatisticsAge-age-div{
+    display: flex;
+    justify-content: space-around;
+}
+.repoStatisticsAge-age-echarts{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height:53vh;
+}
