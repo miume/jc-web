@@ -11,7 +11,8 @@ class AddModal extends React.Component {
         super(props);
         this.state = {
             visible: false,
-            allTypeData: []
+            allTypeData: [],
+            subTypeFlag:false
         };
         this.handleSave = this.handleSave.bind(this);
         this.inputChange = this.inputChange.bind(this);
@@ -26,7 +27,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,plantCode,typeData,subTypeData,nameData,materialName,materialId,materialTypeId,subTypeId,safetyStockValue} = this.state, {title,flag} = this.props;
+        let {visible,plantCode,typeData,subTypeData,nameData,materialName,materialId,materialTypeId,subTypeId,safetyStockValue,subTypeFlag} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -44,7 +45,7 @@ class AddModal extends React.Component {
                             }
                         </Select>
 
-                        <Select placeholder={'请选择所属物料小类'}  value={subTypeId} style={{width:200}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择所属物料小类'}  value={subTypeId} style={{width:200}} onChange={this.selectChange} disabled={!subTypeFlag}>
                             {
                                 subTypeData&&subTypeData.length ? subTypeData.map(e => <Option key={e.id} value={e.id} name={'subTypeId'}>{e.subTypeName}</Option>) : null
                             }
@@ -72,7 +73,7 @@ class AddModal extends React.Component {
         )
     }
 
-    /**点击新增事件*/
+    /**点击新增，编辑事件*/
     handleClick() {
         let {record} = this.props;
         if(record) {
@@ -84,11 +85,11 @@ class AddModal extends React.Component {
                 safetyStockValue,
                 id
             });
+            this.getAllSubType(materialId.toString())
         }
         this.setState({
             visible: true
         });
-        this.getAllSubType()
         this.getAllType()
         this.getAllMaterialName()
     }
@@ -120,14 +121,17 @@ class AddModal extends React.Component {
             }
         })
     }
-      /**获取所有物料小类*/
-      getAllSubType(){
+      /**根据所选物料大类获取所有物料小类*/
+      getAllSubType(type){
         axios({
-            url: `${this.props.url.subMaterial.subMaterial}/getAll`,
+            url: `${this.props.url.subMaterial.subMaterial}/getByType`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
             },
+            params:{
+                type:type
+            }
         }).then(data => {
             let res = data.data.data;
             if(res) {
@@ -162,6 +166,13 @@ class AddModal extends React.Component {
     }
     selectChange(value,name){
         name=name.props.name
+        if(name==='materialTypeId'){
+            this.getAllSubType(value)
+            this.setState({
+                subTypeFlag:true,
+                subTypeId:undefined
+            })
+        }
         this.setState({
             [name]:value
         })
