@@ -46,7 +46,7 @@ class AddModal extends React.Component {
                     <div className={'check-item'}>
                         <Select placeholder={'请选择所属物料小类'} value={subTypeId} style={{width:360}} onChange={this.selectChange}>
                             {
-                                subTypeData&&subTypeData.length ? subTypeData.map(e => <Option key={e.id} value={e.id} name={'subTypeId'}>{e.typeName}</Option>) : null
+                                subTypeData&&subTypeData.length ? subTypeData.map(e=><Option key={e.id} value={e.id} name={'subTypeId'}>{e.subTypeName}</Option>) : null
                             }
                         </Select>
                     </div>
@@ -82,14 +82,17 @@ class AddModal extends React.Component {
             }
         })
     }
-      /**获取所有物料小类*/
-      getAllSubType(){
+      /**根据所选物料大类获取所有物料小类*/
+    getAllSubType(type){
         axios({
-            url: `${this.props.url.subMaterial.subMaterial}/getAll`,
+            url: `${this.props.url.subMaterial.subMaterial}/getByType`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
             },
+            params:{
+                type:type
+            }
         }).then(data => {
             let res = data.data.data;
             if(res) {
@@ -111,11 +114,12 @@ class AddModal extends React.Component {
                 subTypeId:subTypeId.toString(),
                 id
             });
+            this.getAllSubType(materialTypeId.toString())
         }
         this.setState({
             visible: true
         });
-        this.getAllSubType()
+        
         this.getAllType()
     }
 
@@ -137,6 +141,12 @@ class AddModal extends React.Component {
     }
     selectChange(value,name){
         name=name.props.name
+        if(name==='materialTypeId'){
+            this.getAllSubType(value)
+            this.setState({
+                subTypeId:undefined
+            })
+        }
         this.setState({
             [name]:value
         })

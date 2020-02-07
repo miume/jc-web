@@ -12,7 +12,6 @@ class AddModal extends React.Component {
         this.state = {
             visible: false,
             allTypeData: [],
-            subTypeFlag:false
         };
         this.handleSave = this.handleSave.bind(this);
         this.inputChange = this.inputChange.bind(this);
@@ -27,7 +26,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,plantCode,typeData,subTypeData,nameData,materialName,materialId,materialTypeId,subTypeId,safetyStockValue,subTypeFlag} = this.state, {title,flag} = this.props;
+        let {visible,plantCode,typeData,subTypeData,nameData,materialName,materialId,materialTypeId,subTypeId,safetyStockValue} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -45,7 +44,7 @@ class AddModal extends React.Component {
                             }
                         </Select>
 
-                        <Select placeholder={'请选择所属物料小类'}  value={subTypeId} style={{width:200}} onChange={this.selectChange} disabled={!subTypeFlag}>
+                        <Select placeholder={'请选择所属物料小类'}  value={subTypeId} style={{width:200}} onChange={this.selectChange} >
                             {
                                 subTypeData&&subTypeData.length ? subTypeData.map(e => <Option key={e.id} value={e.id} name={'subTypeId'}>{e.subTypeName}</Option>) : null
                             }
@@ -85,7 +84,7 @@ class AddModal extends React.Component {
                 safetyStockValue,
                 id
             });
-            this.getAllSubType(materialId.toString())
+            this.getAllSubType(materialTypeId.toString())
         }
         this.setState({
             visible: true
@@ -121,8 +120,8 @@ class AddModal extends React.Component {
             }
         })
     }
-      /**根据所选物料大类获取所有物料小类*/
-      getAllSubType(type){
+    /**根据所选物料大类获取所有物料小类*/
+    getAllSubType(type){
         axios({
             url: `${this.props.url.subMaterial.subMaterial}/getByType`,
             method: 'get',
@@ -169,7 +168,6 @@ class AddModal extends React.Component {
         if(name==='materialTypeId'){
             this.getAllSubType(value)
             this.setState({
-                subTypeFlag:true,
                 subTypeId:undefined
             })
         }
