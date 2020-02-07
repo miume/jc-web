@@ -4,6 +4,19 @@ import axios from 'axios'
 class MiddleSearch extends Component{
     constructor(props){
         super(props)
+        this.state={
+            agingEnd:undefined,
+            agingRange1a:undefined,
+            agingRange1b:undefined,
+            agingRange2a:undefined,
+            agingRange2b:undefined,
+            agingRange3a:undefined,
+            agingRange3b:undefined,
+            agingRange4a:undefined,
+            agingRange4b:undefined,
+            agingRange5a:undefined,
+            agingRange5b:undefined
+        }
         this.inputChange=this.inputChange.bind(this)
         this.searchBottom=this.searchBottom.bind(this)
     }
@@ -85,6 +98,12 @@ class MiddleSearch extends Component{
             agingRange4b:agingRange4b,
             agingRange5a:agingRange5a,
             agingRange5b:agingRange5b
+        }
+        for(let key in range){
+            if(range[key]===undefined||range[key]===null){
+                message.error('库龄区间选择不完整!')
+                return
+            }
         }
         this.props.loadingParent()
         axios({

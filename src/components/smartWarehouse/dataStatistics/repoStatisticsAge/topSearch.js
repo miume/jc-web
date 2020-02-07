@@ -18,10 +18,10 @@ class TopSearch extends Component{
         this.monthChange=this.monthChange.bind(this);
     }
     render(){
-        let {typeData,subTypeData}=this.state
+        let {typeData,subTypeData,type,subType}=this.state
         return(
             <div className={'repoStatisticsAge-age-div'}>
-                <div>物料大类：<Select style={{width:'250px'}} onChange={this.selectChange} placeholder={'请选择物料大类'}>
+                <div>物料大类：<Select style={{width:'250px'}} value={type?type.toString():undefined} onChange={this.selectChange} placeholder={'请选择物料大类'}>
                             {
                                 typeData&&typeData.length?typeData.map(item=>{
                                     return(
@@ -31,7 +31,7 @@ class TopSearch extends Component{
                             }
                         </Select>
                 </div>
-                <div>物料小类：<Select style={{width:'250px'}} onChange={this.selectChange} placeholder={'请选择物料小类'}>
+                <div>物料小类：<Select style={{width:'250px'}} value={subType?subType.toString():undefined} onChange={this.selectChange} placeholder={'请选择物料小类'}>
                             {
                                 subTypeData&&subTypeData.length?subTypeData.map(item=>{
                                     return(
@@ -48,9 +48,8 @@ class TopSearch extends Component{
     }
     componentDidMount(){
         this.getAllType()
-        this.getAllSubType()
     }
-        /**获取所有物料大类*/
+    /**获取所有物料大类*/
     getAllType(){
         axios({
             url: `${this.props.url.material.material}/getAll`,
@@ -67,14 +66,17 @@ class TopSearch extends Component{
             }
         })
     }
-        /**获取所有物料小类*/
-    getAllSubType(){
+  /**根据所选物料大类获取所有物料小类*/
+    getAllSubType(type){
         axios({
-            url: `${this.props.url.subMaterial.subMaterial}/getAll`,
+            url: `${this.props.url.subMaterial.subMaterial}/getByType`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
             },
+            params:{
+                type:type
+            }
         }).then(data => {
             let res = data.data.data;
             if(res) {
@@ -86,6 +88,12 @@ class TopSearch extends Component{
     }
     selectChange(value,name){
         name=name.props.name
+        if(name==='type'){
+            this.getAllSubType(value)
+            this.setState({
+                subType:undefined
+            })
+        }
         this.setState({
             [name]:parseInt(value)
         })
@@ -97,13 +105,17 @@ class TopSearch extends Component{
     }
     /**根据物料，时间查询*/
     searchTop(){
-        this.props.loadingParent()
         let {type,subType,time}=this.state,
         params={
             type:type,
             subType:subType,
             time:time
         }
+        if(!type||!time){
+            message.error('信息选择不完整!')
+            return
+        }
+        this.props.loadingParent()
         axios({
             url:this.props.url.swmsStockAgeStatistic.turnoverRate,
             method:'get',
