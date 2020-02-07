@@ -39,11 +39,11 @@ class InspectionPlan extends React.Component{
                                          url={this.url} rightTableData={this.state.rightTableData} deptCode={this.state.checkPlan}/>
                     </TabPane>
                     <TabPane tab={'已接单'} key='2'>
-                        <InspectionRight status={2} loading={this.state.loading} getTableData={this.getTableData}
+                        <InspectionRight status={2} current={this.current} loading={this.state.loading} getTableData={this.getTableData}
                                          url={this.url} rightTableData={this.state.rightTableData} deptCode={this.state.ordered}/>
                     </TabPane>
                     <TabPane tab={'已完成'} key='3'>
-                        <InspectionRight status={3} loading={this.state.loading} getTableData={this.getTableData}
+                        <InspectionRight status={3} current={this.current} loading={this.state.loading} getTableData={this.getTableData}
                                          url={this.url} rightTableData={this.state.rightTableData} deptCode={this.state.finished}/>
                     </TabPane>
                 </Tabs>

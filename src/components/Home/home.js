@@ -1007,7 +1007,11 @@ class Home extends Component {
             /**仓库-基础-计量单位*/
             SwmsBasicMeasureUnit:`${server}/jc/repo/SwmsBasicMeasureUnit`,
             /**仓库-基础-呆滞期限*/
-            swmsBasicInactionStockDeadline:`${server}/jc/repo/swmsBasicInactionStockDeadline`
+            swmsBasicInactionStockDeadline:`${server}/jc/repo/swmsBasicInactionStockDeadline`,
+            swmsStockAgeStatistic:{
+                distribution:`${server}/jc/repo/swmsStockAgeStatistic/distribution`,
+                turnoverRate:`${server}/jc/repo/swmsStockAgeStatistic/turnoverRate`
+            }
     };
 
         localStorage.setItem('status', JSON.stringify(status));
