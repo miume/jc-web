@@ -27,7 +27,7 @@ class Material extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '10%'
+            width: '8%'
         },{
             title: '物料大类',
             key: 'typeName',
@@ -62,7 +62,7 @@ class Material extends React.Component {
             title: '元素',
             key: 'metal',
             dataIndex: 'metal',
-            width: '10%',
+            width: '14%',
             render: (text) => {
                 return text.join(',')
             }
@@ -71,7 +71,7 @@ class Material extends React.Component {
             title: '自动标记',
             key: 'autoFlag',
             dataIndex: 'autoFlag',
-            width: '10%',
+            width: '8%',
             render: (text) => {
                 return text ? '否' : '是'
             }
@@ -182,7 +182,7 @@ class Material extends React.Component {
                         metal.push('Mn');
                     }
                     if(nhFlag) {
-                        metal.push('NH');
+                        metal.push('NH3');
                     }
                     if(alkaliFlag) {
                         metal.push('Alkali');

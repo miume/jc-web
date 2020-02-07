@@ -16,9 +16,9 @@ class AddModal extends React.Component {
             indeterminate: true,
             selectAllItems: [],
             selectedItems: [],
-            allUnitData: []
+            allUnitData: [],
+            allSupplierData: []
         };
-        this.unitChange = this.unitChange.bind(this);
         this.getAllUnit = this.getAllUnit.bind(this);
         this.getAllType = this.getAllType.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -26,18 +26,19 @@ class AddModal extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
-        this.subTypeChange = this.subTypeChange.bind(this);
+        this.selectChange = this.selectChange.bind(this);
         this.checkBoxChange = this.checkBoxChange.bind(this);
         this.streamFlagChange = this.streamFlagChange.bind(this);
         this.onCheckAllChange = this.onCheckAllChange.bind(this);
         this.getAllSubMaterial = this.getAllSubMaterial.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
         this.materialTypeChange = this.materialTypeChange.bind(this);
+        this.getAllSupplierData = this.getAllSupplierData.bind(this);
     }
 
     render() {
         let {visible,materialName,allTypeData,allSubTypeData,allUnitData,subTypeId,measureUnit,materialNameCode,
-            checkAll,selectedItems,selectAllItems,streamFlag,materialTypeId} = this.state, {title,flag} = this.props;
+            checkAll,selectedItems,selectAllItems,streamFlag,materialTypeId,supplierId,allSupplierData} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -55,16 +56,22 @@ class AddModal extends React.Component {
                             }
                         </Select>
 
-                        <Select placeholder={'请选择所属物料小类'} name={'subTypeId'} style={{width:200}} value={subTypeId} onChange={this.subTypeChange}>
+                        <Select placeholder={'请选择所属物料小类'} name={'subTypeId'} style={{width:200}} value={subTypeId} onChange={this.selectChange}>
                             {
-                                allSubTypeData.length ? allSubTypeData.map(e => <Option key={e.id} value={e.id}>{e.subTypeName}</Option>) : null
+                                allSubTypeData.length ? allSubTypeData.map(e => <Option key={e.id} name={'subTypeId'} value={e.id}>{e.subTypeName}</Option>) : null
                             }
                         </Select>
                     </div>
                      <div className={'basis-data-flex'}>
-                        <Select placeholder={'请选择计量单位'} name={'measureUnit'} value={measureUnit} style={{width:200}} onChange={this.unitChange}>
+                        <Select placeholder={'请选择计量单位'} name={'measureUnit'} value={measureUnit} style={{width:200}} onChange={this.selectChange}>
                             {
-                                allUnitData.length ? allUnitData.map(e => <Option key={e.id} value={e.measureUnit}>{e.measureUnit}</Option>) : null
+                                allUnitData.length ? allUnitData.map(e => <Option key={e.id} name={'measureUnit'} value={e.measureUnit}>{e.measureUnit}</Option>) : null
+                            }
+                        </Select>
+
+                         <Select placeholder={'请选择供应商'} name={'supplierId'} value={supplierId} style={{width:200}} onChange={this.selectChange}>
+                            {
+                                allSupplierData.length ? allSupplierData.map(e => <Option key={e.id} name={'supplierId'} value={e.id}>{e.materialSupplierName}</Option>) : null
                             }
                         </Select>
                     </div>
@@ -87,8 +94,6 @@ class AddModal extends React.Component {
                             onChange={this.checkBoxChange}
                         />
                     </div>
-
-
                 </Modal>
             </span>
         );
@@ -106,7 +111,7 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {subTypeId,materialTypeId,measureUnit,materialName,materialNameCode,streamFlag,id,metal} = record;
+            let {subTypeId,materialTypeId,measureUnit,materialName,materialNameCode,streamFlag,id,metal,supplierId} = record;
             this.setState({
                 materialTypeId: materialTypeId.toString(),
                 subTypeId: subTypeId.toString(),
@@ -115,6 +120,7 @@ class AddModal extends React.Component {
                 materialName,
                 materialNameCode,
                 streamFlag,
+                supplierId: supplierId.toString(),
                 id
             });
             this.getAllSubMaterial(materialTypeId);
@@ -130,6 +136,7 @@ class AddModal extends React.Component {
         this.getAllUnit();
         this.getAllType();
         this.getAllItems();
+        this.getAllSupplierData();
     }
 
     /**获取所有物料大类*/
@@ -154,6 +161,18 @@ class AddModal extends React.Component {
             let res = data.data.data;
             this.setState({
                 allUnitData: res
+            })
+        })
+    }
+
+    getAllSupplierData() {
+        axios({
+            url: `${this.props.url.supplier.supplier}/getAll`,
+            method: 'get'
+        }).then(data => {
+            let res = data.data.data;
+            this.setState({
+                allSupplierData: res
             })
         })
     }
@@ -185,16 +204,10 @@ class AddModal extends React.Component {
         this.getAllSubMaterial(value);
     }
 
-    /**监控物料小类下拉框变化*/
-    subTypeChange(value) {
+    selectChange(value,option) {
+        let name = option.props.name;
         this.setState({
-            subTypeId: value
-        })
-    }
-
-    unitChange(value) {
-        this.setState({
-            measureUnit: value
+            [name]: value
         })
     }
 
@@ -262,7 +275,7 @@ class AddModal extends React.Component {
     }
 
     saveDataProcessing() {
-        let {streamFlag,id,materialTypeId,subTypeId,measureUnit,materialName,materialNameCode,selectedItems} = this.state,
+        let {streamFlag,id,materialTypeId,subTypeId,measureUnit,materialName,materialNameCode,selectedItems,supplierId} = this.state,
             data = {
                 id,
                 streamFlag,
@@ -271,6 +284,7 @@ class AddModal extends React.Component {
                 measureUnit,
                 materialName,
                 materialNameCode,
+                supplierId,
                 autoFlag: true,
                 niFlag: selectedItems.includes('Ni') ? true : false,
                 coFlag: selectedItems.includes('Co') ? true : false,
