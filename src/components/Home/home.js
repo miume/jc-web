@@ -974,6 +974,10 @@ class Home extends Component {
                 pages:`${server}/jc/repo/swms-stock-inventory-really-reports/pages`,
                 details:`${server}/jc/repo/swms-stock-inventory-really-reports/details`
             },
+            /**呆滞统计*/
+            repoStatisticsDull:{
+                query:`${server}/jc/repo/swmsDullStatistic/query`,
+            },
             /**智能仓库-基础数据-供应商 */
             supplier: {
                 pages: `${server}/jc/repo/SwmsBasicSupplierInfo/pages`,

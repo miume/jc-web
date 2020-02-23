@@ -24,7 +24,7 @@ for (var i = 0; i < 20; i++) {
 class RepoStatisticsDull extends React.Component {
 
     componentDidMount = () => {
-        // this.getTableParams();
+        // this.getTableData();
     }
     componentWillUnmount = () => {
         this.setState(() => {
@@ -39,7 +39,6 @@ class RepoStatisticsDull extends React.Component {
             dataSource:[],
             condition1: null,
             condition2: null,
-            condition3: null,
 
             pieOption:{}
         };
@@ -61,14 +60,14 @@ class RepoStatisticsDull extends React.Component {
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Search
+                        url={this.url}
                         getCondition1={this.getCondition1}
                         getCondition2={this.getCondition2}
-                        getCondition3={this.getCondition3}
                         searchEvent={this.searchEvent}
-                        save={this.save}
+                        // save={this.save}
+                        reset={this.reset}
                         condition1={this.state.condition1}
                         condition2={this.state.condition2}
-                        condition3={this.state.condition3}
                     />
                     <div className='clear'></div>
                     <div className="repoStatisticsDull_bottom">
@@ -86,86 +85,86 @@ class RepoStatisticsDull extends React.Component {
         );
     }
 
-    getOption = () => {
 
-        const data = [{
-            value: 400,
-            name: "正常"
-        },{
-            value: 600,
-            name: "呆滞"
-        }]
-
-        const option = {
-            title:{
-                text: "呆滞占比图",
-                left: 'center'
-            },
-            tooltip:{
-                trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)'
-            },
-            legend: {
-                bottom: 10,
-                left: 'center',
-                data: ['正常', '呆滞']
-            },
-            series: [
-                {
-                    type: 'pie',
-                    radius: '65%',
-                    center: ['50%', '50%'],
-                    selectedMode: 'single',
-                    data: data,
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
-        this.setState({
-            pieOption: option
-        })
-    };
-
-
-
-    /**获取表格数据*/
+    /**获取数据*/
     getTableData = () => {
         this.setState({
-            dataSource:data1
+            loading: false
+        });
+        axios({
+            url: this.url.repoStatisticsDull.query,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                type: this.state.condition1,
+                subType: this.state.condition2
+            }
+        }).then(data => {
+            let res = data.data.data;
+            console.log(res)
+            if (res && res.list) {
+                var dataSource = [];
+                for (let i = 0; i < res.list.length; i++) {
+                    dataSource.push({
+                        col1: i + 1,
+                        col2: res.list[i].批次,
+                        col3: res.list[i].重量,
+                        col4: res.list[i].入库时间,
+                        col5: res.list[i].库龄,
+                    })
+                }
+
+                const seriesData = [{
+                    value: parseInt(res.normal),
+                    name: "正常"
+                },{
+                    value: parseInt(res.obnormal),
+                    name: "呆滞"
+                }]
+
+                const option = {
+                    title:{
+                        text: "呆滞占比图",
+                        left: 'center'
+                    },
+                    tooltip:{
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b} : {c} ({d}%)'
+                    },
+                    legend: {
+                        bottom: 10,
+                        left: 'center',
+                        data: ['正常', '呆滞']
+                    },
+                    series: [
+                        {
+                            type: 'pie',
+                            radius: '65%',
+                            center: ['50%', '50%'],
+                            selectedMode: 'single',
+                            data: seriesData,
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+                // const option = this.getOption(res.normal,res.obnormal);
+                this.setState({
+                    dataSource: dataSource,
+                    pieOption: option
+                })
+            }
+            this.setState({
+                loading: false
+            })
         })
-
-
-        // this.setState({
-        //     loading: true
-        // });
-        // axios({
-        //     url: `${this.url.checkSite.page}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params
-        // }).then(data => {
-        //     let res = data.data.data;
-        //     if(res && res.list) {
-        //         this.pagination.total = res['total'] ? res['total'] : 0;
-        //         for(let i = 0; i < res.list.length; i++) {
-        //             res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list
-        //         })
-        //     }
-        //     this.setState({
-        //         loading: false
-        //     })
-        // })
     }
 
 
@@ -180,20 +179,14 @@ class RepoStatisticsDull extends React.Component {
             condition2: value,
         })
     }
-    getCondition3 = (e) => {
-        this.setState({
-            condition3: e.target.value,
-        })
-    }
 
     /**搜索事件*/
     searchEvent = () => {
-        const {condition1,condition2,condition3} = this.state;
+        const {condition1,condition2} = this.state;
         console.log(condition1)
         console.log(condition2)
-        console.log(condition3)
 
-        this.getOption();
+        // this.getOption();
         this.getTableData();
 
 
@@ -201,15 +194,22 @@ class RepoStatisticsDull extends React.Component {
         //     searchContent
         // });
     }
+    /**重置事件*/
+    reset = () => {
+        this.setState({
+            condition1: null,
+            condition2: null,
+            dataSource: [],
+            pieOption: {}
+        });
+    }
 
     /**保存事件*/
     save = () => {
-        console.log(this.state.condition3)
 
         this.setState({
             condition1:null,
             condition2:null,
-            condition3:null,
             pieOption:{},
             dataSource:[]
         });
