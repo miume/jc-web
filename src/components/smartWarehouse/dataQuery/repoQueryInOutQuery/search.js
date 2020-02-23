@@ -3,6 +3,7 @@ import {Input, Select, Button, message} from "antd";
 // import NewButton from "../../BlockQuote/newButton";
 import './repoQueryInOutQuery.css'
 import NewButton from "../../../BlockQuote/newButton";
+import axios from "axios";
 
 
 var data1 = []
@@ -45,8 +46,8 @@ class Search extends Component {
     componentDidMount = () => {
         this.getData1();
         this.getData2();
-        this.getData3();
-        this.getData4();
+        //this.getData3();
+        //this.getData4();
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -60,16 +61,16 @@ class Search extends Component {
                 <span>物料大类：</span>
                 <Select
                     className="repoQueryOutQuery_search_select"
-                    onChange={this.props.getCondition1}
+                    onChange={this.selectTypeName}
                     value={this.props.condition1}
                 >
                     {
                         this.state.data1?this.state.data1.map(item => {
                             return (
                                 <Option
-                                    key={item.code} value={item.code}
+                                    key={item.id} value={item.id}
                                 >
-                                    {item.name}
+                                    {item.typeName}
                                 </Option>
                             )
                         }):null
@@ -85,9 +86,9 @@ class Search extends Component {
                         this.state.data2?this.state.data2.map(item => {
                             return (
                                 <Option
-                                    key={item.code} value={item.code}
+                                    key={item.id} value={item.id}
                                 >
-                                    {item.name}
+                                    {item.subTypeName}
                                 </Option>
                             )
                         }):null
@@ -147,14 +148,58 @@ class Search extends Component {
     }
 
     getData1 = () => {
-        this.setState({
-            data1:data1
+        axios({
+            url: `${this.props.url.material.getAll}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    data1: res
+                })
+            }else{
+                this.setState({
+                    data1: []
+                })
+            }
         })
 
     }
-    getData2 = () => {
+    selectTypeName = (value,option) => {
+
+        this.props.getCondition1(value);
+        this.getData2(value);
+        //this.getData3(value)
+
+
         this.setState({
-            data2:data2
+            condition1: value,
+        })
+    }
+    getData2 = (value) => {
+        axios({
+            url: `${this.props.url.subMaterial.getByType}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params: {
+                type: parseInt(value)
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    data2: res
+                })
+            }else{
+                this.setState({
+                    data2: []
+                })
+            }
         })
 
     }

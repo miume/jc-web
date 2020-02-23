@@ -41,7 +41,13 @@ class RepoQueryInOutQuery extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            searchContent: '',
+            searchContent: {
+                condition1: '',
+                condition2: '',
+                condition3: '',
+                condition4: '',
+                condition5: '',
+            },
             dataSource:[],
             condition1: null,
             condition2: null,
@@ -67,6 +73,7 @@ class RepoQueryInOutQuery extends React.Component {
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Search
+                        url={this.url}
                         getCondition1={this.getCondition1}
                         getCondition2={this.getCondition2}
                         getCondition3={this.getCondition3}
@@ -81,7 +88,10 @@ class RepoQueryInOutQuery extends React.Component {
                         condition5={this.state.condition5}
                     />
                     <div className='clear'></div>
-                    <InOutQueryTable pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
+                    <InOutQueryTable
+                        pagination={this.pagination}
+                        dataSource={this.state.dataSource}
+                        handleTableChange={this.handleTableChange}/>
                 </Spin>
             </div>
         );
@@ -94,7 +104,7 @@ class RepoQueryInOutQuery extends React.Component {
             params = {
                 condition: value === undefined ? searchContent : value,
                 size: pageSize,
-                page: current
+                current: current
             };
         this.getTableData(params);
     }
@@ -102,37 +112,57 @@ class RepoQueryInOutQuery extends React.Component {
     /**获取表格数据*/
     getTableData = (params) => {
         this.setState({
-            dataSource:data1
+            loading: true
+        });
+        axios({
+            url: this.url.repoQueryInventoryQuery.pages,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                typeId: params.condition.condition1,
+                subTypeId: params.condition.condition2,
+                batch: params.condition.condition5
+            },
+            data: {
+                current: params.current,
+                size: params.size
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if (res && res.records) {
+                this.pagination.total = res['total'] ? res['total'] : 0;
+                var dataSource = [];
+                for (let i = 0; i < res.records.length; i++) {
+                    var nowAge = (new Date()).getTime();
+                    var preAge = res.records[i].stockDate?(new Date(res.records[i].stockDate)).getTime():0;
+                    var age = parseInt((nowAge - preAge)/  1000  /  60  /  60  /24);
+
+                    dataSource.push({
+                        code: res.records[i].id,
+                        col1: (res['current'] - 1) * 10 + i + 1,
+                        col2: res.records[i].outDate,
+                        col3: res.records[i].inDate,
+                        col4: res.records[i].materialBatch,
+                        col5: res.records[i].typeName,
+                        col6: res.records[i].subTypeName,
+                        col7: res.records[i].materialName,
+                        col8: res.records[i].supplierName,
+                        col9: res.records[i].checkStatus,
+                        col10: res.records[i].realWeight,
+                        col11: res.records[i].weight,
+                        col12: res.records[i].usefulWeight,
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource
+                })
+            }
+            this.setState({
+                loading: false
+            })
         })
-        console.log(params)
-
-
-
-        // this.setState({
-        //     loading: true
-        // });
-        // axios({
-        //     url: `${this.url.checkSite.page}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params
-        // }).then(data => {
-        //     let res = data.data.data;
-        //     if(res && res.list) {
-        //         this.pagination.total = res['total'] ? res['total'] : 0;
-        //         for(let i = 0; i < res.list.length; i++) {
-        //             res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list
-        //         })
-        //     }
-        //     this.setState({
-        //         loading: false
-        //     })
-        // })
     }
 
 
@@ -141,7 +171,7 @@ class RepoQueryInOutQuery extends React.Component {
         this.getTableParams(undefined);
     }
     /** 获取搜索条件 */
-    getCondition1 = (value,option) => {
+    getCondition1 = (value) => {
         this.setState({
             condition1: value,
         })
@@ -170,18 +200,20 @@ class RepoQueryInOutQuery extends React.Component {
     /**搜索事件*/
     searchEvent = () => {
         const {condition1,condition2,condition3,condition4,condition5} = this.state;
-        console.log(condition1)
-        console.log(condition2)
-        console.log(condition3)
-        console.log(condition4)
-        console.log(condition5)
+        var searchContent = {
+            condition1:condition1,
+            condition2:condition2,
+            condition3:condition3,
+            condition4:condition4,
+            condition5:condition5,
+        }
 
 
-        // this.setState({
-        //     searchContent
-        // });
-        // this.pagination.current = 1;
-        // this.getTableParams(searchContent)
+        this.setState({
+            searchContent
+        });
+        this.pagination.current = 1;
+        this.getTableParams(searchContent)
     }
 
     /**重置事件*/
@@ -193,9 +225,8 @@ class RepoQueryInOutQuery extends React.Component {
             condition4:null,
             condition5:null,
         });
-        // this.pagination.current = 1;
-        // const tabKey = this.state.tabKey;
-        // this.getTableParams('',tabKey)
+        this.pagination.current = 1;
+        this.getTableParams('')
     }
 
     back = () => {
