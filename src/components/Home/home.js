@@ -965,6 +965,11 @@ class Home extends Component {
                 pagesIn:`${server}/jc/repo/swms-stock-inventory-daily-reports/pagesIn`,
                 edit:`${server}/jc/repo/swms-stock-inventory-daily-reports/edit`
             },
+            /**库存查询*/
+            repoQueryInventoryQuery:{
+                pages:`${server}/jc/repo/swms-stock-inventory-really-reports/pages`,
+                details:`${server}/jc/repo/swms-stock-inventory-really-reports/details`
+            },
             /**智能仓库-基础数据-供应商 */
             supplier: {
                 pages: `${server}/jc/repo/SwmsBasicSupplierInfo/pages`,
@@ -986,12 +991,14 @@ class Home extends Component {
             subMaterial: {
                 pages: `${server}/jc/repo/swmsBasicMaterialSubType/pages`,
                 subMaterial: `${server}/jc/repo/swmsBasicMaterialSubType`,
-                getAll: `${server}/jc/repo/swmsBasicMaterialSubType/getAll`
+                getAll: `${server}/jc/repo/swmsBasicMaterialSubType/getAll`,
+                getByType: `${server}/jc/repo/swmsBasicMaterialSubType/getByType`,
             },
             /**智能仓库-基础数据-物料信息 */
             materialInfoSto: {
                 pages: `${server}/jc/repo/SwmsBasicMaterialInfo/pages`,
-                materialInfo: `${server}/jc/repo/SwmsBasicMaterialInfo`
+                materialInfo: `${server}/jc/repo/SwmsBasicMaterialInfo`,
+                getByType: `${server}/jc/repo/SwmsBasicMaterialInfo/getByType`
             },
             /**智能仓库-基础数据-计量单位 */
             unit: {
