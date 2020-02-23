@@ -20,7 +20,7 @@ class Search extends Component {
 
     componentDidMount = () => {
         this.getData1();
-        this.getData2();
+        // this.getData2();
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -35,7 +35,7 @@ class Search extends Component {
                 <span>物料大类：</span>
                 <Select
                     className="repoQueryInventoryDaily_search_select"
-                    onChange={this.props.getCondition1}
+                    onChange={this.selectTypeName}
                     value={this.props.condition1}
                 >
                     {
@@ -62,7 +62,7 @@ class Search extends Component {
                                 <Option
                                     key={item.id} value={item.id}
                                 >
-                                    {item.typeName}
+                                    {item.subTypeName}
                                 </Option>
                             )
                         }):null
@@ -106,13 +106,27 @@ class Search extends Component {
         })
 
     }
-    getData2 = () => {
+    selectTypeName = (value,option) => {
+
+        this.props.getCondition1(value);
+        this.getData2(value);
+        //this.getData3(value)
+
+
+        this.setState({
+            condition1: value,
+        })
+    }
+    getData2 = (value) => {
         axios({
-            url: `${this.props.url.subMaterial.getAll}`,
+            url: `${this.props.url.subMaterial.getByType}`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
-            }
+            },
+            params: {
+                type: parseInt(value)
+            },
         }).then(data => {
             let res = data.data.data;
             if(res) {
@@ -125,6 +139,7 @@ class Search extends Component {
                 })
             }
         })
+
     }
 
 }

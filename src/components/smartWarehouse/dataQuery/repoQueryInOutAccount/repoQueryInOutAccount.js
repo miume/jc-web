@@ -2,49 +2,17 @@ import React from 'react';
 import BlockQuote from "../../../BlockQuote/blockquote";
 import {Spin, message, Table, Tabs, Popconfirm} from "antd";
 import axios from 'axios';
-import InAccount from './inAccount'
-import OutAccount from './outAccount'
+import InDaily from './inDaily'
 import Search from './search'
+import Check from './check'
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
-
-var data1 = []
-var data2 = []
-for (var i = 0; i < 20; i++) {
-    data1.push({
-        col1: i+1,
-        col2: (i+1)%2,
-        col3: '物料名称',
-        col4: `批号${i+1000}`,
-        col5: '大类',
-        col6: `小类`,
-        col7: '物料名称',
-        col8: '供应商',
-        col9: '合格',
-        col10: (i+1)%5,
-        col11: i*10,
-        col12: '2019年11月11日',
-        col13: 'admin'
-    })
-    data2.push({
-        col1: i+1,
-        col2: (i+1)%2,
-        col3: '物料名称',
-        col4: `批号${i+1000}`,
-        col5: '大类',
-        col6: `小类`,
-        col7: '物料名称',
-        col8: '供应商',
-        col9: '合格',
-        col10: '2019年11月11日'
-    })
-}
-
+import './repoQueryInOutAccount.css'
 
 const { TabPane } = Tabs;
 class RepoQueryInOutAccount extends React.Component {
 
     componentDidMount = () => {
-        this.getTableParams(undefined,"1");
+        this.getTableParams(undefined);
     }
     componentWillUnmount = () => {
         this.setState(() => {
@@ -55,10 +23,20 @@ class RepoQueryInOutAccount extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            searchContent: '',
+            selectedRowKeys: [],
+            searchContent: {
+                condition1:'',
+                condition2:'',
+                condition3:'',
+                condition4:'',
+                condition5:''
+            },
             dataSource:[],
-            tabKey:'1',
             condition1: null,
+            condition2: null,
+            condition3: null,
+            condition4: undefined,
+            condition5: undefined
         };
         this.operations = [];
         this.pagination = {
@@ -77,96 +55,111 @@ class RepoQueryInOutAccount extends React.Component {
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                    <Check
+                        url={this.url}
+                        selectedRowKeys={this.state.selectedRowKeys}
+                        getTableParams={this.getTableParams}
+                    />
                     <Search
+                        url={this.url}
                         getCondition1={this.getCondition1}
+                        getCondition2={this.getCondition2}
+                        getCondition3={this.getCondition3}
+                        getCondition4and5={this.getCondition4and5}
                         searchEvent={this.searchEvent}
                         reset={this.reset}
                         condition1={this.state.condition1}
+                        condition2={this.state.condition2}
+                        condition3={this.state.condition3}
+                        condition4={this.state.condition4}
+                        condition5={this.state.condition5}
                     />
                     <div className='clear'></div>
-                    <Tabs defaultActiveKey='1' onChange={this.tabChange}>
-                        <TabPane tab='入库台账' key='1'>
-                            <InAccount pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
-                        </TabPane>
-                        <TabPane tab='出库台账' key='2'>
-                            <OutAccount pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
-                        </TabPane>
-                    </Tabs>
+                    <InDaily
+                        url={this.url}
+                        getTableParams={this.getTableParams}
+                        onSelectChange={this.onSelectChange}
+                        pagination={this.pagination}
+                        dataSource={this.state.dataSource}
+                        handleTableChange={this.handleTableChange}
+                    />
                 </Spin>
             </div>
         );
     }
 
 
-    tabChange = (key) => {
-        this.setState({
-            searchContent: undefined,
-            tabKey:key
-        });
-        this.pagination.current = 1;
-        this.getTableParams('',key)
-
-    }
-
     /**确定获取表格数据的参数*/
-    getTableParams = (value,key) => {
+    getTableParams = (value) => {
         let {searchContent} = this.state, {pageSize,current} = this.pagination,
             params = {
                 condition: value === undefined ? searchContent : value,
                 size: pageSize,
-                page: current
+                current: current
             };
-        this.getTableData(params,key);
+        this.getTableData(params);
     }
 
     /**获取表格数据*/
-    getTableData = (params,key) => {
-        if (key==="1"){
+    getTableData = (params) => {
+        axios({
+            url: this.url.repoQueryInOutDaily.pagesOut,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                typeId: params.condition.condition1,
+                subTypeId: params.condition.condition2,
+                supplierId: params.condition.condition3,
+                startTime: params.condition.condition4,
+                endTime: params.condition.condition5
+            },
+            data:{
+                current:params.current,
+                size:params.size
+            },
+        }).then(data => {
+            let res = data.data.data;
+            console.log(res)
+            if(res && res.records) {
+                this.pagination.total = res['total'] ? res['total'] : 0;
+                var dataSource =[];
+                for(let i = 0; i < res.records.length; i++) {
+                    var nowTime = (new Date()).getTime();
+                    var preTime = new Date(res.records[i].createdDay).getTime();
+                    var aging = Math.floor((nowTime - preTime)/86400000);
+                    dataSource.push({
+                        code: res.records[i].id,
+                        col1: (res['current'] - 1) * 10 + i + 1,
+                        col2: aging.toString() + "天",
+                        col3: res.records[i].createdDay,
+                        col4: res.records[i].materialBatch,
+                        col5: res.records[i].typeName,
+                        col6: res.records[i].subTypeName,
+                        col7: res.records[i].materialName,
+                        col8: res.records[i].supplierName,
+                        col9: res.records[i].deptName,
+                        col10: res.records[i].bagCounts,
+                        col11: res.records[i].weight,
+                        col12: res.records[i].measureUnit
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource,
+                    selectedRowKeys: []
+                })
+            }
             this.setState({
-                dataSource:data1
+                loading: false
             })
-        } else{
-            this.setState({
-                dataSource:data2
-            })
-        }
-        console.log(params)
-        console.log(key)
-
-
-
-        // this.setState({
-        //     loading: true
-        // });
-        // axios({
-        //     url: `${this.url.checkSite.page}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params
-        // }).then(data => {
-        //     let res = data.data.data;
-        //     if(res && res.list) {
-        //         this.pagination.total = res['total'] ? res['total'] : 0;
-        //         for(let i = 0; i < res.list.length; i++) {
-        //             res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list
-        //         })
-        //     }
-        //     this.setState({
-        //         loading: false
-        //     })
-        // })
+        })
     }
 
 
     handleTableChange = (pagination) => {
         this.pagination = pagination;
-        const tabKey = this.state.tabKey;
-        this.getTableParams(undefined,tabKey);
+        this.getTableParams(undefined);
     }
     /** 获取搜索条件 */
     getCondition1 = (value,option) => {
@@ -174,31 +167,52 @@ class RepoQueryInOutAccount extends React.Component {
             condition1: value,
         })
     }
-
+    getCondition2 = (value,option) => {
+        this.setState({
+            condition2: value,
+        })
+    }
+    getCondition3 = (value,option) => {
+        this.setState({
+            condition3: value,
+        })
+    }
+    getCondition4and5 = (date, dateString) => {
+        console.log(dateString)
+        this.setState({
+            condition4: dateString[0],
+            condition5: dateString[1]
+        })
+    }
 
     /**搜索事件*/
     searchEvent = () => {
-        const {condition1} = this.state;
-        console.log(condition1)
-
-
-
-        // this.setState({
-        //     searchContent
-        // });
-        // this.pagination.current = 1;
-        // this.getTableParams(searchContent)
+        const {condition1,condition2,condition3,condition4,condition5} = this.state;
+        var searchContent = {
+            condition1:condition1,
+            condition2:condition2,
+            condition3:condition3,
+            condition4:condition4,
+            condition5:condition5
+        }
+        this.setState({
+            searchContent
+        });
+        this.pagination.current = 1;
+        this.getTableParams(searchContent)
     }
 
     /**重置事件*/
     reset = () => {
         this.setState({
             condition1:null,
-
+            condition2:null,
+            condition3:null,
+            condition4:undefined,
+            condition5:undefined
         });
-        // this.pagination.current = 1;
-        // const tabKey = this.state.tabKey;
-        // this.getTableParams('',tabKey)
+        this.pagination.current = 1;
+        this.getTableParams('')
     }
 
     back = () => {

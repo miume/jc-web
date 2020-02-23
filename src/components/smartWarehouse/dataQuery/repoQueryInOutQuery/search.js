@@ -6,30 +6,6 @@ import NewButton from "../../../BlockQuote/newButton";
 import axios from "axios";
 
 
-var data1 = []
-var data2 = []
-var data3 = []
-var data4 = []
-
-for (var i = 0; i < 10; i++) {
-    data1.push({
-        code: i+1,
-        name: `大类${i}`
-    })
-    data2.push({
-        code: i+1,
-        name: `小类${i}`
-    })
-    data3.push({
-        code: i+1,
-        name: `2019011${i}`
-    })
-    data4.push({
-        code: i+1,
-        name: `2019011${i}`
-    })
-}
-
 const {Option} = Select;
 class Search extends Component {
     constructor(props) {
@@ -45,7 +21,7 @@ class Search extends Component {
 
     componentDidMount = () => {
         this.getData1();
-        this.getData2();
+        // this.getData2();
         //this.getData3();
         //this.getData4();
     }
@@ -94,42 +70,42 @@ class Search extends Component {
                         }):null
                     }
                 </Select>
-                <span>供货单位：</span>
-                <Select
-                    className="repoQueryOutQuery_search_select"
-                    onChange={this.props.getCondition3}
-                    value={this.props.condition3}
-                >
-                    {
-                        this.state.data3?this.state.data3.map(item => {
-                            return (
-                                <Option
-                                    key={item.code} value={item.code}
-                                >
-                                    {item.name}
-                                </Option>
-                            )
-                        }):null
-                    }
-                </Select>
-                <span>入库日期：</span>
-                <Select
-                    className="repoQueryOutQuery_search_select"
-                    onChange={this.props.getCondition4}
-                    value={this.props.condition4}
-                >
-                    {
-                        this.state.data4?this.state.data4.map(item => {
-                            return (
-                                <Option
-                                    key={item.code} value={item.code}
-                                >
-                                    {item.name}
-                                </Option>
-                            )
-                        }):null
-                    }
-                </Select>
+                {/*<span>供货单位：</span>*/}
+                {/*<Select*/}
+                    {/*className="repoQueryOutQuery_search_select"*/}
+                    {/*onChange={this.props.getCondition3}*/}
+                    {/*value={this.props.condition3}*/}
+                {/*>*/}
+                    {/*{*/}
+                        {/*this.state.data3?this.state.data3.map(item => {*/}
+                            {/*return (*/}
+                                {/*<Option*/}
+                                    {/*key={item.code} value={item.code}*/}
+                                {/*>*/}
+                                    {/*{item.name}*/}
+                                {/*</Option>*/}
+                            {/*)*/}
+                        {/*}):null*/}
+                    {/*}*/}
+                {/*</Select>*/}
+                {/*<span>入库日期：</span>*/}
+                {/*<Select*/}
+                    {/*className="repoQueryOutQuery_search_select"*/}
+                    {/*onChange={this.props.getCondition4}*/}
+                    {/*value={this.props.condition4}*/}
+                {/*>*/}
+                    {/*{*/}
+                        {/*this.state.data4?this.state.data4.map(item => {*/}
+                            {/*return (*/}
+                                {/*<Option*/}
+                                    {/*key={item.code} value={item.code}*/}
+                                {/*>*/}
+                                    {/*{item.name}*/}
+                                {/*</Option>*/}
+                            {/*)*/}
+                        {/*}):null*/}
+                    {/*}*/}
+                {/*</Select>*/}
                 <span>批号：</span>
                 <Input
                     className="repoQueryOutQuery_search_input"
@@ -203,16 +179,16 @@ class Search extends Component {
         })
 
     }
-    getData3 = () => {
-        this.setState({
-            data3:data3
-        })
-    }
-    getData4 = () => {
-        this.setState({
-            data4:data4
-        })
-    }
+    // getData3 = () => {
+    //     this.setState({
+    //         data3:data3
+    //     })
+    // }
+    // getData4 = () => {
+    //     this.setState({
+    //         data4:data4
+    //     })
+    // }
 
 
 }
