@@ -3,37 +3,16 @@ import {DatePicker, Select, Button, message} from "antd";
 // import NewButton from "../../BlockQuote/newButton";
 import './repoQueryInventoryQuery.css'
 import NewButton from "../../../BlockQuote/newButton";
+import axios from "axios";
 
 
-var data1 = []
-var data2 = []
-var data3 = []
-var data4 = []
-
-for (var i = 0; i < 10; i++) {
-    data1.push({
-        code: i+1,
-        name: `大类${i}`
-    })
-    data2.push({
-        code: i+1,
-        name: `小类${i}`
-    })
-    data3.push({
-        code: i+1,
-        name: `2019011${i}`
-    })
-    data4.push({
-        code: i+1,
-        name: `2019011${i}`
-    })
-}
 
 const {Option} = Select;
 class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            condition1:null,
             data1:[],
             data2:[],
             data3:[],
@@ -43,8 +22,6 @@ class Search extends Component {
 
     componentDidMount = () => {
         this.getData1();
-        this.getData2();
-        this.getData3();
         this.getData4();
     }
     componentWillUnmount() {
@@ -59,16 +36,16 @@ class Search extends Component {
                 <span>物料大类：</span>
                 <Select
                     className="repoQueryInventoryQuery_search_select"
-                    onChange={this.props.getCondition1}
+                    onChange={this.selectTypeName}
                     value={this.props.condition1}
                 >
                     {
                         this.state.data1?this.state.data1.map(item => {
                             return (
                                 <Option
-                                    key={item.code} value={item.code}
+                                    key={item.id} value={item.id}
                                 >
-                                    {item.name}
+                                    {item.typeName}
                                 </Option>
                             )
                         }):null
@@ -84,9 +61,9 @@ class Search extends Component {
                         this.state.data2?this.state.data2.map(item => {
                             return (
                                 <Option
-                                    key={item.code} value={item.code}
+                                    key={item.id} value={item.id}
                                 >
-                                    {item.name}
+                                    {item.subTypeName}
                                 </Option>
                             )
                         }):null
@@ -102,9 +79,9 @@ class Search extends Component {
                         this.state.data3?this.state.data3.map(item => {
                             return (
                                 <Option
-                                    key={item.code} value={item.code}
+                                    key={item.id} value={item.id}
                                 >
-                                    {item.name}
+                                    {item.materialName}
                                 </Option>
                             )
                         }):null
@@ -120,9 +97,9 @@ class Search extends Component {
                         this.state.data4?this.state.data4.map(item => {
                             return (
                                 <Option
-                                    key={item.code} value={item.code}
+                                    key={item.id} value={item.id}
                                 >
-                                    {item.name}
+                                    {item.materialSupplierName}
                                 </Option>
                             )
                         }):null
@@ -138,26 +115,104 @@ class Search extends Component {
     }
 
     getData1 = () => {
-        this.setState({
-            data1:data1
+        axios({
+            url: `${this.props.url.material.getAll}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    data1: res
+                })
+            }else{
+                this.setState({
+                    data1: []
+                })
+            }
         })
 
     }
-    getData2 = () => {
+    selectTypeName = (value,option) => {
+
+        this.props.getCondition1(value);
+        this.getData2(value);
+        this.getData3(value)
+
+
         this.setState({
-            data2:data2
+            condition1: value,
+        })
+    }
+
+    getData2 = (value) => {
+        axios({
+            url: `${this.props.url.subMaterial.getByType}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params: {
+                type: parseInt(value)
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    data2: res
+                })
+            }else{
+                this.setState({
+                    data2: []
+                })
+            }
         })
 
     }
-    getData3 = () => {
-        this.setState({
-            data3:data3
+    getData3 = (value) => {
+        axios({
+            url: `${this.props.url.materialInfoSto.getByType}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params: {
+                type: parseInt(value)
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    data3: res
+                })
+            }else{
+                this.setState({
+                    data3: []
+                })
+            }
         })
 
     }
     getData4 = () => {
-        this.setState({
-            data4:data4
+        axios({
+            url: `${this.props.url.supplier.getAll}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                this.setState({
+                    data4: res
+                })
+            }else{
+                this.setState({
+                    data4: []
+                })
+            }
         })
 
     }

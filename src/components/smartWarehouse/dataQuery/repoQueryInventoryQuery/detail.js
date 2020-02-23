@@ -3,15 +3,6 @@ import axios from 'axios';
 import {Button, Input, message, Modal, Table} from 'antd';
 import CancleButton from '../../../BlockQuote/cancleButton';
 
-const data = [];
-for (let i = 0; i < 50; i++) {
-    data.push({
-        col1:i+1,
-        col2: `物料${i}`,
-        col3: `batch2019${i}`,
-        col4: (i+1)%5*100,
-    });
-}
 
 class Detail extends React.Component {
     constructor(props){
@@ -83,8 +74,38 @@ class Detail extends React.Component {
     /**通过id查询备注信息 */
     handleDetail = () => {
         this.setState({
-            visible:true,
-            dataSource:data
+            loading: true
+        });
+        axios({
+            url: this.props.url.repoQueryInventoryQuery.details,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params: {
+                materialBatch: this.props.record.col4,
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if (res) {
+                var dataSource = [];
+                for (let i = 0; i < res.length; i++) {
+                    dataSource.push({
+                        code: res[i].id,
+                        col1: i + 1,
+                        col2: res[i].materialName,
+                        col3: res[i].materialBatch,
+                        col4: res[i].weight,
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource,
+                    visible:true,
+                })
+            }
+            this.setState({
+                loading: false
+            })
         })
     }
 

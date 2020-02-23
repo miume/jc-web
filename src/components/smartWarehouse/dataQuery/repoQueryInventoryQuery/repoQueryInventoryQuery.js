@@ -6,26 +6,6 @@ import InventoryQueryTable from './table'
 import Search from './search'
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 
-var data1 = []
-var data2 = []
-for (var i = 0; i < 20; i++) {
-    data1.push({
-        code: i+1,
-        col1: i+1,
-        col2: '原料',
-        col3: '前驱体',
-        col4: '硫酸镍',
-        col5: '吉林吉恩',
-        col6: `kg`,
-        col7: 4430,
-        col8: 12,
-        col9: 10,
-        col10: 4432,
-        col11: i*100,
-        col12: 'XXXXXX'
-    })
-}
-
 
 class RepoQueryInventoryQuery extends React.Component {
 
@@ -41,12 +21,17 @@ class RepoQueryInventoryQuery extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            searchContent: '',
+            searchContent: {
+                condition1: '',
+                condition2: '',
+                condition3: '',
+                condition4: '',
+            },
             dataSource:[],
             condition1: null,
             condition2: null,
-            condition3: null,
-            condition4: null,
+            condition3: undefined,
+            condition4: undefined,
         };
         this.operations = [];
         this.pagination = {
@@ -66,6 +51,7 @@ class RepoQueryInventoryQuery extends React.Component {
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Search
+                        url={this.url}
                         getCondition1={this.getCondition1}
                         getCondition2={this.getCondition2}
                         getCondition3={this.getCondition3}
@@ -78,7 +64,14 @@ class RepoQueryInventoryQuery extends React.Component {
                         condition4={this.state.condition4}
                     />
                     <div className='clear'></div>
-                    <InventoryQueryTable pagination={this.pagination} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange}/>
+                    <InventoryQueryTable
+                        url={this.url}
+                        pagination={this.pagination}
+                        dataSource={this.state.dataSource}
+                        handleTableChange={this.handleTableChange}
+                        searchContent={this.state.searchContent}
+                        getTableParams={this.getTableParams}
+                    />
                 </Spin>
             </div>
         );
@@ -91,7 +84,7 @@ class RepoQueryInventoryQuery extends React.Component {
             params = {
                 condition: value === undefined ? searchContent : value,
                 size: pageSize,
-                page: current
+                current: current
             };
         this.getTableData(params);
     }
@@ -99,37 +92,59 @@ class RepoQueryInventoryQuery extends React.Component {
     /**获取表格数据*/
     getTableData = (params) => {
         this.setState({
-            dataSource:data1
+            loading: true
+        });
+        axios({
+            url: this.url.repoQueryInventoryQuery.pages,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                typeId: params.condition.condition1,
+                subTypeId: params.condition.condition2,
+                materialNameCode: params.condition.condition3,
+                supplierId: params.condition.condition4
+            },
+            data: {
+                current: params.current,
+                size: params.size
+            },
+        }).then(data => {
+            let res = data.data.data;
+            if (res && res.records) {
+                this.pagination.total = res['total'] ? res['total'] : 0;
+                var dataSource = [];
+                for (let i = 0; i < res.records.length; i++) {
+                    var nowAge = (new Date()).getTime();
+                    var preAge = res.records[i].stockDate?(new Date(res.records[i].stockDate)).getTime():0;
+                    var age = parseInt((nowAge - preAge)/  1000  /  60  /  60  /24);
+
+
+                    dataSource.push({
+                        code: res.records[i].id,
+                        col1: (res['current'] - 1) * 10 + i + 1,
+                        col2: age + "天",
+                        col3: res.records[i].stockDate,
+                        col4: res.records[i].materialBatch,
+                        col5: res.records[i].typeName,
+                        col6: res.records[i].subTypeName,
+                        col7: res.records[i].materialName,
+                        col8: res.records[i].supplierName,
+                        col9: res.records[i].checkStatus,
+                        col10: res.records[i].measureUnit,
+                        col11: res.records[i].realWeight,
+                        col12: res.records[i].usefulWeight,
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource
+                })
+            }
+            this.setState({
+                loading: false
+            })
         })
-        console.log(params)
-
-
-
-        // this.setState({
-        //     loading: true
-        // });
-        // axios({
-        //     url: `${this.url.checkSite.page}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params
-        // }).then(data => {
-        //     let res = data.data.data;
-        //     if(res && res.list) {
-        //         this.pagination.total = res['total'] ? res['total'] : 0;
-        //         for(let i = 0; i < res.list.length; i++) {
-        //             res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list
-        //         })
-        //     }
-        //     this.setState({
-        //         loading: false
-        //     })
-        // })
     }
 
 
@@ -138,7 +153,7 @@ class RepoQueryInventoryQuery extends React.Component {
         this.getTableParams(undefined);
     }
     /** 获取搜索条件 */
-    getCondition1 = (value,option) => {
+    getCondition1 = (value) => {
         this.setState({
             condition1: value,
         })
@@ -161,31 +176,30 @@ class RepoQueryInventoryQuery extends React.Component {
 
     /**搜索事件*/
     searchEvent = () => {
-        const {condition1,condition2,condition3,condition4} = this.state;
-        console.log(condition1)
-        console.log(condition2)
-        console.log(condition3)
-        console.log(condition4)
-
-
-        // this.setState({
-        //     searchContent
-        // });
-        // this.pagination.current = 1;
-        // this.getTableParams(searchContent)
+        const {condition1, condition2, condition3,condition4} = this.state;
+        var searchContent = {
+            condition1:condition1,
+            condition2:condition2,
+            condition3:condition3,
+            condition4:condition4,
+        }
+        this.setState({
+            searchContent
+        });
+        this.pagination.current = 1;
+        this.getTableParams(searchContent)
     }
 
     /**重置事件*/
     reset = () => {
         this.setState({
-            condition1:null,
-            condition2:null,
-            condition3:null,
-            condition4:null,
+            condition1: null,
+            condition2: null,
+            condition3: undefined,
+            condition4: undefined
         });
-        // this.pagination.current = 1;
-        // const tabKey = this.state.tabKey;
-        // this.getTableParams('',tabKey)
+        this.pagination.current = 1;
+        this.getTableParams('')
     }
 
     back = () => {
