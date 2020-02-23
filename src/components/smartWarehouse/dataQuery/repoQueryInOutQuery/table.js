@@ -25,12 +25,18 @@ class InOutQueryTable extends React.Component {
             title: '出库日期',
             key: 'col2',
             dataIndex: 'col2',
-            width: '7%'
+            width: '7%',
+            render:(text)=>{
+                return <span title={text} className='text-decoration'>{text.split(" ")[0] + "..."}</span>
+            }
         },{
             title: '入库日期',
             key: 'col3',
             dataIndex: 'col3',
-            width: '7%'
+            width: '7%',
+            render:(text)=>{
+                return <span title={text} className='text-decoration'>{text.split(" ")[0] + "..."}</span>
+            }
         },{
             title: '批号',
             key: 'col4',
@@ -60,7 +66,21 @@ class InOutQueryTable extends React.Component {
             title: '检验状态',
             key: 'col9',
             dataIndex: 'col9',
-            width: '7%'
+            width: '7%',
+            render:(text,record) => {
+                if (text===0){
+                    return <span>待检</span>
+                }
+                if (text===1){
+                    return <span>合格</span>
+                }
+                if (text===2){
+                    return <span>不合格</span>
+                }
+                if (text===3){
+                    return <span>让步接收</span>
+                }
+            }
         },{
             title: '实际袋数',
             key: 'col10',
