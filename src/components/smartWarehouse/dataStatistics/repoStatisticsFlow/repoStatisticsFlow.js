@@ -1,6 +1,6 @@
 import React from 'react';
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Spin, message, Table, Tabs, Popconfirm, Select} from "antd";
+import {Spin, message, Table, Tabs, Popconfirm, Select, DatePicker, Input} from "antd";
 import axios from 'axios';
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 import MonthView from "./monthView"
@@ -8,10 +8,13 @@ import YearView from "./yearView"
 import MonthTable from "./monthTable"
 import YearTable from "./yearTable"
 import "./repoStatisticsFlow.css"
+import moment from "moment";
 
 
 const { TabPane } = Tabs;
 const {Option} = Select;
+const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+
 class RepoStatisticsFlow extends React.Component {
     componentDidMount = () => {
         this.getPreData();
@@ -29,6 +32,7 @@ class RepoStatisticsFlow extends React.Component {
             searchContent: '',
             yearDataSource:[],
             tabKey:'1',
+            dateString:"",
 
             month:1,
             monthColumn:[],
@@ -59,24 +63,7 @@ class RepoStatisticsFlow extends React.Component {
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         <TabPane tab='月视图' key='1'>
                             <div className="repoStatisticsFlow_month_top">
-                                <span>请选择月份：</span>
-                                <Select
-                                    className="repoStatisticsFlow_month_top_select"
-                                    onChange={this.monthChange}
-                                    value={this.state.month}
-                                >
-                                    {
-                                        this.month?this.month.map(item => {
-                                            return (
-                                                <Option
-                                                    key={item.code} value={item.code}
-                                                >
-                                                    {item.name}
-                                                </Option>
-                                            )
-                                        }):null
-                                    }
-                                </Select>
+                                <MonthPicker onChange={this.selectChange} value={this.state.dateString ? moment(this.state.dateString) : null} placeholder="请选择统计月份" />
                             </div>
                             <div className="repoStatisticsFlow_month_middle">
                                 <MonthView
@@ -93,6 +80,7 @@ class RepoStatisticsFlow extends React.Component {
                             </div>
                         </TabPane>
                         <TabPane tab='年视图' key='2'>
+                            <Input style={{width:200}}  placeholder="请输入统计年份" value={this.state.dateString} onChange={this.selectYearChange}/>
                             <YearView
                                 yearOption={this.state.yearOption}
                             />
@@ -108,6 +96,20 @@ class RepoStatisticsFlow extends React.Component {
             </div>
         );
     }
+    selectYearChange = (e) => {
+        this.getYearData(e.target.value)
+        this.setState({
+            dateString: e.target.value
+        })
+    }
+    selectChange = (date, dateString) => {
+        this.getMonthData(dateString);
+        this.setState({
+            dateString:dateString
+        });
+    }
+
+
     getPreData = () => {
         var month = [];
         for (var i = 0; i < 12; i++) {
@@ -137,7 +139,8 @@ class RepoStatisticsFlow extends React.Component {
 
     }
 
-    getYearData = () => {
+    getYearData = (value) => {
+        console.log(value)
 
         var yearColumn = ["月份"];
         var yearIndex = []
@@ -214,9 +217,6 @@ class RepoStatisticsFlow extends React.Component {
     }
 
     /**获取 month 数据*/
-    monthChange = (value,option) => {
-        this.getMonthData(value);
-    }
     getMonthData = (value) => {
 
         var monthColumn = ["日期"];
@@ -229,6 +229,8 @@ class RepoStatisticsFlow extends React.Component {
         var monthIn = [];
         var monthOut = [];
         var monthSave = [];
+
+
         for (var i = 1; i < 32; i++) {
             monthRow1.push(i*100+i%3)
             monthRow2.push((i+1)*100+i%4)

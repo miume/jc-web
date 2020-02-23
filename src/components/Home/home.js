@@ -978,6 +978,11 @@ class Home extends Component {
             repoStatisticsDull:{
                 query:`${server}/jc/repo/swmsDullStatistic/query`,
             },
+            /**流量统计*/
+            repoStatisticsFlow:{
+                monthView:`${server}/jc/repo/SwmsStream/monthView`,
+                yearView:`${server}/jc/repo/SwmsStream/yearView`,
+            },
             /**智能仓库-基础数据-供应商 */
             supplier: {
                 pages: `${server}/jc/repo/SwmsBasicSupplierInfo/pages`,
