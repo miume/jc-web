@@ -39,6 +39,7 @@ class Search extends Component {
                     className="repoQueryOutDaily_search_select"
                     onChange={this.selectTypeName}
                     value={this.props.condition1}
+                    placeholder="请选择物料大类"
                 >
                     {
                         this.state.data1?this.state.data1.map(item => {
@@ -57,6 +58,7 @@ class Search extends Component {
                     className="repoQueryOutDaily_search_select"
                     onChange={this.props.getCondition2}
                     value={this.props.condition2}
+                    placeholder="请选择物料小类"
                 >
                     {
                         this.state.data2?this.state.data2.map(item => {
@@ -75,6 +77,7 @@ class Search extends Component {
                     className="repoQueryOutDaily_search_select"
                     onChange={this.props.getCondition3}
                     value={this.props.condition3}
+                    placeholder="请选择物料名称"
                 >
                     {
                         this.state.data3?this.state.data3.map(item => {

@@ -106,7 +106,6 @@ class RepoRecordAccount extends React.Component {
             },
         }).then(data => {
             let res = data.data.data;
-            console.log(res)
             if(res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 var dataSource =[];

@@ -28,8 +28,8 @@ class RepoQueryInventoryQuery extends React.Component {
                 condition4: '',
             },
             dataSource:[],
-            condition1: null,
-            condition2: null,
+            condition1: undefined,
+            condition2: undefined,
             condition3: undefined,
             condition4: undefined,
         };
@@ -193,8 +193,8 @@ class RepoQueryInventoryQuery extends React.Component {
     /**重置事件*/
     reset = () => {
         this.setState({
-            condition1: null,
-            condition2: null,
+            condition1: undefined,
+            condition2: undefined,
             condition3: undefined,
             condition4: undefined
         });

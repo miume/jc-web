@@ -7,23 +7,6 @@ import InWater from './inWater'
 import OutWater from './outWater'
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 
-var data1 = []
-var data2 = []
-for (var i = 0; i < 20; i++) {
-    data1.push({
-        col1: i+1,
-        col2: `batch${i+1000}`,
-        col3: '2019年11月11日',
-        col4: 'admin'
-    })
-    data2.push({
-        col1: i+1,
-        col2: `batch${i+1000}`,
-        col3: '2019年11月11日',
-    })
-}
-
-
 const { TabPane } = Tabs;
 class RepoRecordWater extends React.Component {
 
@@ -123,7 +106,6 @@ class RepoRecordWater extends React.Component {
             },
         }).then(data => {
             let res = data.data.data;
-            console.log(res)
             if(res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 var dataSource =[];

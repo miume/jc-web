@@ -1,6 +1,6 @@
 import React from 'react';
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Spin, message, Table, Tabs, Popconfirm, Select, DatePicker, Input} from "antd";
+import {Spin, Tabs, DatePicker} from "antd";
 import axios from 'axios';
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 import MonthView from "./monthView"
@@ -12,14 +12,9 @@ import moment from "moment";
 
 
 const { TabPane } = Tabs;
-const {Option} = Select;
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+const { MonthPicker } = DatePicker;
 
 class RepoStatisticsFlow extends React.Component {
-    componentDidMount = () => {
-        this.getPreData();
-        this.getMonthData(1);
-    }
     componentWillUnmount = () => {
         this.setState(() => {
             return;
@@ -33,6 +28,7 @@ class RepoStatisticsFlow extends React.Component {
             yearDataSource:[],
             tabKey:'1',
             dateString:"",
+            // yearString:"",
 
             month:1,
             monthColumn:[],
@@ -47,6 +43,9 @@ class RepoStatisticsFlow extends React.Component {
             yearRow3:[],
             yearOption: {},
 
+            isopen: false,
+            yearString: null
+
         };
         this.operations = [];
         this.month = [];
@@ -60,18 +59,20 @@ class RepoStatisticsFlow extends React.Component {
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <Tabs defaultActiveKey='1' onChange={this.tabChange}>
+                    <Tabs defaultActiveKey='1'>
                         <TabPane tab='月视图' key='1'>
                             <div className="repoStatisticsFlow_month_top">
                                 <MonthPicker onChange={this.selectChange} value={this.state.dateString ? moment(this.state.dateString) : null} placeholder="请选择统计月份" />
                             </div>
                             <div className="repoStatisticsFlow_month_middle">
                                 <MonthView
+                                    key="monthView"
                                     monthOption={this.state.monthOption}
                                 />
                             </div>
                             <div className="repoStatisticsFlow_month_bottom">
                                 <MonthTable
+                                    key="monthTable"
                                     monthColumn={this.state.monthColumn}
                                     monthRow1={this.state.monthRow1}
                                     monthRow2={this.state.monthRow2}
@@ -80,7 +81,23 @@ class RepoStatisticsFlow extends React.Component {
                             </div>
                         </TabPane>
                         <TabPane tab='年视图' key='2'>
-                            <Input style={{width:200}}  placeholder="请输入统计年份" value={this.state.dateString} onChange={this.selectYearChange}/>
+                            <div>
+                                <DatePicker
+                                    value={this.state.yearString}
+                                    open={this.state.isopen}
+                                    mode="year"
+                                    placeholder="请选择年份"
+                                    format="YYYY"
+                                    onOpenChange={(status) => {
+                                        if(status){
+                                            this.setState({isopen: true})
+                                        } else {
+                                            this.setState({isopen: false})
+                                        }
+                                    }}
+                                    onPanelChange={this.selectYearChange}
+                                />
+                            </div>
                             <YearView
                                 yearOption={this.state.yearOption}
                             />
@@ -96,10 +113,12 @@ class RepoStatisticsFlow extends React.Component {
             </div>
         );
     }
-    selectYearChange = (e) => {
-        this.getYearData(e.target.value)
+    selectYearChange = (v) => {
+        const year = new Date(v.toString()).getFullYear()
+        this.getYearData(year)
         this.setState({
-            dateString: e.target.value
+            yearString: v,
+            isopen: false
         })
     }
     selectChange = (date, dateString) => {
@@ -109,223 +128,196 @@ class RepoStatisticsFlow extends React.Component {
         });
     }
 
-
-    getPreData = () => {
-        var month = [];
-        for (var i = 0; i < 12; i++) {
-            month.push({
-                code: i+1,
-                name: `${i+1}月`
-            })
-        }
-        this.month = month;
-
-        var day = []
-        for (var i = 0; i < 31; i++) {
-            day.push(i+1)
-        }
-        this.day = day;
-
-    }
-
-
-    tabChange = (key) => {
-        if (key==="1"){
-            this.getMonthData(1);
-
-        } else{
-            this.getYearData();
-        }
-
-    }
-
     getYearData = (value) => {
-        console.log(value)
-
-        var yearColumn = ["月份"];
-        var yearIndex = []
-        for (var i = 0; i < 12 ; i++) {
-            yearColumn.push(`${i+1}月`)
-            yearIndex.push(`${i+1}月`)
-        }
-        var yearRow1 = ["进"];
-        var yearRow2 = ["出"];
-        var yearRow3 = ["存"];
-        var yearIn = [];
-        var yearOut = [];
-        var yearSave = [];
-        for (var i = 0; i < 12; i++) {
-            yearRow1.push(i*100+i%3)
-            yearRow2.push(i*100+i%4)
-            yearRow3.push(i*100+i%2)
-            yearIn.push(i*100+i%3)
-            yearOut.push(i*100+i%4)
-            yearSave.push(i*100+i%2)
-        }
-
-        const yearOption = {
-            // color: ['#003366', '#006699', '#4cabce', '#e5323e'],
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                }
-            },
-            legend: {
-                data: ['进', '出', '存']
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    axisTick: {show: false},
-                    data: yearIndex
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    name: '进',
-                    type: 'bar',
-                    barGap: 0,
-                    data: yearIn
-                },
-                {
-                    name: '出',
-                    type: 'bar',
-                    data: yearOut
-                },
-                {
-                    name: '存',
-                    type: 'bar',
-                    data: yearSave
-                }
-            ]
-        }
-
         this.setState({
-            yearColumn:yearColumn,
-            yearRow1:yearRow1,
-            yearRow2:yearRow2,
-            yearRow3:yearRow3,
-            yearOption: yearOption
+            loading: false
+        });
+        axios({
+            url: `${this.url.repoStatisticsFlow.yearView}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params:{
+                year:parseInt(value),
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                var yearColumn = ["月份"];
+                var yearIndex = []
+                var yearRow1 = ["进"];
+                var yearRow2 = ["出"];
+                var yearRow3 = ["存"];
+                var yearIn = [];
+                var yearOut = [];
+                var yearSave = [];
+                for (var i = 0; i < res.length ; i++) {
+                    const date = res[i].date.split("-");
+                    yearColumn.push(`${parseInt(date[1])}月`)
+                    yearIndex.push(`${parseInt(date[1])}月`)
+                    yearRow1.push(res[i].in)
+                    yearRow2.push(res[i].out)
+                    yearRow3.push(res[i].store)
+                    yearIn.push(res[i].in)
+                    yearOut.push(res[i].out)
+                    yearSave.push(res[i].store)
+                }
+
+
+                const yearOption = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    legend: {
+                        data: ['进', '出', '存']
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            axisTick: {show: false},
+                            data: yearIndex
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '进',
+                            type: 'bar',
+                            barGap: 0,
+                            data: yearIn
+                        },
+                        {
+                            name: '出',
+                            type: 'bar',
+                            data: yearOut
+                        },
+                        {
+                            name: '存',
+                            type: 'bar',
+                            data: yearSave
+                        }
+                    ]
+                }
+
+                this.setState({
+                    yearColumn:yearColumn,
+                    yearRow1:yearRow1,
+                    yearRow2:yearRow2,
+                    yearRow3:yearRow3,
+                    yearOption: yearOption
+                })
+            }
+            this.setState({
+                loading: false
+            })
         })
+
 
     }
 
     /**获取 month 数据*/
     getMonthData = (value) => {
-
-        var monthColumn = ["日期"];
-        for (var i = 0; i < 31 ; i++) {
-            monthColumn.push(i+1)
-        }
-        var monthRow1 = ["进"];
-        var monthRow2 = ["出"];
-        var monthRow3 = ["存"];
-        var monthIn = [];
-        var monthOut = [];
-        var monthSave = [];
-
-
-        for (var i = 1; i < 32; i++) {
-            monthRow1.push(i*100+i%3)
-            monthRow2.push((i+1)*100+i%4)
-            monthRow3.push((i-1)*100+i%2)
-
-            monthIn.push(i*100+i%3)
-            monthOut.push((i+1)*100+i%4)
-            monthSave.push((i-1)*100+i%2)
-        }
-        
-
-        /** 获取图数据 */
-
-        const monthOption = {
-            title: {
-                text: '长远锂科智能仓库12月流量统计',
-                left: 'center',
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                bottom: 10,
-                left: 'center',
-                data: ['进', '出', '存']
-            },
-            grid: {
-                bottom: 70
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: this.day
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                    name: '进',
-                    type: 'line',
-                    data: monthIn
-                },
-                {
-                    name: '出',
-                    type: 'line',
-                    data: monthOut
-                },
-                {
-                    name: '存',
-                    type: 'line',
-                    data: monthSave
-                }
-            ]
-        };
-
-
-
-
         this.setState({
-            monthOption: monthOption,
-            monthColumn:monthColumn,
-            monthRow1:monthRow1,
-            monthRow2:monthRow2,
-            monthRow3:monthRow3,
-            month: value,
+            loading: true
+        });
+        axios({
+            url: `${this.url.repoStatisticsFlow.monthView}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params:{
+                year:value?parseInt(value.split("-")[0]):undefined,
+                month:value?parseInt(value.split("-")[1]):undefined
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res) {
+                var monthColumn = ["日期"];
+                var monthRow1 = ["进"];
+                var monthRow2 = ["出"];
+                var monthRow3 = ["存"];
+                var monthIn = [];
+                var monthOut = [];
+                var monthSave = [];
+                for (var i = 0; i < res.length ; i++) {
+                    const date = res[i].date.split("-");
+                    monthColumn.push(parseInt(date[2]));
+                    monthRow1.push(res[i].in)
+                    monthRow2.push(res[i].out)
+                    monthRow3.push(res[i].store)
+                    monthIn.push(res[i].in)
+                    monthOut.push(res[i].out)
+                    monthSave.push(res[i].store)
+                }
+                /** 获取图数据 */
 
+                const monthOption = {
+                    title: {
+                        text: `长远锂科智能仓库${value.split("-")[1]}月流量统计`,
+                        left: 'center',
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        bottom: 10,
+                        left: 'center',
+                        data: ['进', '出', '存']
+                    },
+                    grid: {
+                        bottom: 70
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: this.day
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: '进',
+                            type: 'line',
+                            data: monthIn
+                        },
+                        {
+                            name: '出',
+                            type: 'line',
+                            data: monthOut
+                        },
+                        {
+                            name: '存',
+                            type: 'line',
+                            data: monthSave
+                        }
+                    ]
+                };
+
+                this.setState({
+                    monthOption: monthOption,
+                    monthColumn:monthColumn,
+                    monthRow1:monthRow1,
+                    monthRow2:monthRow2,
+                    monthRow3:monthRow3,
+                    // month: value,
+
+                })
+            }
+            this.setState({
+                loading: false
+            })
         })
 
-
-        // this.setState({
-        //     loading: true
-        // });
-        // axios({
-        //     url: `${this.url.checkSite.page}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params
-        // }).then(data => {
-        //     let res = data.data.data;
-        //     if(res && res.list) {
-        //         this.pagination.total = res['total'] ? res['total'] : 0;
-        //         for(let i = 0; i < res.list.length; i++) {
-        //             res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list
-        //         })
-        //     }
-        //     this.setState({
-        //         loading: false
-        //     })
-        // })
     }
 
     back = () => {

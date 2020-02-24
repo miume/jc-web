@@ -34,9 +34,9 @@ class RepoQueryInOutDaily extends React.Component {
             },
             dataSource:[],
             tabKey:'1',
-            condition1: null,
-            condition2: null,
-            condition3: null,
+            condition1: undefined,
+            condition2: undefined,
+            condition3: undefined,
             condition4: undefined,
             condition5: undefined
         };
@@ -118,11 +118,18 @@ class RepoQueryInOutDaily extends React.Component {
     }
     tabChange = (key) => {
         this.setState({
-            searchContent: undefined,
+            searchContent: {
+                condition1:'',
+                condition2:'',
+                condition3:'',
+                condition4:'',
+                condition5:''
+            },
             tabKey:key,
             selectedRowKeys:[]
         });
         this.pagination.current = 1;
+        this.pagination.pageSize = 10;
         this.getTableParams('',key)
 
     }
@@ -168,7 +175,6 @@ class RepoQueryInOutDaily extends React.Component {
             },
         }).then(data => {
             let res = data.data.data;
-            console.log(res)
             if(res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 var dataSource =[];
@@ -226,7 +232,6 @@ class RepoQueryInOutDaily extends React.Component {
         })
     }
     getCondition4and5 = (date, dateString) => {
-        console.log(dateString)
         this.setState({
             condition4: dateString[0],
             condition5: dateString[1]
@@ -253,9 +258,9 @@ class RepoQueryInOutDaily extends React.Component {
     /**重置事件*/
     reset = () => {
         this.setState({
-            condition1:null,
-            condition2:null,
-            condition3:null,
+            condition1:undefined,
+            condition2:undefined,
+            condition3:undefined,
             condition4:undefined,
             condition5:undefined
         });

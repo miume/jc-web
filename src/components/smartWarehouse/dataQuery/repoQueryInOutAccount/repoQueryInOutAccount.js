@@ -32,9 +32,9 @@ class RepoQueryInOutAccount extends React.Component {
                 condition5:''
             },
             dataSource:[],
-            condition1: null,
-            condition2: null,
-            condition3: null,
+            condition1: undefined,
+            condition2: undefined,
+            condition3: undefined,
             condition4: undefined,
             condition5: undefined
         };
@@ -205,9 +205,9 @@ class RepoQueryInOutAccount extends React.Component {
     /**重置事件*/
     reset = () => {
         this.setState({
-            condition1:null,
-            condition2:null,
-            condition3:null,
+            condition1:undefined,
+            condition2:undefined,
+            condition3:undefined,
             condition4:undefined,
             condition5:undefined
         });

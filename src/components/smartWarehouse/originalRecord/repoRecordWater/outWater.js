@@ -1,6 +1,5 @@
 import React from 'react';
 import {Table} from "antd";
-import {getOperations,judgeOperation} from "../../../commom/getOperations";
 
 class OutWater extends React.Component {
 
