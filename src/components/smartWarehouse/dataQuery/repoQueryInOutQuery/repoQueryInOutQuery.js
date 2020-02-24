@@ -115,7 +115,7 @@ class RepoQueryInOutQuery extends React.Component {
             loading: true
         });
         axios({
-            url: this.url.repoQueryInventoryQuery.pages,
+            url: this.url.repoQueryInOutQuery.pages,
             method: 'post',
             headers: {
                 'Authorization': this.url.Authorization
@@ -161,7 +161,7 @@ class RepoQueryInOutQuery extends React.Component {
 
     handleTableChange = (pagination) => {
         this.pagination = pagination;
-        this.getTableParams(undefined);
+        this.getTableParams('');
     }
     /** 获取搜索条件 */
     getCondition1 = (value) => {

@@ -967,12 +967,16 @@ class Home extends Component {
             },
             /**库存查询*/
             repoQueryInventoryQuery:{
-                pages:`${server}/jc/repo/swms-stock-in-out-reports/pages`,
-            },
-            /**库存查询*/
-            repoQueryInOutQuery:{
                 pages:`${server}/jc/repo/swms-stock-inventory-really-reports/pages`,
                 details:`${server}/jc/repo/swms-stock-inventory-really-reports/details`
+            },
+            /**进出库查询*/
+            repoQueryInOutQuery:{
+                pages:`${server}/jc/repo/swms-stock-in-out-reports/pages`,
+            },
+            /**进出库台账*/
+            repoQueryInOutAccount:{
+                pages:`${server}/jc/repo/inOutAccout/page`,
             },
             /**呆滞统计*/
             repoStatisticsDull:{
