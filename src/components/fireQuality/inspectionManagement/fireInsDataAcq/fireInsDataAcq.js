@@ -51,6 +51,7 @@ class FireInsDataAcq extends Component{
         this.searchEvent=this.searchEvent.bind(this);
         this.reset=this.reset.bind(this);
         this.dateChange=this.dateChange.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -114,6 +115,12 @@ class FireInsDataAcq extends Component{
         });
         this.getTableData(null)
     }
+
+    handleTableChange(pagination) {
+        this.pagination = pagination;
+        this.searchEvent();
+    }
+
     back(){
         this.props.history.push({pathname:"/inspectionManagement"})
     }
@@ -138,7 +145,7 @@ class FireInsDataAcq extends Component{
                             className='button'
                         ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
                     </span>
-                    <Table  pagination={this.pagination} columns={this.columns}
+                    <Table  pagination={this.pagination} columns={this.columns} onChange={this.handleTableChange}
                            dataSource={dataSource} rowKey={record => record.head.code} bordered size={'small'} />
                 </Spin>
             </div>
