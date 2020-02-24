@@ -135,10 +135,6 @@ class RepoQueryInOutQuery extends React.Component {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 var dataSource = [];
                 for (let i = 0; i < res.records.length; i++) {
-                    var nowAge = (new Date()).getTime();
-                    var preAge = res.records[i].stockDate?(new Date(res.records[i].stockDate)).getTime():0;
-                    var age = parseInt((nowAge - preAge)/  1000  /  60  /  60  /24);
-
                     dataSource.push({
                         code: res.records[i].id,
                         col1: (res['current'] - 1) * 10 + i + 1,
@@ -149,10 +145,7 @@ class RepoQueryInOutQuery extends React.Component {
                         col6: res.records[i].subTypeName,
                         col7: res.records[i].materialName,
                         col8: res.records[i].supplierName,
-                        col9: res.records[i].checkStatus,
-                        col10: res.records[i].realWeight,
-                        col11: res.records[i].weight,
-                        col12: res.records[i].usefulWeight,
+                        col9: res.records[i].weight
                     })
                 }
                 this.setState({
