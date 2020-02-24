@@ -49,8 +49,8 @@ class RepoQueryInventoryDaily extends React.Component {
                 condition4: '',
             },
             dataSource: [],
-            condition1: null,
-            condition2: null,
+            condition1: undefined,
+            condition2: undefined,
             condition3: undefined,
             condition4: undefined,
         };
@@ -133,7 +133,6 @@ class RepoQueryInventoryDaily extends React.Component {
             },
         }).then(data => {
             let res = data.data.data;
-            console.log(res)
             if (res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 var dataSource = [];
@@ -206,8 +205,8 @@ class RepoQueryInventoryDaily extends React.Component {
     /**重置事件*/
     reset = () => {
         this.setState({
-            condition1: null,
-            condition2: null,
+            condition1: undefined,
+            condition2: undefined,
             condition3: undefined,
             condition4: undefined
         });

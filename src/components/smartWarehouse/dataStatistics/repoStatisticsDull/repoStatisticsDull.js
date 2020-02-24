@@ -37,8 +37,8 @@ class RepoStatisticsDull extends React.Component {
             loading: false,
             searchContent: '',
             dataSource:[],
-            condition1: null,
-            condition2: null,
+            condition1: undefined,
+            condition2: undefined,
 
             pieOption:{}
         };
@@ -103,7 +103,6 @@ class RepoStatisticsDull extends React.Component {
             }
         }).then(data => {
             let res = data.data.data;
-            console.log(res)
             if (res && res.list) {
                 var dataSource = [];
                 for (let i = 0; i < res.list.length; i++) {
@@ -182,23 +181,13 @@ class RepoStatisticsDull extends React.Component {
 
     /**搜索事件*/
     searchEvent = () => {
-        const {condition1,condition2} = this.state;
-        console.log(condition1)
-        console.log(condition2)
-
-        // this.getOption();
         this.getTableData();
-
-
-        // this.setState({
-        //     searchContent
-        // });
     }
     /**重置事件*/
     reset = () => {
         this.setState({
-            condition1: null,
-            condition2: null,
+            condition1: undefined,
+            condition2: undefined,
             dataSource: [],
             pieOption: {}
         });
@@ -208,8 +197,8 @@ class RepoStatisticsDull extends React.Component {
     save = () => {
 
         this.setState({
-            condition1:null,
-            condition2:null,
+            condition1:undefined,
+            condition2:undefined,
             pieOption:{},
             dataSource:[]
         });
