@@ -45,14 +45,15 @@ class BaseData extends Component {
     }
 
     getData(current) {
-        const menus = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0] : [];
+        const menus = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0] : [],
+            icon = this.props.icon || ICON;
         let data = menus && menus['menuList'] ?
             menus['menuList'].sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
                 return ({
                     id : m.menuId,
                     name : m.menuName,
                     path : `${m.path}-${m.menuName}-${m.menuId}`,
-                    className : ICON[index]
+                    className : icon[index]
                 })
             }):[];
         this.setState({
