@@ -165,6 +165,10 @@ import SluggishPeriod from "../smartWarehouse/repoBasic/sluggishPeriod/sluggishP
 import RepoStatisticsDull from "../smartWarehouse/dataStatistics/repoStatisticsDull/repoStatisticsDull";
 import RepoStatisticsFlow from "../smartWarehouse/dataStatistics/repoStatisticsFlow/repoStatisticsFlow";
 import RepoStatisticsAge from '../smartWarehouse/dataStatistics/repoStatisticsAge/repoStatisticsAge'
+
+import BaseProduct from '../productionManagement/baseData/baseData'
+import ProductCalculationBase from '../productionManagement/baseData/calculationBase/calculationBase'
+import ProductLastIntial from '../productionManagement/baseData/lastIntial/lastIntial'
 class Right extends React.Component {
     render() {
         const data = [{
@@ -646,6 +650,15 @@ class Right extends React.Component {
             },{
                 path:'/repoStatisticsAge',
                 component:RepoStatisticsAge
+            },{
+                path:'/baseProduct',
+                component:BaseProduct
+            },{
+                path:'/productCalculationBase',
+                component:ProductCalculationBase
+            },{
+                path:'/productLastIntial',
+                component:ProductLastIntial
             }];
         return (
             <div className="rightDiv">

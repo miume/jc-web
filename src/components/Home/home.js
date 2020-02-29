@@ -1011,6 +1011,11 @@ class Home extends Component {
             swmsStockAgeStatistic:{
                 distribution:`${server}/jc/repo/swmsStockAgeStatistic/distribution`,
                 turnoverRate:`${server}/jc/repo/swmsStockAgeStatistic/turnoverRate`
+            },
+            /**生产管理-基础数据*/
+            initValues:{
+                all:`${server}/jc/common/initValues/all`,
+                edit:`${server}/jc/common/initValues/edit`
             }
     };
 
