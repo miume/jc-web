@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
-import {Input, Modal, message, Select, Checkbox} from "antd";
+import {Input, Modal, message, Select, Checkbox, Col} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 const {Option} = Select, CheckboxGroup = Checkbox.Group;;
@@ -69,11 +69,11 @@ class AddModal extends React.Component {
                             }
                         </Select>
 
-                         <Select placeholder={'请选择供应商'} name={'supplierId'} value={supplierId} style={{width:200}} onChange={this.selectChange}>
-                            {
-                                allSupplierData.length ? allSupplierData.map(e => <Option key={e.id} name={'supplierId'} value={e.id}>{e.materialSupplierName}</Option>) : null
-                            }
-                        </Select>
+                         {/*<Select placeholder={'请选择供应商'} name={'supplierId'} value={supplierId} style={{width:200}} onChange={this.selectChange}>*/}
+                            {/*{*/}
+                                {/*allSupplierData.length ? allSupplierData.map(e => <Option key={e.id} name={'supplierId'} value={e.id}>{e.materialSupplierName}</Option>) : null*/}
+                            {/*}*/}
+                        {/*</Select>*/}
                     </div>
                     <div className={'basis-data-flex'}>
                         <Input placeholder={'请输入代码'} name={'materialNameCode'} value={materialNameCode} style={{width:200}} onChange={this.inputChange}/>
@@ -93,6 +93,18 @@ class AddModal extends React.Component {
                             value={selectedItems}
                             onChange={this.checkBoxChange}
                         />
+                    </div>
+                    <br/>
+                    <p>请选择供应商</p>
+                    <div className={'basis-data-supplier'}>
+                        <Checkbox.Group style={{width: "100%"}} value = {supplierId} onChange={this.supplierIdChange.bind(this)}>
+                        {
+                            allSupplierData ? allSupplierData.map(p =>
+                                <Col key={p.id} span={8}>
+                                    <Checkbox value={p.id}>{p.materialSupplierName}</Checkbox>
+                                </Col>):null
+                        }
+                    </Checkbox.Group>
                     </div>
                 </Modal>
             </span>
@@ -120,7 +132,7 @@ class AddModal extends React.Component {
                 materialName,
                 materialNameCode,
                 streamFlag,
-                supplierId: supplierId.toString(),
+                supplierId: supplierId ? supplierId : [],
                 id
             });
             this.getAllSubMaterial(materialTypeId);
@@ -211,6 +223,12 @@ class AddModal extends React.Component {
         })
     }
 
+    supplierIdChange(value) {
+        this.setState({
+            supplierId: value
+        })
+    }
+
     /**取消事件*/
     handleCancel() {
         this.setState({
@@ -284,7 +302,7 @@ class AddModal extends React.Component {
                 measureUnit,
                 materialName,
                 materialNameCode,
-                supplierId,
+                supplierIds: supplierId,
                 autoFlag: true,
                 niFlag: selectedItems.includes('Ni') ? true : false,
                 coFlag: selectedItems.includes('Co') ? true : false,
@@ -292,7 +310,7 @@ class AddModal extends React.Component {
                 nhFlag: selectedItems.includes('NH3') ? true : false,
                 alkaliFlag: selectedItems.includes('Alkali') ? true : false,
             }, method = 'post', url = this.props.url.materialInfoSto.materialInfo + '/add';
-        if(!materialTypeId && !subTypeId && !measureUnit && !materialName && !materialNameCode) {
+        if(!materialTypeId && !measureUnit && !materialName && !materialNameCode) {
             message.info('请将信息填写完整！');
             return false
         }

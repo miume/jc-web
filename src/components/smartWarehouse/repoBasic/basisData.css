@@ -12,3 +12,12 @@
     padding: 10px;
     border: 1px solid #e8e8e8;
 }
+
+.basis-data-supplier {
+    width: 100%;
+    height: 150px;
+    overflow-y: auto;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #e8e8e8;
+}

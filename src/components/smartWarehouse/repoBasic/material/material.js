@@ -39,11 +39,6 @@ class Material extends React.Component {
             dataIndex: 'subTypeName',
             width: '10%'
         },{
-            title: '供应商',
-            key: 'supplierName',
-            dataIndex: 'supplierName',
-            width: '10%'
-        },{
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
@@ -66,7 +61,11 @@ class Material extends React.Component {
             render: (text) => {
                 return text.join(',')
             }
-
+        },{
+            title: '供应商',
+            key: 'supplierName',
+            dataIndex: 'supplierName',
+            width: '10%'
         },{
             title: '自动标记',
             key: 'autoFlag',
@@ -169,9 +168,10 @@ class Material extends React.Component {
             let res = data.data.data;
             if(res && res.records) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
+                let records = [];
                 for(let i = 0; i < res.records.length; i++) {
-                    res['records'][i]['index'] = (res['current'] - 1) * 10 + i + 1;
-                    let metal = [], {niFlag,coFlag,mnFlag,nhFlag,alkaliFlag} = res['records'][i];
+                    res['records'][i]['head']['index'] = (res['current'] - 1) * 10 + i + 1;
+                    let metal = [], {niFlag,coFlag,mnFlag,nhFlag,alkaliFlag} = res['records'][i]['head'], sup = res['records'][i]['sup'];
                     if(niFlag) {
                         metal.push('Ni');
                     }
@@ -187,10 +187,17 @@ class Material extends React.Component {
                     if(alkaliFlag) {
                         metal.push('Alkali');
                     }
-                    res['records'][i]['metal'] = metal;
+                    res['records'][i]['head']['metal'] = metal;
+                    records.push(res['records'][i]['head']);
+                    records[i]['supplierName'] = sup.length ? sup.reduce((prev,cur)  => {
+                        return prev ? prev + ',' + cur['materialSupplierName'] : prev + cur['materialSupplierName']
+                        },'') : '';
+                    records[i]['supplierId'] = sup.length ? sup.reduce((prev,cur)  => {
+                        return prev ? prev + ',' + cur['id'] : prev + cur['id']
+                    },'') : [];
                 }
                 this.setState({
-                    data: res.records
+                    data: records
                 })
             }
             this.setState({
