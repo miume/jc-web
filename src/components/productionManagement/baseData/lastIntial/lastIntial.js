@@ -36,9 +36,10 @@ class ProductLastIntial extends Component{
             dataIndex:'code',
             key:'code',
             render:(text,record)=>{
+                let {updateFlag}=this.state
                 return(
-                    record.flag?(<span><span className='blue' onClick={()=>this.save(record)}>保存</span>&nbsp;&nbsp;&nbsp;<span className='blue' onClick={()=>this.cancel(record)}>取消</span></span>)
-                    :<span className='blue' onClick={()=>this.edit(record.index)}>编辑</span>
+                    updateFlag?(record.flag?(<span><span className='blue' onClick={()=>this.save(record)}>保存</span>&nbsp;&nbsp;&nbsp;<span className='blue' onClick={()=>this.cancel(record)}>取消</span></span>)
+                    :<span className='blue' onClick={()=>this.edit(record.index)}>编辑</span>):'hide'
                 )
             }
         }]

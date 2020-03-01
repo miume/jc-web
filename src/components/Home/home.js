@@ -1036,10 +1036,15 @@ class Home extends Component {
                 distribution:`${server}/jc/repo/swmsStockAgeStatistic/distribution`,
                 turnoverRate:`${server}/jc/repo/swmsStockAgeStatistic/turnoverRate`
             },
-            /**生产管理-基础数据*/
+            /**生产管理-基础数据-工序上期初始值*/
             initValues:{
                 all:`${server}/jc/common/initValues/all`,
                 edit:`${server}/jc/common/initValues/edit`
+            },
+            /**生产管理-基础数据-工序计算基准*/
+            baseValues:{
+                all:`${server}/jc/common/baseValues/all`,
+                edit:`${server}/jc/common/baseValues/update`
             }
     };
 
