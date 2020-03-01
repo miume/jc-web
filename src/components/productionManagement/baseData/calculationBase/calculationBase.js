@@ -61,7 +61,8 @@ class ProductCalculationBase extends Component{
            <div>
                <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
-                   <Table dataSource={data} rowKey={record=>record.index} columns={this.columns} size={'small'} bordered/>
+                   <Table dataSource={data} rowKey={record=>record.index} columns={this.columns} 
+                   pagination={false} size={'small'} bordered/>
                </Spin>
            </div>
         );
