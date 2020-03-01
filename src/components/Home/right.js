@@ -655,7 +655,7 @@ class Right extends React.Component {
                 component:BaseProduct
             },{
                 path:'/productCalculationBase',
-                component:ProductCalculationBase
+                component:BaseConfigure
             },{
                 path:'/productLastIntial',
                 component:ProductLastIntial
