@@ -193,8 +193,8 @@ class Material extends React.Component {
                         return prev ? prev + ',' + cur['materialSupplierName'] : prev + cur['materialSupplierName']
                         },'') : '';
                     records[i]['supplierId'] = sup.length ? sup.reduce((prev,cur)  => {
-                        return prev ? prev + ',' + cur['id'] : prev + cur['id']
-                    },'') : [];
+                        return prev ? prev.concat(cur['id']) : prev.concat(cur['id'])
+                    },[]) : [];
                 }
                 this.setState({
                     data: records
