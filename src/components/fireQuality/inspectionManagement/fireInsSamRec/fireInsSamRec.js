@@ -51,12 +51,10 @@ class FireInsSamRec extends Component {
             dataSource: [],
             searchContent: "",
         }
-        this.pagination = {
-            pageSize: 10,
-            current: 1,
-            howSizeChanger: true,//是否可以改变 pageSize
-            showTotal: (total) => `共${total}条记录`,//显示共几条记录
-            pageSizeOptions: ["10", "20", "50", "100"]
+        this.pagination={
+            showSizeChanger:true,
+            showTotal:(total)=>`共${total}条记录`,
+            pageSizeOptions: ["10","20","50","100"]
         };
         this.back = this.back.bind(this);
         this.getTableData = this.getTableData.bind(this);
@@ -104,8 +102,8 @@ class FireInsSamRec extends Component {
         let {searchContent} = this.state, {pageSize, current} = this.pagination,
             params = {
                 condition: value === undefined ? searchContent : value,
-                size: pageSize,
-                page: current
+                size: pageSize?pageSize:10,
+                page: current?current:1
             };
         this.getTableData(params);
     }
