@@ -79,8 +79,9 @@ class SearchCell extends React.Component {
     }
 
     reset() {
+        let date = moment(new Date()).format('YYYY-MM-DD');
         this.setState({
-            date: null,
+            date,
             product: undefined,
             deptCode: undefined,
             process: undefined

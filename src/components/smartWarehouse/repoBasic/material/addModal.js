@@ -13,7 +13,6 @@ class AddModal extends React.Component {
             visible: false,
             allTypeData: [],
             allSubTypeData: [],
-            indeterminate: true,
             selectAllItems: [],
             selectedItems: [],
             allUnitData: [],
@@ -97,14 +96,14 @@ class AddModal extends React.Component {
                     <br/>
                     <p>请选择供应商</p>
                     <div className={'basis-data-supplier'}>
-                        <Checkbox.Group style={{width: "100%"}} value = {supplierId} onChange={this.supplierIdChange.bind(this)}>
+                        <CheckboxGroup style={{width: "100%"}} value = {supplierId} onChange={this.supplierIdChange.bind(this)}>
                         {
                             allSupplierData ? allSupplierData.map(p =>
                                 <Col key={p.id} span={8}>
                                     <Checkbox value={p.id}>{p.materialSupplierName}</Checkbox>
                                 </Col>):null
                         }
-                    </Checkbox.Group>
+                        </CheckboxGroup>
                     </div>
                 </Modal>
             </span>
@@ -248,7 +247,6 @@ class AddModal extends React.Component {
         let target = e.target;
         this.setState({
             checkAll: target.checked,
-            indeterminate: false,
             selectedItems: target.checked ? this.state.selectAllItems : []
         })
     }
@@ -264,8 +262,7 @@ class AddModal extends React.Component {
         let {selectAllItems} = this.state;
         this.setState({
             selectedItems: value,
-            checkAll: selectAllItems.length  === value.length,
-            indeterminate: !!value.length && value.length < selectAllItems.length
+            checkAll: selectAllItems.length  === value.length
         })
     }
 

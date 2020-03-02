@@ -36,6 +36,7 @@ class Detail extends Component{
             },
             span1Style = {
                 'width': 60,
+                'height': 30,
                 'border': '1px solid #ccc',
                 'textAlign': 'center'
             };

@@ -237,6 +237,7 @@ class FireInsDataCol extends Component{
             params
         }).then(data => {
             let res = data.data.data, head = [];
+            this.pagination.total = res.total ? res.total : 0;
             if(res && res.list.length) {
                 for(let i = 0; i < res.list.length; i++) {
                     let temp = res.list[i]['head'];
@@ -281,14 +282,15 @@ class FireInsDataCol extends Component{
 
     /**重置*/
     reset() {
+        let date = moment(new Date()).format('YYYY-MM-DD');
         this.setState({
             deptCode: '',
             process: '',
             product: '',
-            date: ''
+            date
         });
         let params = {
-            date: '',
+            date,
             deptCode: '',
             process: '',
             product: ''
