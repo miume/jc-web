@@ -86,10 +86,10 @@ class AddModal extends React.Component {
         if(record) {
             let {subTypeId,materialId,materialTypeId,safetyStockValue,id,supId} = record;
             this.setState({
-                subTypeId:subTypeId.toString(),
-                materialId:materialId.toString(),
-                materialTypeId:materialTypeId.toString(),
-                supId:supId.toString(),
+                subTypeId:subTypeId?subTypeId.toString():undefined,
+                materialId:materialId?materialId.toString():undefined,
+                materialTypeId:materialTypeId?materialTypeId.toString():undefined,
+                supId:supId?supId.toString():undefined,
                 safetyStockValue,
                 id
             });
