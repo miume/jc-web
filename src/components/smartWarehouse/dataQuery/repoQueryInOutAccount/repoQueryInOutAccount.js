@@ -103,15 +103,15 @@ class RepoQueryInOutAccount extends React.Component {
     /**获取表格数据*/
     getTableData = (params) => {
         axios({
-            url: this.url.repoQueryInOutDaily.pagesOut,
+            url: this.url.repoQueryInOutAccount.pages,
             method: 'post',
             headers: {
                 'Authorization': this.url.Authorization
             },
             params: {
-                typeId: params.condition.condition1,
-                subTypeId: params.condition.condition2,
-                supplierId: params.condition.condition3,
+                type: params.condition.condition1,
+                subType: params.condition.condition2,
+                matId: params.condition.condition3,
                 startTime: params.condition.condition4,
                 endTime: params.condition.condition5
             },
