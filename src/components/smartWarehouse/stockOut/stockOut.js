@@ -10,16 +10,17 @@ class OtherStockOut extends React.Component {
 
     render() {
         let current = JSON.parse(localStorage.getItem('current')),
-            url = JSON.parse(localStorage.getItem('url'));
+            menuName = current ? current.menuName : '', url = JSON.parse(localStorage.getItem('url')),
+            type = menuName === '火法出库' ? 'fire' : 'wet';
         return (
             <div>
-                <BlockQuote name={current ? current.menuName : ''} menu={current ? current.menuParent : ''}></BlockQuote>
+                <BlockQuote name={menuName} menu={current ? current.menuParent : ''}></BlockQuote>
                 <Tabs defaultActiveKey={'1'}>
-                    <TabPane key={'1'} tab={'出库申请'}>
-                        <Application url={url}/>
+                    <TabPane key={'1'} tab={`${menuName}申请`}>
+                        <Application url={url} type={type}/>
                     </TabPane>
-                    <TabPane key={'2'} tab={'出库单查询'}>
-                        <Query url={url}/>
+                    <TabPane key={'2'} tab={`${menuName}查询`} type={type}>
+                        <Query url={url} type={type}/>
                     </TabPane>
                 </Tabs>
             </div>

@@ -542,6 +542,9 @@ class Right extends React.Component {
                 path: '/otherStockOut',
                 component: OtherStockOut
             }, {
+                path: '/wetStockOut',
+                component: OtherStockOut
+            }, {
                 path: '/repoBasic',
                 component: RepoBaseData
             }, {

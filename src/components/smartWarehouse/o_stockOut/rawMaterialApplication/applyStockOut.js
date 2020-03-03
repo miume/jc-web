@@ -4,7 +4,7 @@ import CancleButton from '../../../BlockQuote/cancleButton';
 import Submit from '../../../BlockQuote/submit';
 import './rawAdd.css';
 import axios from 'axios';
-import BatchNumberSelect from "./batchNumberSelect";
+import BatchNumberSelect from "../../../BlockQuote/batchNumberSelect";
 // const data = [];
 // for(var i = 1; i<=20; i++){
 //     data.push({

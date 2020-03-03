@@ -27,7 +27,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,plantCode,typeData,subTypeData,nameData,materialName,materialId,materialTypeId,subTypeId,safetyStockValue,supplierData,supId} = this.state, {title,flag} = this.props;
+        let {visible,typeData,subTypeData,nameData,materialId,materialTypeId,subTypeId,safetyStockValue,supplierData,supId} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }

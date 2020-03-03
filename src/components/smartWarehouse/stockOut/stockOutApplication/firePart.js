@@ -1,0 +1,90 @@
+import React from 'react';
+import {Select} from "antd";
+import Submit from "../../../BlockQuote/checkSubmit";
+import axios from "axios";
+const {Option} = Select;
+
+class FirePart extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            linesData: []
+        };
+        this.getLinesData = this.getLinesData.bind(this);
+        this.selectChange = this.selectChange.bind(this);
+        this.applySaveAndReview = this.applySaveAndReview.bind(this);
+    }
+
+    render() {
+        let {linesData} = this.state, {outTypeData,addressData,deptName} = this.props;
+        return (
+            <div>
+                <div>{`领料部门：${deptName}`}</div>
+                <div className={'stock-out-flex'} style={{marginTop: 10}}>
+                    <div>
+                        <span>
+                            火法产线：</span>
+                        <Select placeholder={'请选择产线'} style={{width: 110}} onChange={this.selectChange}>
+                            {
+                                linesData.length ? linesData.map(e => <Option key={e.code} value={e.code} name={'lineCode'}>{e.name}</Option>) : null
+                            }
+                        </Select>
+                    </div>
+                    <div>
+                        <span>出库点：</span>
+                        <Select placeholder={'请选择出库点'} style={{width: 110}} onChange={this.selectChange}>
+                            {
+                                addressData.length ? addressData.map(e => <Option key={e.id} value={e.id} name={'outPoint'}>{e.deliveryAddressName}</Option>) : null
+                            }
+                        </Select>
+                    </div>
+                    <div>
+                        <span>出库类别：</span>
+                        <Select placeholder={'请选择出库类别'} style={{width: 110}} onChange={this.selectChange}>
+                            {
+                                outTypeData.length ? outTypeData.map(e => <Option key={e.id} value={e.id} name={'outType'}>{e.deliveryTypeName}</Option>) : null
+                            }
+                        </Select>
+                    </div>
+                    <Submit url={this.props.url} applySaveAndReview={this.applySaveAndReview}/>
+                </div>
+            </div>
+        )
+    }
+
+    componentDidMount() {
+        this.getLinesData();
+    }
+
+    getLinesData() {
+        axios.get(`${this.props.url.positiveProductline.all}`).then((data) => {
+            let res = data.data.data;
+            this.setState({
+                linesData: res
+            })
+        })
+    }
+
+    selectChange(value,option) {
+        let name = option.props.name;
+        this.setState({
+            [name]: value
+        })
+    }
+
+    applySaveAndReview(auditId,isUrgent) {
+        let {lineCode,outPoint,outType} = this.state, {userId,deptCode} = this.props,
+            params = {
+                auditId,
+                deptCode,
+                isUrgent,
+                lineCode,
+                outPoint,
+                outType,
+                userId
+            };
+        console.log(params)
+    }
+}
+
+export default FirePart;

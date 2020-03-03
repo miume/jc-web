@@ -1,12 +1,14 @@
 import React from 'react';
 import {Table} from "antd";
+import axios from "axios";
 
 class Left extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             selectedRowKeys: [],
-            selectedRows: []
+            selectedRows: [],
+            tableData: []
         };
         this.columns = [{
             title: '物料名称',
@@ -15,13 +17,13 @@ class Left extends React.Component {
             width: '33%'
         },{
             title: '实际库存',
-            key: 'RealWeight',
-            dataIndex: 'RealWeight',
+            key: 'realWeight',
+            dataIndex: 'realWeight',
             width: '33%'
         },{
             title: '可用库存',
-            key: 'UsefulWeight',
-            dataIndex: 'UsefulWeight',
+            key: 'usefulWeight',
+            dataIndex: 'usefulWeight',
             width: '33%'
         }];
 
@@ -29,41 +31,85 @@ class Left extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '10%'
+            width: '9%'
         },{
             title: '物料名称',
-            key: 'materialName',
-            dataIndex: 'materialName',
-            width: '20%'
+            key: 'matName',
+            dataIndex: 'matName',
+            width: '21%'
         },{
             title: '批号',
-            key: 'batch',
-            dataIndex: 'batch',
-            width: '40%'
+            key: 'metBatch',
+            dataIndex: 'metBatch',
+            width: '50%'
         },{
             title: '单位',
-            key: 'unit',
-            dataIndex: 'unit',
-            width: '15%'
+            key: 'measureUnit',
+            dataIndex: 'measureUnit',
+            width: '10%'
         },{
             title: '重量',
             key: 'weight',
             dataIndex: 'weight',
-            width: '15%'
-        }]
+            width: '10%'
+        }];
+        this.getData = this.getData.bind(this);
+        this.onRowClick = this.onRowClick.bind(this);
     }
 
     render() {
-        let {data,data1,rowSelection} = this.props;
+        let {data,rowSelection} = this.props, {tableData} = this.state;
         return (
             <div style={{width: '48%'}}>
-                <Table columns={this.columns} pagination={false} dataSource={data}
-                       bordered size={'small'} rowKey={record => record.id}/>
+                <Table columns={this.columns} pagination={false} dataSource={data} scroll={{y:110}}
+                       rowClassName={(record) => record.isClicked ? 'stock-out-table-row-click' : ''}
+                       bordered size={'small'} rowKey={record => record.id} onRow={this.onRowClick}/>
 
-                <Table columns={this.columns1} pagination={false} className={'stock-out-table'}  dataSource={data1}
-                       bordered size={'small'} rowKey={record => record.id} rowSelection={rowSelection} scroll={{y:'53vh'}}/>
+                <Table columns={this.columns1} pagination={false} className={'stock-out-table'}  dataSource={tableData}
+                       bordered size={'small'} rowKey={record => record.id} rowSelection={rowSelection}/>
             </div>
         )
+    }
+
+    onRowClick(record,index) {
+        return {
+            onClick: () => {
+                let matId = record.materialNameCode, {preClickedIndex} = this.state;
+                if(preClickedIndex === index) return;
+                this.props.updateData(preClickedIndex,index);
+                this.setState({
+                    preClickedIndex: index
+                });
+                this.getData(matId)
+            }
+        }
+    }
+
+    getData(matId) {
+        let {type} = this.props;
+        axios({
+            url: `${this.props.url[type]}/queryDown?matId=${matId}`,
+            method: 'post'
+        }).then(data => {
+            let res = data.data.data ? data.data.data.details : [], result = [];
+            for(let i = 0; i < res.length; i++) {
+                res[i]['index'] = i + 1;
+                let {id,materialCode,materialNameCode,materialName,weight,measureUnit} = res[i];
+                result.push({
+                    index: i + 1,
+                    id: id,
+                    ledgersId: id,
+                    metBatch: materialCode,
+                    matName: materialName,
+                    matId: materialNameCode,
+                    weight: weight,
+                    measureUnit: measureUnit
+                })
+            }
+            this.setState({
+                tableData: result
+            })
+        })
     }
 
     selectChange(selectedRowKeys,selectedRows) {
