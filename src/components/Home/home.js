@@ -1022,6 +1022,12 @@ class Home extends Component {
                 pages: `${server}/jc/repo/SwmsBasicMeasureUnit/pages`,
                 unit: `${server}/jc/repo/SwmsBasicMeasureUnit`
             },
+            /**智能仓库-火法出库*/
+            fire: `${server}/jc/repo/fire`,
+            /**智能仓库-湿法出库*/
+            wet: `${server}/jc/repo/wet`,
+            /**智能仓库 根据用户id查询部门*/
+            getDeviceDept: `${server}/jc/common/userDevice/getDeviceDept`,
             /**仓库-基础-出库点*/
             swmsBasicDeliveryAddressInfo:`${server}/jc/repo/swmsBasicDeliveryAddressInfo`,
              /**仓库-基础-出库类别*/

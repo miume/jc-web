@@ -12,8 +12,5 @@
 }
 
 .batchNumber-span {
-    display: inline-block;
-    width: 110px;
-    padding-left: 11px;
-    margin-right: 10px;
+    width: 80px;
 }

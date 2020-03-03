@@ -1,8 +1,7 @@
-.stock-out {
-    padding: 5px 15px;
-    height: 75vh;
-    overflow-y: auto;
+.stock-out-middle {
+    height: 88%;
 }
+
 .stock-out-flex {
     display: flex;
     justify-content: space-between;
@@ -23,6 +22,49 @@
     color: red;
 }
 
-.stock-out-right-table {
-    height: 58vh;
+.stock-out-table-row-click {
+    border: 2px solid #0086ff;
+}
+.stock-out-bottom {
+    height: 15%;
+}
+
+.stock-out-application-span {
+    display: inline-block;
+    width: 85px;
+    text-align: right;
+}
+
+/*@media screen and (max-height:1050px){*/
+    /*.stock-out {*/
+        /*padding: 5px 15px;*/
+        /*height: 85vh;*/
+    /*}*/
+
+    /*.stock-out-fire-right-table {*/
+        /*height: 90%;*/
+        /*overflow-y: auto;*/
+    /*}*/
+
+    /*.stock-out-wet-right-table {*/
+        /*height: 85%;*/
+        /*overflow-y: auto;*/
+    /*}*/
+/*}*/
+
+@media screen and (max-height:920px){
+    .stock-out {
+        padding: 5px 15px;
+        height: 75vh;
+    }
+
+    .stock-out-fire-right-table {
+        height: 85%;
+        overflow-y: auto;
+    }
+
+    .stock-out-wet-right-table {
+        height: 81%;
+        overflow-y: auto;
+    }
 }

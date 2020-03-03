@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, DatePicker, Select} from "antd";
+import {Button, DatePicker, TreeSelect} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
-const {Option} = Select;
+import axios from 'axios';
 
 class Search extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class Search extends React.Component {
     }
 
     render() {
-        let {date,supplier} = this.state;
+        let {date,deptCode,treeData} = this.state;
         return (
             <div className={'stock-out-application'}>
                 <div>
@@ -33,7 +33,18 @@ class Search extends React.Component {
 
                 <div>
                     <span>领用单位: </span>
-                    <Select placeholder={'请选择供货单位'} value={supplier} style={{width:200,marginRight: 10}} onChange={this.selectChange}></Select>
+                    <TreeSelect
+                        showSearch
+                        name={'plantCode'}
+                        style={{ width: 175,marginRight: 10 }}
+                        value={deptCode}
+                        treeCheckStrictly={true}
+                        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                        treeData={treeData}
+                        placeholder="请选择领用单位"
+                        treeDefaultExpandAll
+                        onChange={this.selectChange}
+                    />
                 </div>
             </div>
         )
@@ -45,7 +56,50 @@ class Search extends React.Component {
 
     /**获取所有领用单位*/
     getAllType() {
+        axios.get(`${this.props.url.equipmentDept.dept}`).then(data => {
+            let res = data.data.data,treeData = this.dataProcessing(res);
+            this.setState({
+                treeData
+            })
+        })
+    }
 
+    /**处理物料信息树形结构*/
+    dataProcessing(res, result = []) {
+        let parentCode = [];
+        for (let i = 0; i < res.length; i++) {
+            let parent = res[i]['parent'],
+                temp = {
+                    title: parent['name'],
+                    key: parent['code'],
+                    value: parent['name'] + '-' + parent['code'],
+                    disabled: false,
+                    children: []
+                }, son = res[i]['son'];
+            parentCode.push(temp['value']);
+            for (let j = 0; j < son.length; j++) {
+                temp['children'].push({
+                    title: son[j]['name'],
+                    key: son[j]['code'],
+                    value: son[j]['name'] + '-' + son[j]['code'],
+                });
+            }
+            result.push(temp)
+        }
+        this.setState({
+            parentCode: parentCode
+        });
+        return result;
+    }
+
+    /**监控工序变化*/
+    selectChange(value) {
+        let {parentCode} = this.state;
+        if(!parentCode.includes(value)) {
+            this.setState({
+                deptCode: value
+            });
+        }
     }
 
     dateChange(date, dateString) {
@@ -54,18 +108,12 @@ class Search extends React.Component {
         })
     }
 
-    selectChange(value) {
-        this.setState({
-            supplier: value
-        })
-    }
-
     /**搜索事件*/
     search() {
-        let {date,supplier} = this.state,
+        let {date,deptCode} = this.state,
             params = {
                 date,
-                supplier
+                deptCode: deptCode ? deptCode.split('-')[1] : ''
             };
         this.props.search(params);
     }
@@ -73,11 +121,11 @@ class Search extends React.Component {
     reset() {
         this.setState({
             date: undefined,
-            supplier: undefined
+            deptCode: undefined
         });
         this.props.search({
             date: '',
-            supplier: ''
+            deptCode: ''
         });
     }
 

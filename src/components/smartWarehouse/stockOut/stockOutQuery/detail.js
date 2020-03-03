@@ -1,12 +1,13 @@
 import React from 'react';
 import {Modal, Table} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
+import axios from 'axios';
 
 class Detail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            data: []
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -59,7 +60,7 @@ class Detail extends React.Component {
     }
 
     render() {
-        let {visible} = this.state;
+        let {visible,data} = this.state;
         return (
             <span>
                 <span className={'blue'} onClick={this.handleClick}>详情</span>
@@ -67,7 +68,7 @@ class Detail extends React.Component {
                         footer={[
                             <CancleButton key={'cancel'} flag={1} handleCancel={this.handleCancel}/>
                         ]}>
-                    <Table columns={this.columns} pagination={false} scroll={{y:300}}
+                    <Table columns={this.columns} pagination={false} scroll={{y:300}} dataSource={data}
                            bordered size={'small'} rowKey={record => record.id}/>
                 </Modal>
             </span>
@@ -77,6 +78,17 @@ class Detail extends React.Component {
     handleClick() {
         this.setState({
             visible: true
+        });
+        let {url,id,type} = this.props;
+        this.getDetailData(url,id,type)
+    }
+
+    getDetailData(url,id,type) {
+        axios.get(`${url[type]}/detail?id=${id}`).then(data => {
+            let res = data.data.data;
+            this.setState({
+                data: res
+            })
         })
     }
 

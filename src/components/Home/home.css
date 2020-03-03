@@ -225,3 +225,27 @@ input::-webkit-input-placeholder{
 .update-password {
     margin-bottom: 10px;
 }
+
+.batchNumber {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.batchNumber-div {
+    margin-bottom: 8px;
+}
+
+.batchNumber-select {
+    width: 110px;
+}
+
+.batchNumber-part {
+    width: 45%;
+    margin-bottom: 10px;
+}
+
+.batchNumber-span {
+    width: 100px;
+    text-align: right;
+    display: inline-block;
+}

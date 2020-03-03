@@ -1,8 +1,9 @@
 /**自动获取批次规则*/
 import React from 'react';
 import axios from 'axios';
-import {Button, Modal, Select} from "antd";
-import NewButton from "../../../BlockQuote/newButton";
+import {Button, Input, Modal, Select} from "antd";
+import NewButton from "./newButton";
+import CancleButton from "./cancleButton";
 
 const {Option} = Select;
 
@@ -18,34 +19,32 @@ class BatchNumberSelect extends React.Component {
         this.state = {
             visible: false,
             data: [],
-            batchNumber: [],
-            width: 900
+            batchNumber: []
         };
+        this.cancel = this.cancel.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.renderSelect = this.renderSelect.bind(this);
         this.renderOption = this.renderOption.bind(this);
-        this.renderSelectLabel = this.renderSelectLabel.bind(this);
         this.selectChange = this.selectChange.bind(this);
     }
 
     render() {
         return (
-            <div style={{marginBottom: 10}}>
-                <Button onClick={this.handleClick}>批号选择</Button>
-                <span style={{marginLeft: 10}}>{this.props.batchNumber}</span>
+            <span>
+                <Button onClick={this.handleClick}>选择批次</Button>
                 <Modal title={'批号选择'} visible={this.state.visible} closable={false} maskClosable={false}
-                       centered={true} width={this.state.width}
+                       centered={true} width={700}
                        footer={[
+                           <CancleButton key={'cancel'} flag={true} handleCancel={this.cancel}/>,
                            <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                        ]}
                 >
                     <div className='batchNumber'>
-                        <div className='batchNumber-div'>{this.renderSelectLabel()}</div>
-                        <div>{this.renderSelect()}</div>
+                        {this.renderSelect()}
                     </div>
                 </Modal>
-            </div>
+            </span>
         )
     }
 
@@ -72,24 +71,16 @@ class BatchNumberSelect extends React.Component {
         })
     }
 
-    /**点击确定*/
-    handleOk() {
+    cancel() {
         this.setState({
             visible: false
-        })
-        this.props.getBatchNumber(this.state.batchNumber);
+        });
     }
 
-    /**渲染批次规则标签*/
-    renderSelectLabel() {
-        let {data} = this.state;
-        if(data && data.length) {
-            return (
-                data.map(e =>
-                    <span className='batchNumber-span'>{e.rule}</span>
-                )
-            )
-        }
+    /**点击确定*/
+    handleOk() {
+        this.cancel();
+        this.props.getBatchNumber(this.state.batchNumber);
     }
 
     /**渲染select*/
@@ -99,10 +90,13 @@ class BatchNumberSelect extends React.Component {
             return (
                 data.map( (e, index) =>{
                     return (
-                        <Select onChange={this.selectChange} name={e.values} key={index} defaultValue={e.defaultValue}
-                                className='batchNumber-select' style={{marginRight: 10}}>
-                            {this.renderOption(e.values,index)}
-                        </Select>
+                        <div className={'batchNumber-part'}>
+                            <div className='batchNumber-span'>{e.rule}：</div>
+                            <Select onChange={this.selectChange} name={e.values} key={index} defaultValue={e.defaultValue}
+                                    style={{width: 110, marginRight: 10}}>
+                                {this.renderOption(e.values,index)}
+                            </Select>
+                        </div>
                     )
                 }
                  )

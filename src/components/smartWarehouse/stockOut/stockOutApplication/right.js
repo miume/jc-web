@@ -1,54 +1,58 @@
 import React from 'react';
-import {Icon, Input, Select, Table} from "antd";
-import Submit from "../../../BlockQuote/checkSubmit";
-import NewButton from "../../../BlockQuote/newButton";
+import {Icon, Table} from "antd";
+import FirePart from "./firePart";
+import WetPart from "./wetPart";
+import axios from 'axios';
 
 class Right extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            addressData: [],
+            outTypeData: []
         };
         this.search = this.search.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.selectChange = this.selectChange.bind(this);
-        this.applySaveAndReview = this.applySaveAndReview.bind(this);
+        this.getDeviceDept = this.getDeviceDept.bind(this);
+        this.getOutTypeData = this.getOutTypeData.bind(this);
+        this.getAddressData = this.getAddressData.bind(this);
 
         this.columns = [{
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '9%'
+            width: '8%'
         },{
-            title: '分组号',
+            title: '组号',
             key: 'groupNum',
             dataIndex: 'groupNum',
-            width: '9%'
+            width: '8%'
         },{
             title: '物料名称',
-            key: 'materialName',
-            dataIndex: 'materialName',
-            width: '12%'
+            key: 'matName',
+            dataIndex: 'matName',
+            width: '17%'
         },{
             title: '批号',
-            key: 'batch',
-            dataIndex: 'batch',
-            width: '30%'
+            key: 'metBatch',
+            dataIndex: 'metBatch',
+            width: '40%'
         },{
             title: '单位',
-            key: 'unit',
-            dataIndex: 'unit',
-            width: '10%'
+            key: 'measureUnit',
+            dataIndex: 'measureUnit',
+            width: '9%'
         },{
             title: '重量',
             key: 'weight',
             dataIndex: 'weight',
-            width: '10%'
+            width: '9%'
         },{
             title: '操作',
             key: 'id',
             dataIndex: 'id',
-            width: '10%',
+            width: '9%',
             render: (text) => {
                 return <Icon type="close" className={'stock-out-icon'} onClick={() => this.props.delete(text)}/>
             }
@@ -56,33 +60,59 @@ class Right extends React.Component {
     }
 
     render() {
-        let {data} = this.props;
+        let {data,type,url} = this.props, {addressData,outTypeData,userId,deptCode,deptName} = this.state;
         return (
-            <div style={{width: '50%'}}>
-                <Table columns={this.columns} pagination={false} dataSource={data} className={'stock-out-right-table'}
-                       bordered size={'small'} rowKey={record => record.id} scroll={{y:'52vh'}}/>
-                <div style={{marginTop: 10}}>
-                    <span>批次信息：</span>
-                    <Input placeholder={'请输入批次信息'} style={{width: 200, marginRight: 10}} onChange={this.inputChange}/>
-                    <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
-                </div>
-                <div className={'stock-out-flex'} style={{marginTop: 10}}>
-                    <div>
-                        <span>产线：</span>
-                        <Select placeholder={'请选择产线'} style={{width: 110}} onChange={this.selectChange}></Select>
-                    </div>
-                    <div>
-                        <span>出库点：</span>
-                        <Select placeholder={'请选择出库点'} style={{width: 110}} onChange={this.selectChange}></Select>
-                    </div>
-                    <div>
-                        <span>出库类别：</span>
-                        <Select placeholder={'请选择出库类别'} style={{width: 110}} onChange={this.selectChange}></Select>
-                    </div>
-                    <Submit url={this.props.url} applySaveAndReview={this.applySaveAndReview}/>
+            <div style={{width: '50%',border: '1px solid #ccc',padding: 2}}>
+                <Table columns={this.columns} pagination={false} dataSource={data} className={ type === 'fire' ? 'stock-out-fire-right-table' : 'stock-out-wet-right-table'}
+                       bordered size={'small'} rowKey={record => record.id}/>
+                <div className={'stock-out-right-apply'}>
+                    {
+                        type === 'fire' ?
+                            <FirePart url={url} data={data} addressData={addressData} outTypeData={outTypeData} userId={userId} deptCode={deptCode} deptName={deptName}/> :
+                            <WetPart url={url} data={data} addressData={addressData} outTypeData={outTypeData} userId={userId} deptCode={deptCode} deptName={deptName}/>
+                    }
                 </div>
             </div>
         )
+    }
+
+    componentDidMount() {
+        const userId = JSON.parse(localStorage.getItem('menuList')) ? JSON.parse(localStorage.getItem('menuList')).userId : null;
+        this.getDeviceDept(userId);
+        this.getOutTypeData();
+        this.getAddressData();
+    }
+
+    /**根据用户id获取部门*/
+    getDeviceDept(userId) {
+        axios.post(`${this.props.url.getDeviceDept}?userId=${userId}`).then((data) => {
+            let res = data.data.data;
+            this.setState({
+                deptCode: res.code,
+                deptName: res.name,
+                userId
+            })
+        })
+    }
+
+    /**获取出库类别数据*/
+    getOutTypeData() {
+        axios.get(`${this.props.url.swmsBasicDeliveryTypeInfo}/getAll`).then((data) => {
+            let res = data.data.data;
+            this.setState({
+                outTypeData: res
+            })
+        })
+    }
+
+    /**获取出库点数据*/
+    getAddressData() {
+        axios.get(`${this.props.url.swmsBasicDeliveryAddressInfo}/getAll`).then((data) => {
+            let res = data.data.data;
+            this.setState({
+                addressData: res
+            })
+        })
     }
 
     search() {
@@ -101,11 +131,6 @@ class Right extends React.Component {
         this.setState({
             [name]: value
         })
-    }
-
-    /**送审*/
-    applySaveAndReview(process,urgent) {
-        console.log(process,urgent)
     }
 }
 
