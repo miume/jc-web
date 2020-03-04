@@ -42,7 +42,7 @@ class AddModal extends React.Component {
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
-                       centered={true} width={600}
+                       centered={true} width={750}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
                            <SaveButton key={'save'} handleSave={this.handleSave}/>
@@ -60,23 +60,16 @@ class AddModal extends React.Component {
                                 allSubTypeData.length ? allSubTypeData.map(e => <Option key={e.id} name={'subTypeId'} value={e.id}>{e.subTypeName}</Option>) : null
                             }
                         </Select>
-                    </div>
-                     <div className={'basis-data-flex'}>
                         <Select placeholder={'请选择计量单位'} name={'measureUnit'} value={measureUnit} style={{width:200}} onChange={this.selectChange}>
                             {
                                 allUnitData.length ? allUnitData.map(e => <Option key={e.id} name={'measureUnit'} value={e.measureUnit}>{e.measureUnit}</Option>) : null
                             }
                         </Select>
-
-                         {/*<Select placeholder={'请选择供应商'} name={'supplierId'} value={supplierId} style={{width:200}} onChange={this.selectChange}>*/}
-                            {/*{*/}
-                                {/*allSupplierData.length ? allSupplierData.map(e => <Option key={e.id} name={'supplierId'} value={e.id}>{e.materialSupplierName}</Option>) : null*/}
-                            {/*}*/}
-                        {/*</Select>*/}
                     </div>
                     <div className={'basis-data-flex'}>
                         <Input placeholder={'请输入代码'} name={'materialNameCode'} value={materialNameCode} style={{width:200}} onChange={this.inputChange}/>
                         <Input placeholder={'请输入物料名称'} name={'materialName'} value={materialName} style={{width:200}} onChange={this.inputChange}/>
+                        <div style={{width:200}}></div>
                     </div>
 
                     <Checkbox onChange={this.onCheckAllChange} checked={checkAll}>

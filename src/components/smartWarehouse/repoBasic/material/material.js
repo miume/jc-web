@@ -27,7 +27,7 @@ class Material extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '8%'
+            width: '5%'
         },{
             title: '物料大类',
             key: 'typeName',
@@ -47,17 +47,17 @@ class Material extends React.Component {
             title: '单位',
             key: 'measureUnit',
             dataIndex: 'measureUnit',
-            width: '10%'
+            width: '5%'
         },{
             title: '代码',
             key: 'materialNameCode',
             dataIndex: 'materialNameCode',
-            width: '10%'
+            width: '7%'
         },{
             title: '元素',
             key: 'metal',
             dataIndex: 'metal',
-            width: '14%',
+            width: '13%',
             render: (text) => {
                 return text.join(',')
             }
@@ -65,12 +65,15 @@ class Material extends React.Component {
             title: '供应商',
             key: 'supplierName',
             dataIndex: 'supplierName',
-            width: '10%'
+            width: '25%',
+            render: (text) => {
+                return <div>{text.length ? text.map(e => <div key={e}>{e}</div>) : ''}</div>
+            }
         },{
             title: '自动标记',
             key: 'autoFlag',
             dataIndex: 'autoFlag',
-            width: '8%',
+            width: '6%',
             render: (text) => {
                 return text ? '否' : '是'
             }
@@ -78,7 +81,7 @@ class Material extends React.Component {
             title: '操作',
             key: 'id',
             dataIndex: 'id',
-            width: '10%',
+            width: '9%',
             render: (text,record) => {
                 let {deleteFlag,updateFlag} = this.state;
                 return (
@@ -190,8 +193,8 @@ class Material extends React.Component {
                     res['records'][i]['head']['metal'] = metal;
                     records.push(res['records'][i]['head']);
                     records[i]['supplierName'] = sup.length ? sup.reduce((prev,cur)  => {
-                        return prev ? prev + ',' + cur['materialSupplierName'] : prev + cur['materialSupplierName']
-                        },'') : '';
+                        return prev ? prev.concat(cur['materialSupplierName']) : prev.concat(cur['materialSupplierName'])
+                        },[]) : '';
                     records[i]['supplierId'] = sup.length ? sup.reduce((prev,cur)  => {
                         return prev ? prev.concat(cur['id']) : prev.concat(cur['id'])
                     },[]) : [];
