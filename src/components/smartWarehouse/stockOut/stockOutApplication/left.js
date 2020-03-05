@@ -41,17 +41,17 @@ class Left extends React.Component {
             title: '批号',
             key: 'metBatch',
             dataIndex: 'metBatch',
-            width: '54%'
+            width: '51%'
         },{
             title: '单位',
             key: 'measureUnit',
             dataIndex: 'measureUnit',
-            width: '8%'
+            width: '9%'
         },{
             title: '重量',
             key: 'weight',
             dataIndex: 'weight',
-            width: '8%'
+            width: '10%'
         }];
         this.getData = this.getData.bind(this);
         this.onRowClick = this.onRowClick.bind(this);
@@ -65,7 +65,7 @@ class Left extends React.Component {
                        rowClassName={(record) => record.isClicked ? 'stock-out-table-row-click' : ''}
                        bordered size={'small'} rowKey={record => record.id} onRow={this.onRowClick}/>
 
-                <Table columns={this.columns1} pagination={false} className={'stock-out-table'}  dataSource={tableData}
+                <Table columns={this.columns1} pagination={false} className={'stock-out-table'}  dataSource={data.length ? tableData : []}
                        bordered size={'small'} rowKey={record => record.id} rowSelection={rowSelection}/>
             </div>
         )
@@ -94,14 +94,14 @@ class Left extends React.Component {
             let res = data.data.data ? data.data.data.details : [], result = [];
             for(let i = 0; i < res.length; i++) {
                 res[i]['index'] = i + 1;
-                let {id,materialCode,materialNameCode,materialName,weight,measureUnit} = res[i];
+                let {id,materialCode,materialTypeId,materialName,weight,measureUnit} = res[i];
                 result.push({
                     index: i + 1,
                     id: id,
                     ledgersId: parseInt(id),
                     metBatch: materialCode,
                     matName: materialName,
-                    matId: materialNameCode,
+                    matId: materialTypeId,
                     weight: weight,
                     measureUnit: measureUnit
                 })

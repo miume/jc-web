@@ -11,9 +11,6 @@ class Right extends React.Component {
             addressData: [],
             outTypeData: []
         };
-        this.search = this.search.bind(this);
-        this.inputChange = this.inputChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
         this.getDeviceDept = this.getDeviceDept.bind(this);
         this.getOutTypeData = this.getOutTypeData.bind(this);
         this.getAddressData = this.getAddressData.bind(this);
@@ -37,7 +34,7 @@ class Right extends React.Component {
             title: '批号',
             key: 'metBatch',
             dataIndex: 'metBatch',
-            width: '44%'
+            width: '42%'
         },{
             title: '单位',
             key: 'measureUnit',
@@ -47,7 +44,7 @@ class Right extends React.Component {
             title: '重量',
             key: 'weight',
             dataIndex: 'weight',
-            width: '8%'
+            width: '10%'
         },{
             title: '操作',
             key: 'id',
@@ -60,7 +57,7 @@ class Right extends React.Component {
     }
 
     render() {
-        let {data,type,url} = this.props, {addressData,outTypeData,userId,deptCode,deptName} = this.state;
+        let {data,type,url,reset} = this.props, {addressData,outTypeData,userId,deptCode,deptName} = this.state;
         return (
             <div style={{width: '50%',border: '1px solid #ccc',padding: 2}}>
                 <Table columns={this.columns} pagination={false} dataSource={data} className={ type === 'fire' ? 'stock-out-fire-right-table' : 'stock-out-wet-right-table'}
@@ -68,8 +65,8 @@ class Right extends React.Component {
                 <div className={'stock-out-right-apply'}>
                     {
                         type === 'fire' ?
-                            <FirePart url={url} data={data} addressData={addressData} outTypeData={outTypeData} userId={userId} deptCode={deptCode} deptName={deptName}/> :
-                            <WetPart url={url} data={data} addressData={addressData} outTypeData={outTypeData} userId={userId} deptCode={deptCode} deptName={deptName}/>
+                            <FirePart url={url} data={data} addressData={addressData} outTypeData={outTypeData} userId={userId} deptCode={deptCode} deptName={deptName} reset={reset}/> :
+                            <WetPart url={url} data={data} addressData={addressData} outTypeData={outTypeData} userId={userId} deptCode={deptCode} deptName={deptName} reset={reset}/>
                     }
                 </div>
             </div>
@@ -112,24 +109,6 @@ class Right extends React.Component {
             this.setState({
                 addressData: res
             })
-        })
-    }
-
-    search() {
-
-    }
-
-    inputChange(e) {
-        let tar = e.target, value = tar.value;
-        this.setState({
-            batch: value
-        })
-    }
-
-    selectChange(value,option) {
-        let name = option.props.name;
-        this.setState({
-            [name]: value
         })
     }
 }

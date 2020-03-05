@@ -58,7 +58,7 @@ class Application extends React.Component {
                 <div className={'stock-out-middle stock-out-flex'}>
                     <Left url={url} type={type} data={data} rowSelection={rowSelection} updateData={this.updateData}/>
                     <div style={{width: '2%'}}></div>
-                    <Right url={url} type={type} data={selectedRows} delete={this.delete}/>
+                    <Right url={url} type={type} data={selectedRows} delete={this.delete} reset={this.reset}/>
                 </div>
             </div>
         )
@@ -171,7 +171,8 @@ class Application extends React.Component {
     reset() {
         this.setState({
             selectedRowKeys: [],
-            selectedRows: []
+            selectedRows: [],
+            data: []
         })
     }
 }

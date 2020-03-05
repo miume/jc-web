@@ -22,13 +22,13 @@ class WetPart extends React.Component {
     }
 
     render() {
-        let {linesData,batch} = this.state, {outTypeData,addressData,deptName} = this.props;
+        let {linesData,batch,lineCode,outPoint,outType} = this.state, {outTypeData,addressData,deptName} = this.props;
         return (
             <div>
                 <div className={'stock-out-flex'} style={{marginTop: 10}}>
                     <div>
                         <span className='stock-out-application-span'>湿法产线：</span>
-                        <Select placeholder={'请选择产线'} style={{width: 115}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择产线'} style={{width: 115}} onChange={this.selectChange} value={lineCode}>
                             {
                                 linesData.length ? linesData.map(e => <Option key={e.code} value={e.code} name={'lineCode'}>{e.name}</Option>) : null
                             }
@@ -36,7 +36,7 @@ class WetPart extends React.Component {
                     </div>
                     <div>
                         <span className='stock-out-application-span'>出库点：</span>
-                        <Select placeholder={'请选择出库点'} style={{width: 115}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择出库点'} style={{width: 115}} onChange={this.selectChange} value={outPoint}>
                             {
                                 addressData.length ? addressData.map(e => <Option key={e.id} value={e.id} name={'outPoint'}>{e.deliveryAddressName}</Option>) : null
                             }
@@ -44,7 +44,7 @@ class WetPart extends React.Component {
                     </div>
                     <div>
                         <span className='stock-out-application-span'>出库类别：</span>
-                        <Select placeholder={'请选择出库类别'} style={{width: 115}} onChange={this.selectChange}>
+                        <Select placeholder={'请选择出库类别'} style={{width: 115}} onChange={this.selectChange} value={outType}>
                             {
                                 outTypeData.length ? outTypeData.map(e => <Option key={e.id} value={e.id} name={'outType'}>{e.deliveryTypeName}</Option>) : null
                             }
@@ -114,7 +114,7 @@ class WetPart extends React.Component {
                 outType: parseInt(outType),
                 userId
             };
-        if(data.length) {
+        if(!data.length) {
             message.info('送审表格数据不能为空！');
             return
         }
@@ -132,7 +132,16 @@ class WetPart extends React.Component {
             params,
             data
         }).then(result => {
-            message.info(result.data.msg);
+            message.info(result.data.mesg);
+            if(result.data.code === '000000') {
+                this.props.reset();
+                this.setState({
+                    lineCode: undefined,
+                    outPoint: undefined,
+                    outType: undefined,
+                    batch: ''
+                })
+            }
         })
     }
 }
