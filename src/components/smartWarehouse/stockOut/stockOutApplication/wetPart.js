@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Select} from "antd";
+import {Input, Select,message} from "antd";
 import Submit from "../../../BlockQuote/checkSubmit";
 import axios from "axios";
 import BatchNumberSelect from "../../../BlockQuote/batchNumberSelect";
@@ -13,6 +13,7 @@ class WetPart extends React.Component {
             linesData: [],
             deptCode: ''
         };
+        this.applyOut = this.applyOut.bind(this);
         this.batchChange = this.batchChange.bind(this);
         this.getLinesData = this.getLinesData.bind(this);
         this.selectChange = this.selectChange.bind(this);
@@ -51,7 +52,7 @@ class WetPart extends React.Component {
                     </div>
                 </div>
                 <div className={'stock-out-flex'} style={{marginTop: 10}}>
-                    <div>
+                    <div style={{lineHeight: '35px'}}>
                         <span className='stock-out-application-span'>领料部门：</span>
                         <span>{deptName}</span>
                     </div>
@@ -102,18 +103,34 @@ class WetPart extends React.Component {
     }
 
     applySaveAndReview(auditId,isUrgent) {
-        let {batch,lineCode,outPoint,outType} = this.state, {userId,deptCode} = this.props,
+        let {batch,lineCode,outPoint,outType} = this.state, {userId,deptCode,data} = this.props,
             params = {
                 auditId,
                 batch,
                 deptCode,
                 isUrgent,
                 lineCode,
-                outPoint,
-                outType,
+                outPoint: parseInt(outPoint),
+                outType: parseInt(outType),
                 userId
             };
-        console.log(params)
+        console.log(params,data)
+        if(!auditId || !deptCode || !lineCode || !outPoint || !outType || !batch) {
+            message.info('数据不完整，不能送审！');
+            return
+        }
+        this.applyOut(params,data);
+    }
+
+    applyOut(params,data) {
+        axios({
+            url: `${this.props.url.wet}/audit`,
+            method: 'post',
+            params,
+            data
+        }).then(result => {
+            message.info(result.data.msg);
+        })
     }
 }
 

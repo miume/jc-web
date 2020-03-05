@@ -42,7 +42,7 @@ class Material extends React.Component {
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
-            width: '10%'
+            width: '11%'
         },{
             title: '单位',
             key: 'measureUnit',
@@ -81,7 +81,7 @@ class Material extends React.Component {
             title: '操作',
             key: 'id',
             dataIndex: 'id',
-            width: '9%',
+            width: '8%',
             render: (text,record) => {
                 let {deleteFlag,updateFlag} = this.state;
                 return (

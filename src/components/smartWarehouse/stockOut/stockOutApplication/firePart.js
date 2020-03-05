@@ -1,5 +1,5 @@
 import React from 'react';
-import {Select} from "antd";
+import {Select,message} from "antd";
 import Submit from "../../../BlockQuote/checkSubmit";
 import axios from "axios";
 const {Option} = Select;
@@ -10,6 +10,7 @@ class FirePart extends React.Component {
         this.state = {
             linesData: []
         };
+        this.applyOut = this.applyOut.bind(this);
         this.getLinesData = this.getLinesData.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.applySaveAndReview = this.applySaveAndReview.bind(this);
@@ -73,17 +74,33 @@ class FirePart extends React.Component {
     }
 
     applySaveAndReview(auditId,isUrgent) {
-        let {lineCode,outPoint,outType} = this.state, {userId,deptCode} = this.props,
+        let {lineCode,outPoint,outType} = this.state, {userId,deptCode,data} = this.props,
             params = {
                 auditId,
                 deptCode,
                 isUrgent,
                 lineCode,
-                outPoint,
-                outType,
+                outPoint: parseInt(outPoint),
+                outType: parseInt(outType),
                 userId
             };
-        console.log(params)
+        console.log(params,data)
+        if(!auditId || !deptCode || !lineCode || !outPoint || !outType) {
+            message.info('数据不完整，不能送审！');
+            return
+        }
+        this.applyOut(params,data);
+    }
+
+    applyOut(params,data) {
+        axios({
+            url: `${this.props.url.fire}/audit`,
+            method: 'post',
+            params,
+            data
+        }).then(result => {
+            message.info(result.data.msg);
+        })
     }
 }
 

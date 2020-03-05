@@ -9,6 +9,8 @@
 
 .stock-out-table {
     margin-top: 20px;
+    height: 80%;
+    overflow-y: auto;
 }
 
 .stock-out-application {

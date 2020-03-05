@@ -41,17 +41,17 @@ class Left extends React.Component {
             title: '批号',
             key: 'metBatch',
             dataIndex: 'metBatch',
-            width: '50%'
+            width: '54%'
         },{
             title: '单位',
             key: 'measureUnit',
             dataIndex: 'measureUnit',
-            width: '10%'
+            width: '8%'
         },{
             title: '重量',
             key: 'weight',
             dataIndex: 'weight',
-            width: '10%'
+            width: '8%'
         }];
         this.getData = this.getData.bind(this);
         this.onRowClick = this.onRowClick.bind(this);
