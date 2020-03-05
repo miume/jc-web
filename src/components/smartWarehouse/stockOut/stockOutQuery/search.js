@@ -66,7 +66,7 @@ class Search extends React.Component {
 
     /**处理物料信息树形结构*/
     dataProcessing(res, result = []) {
-        let parentCode = [];
+        // let parentCode = [];
         for (let i = 0; i < res.length; i++) {
             let parent = res[i]['parent'],
                 temp = {
@@ -76,7 +76,7 @@ class Search extends React.Component {
                     disabled: false,
                     children: []
                 }, son = res[i]['son'];
-            parentCode.push(temp['value']);
+            // parentCode.push(temp['value']);
             for (let j = 0; j < son.length; j++) {
                 temp['children'].push({
                     title: son[j]['name'],
@@ -86,20 +86,19 @@ class Search extends React.Component {
             }
             result.push(temp)
         }
-        this.setState({
-            parentCode: parentCode
-        });
+        // this.setState({
+        //     parentCode: parentCode
+        // });
         return result;
     }
 
     /**监控工序变化*/
     selectChange(value) {
-        let {parentCode} = this.state;
-        if(!parentCode.includes(value)) {
-            this.setState({
-                deptCode: value
-            });
-        }
+        this.setState({
+            deptCode: value
+        });
+        // let {parentCode} = this.state;
+        // if(!parentCode.includes(value)) {}
     }
 
     dateChange(date, dateString) {

@@ -98,7 +98,7 @@ class Left extends React.Component {
                 result.push({
                     index: i + 1,
                     id: id,
-                    ledgersId: id,
+                    ledgersId: parseInt(id),
                     metBatch: materialCode,
                     matName: materialName,
                     matId: materialNameCode,

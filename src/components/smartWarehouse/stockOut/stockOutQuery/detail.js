@@ -15,47 +15,47 @@ class Detail extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '10%'
+            width: '5%'
         },{
             title: '出库时间',
-            key: 'date',
-            dataIndex: 'date',
-            width: '15%'
+            key: 'head.createdTime',
+            dataIndex: 'head.createdTime',
+            width: '18%'
         },{
             title: '物料大类',
-            key: 'typeName',
-            dataIndex: 'typeName',
-            width: '10%'
+            key: 'type.typeName',
+            dataIndex: 'type.typeName',
+            width: '12%'
         },{
             title: '物料小类',
-            key: 'subTypeName',
-            dataIndex: 'subTypeName',
-            width: '10%'
+            key: 'subType.subTypeName',
+            dataIndex: 'subType.subTypeName',
+            width: '12%'
         },{
             title: '物料名称',
-            key: 'materialName',
-            dataIndex: 'materialName',
-            width: '10%'
-        },{
-            title: '供货单位',
-            key: 'supplier',
-            dataIndex: 'supplier',
+            key: 'head.materialName',
+            dataIndex: 'head.materialName',
             width: '15%'
         },{
+            title: '供货单位',
+            key: 'supplier.materialSupplierName',
+            dataIndex: 'supplier.materialSupplierName',
+            width: '20%'
+        },{
             title: '分组号',
-            key: 'groupName',
-            dataIndex: 'groupName',
-            width: '10%'
+            key: 'head.groupName',
+            dataIndex: 'head.groupName',
+            width: '6%'
         },{
             title: '重量',
-            key: 'weight',
-            dataIndex: 'weight',
-            width: '10%'
+            key: 'head.weight',
+            dataIndex: 'head.weight',
+            width: '5%'
         }, {
             title: '状态',
             key: 'status',
             dataIndex: 'status',
-            width: '10%'
+            width: '7%'
         }]
     }
 
@@ -69,7 +69,7 @@ class Detail extends React.Component {
                             <CancleButton key={'cancel'} flag={1} handleCancel={this.handleCancel}/>
                         ]}>
                     <Table columns={this.columns} pagination={false} scroll={{y:300}} dataSource={data}
-                           bordered size={'small'} rowKey={record => record.id}/>
+                           bordered size={'small'} rowKey={record => record.head.id}/>
                 </Modal>
             </span>
         )
@@ -84,8 +84,12 @@ class Detail extends React.Component {
     }
 
     getDetailData(url,id,type) {
-        axios.get(`${url[type]}/detail?id=${id}`).then(data => {
+        let realURL = type === 'outStock' ? `${url[type]}/detail?headId=${id}`: `${url[type]}/detail?id=${id}`
+        axios.get(realURL).then(data => {
             let res = data.data.data;
+            for(let i = 0; i < res.length; i++) {
+                res[i]['index'] = i + 1;
+            }
             this.setState({
                 data: res
             })

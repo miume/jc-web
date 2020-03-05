@@ -114,7 +114,10 @@ class WetPart extends React.Component {
                 outType: parseInt(outType),
                 userId
             };
-        console.log(params,data)
+        if(data.length) {
+            message.info('送审表格数据不能为空！');
+            return
+        }
         if(!auditId || !deptCode || !lineCode || !outPoint || !outType || !batch) {
             message.info('数据不完整，不能送审！');
             return

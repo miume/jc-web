@@ -16,6 +16,7 @@ import CkeckProductInspection from './checkModal/checkProductInspection';
 import EqupimentGuidance from './checkModal/equpimentGuidance';
 import axios from 'axios';
 import ProcessParams from "./checkModal/processParams";
+import StockOutDetail from "../../smartWarehouse/stockOut/stockOutDetail";
 
 class CheckModal extends React.Component{
     componentDidMount(){
@@ -44,25 +45,27 @@ class CheckModal extends React.Component{
         this.getStockOutDetailData = this.getStockOutDetailData.bind(this);
     }
     /**根据dataType判断是那种类型产品送审 */
-    judgeType(type){
+    judgeType(type,url,dataId){
         switch(type){
             case 1:
             case 2:
-            case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId}/>;
+            case 3:  return <Procedure url={url} dataId={dataId}/>;
             case 4:  return <StockTable dataSource={this.state.dataSource} flag={1}/>
-            case 6:  return <RedList url={this.props.url} dataId={this.props.dataId}/>;
-            case 7:  return <CheckPurchase url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
-            case 8:  return <CkeckProductInspection url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
+            case 6:  return <RedList url={url} dataId={dataId}/>;
+            case 7:  return <CheckPurchase url={url} dataId={dataId} flag={this.props.flag}/>;
+            case 8:  return <CkeckProductInspection url={url} dataId={dataId} flag={this.props.flag}/>;
             case 5:
             case 9:
-            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>;
-            case 11: return <CheckUnqualified url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
-            case 12: return <CheckUnqualifiedTrack url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
+            case 10: return <RawTest url={url} dataId={dataId} flag={this.props.flag} type={type}/>;
+            case 11: return <CheckUnqualified url={url} dataId={dataId} flag={this.props.flag}/>;
+            case 12: return <CheckUnqualifiedTrack url={url} dataId={dataId} flag={this.props.flag}/>;
             case 13:
-            case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />;
-            case 15: return <EqupimentGuidance url={this.props.url} batchNumberId={this.props.dataId}/>;
-            case 16: return <ProcessParams url={this.props.url} batchNumberId={this.props.dataId}/>;
-            default: return '' ;
+            case 14: return <CheckProductStandard url={url} batchNumberId={dataId} flag={type} />;
+            case 15: return <EqupimentGuidance url={url} batchNumberId={dataId}/>;
+            case 16: return <ProcessParams url={url} batchNumberId={dataId}/>;
+            case 17:
+            case 18: return <StockOutDetail url={url} batchNumberId={dataId}/> ;
+            default: return null ;
         }
     }
     setClassName(dataType,flag){
@@ -85,7 +88,9 @@ class CheckModal extends React.Component{
             case 7:
             case 12: return flag?0:'modal-xlg';
             case 15: return '.modal-600';
-            case 16: return 'modal-xlg';
+            case 16:
+            case 17:
+            case 18: return 'modal-xlg';
             default: return flag?1:'modal-md' ;
         }
     }
@@ -142,10 +147,12 @@ class CheckModal extends React.Component{
     }
     /**点击审核 */
     handleCheck(){
-        const {flag,dataId} = this.props;
+        const {dataType,url,flag,dataId} = this.props;
         if(flag) this.getAllTester(dataId);
+        let component = this.judgeType(dataType,url,dataId)
         this.setState({
-            visible:true
+            visible:true,
+            component
         })
     }
     /**根据batchNumberId 查询审核记录 */
@@ -220,34 +227,31 @@ class CheckModal extends React.Component{
       })
       }
     render(){
-        const type = this.props.dataType;
+        const type = this.props.dataType, {flag,checkFlag,dataId} = this.props, {component,examineData} = this.state;
         const dataType = JSON.parse(localStorage.getItem('dataType'));
         return (
             <span>
                 {
-                    this.props.flag?
-                    <NewButton name={this.props.flag?'详情':'审核'} className='fa fa-floppy-o' handleClick={this.handleCheck} ></NewButton>:
-                    <NewButton name='审核' className={this.props.checkFlag?'fa fa-check':'hide'} handleClick={this.handleCheck} ></NewButton>
+                    flag ?
+                    <NewButton name={flag?'详情':'审核'} className='fa fa-floppy-o' handleClick={this.handleCheck} ></NewButton>:
+                    <NewButton name='审核' className={checkFlag?'fa fa-check':'hide'} handleClick={this.handleCheck} ></NewButton>
                 }
-                <Modal visible={this.state.visible} title={this.props.flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
+                <Modal visible={this.state.visible} title={flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
                 closable={false} maskClosable={false} className={this.setClassName(type)}
-                /**this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md' */
                 footer={[
                     <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
-                    <span key='check' className={this.props.flag?'hide':''} >
+                    <span key='check' className={flag?'hide':''} >
                         <NewButton key='fail' className='fa fa-times' name='不通过' handleClick={this.fail} />
                         <NewButton key='pass' className='fa fa-check' name='通过' handleClick={this.pass} />
                     </span>
 
                 ]}>
                     <div>
-                    {
-                        this.judgeType(this.props.dataType)
-                    }
+                        {component}
                     <div>
                     {
-                        this.props.flag?
-                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} hide={this.setClassName(type,1)} />:
+                        flag ?
+                        <AllTester examineData={examineData} dataId={dataId} hide={this.setClassName(type,1)} />:
                         <textarea onChange={this.getReplyData} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                     }
                     </div>

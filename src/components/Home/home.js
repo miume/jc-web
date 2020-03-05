@@ -47,7 +47,9 @@ class Home extends Component {
             '13': '原材料标准',
             '14': '成品标准',
             '15': '设备指导',
-            '16': '工艺参数'
+            '16': '工艺参数',
+            '17': '火法出库',
+            '18': '湿法出库',
         };
         const server = localStorage.getItem('server');
         this.Authorization = localStorage.getItem('authorization');
@@ -1026,6 +1028,8 @@ class Home extends Component {
             fire: `${server}/jc/repo/fire`,
             /**智能仓库-湿法出库*/
             wet: `${server}/jc/repo/wet`,
+            /**智能仓库-出库查询*/
+            outStock: `${server}/jc/repo/outStock`,
             /**智能仓库 根据用户id查询部门*/
             getDeviceDept: `${server}/jc/common/userDevice/getDeviceDept`,
             /**仓库-基础-出库点*/

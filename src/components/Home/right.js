@@ -36,6 +36,7 @@ import CheckQuery from "../equipmentManagement/equipmentCheck/checkQuery/checkQu
 import CheckTemplate from "../equipmentManagement/equipmentCheck/checkTemplate/checkTemplate";
 
 import OtherStockOut from '../smartWarehouse/stockOut/stockOut';
+import StockOutQuery from '../smartWarehouse/stockOutQuery/stockOutQuery';
 import OriginalRecord from '../smartWarehouse/originalRecord/originalRecord';
 import DataStatistics from '../smartWarehouse/dataStatistics/dataStatistics';
 import DataQuery from '../smartWarehouse/dataQuery/dataQuery';
@@ -544,6 +545,9 @@ class Right extends React.Component {
             }, {
                 path: '/wetStockOut',
                 component: OtherStockOut
+            }, {
+                path: '/stockOutQuery',
+                component: StockOutQuery
             }, {
                 path: '/repoBasic',
                 component: RepoBaseData

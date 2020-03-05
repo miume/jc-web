@@ -146,10 +146,10 @@ class Application extends React.Component {
         let i = 1, j = 1;
         data.map(e => {
             if(e.metBatch.includes('TS')) {
-                e['group'] = i++;
+                e['group'] = (i++).toString();
             }
             if(e.metBatch.includes('YS')) {
-                e['group'] = parseInt(++j / 2);
+                e['group'] = (parseInt(++j / 2)).toString();
             }
         });
         data.sort((a,b) => a.group - b.group);
