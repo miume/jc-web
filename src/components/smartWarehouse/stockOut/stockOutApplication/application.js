@@ -92,7 +92,7 @@ class Application extends React.Component {
         let {selectedRows,selectedRowKeys} = this.state, {id} = record;
 
         if(selected) {
-            if(!record.metBatch.includes('TS') || !record.metBatch.includes('YS')) {
+            if(!record.metBatch.includes('TS') && !record.metBatch.includes('YS')) {
                 message.info('所选数据不符合要求，批号必须含有TS(碳酸锂)、YS(前驱体)！');
                 return
             }
@@ -112,7 +112,7 @@ class Application extends React.Component {
         let {selectedRows,selectedRowKeys} = this.state;
         if(selected) {
             for(let i = 0; i < changeRows.length; i++) {
-                if(!changeRows[i].metBatch.includes('TS') || !changeRows[i].metBatch.includes('YS')) {
+                if(!changeRows[i].metBatch.includes('TS') && !changeRows[i].metBatch.includes('YS')) {
                     message.info('所选数据不符合要求，批号必须含有TS(碳酸锂)、YS(前驱体)！');
                     return
                 }
