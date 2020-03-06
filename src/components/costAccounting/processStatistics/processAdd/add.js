@@ -174,6 +174,11 @@ class CostProcessAdd extends Component {
                 lengthSub:lengthSub
             })
         }
+        else{
+            this.setState({
+                disabledDateFlag:false,
+            })
+        }
         this.setState({
             startDate: dateString,
             endDate: endDate,
@@ -401,7 +406,7 @@ class CostProcessAdd extends Component {
                 message.error(data.data.message)
             }
             if(res){
-                if(tabKey==='4'||tabKey==='5'){//陈化，烘干
+                if(tabKey==='1'||tabKey==='2'||tabKey==='4'||tabKey==='5'){//单晶体，混合盐，陈化，烘干
                     for(let i=0;i<res.length;i++){
                         for(let j=0;j<tagTableData[tabKey-1].materialDetails.length;j++){
                              if(res[i].code===tagTableData[tabKey-1].materialDetails[j].code){
@@ -423,14 +428,15 @@ class CostProcessAdd extends Component {
             this.setState({
                 loading:false
             })
-        }) .catch(
-            ()=>{
-                message.error('操作失败，请联系管理员！')
-                this.setState({
-                    loading:false
-                })
-            }
-        )
+        }) 
+        // .catch(
+        //     ()=>{
+        //         message.error('操作失败，请联系管理员！')
+        //         this.setState({
+        //             loading:false
+        //         })
+        //     }
+        // )
     }
     getLastPotency(tabKey){//获取上期浓度,修改表格数据
         this.setState({
@@ -529,28 +535,28 @@ class CostProcessAdd extends Component {
                     }
                 }
             }
-                if(i===0||i===2||i===3||i===4){//只有单晶体，合成,陈化，烘干要遍历表格
-                    for(let j=0;j<data[i].materialDetails.length;j++){
-                        for(let key in data[i].materialDetails[j]){
-                            if(data[i].materialDetails[j][key]===undefined||data[i].materialDetails[j][key]===null){
-                                message.info('信息填写不完整!')
-                                return
-                            }
-                        }
-                    }
-                }
-
-                 if(i===5&&otherFlag){
-                    for(let j=0;j<otherData.length;j++){
-                        for(let key in otherData.length){
-                        if(otherData[j][key]===undefined||otherData[j][key]===null){
-                            message.info('其他信息填写不完整!')
+            if(i!==5){//只有其他不需要要遍历表格
+                for(let j=0;j<data[i].materialDetails.length;j++){
+                    for(let key in data[i].materialDetails[j]){
+                        if(data[i].materialDetails[j][key]===undefined||data[i].materialDetails[j][key]===null){
+                            message.info('信息填写不完整!')
                             return
                         }
-                      }
                     }
                 }
             }
+
+            if(i===5&&otherFlag){
+                for(let j=0;j<otherData.length;j++){
+                    for(let key in otherData.length){
+                    if(otherData[j][key]===undefined||otherData[j][key]===null){
+                        message.info('其他信息填写不完整!')
+                        return
+                    }
+                    }
+                }
+            }
+        }
        this.save(1)
     }
     cancel() {
