@@ -112,8 +112,8 @@ class RepoQueryInOutAccount extends React.Component {
                 type: params.condition.condition1,
                 subType: params.condition.condition2,
                 matId: params.condition.condition3,
-                startTime: params.condition.condition4,
-                endTime: params.condition.condition5
+                start: params.condition.condition4,
+                end: params.condition.condition5
             },
             data:{
                 current:params.current,
