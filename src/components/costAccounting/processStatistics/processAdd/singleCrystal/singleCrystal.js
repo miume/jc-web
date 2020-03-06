@@ -22,9 +22,16 @@ class SingleCrystal extends Component {//单晶体配置
             key: 'volume',
             width: '25%',
             render:(text,record)=>{
+                if(record.dataType===1){//手工输入数据
+                     return(
+                         <Input value={record.volume} name={`${record.index}-${'volume'}`} onChange={this.inputChange}/>
+                        )
+                }
+                else{
                     return(
                         <span>{record.volume}</span>
                     )
+                }
             }
         }, {
             title: '本期浓度',

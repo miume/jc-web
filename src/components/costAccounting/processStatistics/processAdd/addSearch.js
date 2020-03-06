@@ -12,7 +12,7 @@ class AddSearch extends Component{
     render(){
         let endDate=this.props.endDate?moment(this.props.endDate):null
         let startDate=this.props.startDate?moment(this.props.startDate):null
-        let subLength=this.props.subLength?this.props.subLength:undefined
+        let subLength=this.props.subLength===undefined?undefined:this.props.subLength
         return(
             <div className={this.props.flag?'':'hide'}>
                 <span>周期 : </span>&nbsp;

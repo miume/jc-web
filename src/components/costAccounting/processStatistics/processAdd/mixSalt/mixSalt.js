@@ -29,9 +29,16 @@ class MixSalt extends Component{//混合盐配置
             key:'volume',
             width:'15%',
             render:(text,record)=>{
+                if(record.dataType===1){//手工输入数据
+                     return(
+                         <Input value={record.volume} name={`${record.index}-${'volume'}`} onChange={this.inputChange}/>
+                        )
+                }
+                else{
                     return(
                         <span>{record.volume}</span>
-                )
+                    )
+                }
             }
         },{
             title:'Ni(g/L)',
@@ -81,10 +88,13 @@ class MixSalt extends Component{//混合盐配置
         let selectData=`${selectKey}-${optionId}`
         this.props.getMix(this.props.processId,'',selectData)
     }
+    // inputChange(e){
+    //     let value=e.target.value //获取到输入框填的值
+    //     let inputData=`${e.target.name}-${value}`
+    //     this.props.getMix(this.props.processId,inputData,'')
+    // }
     inputChange(e){
-        let value=e.target.value //获取到输入框填的值
-        let inputData=`${e.target.name}-${value}`
-        this.props.getMix(this.props.processId,inputData,'')
+        this.props.getMix(this.props.processId,e,'')
     }
     showModal(){
         this.setState({
@@ -106,7 +116,7 @@ class MixSalt extends Component{//混合盐配置
             selectedRowKeys:[]
         })
     }
-      onSelectChange(selectedRowKeys,value) {//对应选择的这条这条记录
+    onSelectChange(selectedRowKeys,value) {//对应选择的这条这条记录
         this.setState({ 
             selectedRowKeys:selectedRowKeys,
             selectValue:value });
@@ -130,7 +140,7 @@ class MixSalt extends Component{//混合盐配置
             }
         })
     }
-    getWeight(){
+    getWeight(){//获取体积値}
         this.props.weightAlterData(this.props.processId,'volume')
     }
     handleTableChange(pagination){//读取配方的表格数据切换页
