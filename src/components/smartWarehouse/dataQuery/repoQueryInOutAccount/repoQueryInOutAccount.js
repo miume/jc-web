@@ -126,23 +126,20 @@ class RepoQueryInOutAccount extends React.Component {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 var dataSource =[];
                 for(let i = 0; i < res.records.length; i++) {
-                    var nowTime = (new Date()).getTime();
-                    var preTime = new Date(res.records[i].createdDay).getTime();
-                    var aging = Math.floor((nowTime - preTime)/86400000);
                     dataSource.push({
-                        code: res.records[i].id,
+                        code: res.records[i].head.id,
                         col1: (res['current'] - 1) * 10 + i + 1,
-                        col2: aging.toString() + "天",
-                        col3: res.records[i].createdDay,
-                        col4: res.records[i].materialBatch,
-                        col5: res.records[i].typeName,
-                        col6: res.records[i].subTypeName,
-                        col7: res.records[i].materialName,
-                        col8: res.records[i].supplierName,
-                        col9: res.records[i].deptName,
-                        col10: res.records[i].bagCounts,
-                        col11: res.records[i].weight,
-                        col12: res.records[i].measureUnit
+                        col2: res.records[i].head.months,
+                        col3: res.records[i].head.beginDate,
+                        col4: res.records[i].head.endDate,
+                        col5: res.records[i].type,
+                        col6: res.records[i].subType,
+                        col7: res.records[i].head.materialName,
+                        col8: res.records[i].head.measureUnit,
+                        col9: res.records[i].head.lastStockWeight,
+                        col10: res.records[i].head.currentInWeight,
+                        col11: res.records[i].head.currentOutWeight,
+                        col12: res.records[i].head.currentStockWeight
                     })
                 }
                 this.setState({
@@ -209,7 +206,14 @@ class RepoQueryInOutAccount extends React.Component {
             condition2:undefined,
             condition3:undefined,
             condition4:undefined,
-            condition5:undefined
+            condition5:undefined,
+            searchContent: {
+                condition1:'',
+                condition2:'',
+                condition3:'',
+                condition4:'',
+                condition5:''
+            },
         });
         this.pagination.current = 1;
         this.getTableParams('')

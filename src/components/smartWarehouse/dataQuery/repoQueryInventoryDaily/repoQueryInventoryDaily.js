@@ -208,7 +208,13 @@ class RepoQueryInventoryDaily extends React.Component {
             condition1: undefined,
             condition2: undefined,
             condition3: undefined,
-            condition4: undefined
+            condition4: undefined,
+            searchContent: {
+                condition1: '',
+                condition2: '',
+                condition3: '',
+                condition4: '',
+            },
         });
         this.pagination.current = 1;
         this.getTableParams('')

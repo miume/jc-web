@@ -979,6 +979,7 @@ class Home extends Component {
             /**进出库台账*/
             repoQueryInOutAccount:{
                 pages:`${server}/jc/repo/inOutAccout/page`,
+                addStatistic:`${server}/jc/repo/inOutAccout/addStatistic`,
             },
             /**呆滞统计*/
             repoStatisticsDull:{

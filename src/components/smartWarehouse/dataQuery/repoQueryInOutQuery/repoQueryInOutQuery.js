@@ -217,6 +217,13 @@ class RepoQueryInOutQuery extends React.Component {
             condition3:undefined,
             condition4:undefined,
             condition5:undefined,
+            searchContent: {
+                condition1: '',
+                condition2: '',
+                condition3: '',
+                condition4: '',
+                condition5: '',
+            },
         });
         this.pagination.current = 1;
         this.getTableParams('')

@@ -262,7 +262,14 @@ class RepoQueryInOutDaily extends React.Component {
             condition2:undefined,
             condition3:undefined,
             condition4:undefined,
-            condition5:undefined
+            condition5:undefined,
+            searchContent: {
+                condition1:'',
+                condition2:'',
+                condition3:'',
+                condition4:'',
+                condition5:''
+            },
         });
         this.pagination.current = 1;
         const tabKey = this.state.tabKey;
