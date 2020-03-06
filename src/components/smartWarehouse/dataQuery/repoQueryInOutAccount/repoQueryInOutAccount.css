@@ -13,5 +13,20 @@
 
 .repoQueryInOutAccount_check_month {
     height: 150px;
+    display: flex;
+    flex-direction:column
 }
 
+.repoQueryInOutAccount_check_month_bottom {
+    display: flex;
+}
+.repoQueryInOutAccount_check_month_input {
+    width: 50px;
+}
+.repoQueryInOutAccount_check_month_span1{
+    padding-bottom: 5px;
+}
+.repoQueryInOutAccount_check_month_span2{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
