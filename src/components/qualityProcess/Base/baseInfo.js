@@ -1,65 +1,16 @@
 import React from 'react';
-import Blockquote from '../../BlockQuote/blockquote';
-import BasePart from './basePart';
-import '../dataEntry/data.css';
-const data=[{
-    id:1,
-    name:'送样工厂',
-    path:'/deliveryFactory',
-    className:'fa fa-industry fa-5x'
-},{
-    id:2,
-    name:'产品工序',
-    path:'/productProcess',
-    className:'fa fa-wrench fa-5x'
-},{
-    id:3,
-    name:'检测项目',
-    path:'/testItem',
-    className:'fa fa-tint fa-5x'
-},{
-    id:4,
-    name:'产品线',
-    path:'/productLine',
-    className:'fa fa-sitemap fa-5x'
-},{
-    id:5,
-    name:'受检物料',
-    path: '/testMaterial',
-    className:'fa fa-sitemap fa-5x'
-}]
+import '../../smartWarehouse/repoBasic/basisData.css'
+import CommonBaseData from '../../BlockQuote/baseData';
 
-class BaseInfo extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            clickId:'',
-            flag:0,
-            path:'',
-            clickButton:''
-        }
-        this.click=this.click.bind(this);
-    }
-    click(e){
-       const path=e.target.id;
-       this.props.history.push({pathname:path})
-    }
+class BaseData extends React.Component{
 
-    render(){
-        return(
-            <div>
-                <Blockquote menu='质量与流程' name='基础数据'/>
-                <div className='dataEntry'>
-                    <div className='card-parent'>
-                    {
-                        data.map(d=>
-                            <BasePart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></BasePart>
-                        )
-                    }
-                    </div>
-                </div>
-           </div>
+    render() {
+        this.current = localStorage.getItem('current')?JSON.parse(localStorage.getItem('current')):null;
+        const ICON = ['fa fa-industry fa-5x','fa fa-wrench fa-5x','fa fa-tint fa-5x','fa fa-sitemap fa-5x','fa fa-info fa-5x']
+        return (
+            <CommonBaseData current={this.current} icon={ICON}/>
         );
     }
 }
-export default BaseInfo;
+
+export default BaseData;

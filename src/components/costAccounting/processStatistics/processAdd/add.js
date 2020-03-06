@@ -177,6 +177,7 @@ class CostProcessAdd extends Component {
         else{
             this.setState({
                 disabledDateFlag:false,
+                lengthSub:lengthSub
             })
         }
         this.setState({
