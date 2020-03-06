@@ -33,7 +33,7 @@ class InDaily extends React.Component {
             dataIndex: 'col3',
             width: '12%',
             render:(text)=>{
-                return <span title={text} className='text-decoration'>{text.split(" ")[0] + "..."}</span>
+                return <span title={text} className='text-decoration'>{text?text.split(" ")[0]:'' + text?"...":''}</span>
             }
         },{
             title: '结束日期',
@@ -41,7 +41,7 @@ class InDaily extends React.Component {
             dataIndex: 'col4',
             width: '15%',
             render:(text)=>{
-                return <span title={text} className='text-decoration'>{text.split(" ")[0] + "..."}</span>
+                return <span title={text} className='text-decoration'>{text?text.split(" ")[0]:'' + text?"...":''}</span>
             }
         },{
             title: '大类',
