@@ -7,18 +7,13 @@ import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
 import './repoQueryInOutAccount.css'
 
-const { TabPane } = Tabs;
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+const { MonthPicker } = DatePicker;
 
 class Check extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             visible: false,
-            dateString:"",
-            startDate:"",
-            endDate:"",
-            tabKey:'1',
             dateFormat: 'YYYY-MM-DD',
             isopen: false,
             yearString: null,
@@ -37,8 +32,6 @@ class Check extends React.Component {
     }
 
     render() {
-        const {startDate, endDate, dateFormat} = this.state;
-        const value = startDate === '' || endDate === '' ? null : [moment(startDate,dateFormat), moment(endDate,dateFormat)];
         return (
             <span>
                 <NewButton name='新增统计' className='fa fa-plus' handleClick={this.handleClick}/>
@@ -59,8 +52,8 @@ class Check extends React.Component {
                         <MonthPicker onChange={this.monthYearSelectChange} value={this.state.monthYearDate ? moment(this.state.monthYearDate) : null} placeholder="请选择统计年月" />
                         <span className="repoQueryInOutAccount_check_month_span2">开始日～结束日: (手输，例如 1~30)</span>
                         <div className="repoQueryInOutAccount_check_month_bottom">
-                            <Input className="repoQueryInOutAccount_check_month_input" value={this.state.startDay}  onChange={this.startDay} placeholder="请选择开始日"/>
-                            <Input className="repoQueryInOutAccount_check_month_input" value={this.state.endDay}  onChange={this.endDay} placeholder="请选择结束日"/>
+                            <Input className="repoQueryInOutAccount_check_month_input" value={this.state.startDay}  onChange={this.startDay} placeholder="请输入开始日"/>
+                            <Input className="repoQueryInOutAccount_check_month_input" value={this.state.endDay}  onChange={this.endDay} placeholder="请输入结束日"/>
                         </div>
                     </div>
                 </Modal>
