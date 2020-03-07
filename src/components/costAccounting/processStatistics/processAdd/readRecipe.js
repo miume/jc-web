@@ -25,7 +25,7 @@ class ReadRecipe extends Component{//读取配方
             title:'工序',
             dataIndex:'processName',
             key:'processName',
-            width:'12%'
+            width:'11%'
         },{
             title:'生效日期',
             dataIndex:'head.effectiveDate',
@@ -35,17 +35,17 @@ class ReadRecipe extends Component{//读取配方
             title:'生产品种',
             dataIndex:'product',
             key:'product',
-            width:'12%'
+            width:'11%'
         },{
             title:'Ni(g/L)',
             dataIndex:'ni',
             key:'ni',
-            width:'7%'
+            width:'8%'
         },{
             title:'Co(g/L)',
             dataIndex:'co',
             key:'co',
-            width:'7%'
+            width:'8%'
         },{
             title:'Mn(g/L)',
             dataIndex:'mn',

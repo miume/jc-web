@@ -24,7 +24,7 @@ class MixSalt extends Component{//混合盐配置
             key:'materialName',
             width:'15%'
         },{
-            title:'体积',
+            title:'体积(m³)',
             dataIndex:'volume',
             key:'volume',
             width:'15%',

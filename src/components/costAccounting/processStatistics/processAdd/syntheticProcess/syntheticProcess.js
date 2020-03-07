@@ -24,7 +24,7 @@ class SyntheticProcess extends Component{//合成工序
             key:'materialName',
             width:"13%",
         },{
-            title:'体积',
+            title:'体积(m³)',
             dataIndex:'volume',
             key:'volume',
             width:'15%',
@@ -44,7 +44,7 @@ class SyntheticProcess extends Component{//合成工序
                 )
             }
         },{
-            title:'Ni(%)',
+            title:'Ni(g/L)',
             dataIndex:'niPotency',
             key:'niPotency',
             width:'15%',
@@ -54,7 +54,7 @@ class SyntheticProcess extends Component{//合成工序
                 )
             }
         },{
-            title:'Co(%)',
+            title:'Co(g/L)',
             dataIndex:'coPotency',
             key:'coPotency',
             width:'15%',
@@ -64,7 +64,7 @@ class SyntheticProcess extends Component{//合成工序
                 )
             }
         },{
-            title:'Mn(%)',
+            title:'Mn(g/L)',
             dataIndex:'mnPotency',
             key:'mnPotency',
             width:'15%',

@@ -23,11 +23,10 @@ class AddModal extends React.Component {
         this.getAllSubType=this.getAllSubType.bind(this);
         this.getAllType=this.getAllType.bind(this);
         this.getAllMaterialName=this.getAllMaterialName.bind(this);
-        this.getAllSupplier=this.getAllSupplier.bind(this);
     }
 
     render() {
-        let {visible,typeData,subTypeData,nameData,materialId,materialTypeId,subTypeId,safetyStockValue,supplierData,supId} = this.state, {title,flag} = this.props;
+        let {visible,typeData,subTypeData,nameData,materialId,materialTypeId,subTypeId,safetyStockValue,supplierData} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -60,13 +59,6 @@ class AddModal extends React.Component {
                         </Select>
                         <Input placeholder={'请输入安全库存值'} name={'safetyStockValue'} value={safetyStockValue} style={{width:200}} onChange={this.inputChange}/>
                     </div>
-                    <div className={'basis-data-flex'}>
-                        <Select placeholder={'请选择供货商信息'} value={supId} style={{width:200}} onChange={this.selectChange}>
-                            {
-                                supplierData&&supplierData.length ? supplierData.map(e => <Option key={e.id} value={e.id}  name={'supId'}>{e.materialSupplierName}</Option>) : null
-                            }
-                        </Select>
-                    </div>
                 </Modal>
             </span>
         );
@@ -84,12 +76,11 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {subTypeId,materialId,materialTypeId,safetyStockValue,id,supId} = record;
+            let {subTypeId,materialId,materialTypeId,safetyStockValue,id} = record;
             this.setState({
                 subTypeId:subTypeId?subTypeId.toString():undefined,
                 materialId:materialId?materialId.toString():undefined,
                 materialTypeId:materialTypeId?materialTypeId.toString():undefined,
-                supId:supId?supId.toString():undefined,
                 safetyStockValue,
                 id
             });
@@ -100,7 +91,6 @@ class AddModal extends React.Component {
         });
         this.getAllType()
         this.getAllMaterialName()
-        this.getAllSupplier()
     }
 
     /**取消事件*/
@@ -110,7 +100,6 @@ class AddModal extends React.Component {
             materialId:undefined,
             subTypeId:undefined,
             materialTypeId:undefined,
-            supId:undefined,
             safetyStockValue:undefined
         });
     }
@@ -168,23 +157,6 @@ class AddModal extends React.Component {
             }
         })
     }
-    /**获取所有供货商信息*/
-    getAllSupplier(){
-        axios({
-            url: `${this.props.url.supplier.getAll}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-        }).then(data => {
-            let res = data.data.data;
-            if(res) {
-                this.setState({
-                    supplierData: res
-                })
-            }
-        })
-    }
     inputChange(e) {
         let tar = e.target, name = tar.name, value = tar.value;
         this.setState({
@@ -228,16 +200,15 @@ class AddModal extends React.Component {
     }
 
     saveDataProcessing() {
-        let {materialId,subTypeId,materialTypeId,safetyStockValue,id,supId} = this.state,
+        let {materialId,subTypeId,materialTypeId,safetyStockValue,id} = this.state,
             data = {
                 id,
                 materialId,
                 subTypeId,
                 materialTypeId,
                 safetyStockValue,
-                supId
             }, method = 'post', url = `${this.props.url.swmsBasicSafetyStock}/add`;
-        if(!materialId||!subTypeId||!materialTypeId||!supId||!safetyStockValue) {
+        if(!materialId||!subTypeId||!materialTypeId||!safetyStockValue) {
             message.info('请将信息填写完整！');
             return false
         }

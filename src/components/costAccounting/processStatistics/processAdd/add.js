@@ -294,15 +294,10 @@ class CostProcessAdd extends Component {
         let {addData,otherData,otherFlag}=this.state
         if (inputData) {
             let value = inputData.target.value;
+                value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
             let inputData1 = inputData.target.name.split('-');
             let index = inputData1[0],    //定位到是第几条数据
                 name = inputData1[1]     //输入框内容变化的字段
-            if(name==='monPotency'||name==='niPotency'||name==='coPotency'||name==='mnPotency'){
-                if(value<0||value>1){
-                    message.error('浓度值必须为0到1之间的数!')
-                    return undefined
-                }
-            }
             if(tabKey==='6'&&otherFlag){
                 if(value[value.length-1] !== '.'){
                     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
