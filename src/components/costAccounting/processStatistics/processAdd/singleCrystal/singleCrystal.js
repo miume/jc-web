@@ -17,7 +17,7 @@ class SingleCrystal extends Component {//单晶体配置
             key: 'materialName',
             width: '25%'
         }, {
-            title: '体积',
+            title: '体积(m³)',
             dataIndex: 'volume',
             key: 'volume',
             width: '25%',
@@ -34,7 +34,7 @@ class SingleCrystal extends Component {//单晶体配置
                 }
             }
         }, {
-            title: '本期浓度',
+            title: '本期浓度(g/L)',
             dataIndex: 'monPotency',
             key: 'monPotency',
             width:'30%',

@@ -27,42 +27,37 @@ class SafetyStock extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '7%'
+            width: '8%'
         },{
             title: '物料大类',
             key: 'typeName',
             dataIndex: 'typeName',
-            width: '13%'
+            width: '15%'
         },{
             title: '物料小类',
             key: 'subTypeName',
             dataIndex: 'subTypeName',
-            width: '13%'
-        },{
-            title: '供应商',
-            key: 'materialSupplierName',
-            dataIndex: 'materialSupplierName',
-            width: '13%'
+            width: '15%'
         },{
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
-            width: '13%'
+            width: '15%'
         },{
             title: '单位',
             key: 'measureUnit',
             dataIndex: 'measureUnit',
-            width: '10%'
+            width: '12%'
         },{
             title: '代码',
             key: 'materialNameCode',
             dataIndex: 'materialNameCode',
-            width: '10%'
+            width: '12%'
         },{
             title: '安全库存',
             key: 'safetyStockValue',
             dataIndex: 'safetyStockValue',
-            width: '8%'
+            width: '10%'
         },{
             title: '操作',
             key: 'id',

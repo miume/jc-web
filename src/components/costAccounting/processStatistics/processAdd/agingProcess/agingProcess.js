@@ -41,7 +41,7 @@ class AgingProcess extends Component{//陈化工序
                 }
             }
         },{
-            title:'Ni(%)',
+            title:'Ni(g/L)',
             dataIndex:'niPotency',
             key:'niPotency',
             width:'15%',
@@ -51,7 +51,7 @@ class AgingProcess extends Component{//陈化工序
                 )
             }
         },{
-            title:'Co(%)',
+            title:'Co(g/L)',
             dataIndex:'coPotency',
             key:'coPotency',
             width:'15%',
@@ -61,7 +61,7 @@ class AgingProcess extends Component{//陈化工序
                 )
             }
         },{
-            title:'Mn(%)',
+            title:'Mn(g/L)',
             dataIndex:'mnPotency',
             key:'mnPotency',
             width:'15%',
