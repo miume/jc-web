@@ -11,7 +11,6 @@ class Right extends React.Component {
             addressData: [],
             outTypeData: []
         };
-        this.getDeviceDept = this.getDeviceDept.bind(this);
         this.getOutTypeData = this.getOutTypeData.bind(this);
         this.getAddressData = this.getAddressData.bind(this);
 
@@ -74,22 +73,15 @@ class Right extends React.Component {
     }
 
     componentDidMount() {
-        const userId = JSON.parse(localStorage.getItem('menuList')) ? JSON.parse(localStorage.getItem('menuList')).userId : null;
-        this.getDeviceDept(userId);
+        const menuList = JSON.parse(localStorage.getItem('menuList')), userId = menuList.userId ? menuList.userId : null,
+            deptId = menuList.deptId ? menuList.deptId : null, deptName = menuList.deptName ? menuList.deptName : '';
+        this.setState({
+            deptCode: deptId,
+            deptName: deptName,
+            userId
+        });
         this.getOutTypeData();
         this.getAddressData();
-    }
-
-    /**根据用户id获取部门*/
-    getDeviceDept(userId) {
-        axios.post(`${this.props.url.getDeviceDept}?userId=${userId}`).then((data) => {
-            let res = data.data.data;
-            this.setState({
-                deptCode: res.code,
-                deptName: res.name,
-                userId
-            })
-        })
     }
 
     /**获取出库类别数据*/
