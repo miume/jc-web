@@ -104,7 +104,11 @@ class Search extends Component {
         if(lengthSub>1){//选择的开始时间与给的上一期结束时间间隔天数，大于1天要给提示
             this.setState({
                 disabledDateFlag:true,
-                lengthSub:lengthSub
+            })
+        }
+        else{
+            this.setState({
+                disabledDateFlag:false,
             })
         }
         this.setState({
@@ -112,7 +116,8 @@ class Search extends Component {
             endTime: endTime,
             startDate: dateString,
             endDate: endDate,
-            secondTime:endTime.split(' ')[1]
+            secondTime:endTime.split(' ')[1],
+            lengthSub:lengthSub
         });
     }
     /**结束日期变化*/
@@ -141,7 +146,6 @@ class Search extends Component {
     }
     render() {
         let { modelCode, periodCode, endDate ,startDate,lineCode,lengthSub,disabledDateFlag} = this.state,{flagConfirm,inputPeriod}=this.props
-        
         return (
             <div>
                 <Select onChange={this.selectChange} value={lineCode} placeholder='请选择产线' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
