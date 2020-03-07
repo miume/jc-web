@@ -32,10 +32,11 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <Input placeholder={'请输入代码(车间号)'} name={'plantName'} value={plantName} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入代码(车间号)'} name={'plantCode'} value={plantCode} onChange={this.inputChange}/>
                     </div>
+
                     <div className={'check-item'}>
-                        <Input placeholder={'请输入车间名称'} name={'plantCode'} value={plantCode} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入车间名称'} name={'plantName'} value={plantName} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
