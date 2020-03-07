@@ -134,12 +134,12 @@ class AddModal extends React.Component{
         if(value[value.length-1] !== '.')
             value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
 
-        if(type && name !== 'monPotency') {
-            value = this.inputNumberChange(value);
-            if(value === undefined) {
-                return
-            }
-        }
+        // if(type && name !== 'monPotency') {
+        //     value = this.inputNumberChange(value);
+        //     if(value === undefined) {
+        //         return
+        //     }
+        // }
         if(index) {
             index = parseInt(index)-1;
             if(type === 2) {   //更新罐区input的数据
