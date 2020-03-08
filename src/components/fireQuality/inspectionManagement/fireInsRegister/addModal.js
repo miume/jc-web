@@ -27,6 +27,7 @@ class AddModal extends React.Component {
             checkAll: false,
             plainOptions:[],
             checkedList: [],
+            checkTypeName: []
         };
     }
     componentDidMount() {
@@ -71,6 +72,8 @@ class AddModal extends React.Component {
                                 getDeptCode={this.getDeptCode}
                                 plainOptions={this.state.plainOptions}
                                 checkedList={this.state.checkedList}
+                                typeFlag={this.typeFlag}
+                                checkTypeName={this.state.checkTypeName}
                             />
                         </div>
                     </div>
@@ -112,6 +115,49 @@ class AddModal extends React.Component {
 
 
     /** 检测项目有关的函数*/
+
+    typeFlag =(checkedValues) => {
+        var checkedValueFlag = [{
+            flag:false,
+            name:"磁性异物"
+        },{
+            flag:false,
+            name:"粒度"
+        },{
+            flag:false,
+            name:"金属大颗粒"
+        }]
+        for (let i = 0; i < checkedValueFlag.length; i++) {
+            for (let j = 0; j <checkedValues.length ; j++) {
+                if (checkedValueFlag[i].name === checkedValues[j]) {
+                    checkedValueFlag[i].flag = true;
+                }
+            }
+        }
+        const plainOptions = this.state.plainOptions;
+        var checkedList = [];
+        if (plainOptions.length>0) {
+            for (let i = 0; i < plainOptions.length; i++) {
+                if (checkedValueFlag[0].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[0].name) != -1){
+                    checkedList.push(plainOptions[i].code)
+                }
+                if (checkedValueFlag[1].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[1].name) != -1){
+                    checkedList.push(plainOptions[i].code)
+                }
+                if (checkedValueFlag[2].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[2].name) != -1){
+                    checkedList.push(plainOptions[i].code)
+                }
+            }
+            this.setState({
+                checkedList:checkedList,
+                checkTypeName:checkedValues
+            })
+        }else {
+            message.info("无检测项目")
+        }
+
+
+    }
 
     allItems = () => {
         axios({
@@ -155,12 +201,10 @@ class AddModal extends React.Component {
                     checkedList.push(dataSource[i].code)
                 }
                 this.setState({
-                    // plainOptions: dataSource,
                     checkedList: checkedList
                 })
             }else{
                 this.setState({
-                    // plainOptions: dataSource,
                     checkedList: []
                 })
                 message.info("该工序、产品型号/厂家下的检测项目为空")
@@ -182,7 +226,8 @@ class AddModal extends React.Component {
     }
     getCheckedList = (checkedList) => {
         this.setState({
-            checkedList: checkedList
+            checkedList: checkedList,
+            checkTypeName:[]
         })
     }
 

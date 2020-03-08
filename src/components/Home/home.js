@@ -965,7 +965,8 @@ class Home extends Component {
             /**库存日报*/
             repoQueryInventoryDaily:{
                 pagesIn:`${server}/jc/repo/swms-stock-inventory-daily-reports/pagesIn`,
-                edit:`${server}/jc/repo/swms-stock-inventory-daily-reports/edit`
+                edit:`${server}/jc/repo/swms-stock-inventory-daily-reports/edit`,
+                detail:`${server}/jc/repo/swms-stock-inventory-daily-reports/detail`
             },
             /**库存查询*/
             repoQueryInventoryQuery:{
