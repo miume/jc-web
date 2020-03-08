@@ -27,13 +27,13 @@ class SearchCell extends React.Component {
                 工序：
                 <Select value={process} style={{ width: 150,marginRight: '10px'}} placeholder={'请选择工序'} onChange={this.selectChange}>
                     {
-                        productionData ? productionData.map(e => <Option key={e.code} value={e.code} name={'process'}>{e.value}</Option>) : null
+                        productionData ? productionData.map(e => <Option key={e.code} value={e.value} name={'process'}>{e.value}</Option>) : null
                     }
                 </Select>
                 产品：
                 <Select value={product} style={{ width: 150,marginRight: '10px'}} placeholder={'请选择产品'} onChange={this.selectChange}>
                     {
-                        productData ? productData.map(e => <Option key={e.code} value={e.code} name={'product'}>{e.value}</Option>) : null
+                        productData ? productData.map(e => <Option key={e.code} value={e.value} name={'product'}>{e.value}</Option>) : null
                     }
                 </Select>
                  <DatePicker placeholder={'请选择时间'} style={{width:200}} value={date ? moment(date) : null} onChange={this.dateChange}/>
