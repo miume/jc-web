@@ -1,5 +1,5 @@
 import React from 'react';
-import {Checkbox, Divider, Col, Select, Input, message} from "antd";
+import {Checkbox, Divider, Col, Select, Input, message,Radio} from "antd";
 
 import "../fireInsRegister/fireInsRegister.css"
 import axios from "axios";
@@ -11,7 +11,9 @@ class AddModalRight extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectList: []
+            selectList: [],
+            typeName:["磁性异物","粒度","金属大颗粒"],
+            checkTypeName:[]
         };
 
     }
@@ -25,7 +27,7 @@ class AddModalRight extends React.Component {
             <div className="addModalRight_scala">
                 <div className="addModalRight_top">
                     <span className="addModalRight_top_span">检验项目选择：</span>
-                    <div style={{borderBottom: '1px solid #E9E9E9'}}>
+                    <div className="addMondalRight_top_bottom" style={{borderBottom: '1px solid #E9E9E9'}}>
                         <Checkbox
                             indeterminate={this.props.indeterminate}
                             onChange={this.onCheckAllChange}
@@ -33,6 +35,7 @@ class AddModalRight extends React.Component {
                         >
                             全选/全不选
                         </Checkbox>
+                        <Checkbox.Group value={this.props.checkTypeName} options={this.state.typeName} onChange={this.props.typeFlag} />
                     </div>
                 </div>
                 <Divider className="addModalRight_top_divider"/>
@@ -59,7 +62,6 @@ class AddModalRight extends React.Component {
             </div>
         );
     }
-
 
     /**
      * 部门相关

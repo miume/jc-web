@@ -1,7 +1,8 @@
 import React from 'react';
-import {Table} from "antd";
+import {Divider, Table} from "antd";
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
 import Edit from './edit'
+import Detail from './detail'
 
 class InventoryDailyTable extends React.Component {
 
@@ -36,12 +37,7 @@ class InventoryDailyTable extends React.Component {
             title: '物料名称',
             key: 'col4',
             dataIndex: 'col4',
-            width: '10%'
-        },{
-            title: '供应商',
-            key: 'col5',
-            dataIndex: 'col5',
-            width: '10%'
+            width: '14%'
         },{
             title: '计量单位',
             key: 'col6',
@@ -76,15 +72,22 @@ class InventoryDailyTable extends React.Component {
             title: '备注',
             key: 'col12',
             dataIndex: 'col12',
-            width: '10%'
+            width: '12%'
         },{
             title: '操作',
             key: 'code',
             dataIndex: 'code',
-            width: '5%',
+            width: '9%',
             render: (text,record) => {
                 return (
                     <span>
+                        <Detail
+                            record={record}
+                            url={this.props.url}
+                            searchContent={this.props.searchContent}
+                            getTableParams={this.props.getTableParams}
+                        />
+                        <Divider type="vertical" />
                         <Edit
                             record={record}
                             url={this.props.url}
