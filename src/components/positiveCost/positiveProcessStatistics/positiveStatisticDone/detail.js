@@ -255,8 +255,12 @@ class Detail extends Component{
                     </span>
                     <span style={{float:'right'}}> 
                         <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : </span>
-                        <span >总入炉排数 : {sub&&sub.tIn!==undefined?sub.tIn:undefined}</span>
-                        <span >总出炉排数 : {sub&&sub.tOut!==undefined?sub.tOut:undefined}</span>
+                        {id===7?<span>
+                                    <span >总入炉排数 : {sub&&sub.tIn!==undefined?sub.tIn:undefined}</span>
+                                    <span >总出炉排数 : {sub&&sub.tOut!==undefined?sub.tOut:undefined}</span>
+                               </span>
+                               :null
+                        }
                         <span >总进料量 : {sub&&sub.tFee!==undefined?sub.tFee:undefined}</span>
                         <span >总消耗量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
                         <span >总结存量 : {sub&&sub.tBal!==undefined?sub.tBal:undefined}</span>
