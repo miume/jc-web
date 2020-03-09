@@ -98,10 +98,16 @@ class DetailModal extends React.Component{
                         </Row>
 
                         <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"21px",paddingRight:"50px"}} >
-                            <Col span={1.5} style={{paddingLeft:"10px"}}>
+                            <Col style={{paddingLeft:"5px"}}>
                                 <div>故障描述：{this.props.record.faultContent}</div>
                             </Col>
                         </Row>
+                        <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"21px",paddingRight:"50px"}} >
+                            <Col style={{paddingLeft:"5px"}}>
+                                <div>故障处理及原因分析：{this.props.record.faultReason}</div>
+                            </Col>
+                        </Row>
+
 
                         <Divider dashed />
 

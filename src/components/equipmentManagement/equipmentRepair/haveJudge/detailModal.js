@@ -95,9 +95,14 @@ class DetailModal extends React.Component{
                         </Col>
                     </Row>
 
-                    <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"20px",paddingRight:"20px"}} >
-                        <Col span={1.5} style={{paddingLeft:"40px"}}>
+                    <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"21px",paddingRight:"50px"}} >
+                        <Col style={{paddingLeft:"5px"}}>
                             <div>故障描述：{this.props.record.faultContent}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"21px",paddingRight:"50px"}} >
+                        <Col style={{paddingLeft:"5px"}}>
+                            <div>故障处理及原因分析：{this.props.record.faultReason}</div>
                         </Col>
                     </Row>
 
