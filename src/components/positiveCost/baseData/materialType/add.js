@@ -105,8 +105,8 @@ class MaterialTypeAdd extends Component{
         this.getLine()
     }
     handleAdd(){
-        let {materialName,types,line,processCode,processName}=this.state
-        if(!materialName||(types===undefined)||line.length===0||!processCode){
+        let {materialName,types,line,processCode,processName,flag}=this.state
+        if(!materialName||(types===undefined)||line.length===0||!processCode||flag===undefined){
             message.error('信息填写不完整!')
             return
         }
@@ -117,6 +117,7 @@ class MaterialTypeAdd extends Component{
             //processName: processName,
             types:types,
             weightDTOS: [],
+            flag:flag
         }
         for(let i=0;i<line.length;i++){
             let a={}
