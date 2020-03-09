@@ -39,6 +39,7 @@ class PositiveAdd extends Component {
         this.submit=this.submit.bind(this);
         this.inputChange1=this.inputChange1.bind(this);
         this.disabledDate=this.disabledDate.bind(this);
+        this.cancel=this.cancel.bind(this);
     }
     componentDidMount() {
         this.getAllProcess()
@@ -124,6 +125,9 @@ class PositiveAdd extends Component {
             let res = data.data.data;
              if(res.code<=0){
                  message.error(res.message)
+                 if(res.code===-2){
+                    message.info(`请选择开始时间 ${res.startTime},请选择结束时间 ${res.endTime}`)
+                 }
                 this.setState({
                     loading:false
                 })
@@ -157,13 +161,15 @@ class PositiveAdd extends Component {
         }).then((data) => {
             let tagTable = data.data.data;
             this.setState({
-                productLine:tagTable&&tagTable.line?tagTable.line:undefined
+                productLine:tagTable&&tagTable.line?tagTable.line:undefined,
+                loading:false,
             })
+            
             if (tagTable && tagTable.processes) {
                 this.setState({
                     tagTableData: tagTable.processes,
                     addData: tagTable,
-                    loading:false,
+                    
                 })
                 if(this.props.location.editFlag){
                     this.setState({
@@ -172,7 +178,10 @@ class PositiveAdd extends Component {
                     })
                 }
             }
-          
+        }).catch(()=>{
+            this.setState({
+                loading:false
+            })
         })
     }
     tabChange(key) {
@@ -267,6 +276,9 @@ class PositiveAdd extends Component {
     back() {
         this.props.history.push({ pathname: '/positiveProcess' })
     }
+    cancel() {
+        this.props.history.push({pathname:'/positiveProcess'})
+     }
     render() {
         let { loading,processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData,headEdit,tabKey,giveEndDate} = this.state
         this.url = JSON.parse(localStorage.getItem('url'))
@@ -305,7 +317,7 @@ class PositiveAdd extends Component {
                     </div>
                 </Spin>
                 <div className={'raw-material-add-footer-bottom'} >
-                        <CancleButton />
+                        <CancleButton handleCancel={this.cancel}/>
                         <div>
                             <SaveButton handleSave={this.save} />
                             <NewButton name='提交' handleClick={this.submit} />

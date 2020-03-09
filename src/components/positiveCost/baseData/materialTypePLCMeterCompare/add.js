@@ -27,6 +27,7 @@ class MaterialTypePLCMeterComAdd extends Component{
         this.getProcess=this.getProcess.bind(this);
         this.getPlc=this.getPlc.bind(this);
         this.getMaterial=this.getMaterial.bind(this);
+        this.inputChange=this.inputChange.bind(this);
     }
 
       componentWillUnmount() {
@@ -108,8 +109,8 @@ class MaterialTypePLCMeterComAdd extends Component{
         this.getProcess()
     }
     handleAdd(){
-        let {lineCode,plcCode,materialCode,processCode}=this.state
-        if(!lineCode||!plcCode||!materialCode||!processCode){
+        let {lineCode,plcCode,materialCode,processCode,materialAtt}=this.state
+        if(lineCode===undefined||plcCode===undefined||materialCode===undefined||processCode===undefined||materialAtt===undefined){
             message.error('信息填写不完整!')
             return
         }
@@ -119,6 +120,7 @@ class MaterialTypePLCMeterComAdd extends Component{
             materialCode: materialCode,
             plcCode: plcCode,
             processCode: processCode,
+            materialAtt:materialAtt
         }
         axios({
             url:this.props.editFlag?this.props.url.positivePlcCompare.update:this.props.url.positivePlcCompare.add,
@@ -146,7 +148,8 @@ class MaterialTypePLCMeterComAdd extends Component{
             lineCode: undefined,
             materialCode: undefined,
             plcCode: undefined,
-            processCode: undefined
+            processCode: undefined,
+            materialAtt:undefined
         })
     }
     selectChange(value,name){
@@ -154,6 +157,11 @@ class MaterialTypePLCMeterComAdd extends Component{
          this.setState({
              [name]:value
          })
+    }
+    inputChange(e){
+        this.setState({
+            materialAtt:e.target.value
+        })
     }
     render(){
         let {addFlag,updateFlag}=this.props
@@ -191,7 +199,7 @@ class MaterialTypePLCMeterComAdd extends Component{
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col className='imgRequire'>所属工序 : </Col>
                         <Col span={18}>
-                            <Select placeholder='请选择所属工序'  defaultValue={this.props.editflag?this.props.record.processCode:undefined} style={{width:307.5}} onChange={this.selectChange}>
+                            <Select placeholder='请选择所属工序' value={this.state.processCode}  defaultValue={this.props.editflag?this.props.record.processCode:undefined} style={{width:307.5}} onChange={this.selectChange}>
                                 {
                                     this.state.processData?this.state.processData.map(data=>{
                                         return(
@@ -205,7 +213,7 @@ class MaterialTypePLCMeterComAdd extends Component{
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col  className='imgRequire'>物料种类 : </Col>
                         <Col span={18}>
-                            <Select placeholder='请选择物料种类' defaultValue={this.props.editflag?this.props.record.materialCode:undefined}  style={{width:307.5}} onChange={this.selectChange}>
+                            <Select placeholder='请选择物料种类' value={this.state.materialCode} defaultValue={this.props.editflag?this.props.record.materialCode:undefined}  style={{width:307.5}} onChange={this.selectChange}>
                                 {
                                     this.state.materialData?this.state.materialData.map(data=>{
                                         return(
@@ -219,7 +227,7 @@ class MaterialTypePLCMeterComAdd extends Component{
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col className='imgRequire'>DCS属性 : </Col>
                         <Col span={18}>
-                            <Input placeholder='请输入物料属性' defaultValue={this.props.editflag?this.props.record.lineCode:undefined}  style={{width:307.5}} onChange={this.inputChange}/>
+                            <Input placeholder='请输入物料属性' value={this.state.materialAtt} defaultValue={this.props.editflag?this.props.record.lineCode:undefined}  style={{width:307.5}} onChange={this.inputChange}/>
                         </Col>
                     </Row>
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
