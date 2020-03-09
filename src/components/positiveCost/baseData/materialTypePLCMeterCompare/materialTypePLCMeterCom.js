@@ -42,8 +42,8 @@ class MaterialTypePLCMeterCom extends Component{
             align:'center'
         },{
             title:'DCS属性',
-            dataIndex:'dcs',
-            key:'dcs',
+            dataIndex:'materialAtt',
+            key:'materialAtt',
             width:'17%',
             align:'center'
         },{
