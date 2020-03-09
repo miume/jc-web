@@ -70,87 +70,42 @@ class DetailModal extends React.Component{
                         <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />
                     ]}
                 >
-                    <div>
-                        <Row>
-                            <Col span={1.5} type="flex" style={{marginLeft:"-90px"}}>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                    <div>维修单号：{this.props.record.deviceCode}</div>
-                                </Row>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                    <div>设备名称：{this.props.record.deviceName}</div>
-                                </Row>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                    <div>报修时间：{this.props.record.reportTime}</div>
-                                </Row>
-                            </Col>
+                    <Row>
+                        <Col span={12}>维修单号: {this.props.record.deviceCode}</Col>
+                        <Col span={12}>所属部门：{this.props.record.deptName}</Col>
+                    </Row>
+                    <Row>
+                        <Col span={12}>设备名称：{this.props.record.deviceName}</Col>
+                        <Col span={12}>固定资产编号：{this.props.record.fixedassetsCode}</Col>
+                    </Row>
+                    <Row>
+                        <Col span={12}>报修时间：{this.props.record.reportTime}</Col>
+                        <Col span={12}>报修人：{this.props.record.reportPeople}</Col>
+                    </Row>
+                    <div style={{padding: '6px 0'}}>故障描述：{this.props.record.faultContent}</div>
+                    <div style={{padding: '6px 0'}}>故障处理及原因分析：{this.props.record.faultReason}</div>
 
-                            <Col span={1.5} style={{marginLeft:"-75px"}}>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                    <div>所属部门：{this.props.record.deptName}</div>
-                                </Row>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                    <div>固定资产编号：{this.props.record.fixedassetsCode}</div>
-                                </Row>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                    <div>报修人：{this.props.record.reportPeople}</div>
-                                </Row>
-                            </Col>
-                        </Row>
+                    <Divider dashed />
+                    <Row>
+                        <Col span={12}>接单时间：{this.props.record.receiveTime}</Col>
+                        <Col span={12}>接单人：{this.props.record.receivePeople}</Col>
+                    </Row>
+                    <Row>
+                        <Col span={12}>联系电话：{this.props.record.receivePhone}</Col>
+                        <Col span={12}>完成时间：{this.props.record.finishTime}</Col>
+                    </Row>
 
-                        <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"21px",paddingRight:"50px"}} >
-                            <Col style={{paddingLeft:"5px"}}>
-                                <div>故障描述：{this.props.record.faultContent}</div>
-                            </Col>
-                        </Row>
-                        <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"21px",paddingRight:"50px"}} >
-                            <Col style={{paddingLeft:"5px"}}>
-                                <div>故障处理及原因分析：{this.props.record.faultReason}</div>
-                            </Col>
-                        </Row>
-
-
-                        <Divider dashed />
-
-                        <Row>
-                            <Col type="flex" span={1.5} style={{marginLeft:"-15px"}}>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"-5px"}} >
-                                    <div>接单时间：{this.props.record.receiveTime}</div>
-                                </Row>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                    <div>联系电话：{this.props.record.receivePhone}</div>
-                                </Row>
-                            </Col>
-
-                            <Col type="flex" span={1.5} style={{paddingLeft:"20px"}}>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px",marginLeft:'-15px'}} >
-                                    <div>接单人：{this.props.record.receivePeople}</div>
-                                </Row>
-                                <Row type="flex" justify="start" style={{paddingTop:"15px",marginLeft:'-15px'}} >
-                                    <div>完成时间：{this.props.record.finishTime}</div>
-                                </Row>
-                            </Col>
-                        </Row>
-
-                        <Divider dashed />
-
-                        <Row type="flex" justify="start" style={{height: 150}} >
-                            <Col span={1.5} style={{paddingLeft:"30px",paddingRight:"30px"}}>
-                                <div>
-                                    <h4>配件使用</h4>
-                                    <Table
-                                        rowKey={record => record.code}
-                                        columns={this.columns}
-                                        dataSource={this.state.detailData}
-                                        size="small"
-                                        bordered
-                                        pagination={false}
-                                        scroll={{y:100}}
-                                    />
-                                </div>
-                            </Col>
-                        </Row>
-
-                    </div>
+                    <Divider dashed />
+                    <h4>配件使用</h4>
+                    <Table
+                        columns={this.columns}
+                        dataSource={this.state.detailData}
+                        rowKey={record => record.code}
+                        size="small"
+                        bordered
+                        pagination={false}
+                        scroll={{y:100}}
+                    />
 
 
                 </Modal>
