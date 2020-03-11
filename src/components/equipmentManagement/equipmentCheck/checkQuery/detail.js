@@ -13,13 +13,20 @@ class Detail extends  React.Component{
             dataSource:[]
         }
         this.fetch=this.fetch.bind(this)
+        this.handleTableChange = this.handleTableChange.bind(this);
+        this.pagination = {
+            showTotal(total){
+                return `共${total}条记录`
+            },
+            showSizeChanger: true,
+            pageSizeOptions: ['10','20','50','100']
+        };
     }
 
     clickDetail=()=>{
         this.setState({
             visible:true
         })
-        console.log(this.props.code)
         this.fetch({
             id:this.props.code
         },0)
@@ -29,21 +36,7 @@ class Detail extends  React.Component{
             visible:false
         })
     }
-    fetch = (params,flag) => {
-        if (flag) {
-            this.setState({
-                pageChangeFlag: 0,
-                searchContent: ''
-            })
-            // var {pagination} = this.state;
-            // pagination.current = 1;
-            // pagination.total = 0;
-            // this.setState({
-            //     pageChangeFlag:0,
-            //     searchContent:'',
-            //     pagination:pagination
-            // })
-        }
+    fetch(params) {
         axios({
             url: `${this.props.url.checkQuery.deviceDetailPage}`,
             method: 'get',
@@ -53,15 +46,13 @@ class Detail extends  React.Component{
             params: params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
-
+            this.pagination.total = res.total || 0;
             if (res && res.list) {
                 var detailData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].deviceSpotcheckRecordHead;
-                    console.log('11111')
                     detailData.push({
-                        index: i + 1,
+                        index: (res.page-1)*10+i+1,
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
@@ -75,12 +66,10 @@ class Detail extends  React.Component{
                         idCode: arr['idCode'],
                     })
                 }
-                console.log('2222222')
                 this.setState({
                     dataSource: detailData,
                     deviceName: params.deviceName
                 });
-                console.log('kkkkkkkkkkkk')
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
@@ -91,7 +80,16 @@ class Detail extends  React.Component{
         }).catch(() => {
             message.info('查询失败，请刷新下页面！')
         });
+    }
 
+    handleTableChange(pagination) {
+        this.pagination = pagination;
+        let {code}=this.props,{pageSize,current}=this.pagination
+        this.fetch({
+            page: current,
+            size: pageSize,
+            id:code
+        });
     }
     render(){
 
@@ -117,6 +115,8 @@ class Detail extends  React.Component{
                     deviceName={this.props.deviceName}
                     fixedassetsCode={this.props.fixedassetsCode}
                     url={this.props.url}
+                    pagination = {this.pagination}
+                    handleTableChange={this.handleTableChange}
                 />
 
 

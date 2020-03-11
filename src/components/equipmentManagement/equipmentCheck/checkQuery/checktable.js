@@ -1,5 +1,5 @@
 import React from "react"
-import {Table, Input} from 'antd'
+import {Table} from 'antd'
 
 import home from "../../../commom/fns";
 import Detail from "./detail"
@@ -67,6 +67,7 @@ s                    name="设备编号/设备名称"
                    dataSource={this.props.rightTableData}
                    onChange={this.props.handleTableChange}
                    pagination={this.props.pagination}
+                   rowKey={record => record.code}
                    size="small"
                    bordered
                    scroll={{ y: 380 }}

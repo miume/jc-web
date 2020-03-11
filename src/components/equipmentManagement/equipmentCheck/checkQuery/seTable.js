@@ -73,14 +73,14 @@ class SeTable extends React.Component{
         return(
 
             <Table
-
                 columns={this.columns}
                 dataSource={this.props.dataSource}
                 onChange={this.props.handleTableChange}
                 size="small"
                 bordered
                 scroll={{ y: 380 }}
-
+                rowKey={record => record.code}
+                pagination={this.props.pagination}
             />
         )
     }

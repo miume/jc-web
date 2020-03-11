@@ -7,7 +7,7 @@ import RightTable from "./rightTable"
 import "./checkPlan.css"
 import Add from "./add";
 import SearchCell from "./searchCell";
-import home from "../../../commom/fns";
+
 import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class CheckPlan extends React.Component {
     constructor(props) {
@@ -237,13 +237,14 @@ class CheckPlan extends React.Component {
             },
             params: params,
         }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
+            const res = data.data.data ? data.data.data : [], {pagination} = this.state;
+            pagination.total = res.total ? res.total : 0;
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].deviceSpotcheckPlans;
                     rightTableData.push({
-                        index:i+1,
+                        index:(res.page-1)*10+i+1,
                         code:arr['code'],
                         modelCode:arr['modelCode'],
                         fixedassetsCode:arr['fixedassetsCode'],
@@ -255,7 +256,8 @@ class CheckPlan extends React.Component {
                 }
                 this.setState({
                     rightTableData: rightTableData,
-                    deviceName: params.deviceName
+                    deviceName: params.deviceName,
+                    pagination: pagination
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')

@@ -37,6 +37,7 @@ class CheckTemplate extends React.Component{
         this.cancel=this.cancel.bind(this);
         this.getTableData = this.getTableData.bind(this);
         this.getTreeData = this.getTreeData.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
         this.pagination = {
             showTotal(total){
                 return `共${total}条记录`
@@ -241,7 +242,7 @@ class CheckTemplate extends React.Component{
             message.info('删除错误，请联系管理员！')
         })
     }
-    getTableData = (params = {})=>{
+    getTableData(params = {}){
         axios({
             url:`${this.url.deviceSpot.planPage}`,
             method:"get",
@@ -263,6 +264,17 @@ class CheckTemplate extends React.Component{
                 })
             }
         })
+    }
+
+    handleTableChange(pagination) {
+        this.pagination = pagination;
+        let {deviceName,deptCode}=this.state,{pageSize,current}=this.pagination
+        this.getTableData({
+            page: current,
+            size: pageSize,
+            deviceName: deviceName,
+            deptId: deptCode
+        });
     }
 
     render(){
@@ -291,7 +303,7 @@ class CheckTemplate extends React.Component{
                         />
                         <div className='clear'></div>
                         <Table rowSelection={rowSelection} size="small" rowKey={record => record.deviceSpotcheckModelsHead.code} dataSource={this.state.dataSource}
-                               columns={this.columns} bordered pagination={this.pagination}/>
+                               columns={this.columns} bordered pagination={this.pagination} onChange={this.handleTableChange}/>
                     </Spin>
                 </div>
             </div>

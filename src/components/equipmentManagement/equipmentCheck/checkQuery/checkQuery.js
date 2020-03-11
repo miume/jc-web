@@ -203,14 +203,6 @@ class CheckQuery extends React.Component{
                 pageChangeFlag: 0,
                 searchContent: ''
             })
-            // var {pagination} = this.state;
-            // pagination.current = 1;
-            // pagination.total = 0;
-            // this.setState({
-            //     pageChangeFlag:0,
-            //     searchContent:'',
-            //     pagination:pagination
-            // })
         }
         axios({
             url: `${this.url.equipmentArchive.page}`,
@@ -220,14 +212,15 @@ class CheckQuery extends React.Component{
             },
             params: params,
         }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
+            const res = data.data.data ? data.data.data : [],{pagination} = this.state;
+            pagination.total = res.total || 0;
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].deviceDocumentMain;
                     var eqStatus = res.list[i].basicInfoDeviceStatus
                     rightTableData.push({
-                        index: i + 1,
+                        index: (res.page-1)*10+i+1,
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
@@ -242,13 +235,15 @@ class CheckQuery extends React.Component{
                 }
                 this.setState({
                     rightTableData: rightTableData,
-                    deviceName: params.deviceName
+                    deviceName: params.deviceName,
+                    pagination
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
                     rightTableData: [],
-                    deviceName: ''
+                    deviceName: '',
+                    pagination
                 });
             }
         }).catch(() => {
@@ -256,51 +251,6 @@ class CheckQuery extends React.Component{
         });
     }
     fetch = () => {
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        // if(flag) {
-        //     var {pagination} = this.state;
-        //     pagination.current = 1;
-        //     pagination.total = 0;
-        //     this.setState({
-        //         pageChangeFlag:0,
-        //         searchContent:'',
-        //         pagination:pagination
-        //     })
-        // }
-        // axios({
-        //     url: `${this.url}` ,
-        //     method: 'get',
-        //     headers:{
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     params: params,
-        // }).then((data) => {
-        //     const res = data.data.data?data.data.data:[];
-        //
-        //     if(res&&res.list){
-        //         for(var i = 1; i<=res.list.length; i++){
-        //             res.list[i-1]['index']=(res.prePage)*10+i;
-        //         }
-        //         const {pagination} = this.state;
-        //         pagination.total=res.total;
-        //
-        //
-        //         // 假数据阶段
-        //         // this.setState({
-        //         //     dataSource: res.list,
-        //         //     pagination:pagination,
-        //         // });
-        //         this.setState({
-        //             dataSource:fakedataSource
-        //         })
-        //     }else{
-        //         //假数据
-        //         this.setState({
-        //             dataSource:fakedataSource
-        //         })
-                // this.setState({
-                //     dataSource: []
-                // })
 
             }
             //---------------------------------
@@ -333,26 +283,14 @@ class CheckQuery extends React.Component{
         this.setState({
             pagination:pagination
         });
-        const {pageChangeFlag} = this.state;
-        /**分页查询 */
-        if(pageChangeFlag){
-            this.getTableData({
-                deptId:this.state.deptCode,
-                deviceName:this.state.deviceName,
-                status:this.state.Tableflag,
-                size:pagination.pageSize,
-                page:pagination.current,
-                condition:this.state.searchContent
-            })
-        }else{
-            this.getTableData({
-                deptId:this.state.deptCode,
-                deviceName:this.state.deviceName,
-                status:this.state.Tableflag,
-                size:pagination.pageSize,
-                page:pagination.current,
-            })
-        }
+        this.getTableData({
+            deptId:this.state.depCode,
+            deviceName:this.state.deviceName,
+            status:this.state.Tableflag,
+            size:pagination.pageSize,
+            page:pagination.current,
+            condition:this.state.searchContent
+        })
     };
     /**返回数据录入页面 */
     returnDataEntry = () => {

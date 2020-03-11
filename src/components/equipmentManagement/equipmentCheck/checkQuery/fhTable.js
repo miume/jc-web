@@ -64,6 +64,8 @@ class FhTable extends React.Component{
                 size="small"
                 bordered
                 scroll={{ y: 380 }}
+                pagination={false}
+                rowKey={record => record.code}
             />
         )
     }
