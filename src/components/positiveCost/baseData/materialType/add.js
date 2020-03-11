@@ -93,20 +93,21 @@ class MaterialTypeAdd extends Component{
             visible:true
         })
         if(this.props.editflag){
-         let {materialName,processCode,types}=this.props.record
+         let {materialName,processCode,types,flag}=this.props.record
           this.setState({
               materialName:materialName,
               types:types,
               line:this.props.line,
               processCode:processCode,
+              flag:flag?1:0
           })
         }
         this.getProcess()
         this.getLine()
     }
     handleAdd(){
-        let {materialName,types,line,processCode,processName}=this.state
-        if(!materialName||(types===undefined)||line.length===0||!processCode){
+        let {materialName,types,line,processCode,processName,flag}=this.state
+        if(!materialName||(types===undefined)||line.length===0||!processCode||flag===undefined){
             message.error('信息填写不完整!')
             return
         }
@@ -114,9 +115,9 @@ class MaterialTypeAdd extends Component{
             materialCode: this.props.editflag?this.props.record.materialCode:'',
             materialName: materialName,
             processCode: processCode,
-            //processName: processName,
             types:types,
             weightDTOS: [],
+            flag:flag
         }
         for(let i=0;i<line.length;i++){
             let a={}
@@ -168,7 +169,7 @@ class MaterialTypeAdd extends Component{
     }
 
     render(){
-        let {addFlag,updateFlag}=this.props
+        let {addFlag,updateFlag}=this.props,{materialName,types,line,processCode,processName,flag}=this.state
         return(
             <span>
                 {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
@@ -188,12 +189,12 @@ class MaterialTypeAdd extends Component{
                 >
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col className='imgRequire fontAdd'>物料种类名称:</Col>
-                        <Col span={18}><Input placeholder='请输入物料种类名称' defaultValue={this.props.editflag?this.props.record.materialName:undefined} onChange={this.inputChange}/></Col>
+                        <Col span={18}><Input placeholder='请输入物料种类名称' value={materialName} onChange={this.inputChange}/></Col>
                     </Row>
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col className='imgRequire fontAdd'>数据类型:</Col>
                         <Col span={18}>
-                            <Select placeholder='请选择数据类型' onChange={this.selectChange} defaultValue={this.props.editflag?this.props.record.types:undefined} style={{width:307.5}}>
+                            <Select placeholder='请选择数据类型' onChange={this.selectChange} value={types} style={{width:307.5}}>
                                 <Option key={0} value={0}  name='types'>DCS读取数据</Option>
                                 <Option key={1} value={1}  name='types'>手工输入数据</Option>
                                 <Option key={2} value={2}  name='types'>智能仓库</Option>
@@ -203,7 +204,7 @@ class MaterialTypeAdd extends Component{
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col className='imgRequire fontAdd'>所属工序:</Col>
                         <Col span={18}>
-                            <Select placeholder='请选择所属工序' onChange={this.selectChange} defaultValue={this.props.editflag?this.props.record.processCode:undefined} style={{width:307.5}}>
+                            <Select placeholder='请选择所属工序' onChange={this.selectChange} value={processCode} style={{width:307.5}}>
                                 {
                                     this.state.processData?this.state.processData.map(data=>{
                                         return(
@@ -217,7 +218,7 @@ class MaterialTypeAdd extends Component{
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col className='imgRequire fontAdd'>产线:</Col>
                         <Col span={18}>
-                            <Select placeholder='请选择产线' mode="multiple" optionLabelProp="label" onChange={this.lineChange} defaultValue={this.props.editflag?this.props.line:undefined}  style={{width:307.5}}>
+                            <Select placeholder='请选择产线' mode="multiple" optionLabelProp="label" onChange={this.lineChange} value={line}  style={{width:307.5}}>
                                 {
                                     this.state.lineData?this.state.lineData.map(data=>{
                                         return(
@@ -231,9 +232,9 @@ class MaterialTypeAdd extends Component{
                      <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col className='imgRequire fontAdd'>物料标记:</Col>
                         <Col span={18}>
-                            <Select placeholder='请选择物料标记'  onChange={this.selectChange}   style={{width:307.5}}>
-                                <Option value={1} name='flag'>正常物料</Option>
-                                <Option value={0} name='flag'>手工物料</Option>
+                            <Select placeholder='请选择物料标记'  onChange={this.selectChange} value={flag}  style={{width:307.5}}>
+                                <Option key={1} value={1} name='flag'>正常物料</Option>
+                                <Option key={0} value={0} name='flag'>手工物料</Option>
                             </Select>
                         </Col>
                     </Row>
