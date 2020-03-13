@@ -141,14 +141,14 @@ class Edit extends React.Component {
                     title='编辑' visible={this.state.visible}
                     closable={false} centered={true}
                     maskClosable={false}
-                    width='500px'
+                    width='600px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check'/>,
                     ]}
                 >
                 
-                    <table className="batchTable">
+                    <table className="batchTable" >
                         <thead className="bactchHead">
                             <tr>
                                 {/* <th>序号</th> */}
