@@ -102,7 +102,8 @@ class RepoRecordWater extends React.Component {
             },
             data:{
                 current:params.current,
-                size:params.size
+                size:params.size,
+                desc:["created_time"]
             },
         }).then(data => {
             let res = data.data.data;
