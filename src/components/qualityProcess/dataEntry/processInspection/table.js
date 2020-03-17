@@ -60,16 +60,19 @@ class ProcessTable extends React.Component{
     /**获取所有受检物料 */
     getAllTestMaterial(){
         axios({
-            url: `${this.props.url.testMaterial.all}`,
+            // url: `${this.props.url.testMaterial.all}`,
+            url: `${this.props.url.serialNumber.serialNumber}`,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             const res = data.data.data;
+
             if(res) {
                 const children = res.map(e=>{
-                    return <Option key={e.code} value={e.code}>{e.name}</Option>
+                    // return <Option key={e.code} value={e.code}>{e.name}</Option>
+                    return <Option key={e.code} value={e.id}>{e.materialName}</Option>
                 });
                 this.setState({
                     allTestMaterial:children

@@ -370,6 +370,7 @@ class Add extends React.Component{
                     testMaterialName:'',
                 }
             })
+            console.log(data)
             this.setState({
                 data: data,
                 count: count+1,
