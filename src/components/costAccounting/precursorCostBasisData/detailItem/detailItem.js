@@ -155,13 +155,13 @@ class DetailItem extends React.Component {
                     res.list[i]["metal"] = ""
                 }
                 for (let i = 0; i < res.list.length; i++) {
-                    if (res.list[i]["mn"] == 1) {
+                    if (res.list[i]["mn"] === 1) {
                         res.list[i]["metal"] += "mn "
                     }
-                    if (res.list[i]["co"] == 1) {
+                    if (res.list[i]["co"] === 1) {
                         res.list[i]["metal"] += "co "
                     }
-                    if (res.list[i]["ni"] == 1) {
+                    if (res.list[i]["ni"] === 1) {
                         res.list[i]["metal"] += "ni "
                     }
                     if(res.list[i]['amm']===1){
@@ -172,7 +172,7 @@ class DetailItem extends React.Component {
                     }
                 }
                 for (let i = 0; i < res.list.length; i++) {
-                    if (res.list[i]["metal"] == "") {
+                    if (res.list[i]["metal"] === "") {
                         res.list[i]["metal"] = "无"
                     }
                 }

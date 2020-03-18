@@ -6,7 +6,6 @@
 import React from 'react';
 import BlockQuote from "../../BlockQuote/blockquote";
 import NewButton from "../../BlockQuote/newButton";
-import home from "../../commom/fns";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
 import axios from "axios";
 import {Spin, Tabs, message} from "antd";
