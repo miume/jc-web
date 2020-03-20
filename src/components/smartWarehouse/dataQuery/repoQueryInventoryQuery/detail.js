@@ -46,7 +46,7 @@ class Detail extends React.Component {
                     maskClosable={false}
                     width="500px"
                     footer={[
-                        <CancleButton key='back' handleCancel={this.cancel}/>
+                        <CancleButton flag={1} key='back' handleCancel={this.cancel}/>
                     ]}
                 >
                     <div>
