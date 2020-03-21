@@ -126,7 +126,7 @@ class FireInsSamRec extends Component {
                     const e = res.list[i];
                     dataSource.push({
                         code: e.head.code,
-                        col1: (res['page'] - 1) * 10 + i + 1,
+                        col1: (res['page'] - 1) * res['size'] + i + 1,
                         col2: e.head.batch,
                         col3: e.itemsSpace,
                         col4: e.deptName,

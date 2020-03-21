@@ -113,7 +113,7 @@ class CheckSite extends React.Component {
             if(res && res.list) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 for(let i = 0; i < res.list.length; i++) {
-                    res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
+                    res['list'][i]['index'] = (res['page'] - 1) * res['size'] + i + 1;
                 }
                 this.setState({
                     data: res.list

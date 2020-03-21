@@ -110,7 +110,7 @@ class PowerCheck extends React.Component {
                 this.pagination.total = res.total ? res.total : 0;
                 for (let i = 0; i < res.list.length; i++) {
                     let {head, siteName} = res['list'][i];
-                    head['index'] = (res['page'] - 1) * 10 + i + 1;
+                    head['index'] = (res['page'] - 1) * res['size'] + i + 1;
                     head['siteName'] = siteName;
                     result.push(head)
                 }
