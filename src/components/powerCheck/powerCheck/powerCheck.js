@@ -3,7 +3,7 @@ import BlockQuote from "../../BlockQuote/blockquote";
 import AddModal from "./add/addModal";
 import {Spin, message} from "antd";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
-import SearchCell from "../../BlockQuote/newSearchSell";
+import SearchCell from "./search";
 import PowerCheckTable from "./powerCheckTable";
 import axios from "axios";
 import {getSecondsOperations, judgeOperation} from "../../commom/getOperations";
@@ -27,7 +27,7 @@ class PowerCheck extends React.Component {
         this.state = {
             loading: false,
             selectedRowKeys: [],
-            searchContent: ''
+            param: {}
         };
         this.operations = [];
         this.pagination = {
@@ -78,14 +78,16 @@ class PowerCheck extends React.Component {
         })
     }
 
-    /**确定获取表格数据的参数*/
-    getTableParams(value) {
-        let {searchContent} = this.state, {pageSize, current} = this.pagination,
-            params = {
-                condition: value === undefined ? searchContent : value,
-                size: pageSize,
-                page: current
-            };
+    /**确定获取表格数据的参数 flag标记重置数据为空*/
+    getTableParams(params = {},flag) {
+        let {param} = this.state, {pageSize, current} = this.pagination;
+        if ( !params.hasOwnProperty('start') && !flag && (param['start'] || param['end'] || param['condition'])) {
+            params['start'] = param['start'];
+            params['end'] = param['end'];
+            params['condition'] = param['condition'];
+        }   
+        params['size'] = pageSize;
+        params['page'] = current;
         this.getTableData(params);
     }
 
@@ -105,7 +107,7 @@ class PowerCheck extends React.Component {
             let res = data.data.data;
             if (res && res.list) {
                 let result = [];
-                result['total'] = res.total ? res.total : 0;
+                this.pagination.total = res.total ? res.total : 0;
                 for (let i = 0; i < res.list.length; i++) {
                     let {head, siteName} = res['list'][i];
                     head['index'] = (res['page'] - 1) * 10 + i + 1;
@@ -152,12 +154,12 @@ class PowerCheck extends React.Component {
     }
 
     /**搜索事件*/
-    searchEvent(searchContent) {
+    searchEvent(params) {
         this.setState({
-            searchContent
+            param: params
         });
         this.pagination.current = 1;
-        this.getTableParams(searchContent)
+        this.getTableParams(params)
     }
 
     /**取消批量删除*/
@@ -170,10 +172,10 @@ class PowerCheck extends React.Component {
     /**重置事件*/
     reset() {
         this.setState({
-            searchContent: undefined
+            param: {}
         });
         this.pagination.current = 1;
-        this.getTableParams('')
+        this.getTableParams({},true)
 
     }
 }

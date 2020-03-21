@@ -11,12 +11,12 @@ class CheckItemTable extends React.Component {
             title:'序号',
             key:'index',
             dataIndex:'index',
-            width: '10%'
+            width: '5%'
         },{
             title:'点检站点',
             key:'siteName',
             dataIndex:'siteName',
-            width: '10%'
+            width: '20%'
         },{
             title:'地点',
             key:'place',
@@ -49,7 +49,7 @@ class CheckItemTable extends React.Component {
             title:'操作',
             key:'code',
             dataIndex:'code',
-            width: '15%',
+            width: '10%',
             render: ((text,record) => {
                 let {updateFlag,deleteFlag} = this.props;
                 return (

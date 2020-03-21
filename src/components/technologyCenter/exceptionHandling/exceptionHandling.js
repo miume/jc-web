@@ -6,7 +6,6 @@
 import React from 'react';
 import axios from 'axios';
 import BlockQuote from "../../BlockQuote/blockquote";
-import home from "../../commom/fns";
 import {Spin,message} from "antd";
 import AddModal from './addModal';
 import DeleteByIds from "../../BlockQuote/deleteByIds";

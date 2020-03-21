@@ -12,12 +12,12 @@ class CheckTemplateTable extends React.Component {
             title:'序号',
             key:'index',
             dataIndex:'index',
-            width: '10%'
+            width: '5%'
         },{
             title:'点检站点',
             key:'siteName',
             dataIndex:'siteName',
-            width: '10%'
+            width: '15%'
         },{
             title:'模板名称',
             key:'modelName',

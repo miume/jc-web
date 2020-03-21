@@ -11,12 +11,12 @@ class PowerCheckTable extends React.Component {
             title:'序号',
             key:'index',
             dataIndex:'index',
-            width: '10%'
+            width: '5%'
         },{
             title:'点检名称',
             key:'modelName',
             dataIndex:'modelName',
-            width: '10%'
+            width: '23%'
         },{
             title:'点检站点',
             key:'siteName',
@@ -36,7 +36,7 @@ class PowerCheckTable extends React.Component {
             title:'班次',
             key:'classNum',
             dataIndex:'classNum',
-            width: '10%'
+            width: '7%'
         },{
             title:'生效日期',
             key:'effectiveDate',
@@ -46,7 +46,7 @@ class PowerCheckTable extends React.Component {
             title:'操作',
             key:'code',
             dataIndex:'code',
-            width: '20%',
+            width: '15%',
             render: ((text,record) => {
                 let status = record.status, {updateFlag,deleteFlag} = this.props;
                 return (
