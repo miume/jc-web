@@ -34,7 +34,7 @@ class Detail extends Component{
             key:'concentration',
             width:'20%'
         },{
-            title:'金属量 (kg)',
+            title:'金属量 (T)',
             dataIndex:'metal',
             key:'metal',
             width:'20%'
