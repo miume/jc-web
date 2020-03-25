@@ -77,7 +77,7 @@ class AgingProcess extends Component{//陈化工序
             width:'10%',
             render:(text,record)=>{
                 return(
-                    <span>{record.solidContent}</span>
+                    <Input value={record.solidContent} name={`${record.index}-${'solidContent'}`} onChange={this.inputChange}/>
                 )
             }       
         }]

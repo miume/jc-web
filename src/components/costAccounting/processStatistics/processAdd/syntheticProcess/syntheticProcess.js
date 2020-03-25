@@ -40,7 +40,7 @@ class SyntheticProcess extends Component{//合成工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <span>{record.solidContent}</span>
+                    <Input value={record.solidContent} name={`${record.index}-${'solidContent'}`}  onChange={this.inputChange}/>
                 )
             }
         },{
