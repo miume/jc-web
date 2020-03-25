@@ -47,7 +47,7 @@ class MixSalt extends Component{//混合盐配置
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <span>{record.niPotency} </span>
+                    <Input value={record.niPotency} name={`${record.index}-${'niPotency'}`} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -57,7 +57,7 @@ class MixSalt extends Component{//混合盐配置
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <span>{record.coPotency}</span> 
+                    <Input value={record.coPotency} name={`${record.index}-${'coPotency'}`} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -67,7 +67,7 @@ class MixSalt extends Component{//混合盐配置
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <span>{record.mnPotency}</span> 
+                    <Input value={record.mnPotency} name={`${record.index}-${'mnPotency'}`} onChange={this.inputChange}/>
                 )
             }
         }];
@@ -88,11 +88,6 @@ class MixSalt extends Component{//混合盐配置
         let selectData=`${selectKey}-${optionId}`
         this.props.getMix(this.props.processId,'',selectData)
     }
-    // inputChange(e){
-    //     let value=e.target.value //获取到输入框填的值
-    //     let inputData=`${e.target.name}-${value}`
-    //     this.props.getMix(this.props.processId,inputData,'')
-    // }
     inputChange(e){
         this.props.getMix(this.props.processId,e,'')
     }
