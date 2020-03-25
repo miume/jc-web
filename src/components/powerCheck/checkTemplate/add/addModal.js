@@ -58,7 +58,7 @@ class AddModal extends React.Component {
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
-                       centered={true} width={800}
+                       centered={true} width={850}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
                            <SaveButton key={'save'} handleSave={this.handleSave}/>
@@ -72,7 +72,7 @@ class AddModal extends React.Component {
                         </div>
                         <div className='check-template-add'>
                             <div className='check-template-add-div'>点检站点：</div>
-                            <Select name={'siteCode'} value={siteCode} disabled={disabled} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
+                            <Select name={'siteCode'} value={siteCode} disabled={disabled} onChange={this.selectChange} style={{width: 200}} placeholder={'请选择点检站点'}>
                                 {
                                     siteData ? siteData.map(e => <Option key={e.code} value={e.code}>{e.siteName}</Option>) : null
                                 }
@@ -149,7 +149,7 @@ class AddModal extends React.Component {
                 let {details} = res, disabledCode = [];
                 for(let i = 0; i < details.length; i++) {
                     details[i]['index'] = i + 1;
-                    disabledCode.push(details[i]['code']);
+                    disabledCode.push(details[ i]['itemCode']);
                 }
                 this.setState({
                     tableData: details,
@@ -208,7 +208,7 @@ class AddModal extends React.Component {
         tableData.push(...record);
         for(let i = 0; i < tableData.length; i++) {
             tableData[i]['index'] = i + 1;
-            disabledCode.push(tableData[i]['code']);
+            disabledCode.push(tableData[i]['itemCode']);
         }
         this.setState({
             tableData,

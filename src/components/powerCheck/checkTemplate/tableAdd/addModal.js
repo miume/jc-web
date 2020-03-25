@@ -69,7 +69,7 @@ class AddTableModal extends React.Component {
             <span className={flag ? '' : 'hide'}>
                 {this.renderButton(title,status)}
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
-                       centered={true} width={800}
+                       centered={true} width={900}
                        footer={this.renderFooter(title)}
                 >
                     <div className='check-template-add'>
@@ -79,7 +79,7 @@ class AddTableModal extends React.Component {
                         </div>
                         <div className='check-template-add'>
                             <div className='check-template-add-div'>点检名称：</div>
-                            <Input style={{width: 150}} value={modelName} name={'modelName'} onChange={this.inputChange} disabled/>
+                            <Input style={{width: 200}} value={modelName} name={'modelName'} onChange={this.inputChange} disabled/>
                         </div>
                         <div className='check-template-add'>
                             <div className='check-template-add-div'>点检日期：</div>
@@ -98,7 +98,7 @@ class AddTableModal extends React.Component {
                                             operatorData.map(e => <Option key={e} value={e}>{e}</Option>)
                                         }
                                     </Select> :
-                                    <Input name={'operator'} value={operator} placeholder={'请输入'} onChange={this.inputChange} disabled={disabled}
+                                    <Input name={'operator'} value={operator?operator:undefined} placeholder={'请输入'} onChange={this.inputChange} disabled={disabled}
                                            style={{width: 150}}/>
                             }
                         </div>

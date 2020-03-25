@@ -9,7 +9,7 @@ class AddTable extends React.Component {
             title:'序号',
             key:'index',
             dataIndex:'index',
-            width: '10%'
+            width: '6%'
         },{
             title:'地点',
             key:'place',
@@ -24,12 +24,12 @@ class AddTable extends React.Component {
             title:'点检内容',
             key:'checkContent',
             dataIndex:'checkContent',
-            width: '15%'
+            width: '20%'
         },{
             title:'输入类型',
             key:'dataType',
             dataIndex:'dataType',
-            width: '10%',
+            width: '9%',
             render: (text) => {
                 return text ? '输入' : '勾选';
             }

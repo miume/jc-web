@@ -44,7 +44,7 @@ class SelectModal extends React.Component {
             title:'点检内容',
             key:'checkContent',
             dataIndex:'checkContent',
-            width: '40%'
+            width: '50%'
         },{
             title:'输入类型',
             key:'dataType',
@@ -56,7 +56,8 @@ class SelectModal extends React.Component {
         },{
             title:'频率',
             key:'frequency',
-            dataIndex:'frequency'
+            dataIndex:'frequency',
+            width: '20%',
         }];
         this.handleSave = this.handleSave.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -75,34 +76,34 @@ class SelectModal extends React.Component {
                 selectedRowKeys,
                 onChange: this.onSelectChange,
                 getCheckboxProps: record => ({
-                    disabled: disabledCode && disabledCode.length &&disabledCode.includes(record.code)
+                    disabled: disabledCode && disabledCode.length &&disabledCode.includes(record.itemCode)
                 }),
             };
         return (
             <span>
                 {this.renderButton(title)}
                 <Modal title={'选择点检内容'} visible={visible} maskClosable={false} closable={false}
-                       centered={true} width={600}
+                       centered={true} width={650}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel} flag={1}/>,
                            <SaveButton key={'save'} handleSave={this.handleSave}/>
                        ]}>
                     <div className='check-template-add'>
                         <div>地点：</div>
-                        <Select disabled={disabled} value={place} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
+                        <Select disabled={disabled} value={place} onChange={this.selectChange} style={{width: 200}} placeholder={'请选择点检站点'}>
                             {
                                 placeData ? placeData.map((e,index) => <Option key={index} name={'place'} value={e}>{e}</Option>) : null
                             }
                         </Select>
                         <div className={'check-template-add-item'}>设备名/点检项目：</div>
-                        <Select disabled={disabled} value={checkItem} onChange={this.checkItemChange} style={{width: 150}} placeholder={'请选择点检站点'}>
+                        <Select disabled={disabled} value={checkItem} onChange={this.checkItemChange} style={{width: 200}} placeholder={'请选择点检站点'}>
                             {
                                 itemData ? itemData.map((e,index) => <Option key={index} value={e['codeList'].join(',')}>{e.checkItem}</Option>) : null
                             }
                         </Select>
                     </div>
 
-                    <Table dataSource={data} columns={this.columns} rowKey={record => record.code}
+                    <Table dataSource={data} columns={this.columns} rowKey={record => record.itemCode}
                            pagination={false} scroll={{y:200}} rowSelection={rowSelection}
                            bordered size={'small'}/>
                 </Modal>
@@ -213,6 +214,8 @@ class SelectModal extends React.Component {
             if(res && res.length) {
                 for(let i = 0; i < res.length; i++) {
                     res[i]['index'] = i + 1;
+                    res[i]['itemCode'] = res[i]['code'];
+                    delete res[i]['code'];
                 }
                 this.setState({
                     data: res

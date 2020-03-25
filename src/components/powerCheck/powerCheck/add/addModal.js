@@ -47,12 +47,12 @@ class AddModal extends React.Component {
             title:'序号',
             key:'index',
             dataIndex:'index',
-            width: '10%'
+            width: '8%'
         },{
             title:'模版名称',
             key:'modelName',
             dataIndex:'modelName',
-            width: '20%'
+            width: '22%'
         },{
             title:'点检频率',
             key:'frequency',
@@ -98,7 +98,7 @@ class AddModal extends React.Component {
                        ]}>
                     <div className='check-template-add'>
                         <div>点检站点：</div>
-                        <Select disabled={disabled} value={siteCode} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
+                        <Select disabled={disabled} value={siteCode} onChange={this.selectChange} style={{width: 250}} placeholder={'请选择点检站点'}>
                             {
                                 siteData ? siteData.map(e => <Option key={e.code} name={'siteCode'} value={e.code}>{e.siteName}</Option>) : null
                             }

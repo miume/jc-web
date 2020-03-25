@@ -17,17 +17,17 @@ class CheckTemplateTable extends React.Component {
             title:'点检站点',
             key:'siteName',
             dataIndex:'siteName',
-            width: '15%'
+            width: '17%'
         },{
             title:'模板名称',
             key:'modelName',
             dataIndex:'modelName',
-            width: '15%'
+            width: '18%'
         },{
             title:'点检频率',
             key:'frequency',
             dataIndex:'frequency',
-            width: '15%'
+            width: '10%'
         },{
             title:'编号',
             key:'batchNumber',
