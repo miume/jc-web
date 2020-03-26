@@ -97,7 +97,9 @@ class AddModalRight extends React.Component {
         if(selectList && selectList.length) {
             return (
                 <Select onChange={this.selectChange}
-                        style={{marginRight: 10}} className="addModalRight_down_select">
+                        style={{marginRight: 10}} className="addModalRight_down_select"
+                        placeholder="请选择部门"
+                >
                     {this.renderOption(selectList)}
                 </Select>
             )
