@@ -67,13 +67,22 @@
 }
 .addMondalRight_top_bottom{
     display: flex;
+    width: 100%;
 }
 
 .addModalRight_top {
     padding-top: 8px ;
     display: flex;
-    height: 10%;
+    height: 8%;
     width: 100%;
+}
+.addModalRight_top_flag {
+    padding-top: 8px ;
+    height: 8%;
+    width: 100%;
+}
+.addModalRight_top_span{
+    width: 20%;
 }
 .addModalRight_top_divider {
     margin-top: 0 !important;

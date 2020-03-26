@@ -12,7 +12,7 @@ class AddModalRight extends React.Component {
         super(props);
         this.state = {
             selectList: [],
-            typeName:["磁性异物","粒度","金属大颗粒"],
+            typeName:["磁性异物","粒度","金属大颗粒","扣电","可溶锂分量","落尘"],
             checkTypeName:[]
         };
 
@@ -27,7 +27,7 @@ class AddModalRight extends React.Component {
             <div className="addModalRight_scala">
                 <div className="addModalRight_top">
                     <span className="addModalRight_top_span">检验项目选择：</span>
-                    <div className="addMondalRight_top_bottom" style={{borderBottom: '1px solid #E9E9E9'}}>
+                    <div className="addMondalRight_top_bottom" >
                         <Checkbox
                             indeterminate={this.props.indeterminate}
                             onChange={this.onCheckAllChange}
@@ -35,8 +35,11 @@ class AddModalRight extends React.Component {
                         >
                             全选/全不选
                         </Checkbox>
-                        <Checkbox.Group value={this.props.checkTypeName} options={this.state.typeName} onChange={this.props.typeFlag} />
                     </div>
+                </div>
+                <div className="addModalRight_top_flag" style={{borderBottom: '1px solid #E9E9E9'}}>
+                    <span className="addModalRight_top_span">标签：</span>
+                    <Checkbox.Group value={this.props.checkTypeName} options={this.state.typeName} onChange={this.props.typeFlag} />
                 </div>
                 <Divider className="addModalRight_top_divider"/>
                 <div className="addModalRight_middle">
