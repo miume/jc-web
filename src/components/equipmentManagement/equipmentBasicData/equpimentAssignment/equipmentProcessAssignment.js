@@ -33,6 +33,7 @@ class EqupimentAssignment extends React.Component {
         this.searchReset = this.searchReset.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
     }
 
     render() {
