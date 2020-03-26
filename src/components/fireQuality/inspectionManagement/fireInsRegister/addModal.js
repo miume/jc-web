@@ -126,6 +126,15 @@ class AddModal extends React.Component {
         },{
             flag:false,
             name:"金属大颗粒"
+        },{
+            flag:false,
+            name:"扣电"
+        },{
+            flag:false,
+            name:"可溶锂分量"
+        },{
+            flag:false,
+            name:"落尘"
         }]
         for (let i = 0; i < checkedValueFlag.length; i++) {
             for (let j = 0; j <checkedValues.length ; j++) {
@@ -138,13 +147,22 @@ class AddModal extends React.Component {
         var checkedList = [];
         if (plainOptions.length>0) {
             for (let i = 0; i < plainOptions.length; i++) {
-                if (checkedValueFlag[0].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[0].name) != -1){
+                if (checkedValueFlag[0].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[0].name) !== -1){
                     checkedList.push(plainOptions[i].code)
                 }
-                if (checkedValueFlag[1].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[1].name) != -1){
+                if (checkedValueFlag[1].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[1].name) !== -1){
                     checkedList.push(plainOptions[i].code)
                 }
-                if (checkedValueFlag[2].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[2].name) != -1){
+                if (checkedValueFlag[2].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[2].name) !== -1){
+                    checkedList.push(plainOptions[i].code)
+                }
+                if (checkedValueFlag[3].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[3].name) !== -1){
+                    checkedList.push(plainOptions[i].code)
+                }
+                if (checkedValueFlag[4].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[4].name) !== -1){
+                    checkedList.push(plainOptions[i].code)
+                }
+                if (checkedValueFlag[5].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[5].name) !== -1){
                     checkedList.push(plainOptions[i].code)
                 }
             }
