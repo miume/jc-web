@@ -117,64 +117,51 @@ class AddModal extends React.Component {
     /** 检测项目有关的函数*/
 
     typeFlag =(checkedValues) => {
-        var checkedValueFlag = [{
-            flag:false,
-            name:"磁性异物"
-        },{
-            flag:false,
-            name:"粒度"
-        },{
-            flag:false,
-            name:"金属大颗粒"
-        },{
-            flag:false,
-            name:"扣电"
-        },{
-            flag:false,
-            name:"可溶锂分量"
-        },{
-            flag:false,
-            name:"落尘"
-        }]
-        for (let i = 0; i < checkedValueFlag.length; i++) {
-            for (let j = 0; j <checkedValues.length ; j++) {
-                if (checkedValueFlag[i].name === checkedValues[j]) {
-                    checkedValueFlag[i].flag = true;
+        const checkTypeName = this.state.checkTypeName;
+        var ele = {
+            flag: true, // true 为添加元素
+            name: ""
+        };
+        if (checkedValues.length < checkTypeName.length) { // 删除元素
+            for (let i = 0; i < checkTypeName.length; i++) {
+                if (checkedValues.indexOf(checkTypeName[i]) === -1) {
+                    ele.name = checkTypeName[i];
+                    ele.flag = false;
+                    break;
+                }
+            }
+        }else { // 添加元素
+            for (let i = 0; i < checkedValues.length; i++) {
+                if (checkTypeName.indexOf(checkedValues[i]) === -1) {
+                    ele.name = checkedValues[i];
+                    ele.flag = true;
+                    break;
                 }
             }
         }
         const plainOptions = this.state.plainOptions;
-        var checkedList = [];
-        if (plainOptions.length>0) {
-            for (let i = 0; i < plainOptions.length; i++) {
-                if (checkedValueFlag[0].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[0].name) !== -1){
-                    checkedList.push(plainOptions[i].code)
+        var checkedList = JSON.parse(JSON.stringify(this.state.checkedList))
+        if (plainOptions.length > 0) {
+            if (ele.flag) { // 添加元素
+                for (let i = 0; i < plainOptions.length; i++) {
+                    if (plainOptions[i].name.indexOf(ele.name) !== -1 && checkedList.indexOf(plainOptions[i].code) === -1) {
+                        checkedList.push(plainOptions[i].code)
+                    }
                 }
-                if (checkedValueFlag[1].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[1].name) !== -1){
-                    checkedList.push(plainOptions[i].code)
-                }
-                if (checkedValueFlag[2].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[2].name) !== -1){
-                    checkedList.push(plainOptions[i].code)
-                }
-                if (checkedValueFlag[3].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[3].name) !== -1){
-                    checkedList.push(plainOptions[i].code)
-                }
-                if (checkedValueFlag[4].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[4].name) !== -1){
-                    checkedList.push(plainOptions[i].code)
-                }
-                if (checkedValueFlag[5].flag===true&&plainOptions[i].name.indexOf(checkedValueFlag[5].name) !== -1){
-                    checkedList.push(plainOptions[i].code)
+            } else { // 删除元素
+                for (let i = 0; i < plainOptions.length; i++) {
+                    if (plainOptions[i].name.indexOf(ele.name) !== -1 && checkedList.indexOf(plainOptions[i].code) !== -1) {
+                        checkedList.splice(checkedList.indexOf(plainOptions[i].code), 1)
+                    }
                 }
             }
             this.setState({
-                checkedList:checkedList,
+                checkedList: checkedList,
                 checkTypeName:checkedValues
-            })
-        }else {
+            });
+        } else {
             message.info("无检测项目")
         }
-
-
     }
 
     allItems = () => {
@@ -245,7 +232,6 @@ class AddModal extends React.Component {
     getCheckedList = (checkedList) => {
         this.setState({
             checkedList: checkedList,
-            checkTypeName:[]
         })
     }
 
