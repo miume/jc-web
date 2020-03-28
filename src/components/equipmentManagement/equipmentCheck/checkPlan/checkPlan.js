@@ -1,13 +1,12 @@
 import React from "react";
-import {Button, Icon, message, Select} from "antd";
+import {Button, Icon, message, Select,Spin} from "antd";
 import axios from "axios";
 import Blockquote from "../../../BlockQuote/blockquote";
-import DepTree from "./depTree";
+import DepTree from "../../../BlockQuote/department";
 import RightTable from "./rightTable"
-import "./checkPlan.css"
 import Add from "./add";
-import SearchCell from "./searchCell";
-
+import SearchCell from "../../../BlockQuote/newSearchSell";
+import './checkPlan.css';
 import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class CheckPlan extends React.Component {
     constructor(props) {
@@ -18,14 +17,6 @@ class CheckPlan extends React.Component {
             rightTableData: [],
             deptCode: -1,
             deviceName: '',
-            pagination: {
-                showTotal(total) {
-                    return `共${total}条记录`
-                },
-                showSizeChanger: true
-            },
-            pageChangeFlag: 0,   //0表示分页 1 表示查询
-            searchContent: '',
             Tableflag: '',
             departName: '',
             updatebackground:[],
@@ -34,13 +25,19 @@ class CheckPlan extends React.Component {
             flags:[1],
             bottomheight:true,
         }
-
+        this.pagination = {
+            pageSize: 10,
+            current: 1,
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10","20","50","100"]
+        };
 
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
         this.handleChange=this.handleChange.bind(this)
-        this.handleSelect=this.handleSelect.bind(this)
         this.returnEquKey=this.returnEquKey.bind(this)
-        this.firstname=this.firstname.bind(this)
+        this.reset=this.reset.bind(this)
+        this.searchEvent=this.searchEvent.bind(this)
         this.handleClick=this.handleClick.bind(this)
     }
     componentWillUnmount() {
@@ -131,29 +128,13 @@ class CheckPlan extends React.Component {
             </div>)
 
     }
-    //----------------------------------
 
-    handleSelect = (code, data) => data.map((item) => {
-        if (item.code === code) {
-            item.isSelect = true;
-            this.getRightData(code,item.value,item.parentCode);
-            this.setState({
-                departName:item.value,
-                deptCode:code,
-                parentCode:(item.parentCode===0||item.parentCode==='0')?code:item.parentCode
-            })
-        } else {
-            item.isSelect = false;
-        }
-        if (item.children) {
-            this.handleSelect(code, item.children)
-        }
-    });
-    getRightData = (code, deviceName,parentCode) => {
-        code = parseInt(code)
+    getRightData = (params) => {
+        let code = parseInt(params.deptId), {depName,parentCode} = params
         this.setState({
             deptCode:code,
-            parentCode:parentCode
+            deptName: depName,
+            parentCode
         })
         axios({
             url: `${this.url.equipmentArchive.device}/${code}`,
@@ -181,35 +162,20 @@ class CheckPlan extends React.Component {
                         count: 0
                     })
                 }
-                var updatebackground=[1];
+                var updatebackground=[1], deviceName = rightTopData[0] ? rightTopData[0].name : '';
                 for(var i=0;i<rightTopData.length-1;i++){
                     updatebackground.push(0);
                 }
                 this.setState({
+                    deviceName,
                     rightTopData: rightTopData,
                     deptCode: code,
-                 updatebackground:updatebackground,
-                }, () => {
-                    const rightTopData = this.state.rightTopData;
-                    var deviceFlag = true;
-                    rightTopData.map((item) => {
-                        if (item.name === deviceName) {
-                            deviceFlag = false
-                        }
-                        return rightTopData;
-                    })
-                    if (deviceFlag) {
-                        this.getTableData({
-                            deptId: parseInt(code),
-                            deviceName: rightTopData[0] ? rightTopData[0].name : null
-                        }, 0);
-                    } else {
-                        this.getTableData({
-                            deptId: parseInt(code),
-                            deviceName: deviceName
-                        }, 0);
-                    }
+                    updatebackground:updatebackground,
                 });
+                this.getTableData({
+                    deptId: parseInt(code),
+                    deviceName
+                })
             } else {
                 message.info('查询失败，请刷新下页面！')
             }
@@ -217,18 +183,18 @@ class CheckPlan extends React.Component {
             message.info('查询失败，请刷新下页面！')
         });
     };
-    getTableData = (params, flag) => {
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if (flag) {
-            var {pagination} = this.state;
-            pagination.current = 1;
-            pagination.total = 0;
-            this.setState({
-                pageChangeFlag: 0,
-                searchContent: '',
-                pagination:pagination
-            })
-        }
+
+    getTableData = (params={}, reset) => {
+        this.setState({
+            loading: true
+        });
+        let {pageSize, current} = this.pagination, {deptCode, deviceName, condition,status} = this.state;
+        params['size'] = pageSize;
+        params['page'] = current;
+        params['status'] = params['status'] || status;
+        params['deptId'] = params['deptId'] || deptCode;
+        params['deviceName'] = params['deviceName'] || deviceName;
+        params['condition'] = reset ? '' : params['condition'] || condition;
         axios({
             url: `${this.url.SpotcheckPlan.page}`,
             method: 'get',
@@ -238,7 +204,7 @@ class CheckPlan extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [], {pagination} = this.state;
-            pagination.total = res.total ? res.total : 0;
+            this.pagination.total = res.total ? res.total : 0;
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
@@ -256,59 +222,49 @@ class CheckPlan extends React.Component {
                 }
                 this.setState({
                     rightTableData: rightTableData,
-                    deviceName: params.deviceName,
-                    pagination: pagination
+                    loading: false
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
                     rightTableData: [],
-                    deviceName: '',
-                    pagination:pagination
+                    loading: false
                 });
             }
         }).catch(() => {
             message.info('查询失败，请刷新下页面！')
         });
     }
+
     handleChange = (value) => {
         this.setState({
-            Tableflag: value
+            status: value === '' ? undefined : value
+        }, () => {
+            this.getTableData(params, 0)
         })
-        const params = {
-            deptId: parseInt(this.state.deptCode),
-            deviceName: this.state.deviceName,
+        let params = {
             status:value,
         }
-        this.getTableData(params, 0)
-    }
-    searchEvent = () => {
-        this.setState({
-            pageChangeFlag:1
-        });
-        this.getTableData({
-            condition:this.state.searchContent,
-            deptId:this.state.deptCode,
-            deviceName:this.state.deviceName,
-        })
-    }
-    searchContentChange = (e) => {
-        const value = e.target.value;
-        this.setState({
-            searchContent: value
-        })
+        
     }
 
+    searchEvent(condition){
+        this.setState({
+            condition
+        })
+        this.getTableData({
+            condition
+        })
+    }
 
     returnEquKey=(key,name)=>{
         const params = {
-            deptId: parseInt(this.state.deptCode),
             deviceName: name
         }
         this.setState({
             deviceName:name
         })
-        this.getTableData(params, 0)
+        this.getTableData(params)
         this.setState({flags:this.state.updatebackground},()=>{
             var flagx=this.state.flags;
             const index=flagx.indexOf(1);
@@ -318,84 +274,59 @@ class CheckPlan extends React.Component {
         })
     }
     handleTableChange = (pagination) => {
-        this.setState({
-            pagination:pagination
-        });
-        const {pageChangeFlag} = this.state;
-        /**分页查询 */
-        if(pageChangeFlag){
-            this.getTableData({
-                deptId:this.state.deptCode,
-                deviceName:this.state.deviceName,
-                status:this.state.Tableflag,
-                size:pagination.pageSize,
-                page:pagination.current,
-                condition:this.state.searchContent
-            })
-        }else{
-            this.getTableData({
-                deptId:this.state.deptCode,
-                deviceName:this.state.deviceName,
-                status:this.state.Tableflag,
-                size:pagination.pageSize,
-                page:pagination.current,
-            })
-        }
+        this.pagination = pagination
+        this.getTableData()
     };
-    firstname=(e)=>{
+
+    reset(){
         this.setState({
-            departName:e
+            condition: ''
         })
+        this.getTableData({},'reset')
     }
+
     /**返回数据录入页面 */
     returnDataEntry = () => {
         this.props.history.push({pathname:'/equipmentCheck'});
     }
+
 render(){
     this.url = JSON.parse(localStorage.getItem('url'));
     this.current = JSON.parse(localStorage.getItem('dataEntry')) ;
     const { Option } = Select;
-    let {addFlag,deleteFlag }=this.state
-    return (<div>
+    let {addFlag,deleteFlag,parentCode }=this.state
+    return (
+        <div>
             <Blockquote menu={this.current.menuParent} name="点检计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-            <div className="checkP-DE-demo" >
-                <div className="checkP-DE-left" >
-                    <div  className="checkP-eqblocka">
-                        部门名称(请选择）
-                    </div>
-                    <DepTree
-                        getRightData={this.getRightData}
-                        url={this.url}
-                        operation={this.operation}
-                        handleSelect={this.handleSelect}
-                        firstname={this.firstname}
-
-                    />
-                </div>
-                <div className="checkP-DE-right">
+            <div className='equipment'>
+                <DepTree
+                    key="depTree"
+                    treeName={'所属部门'}
+                    url={this.url}
+                    getTableData={this.getRightData}
+                />
+                <Spin spinning={this.state.loading} wrapperClassName='equipment-right'>
                     <div style={{paddingBottom:10}}>
                         {this.renderEquipmentName(this.state.rightTopData)}
                     </div>
                     <div>
                         <div className="checkP_buttons">
                             <div className="checkp-left">
-                                <Add addFlag={addFlag} parentCode={this.state.parentCode} deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  departName={this.state.departName} pagination={this.state.pagination}
-                                fetch={this.getTableData}/>
+                                <Add addFlag={addFlag} deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  
+                                     departName={this.state.deptName} parentCode={parentCode}
+                                     fetch={this.getTableData}/>
                             </div>
                             <div className="check_right">
                                 <Select defaultValue="全部状态" style={{ width:120}} onChange={this.handleChange} >
-                                    <Option value='-1'>全部状态</Option>
+                                    <Option value=''>全部状态</Option>
                                     <Option value='0'>开</Option>
                                     <Option value='1'>关</Option>
                                 </Select>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <SearchCell
-                                    name='计划编号/设备编号...'
+                                    placeholder='设备编号...'
                                     flag={true}
                                     searchEvent={this.searchEvent}
-                                    searchContentChange={this.searchContentChange}
-                                    fetch={this.getTableData}
-                                    deptId={this.state.deptCode}
-                                    deviceName={this.state.deviceName}
+                                    reset={this.reset}
                                 />
                             </div>
                         </div>
@@ -403,13 +334,13 @@ render(){
                             deleteFlag={deleteFlag}
                             dataSource={this.state.rightTableData}
                             operation={this.operation}
-                            pagination={this.state.pagination}
+                            pagination={this.pagination}
                             getTableData={this.getTableData}
-                            deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url} handleTableChange={this.handleTableChange}/>
+                            deptCode={this.state.deptCode} deviceName={this.state.deviceName}  
+                            url={this.url} handleTableChange={this.handleTableChange}/>
                     </div>
-                </div>
+                </Spin>
             </div>
-
         </div>
     )
 }

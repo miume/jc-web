@@ -4,7 +4,6 @@ import {Table, Switch, message} from 'antd'
 import DeleteSpan from "./deleteSpan"
 import PlanSwitch from './planSwitch'
 import axios from "axios";
-import "./checkPlan.css"
 
 class RightTable extends React.Component {
     constructor(props) {

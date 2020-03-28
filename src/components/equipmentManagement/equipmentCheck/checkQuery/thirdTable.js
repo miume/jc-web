@@ -1,6 +1,5 @@
 import React from "react"
 import {Table} from 'antd'
-import "./checkQuery.css"
 class ThirdTable extends React.Component{
     constructor(props){
         super(props)

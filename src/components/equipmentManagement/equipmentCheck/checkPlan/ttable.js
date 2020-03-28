@@ -1,8 +1,6 @@
 import React from "react"
 import {Table} from 'antd'
-
 import  MakePlan from './makePlan'
-import "./checkPlan.css"
 
 class TTable extends React.Component{
     constructor(props){
@@ -10,29 +8,8 @@ class TTable extends React.Component{
         this.state={
 
         }
-
-
-        this.handleDelete=this.handleDelete.bind(this)
-
     }
 
-    handleDelete = (id) => {
-        // axios({
-        //     url:`${this.url.department.department}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.url.Authorization
-        //     },
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.fetch({
-        //         pageSize:this.state.pagination.pageSize,
-        //         pageNumber:this.state.pagination.current,
-        //     })
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
-    }
     render(){
         this.columns=[{
             title:'序号',
@@ -66,7 +43,6 @@ class TTable extends React.Component{
             key: 'operation',
             align: 'left',
             render: (text, record) => {
-                // console.log(record)
                 return (
                     <span>
                     <MakePlan parentCode={this.props.parentCode} flag={record.flag} url={this.props.url} record={record} deptId={this.props.deptId} deviceName={this.props.deviceName}
@@ -84,6 +60,8 @@ class TTable extends React.Component{
                     size="default"
                     bordered
                     scroll={{ y: 400 }}
+                    pagination={false}
+                    size="small"
                     rowKey={record => record.code}
                 />
             </div>

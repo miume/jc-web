@@ -1,9 +1,8 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
-import {Button, Icon, message} from "antd";
+import {Button, Icon, message,Spin} from "antd";
 import CheckTable from "./checktable"
-import DepTree from './depTree';
-import "./checkQuery.css"
+import DepTree from '../../../BlockQuote/department';
 import axios from "axios";
 
 class CheckQuery extends React.Component{
@@ -15,14 +14,6 @@ class CheckQuery extends React.Component{
             rightTableData: [],
             depCode: -1,
             deviceName: '',
-            pagination : {
-                showTotal(total) {
-                    return `共${total}条记录`
-                },
-                showSizeChanger:true
-            },
-            pageChangeFlag: 0,   //0表示分页 1 表示查询
-            searchContent: '',
             deviceNamee:'',
             workshop:'',
             updatebackground:[],
@@ -30,13 +21,18 @@ class CheckQuery extends React.Component{
             flag:true,
             flags:[1],
             bottomheight:true,
+            loading: false
         }
-        this.fetch=this.fetch.bind(this)
+        this.pagination = {
+            pageSize: 10,
+            current: 1,
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10","20","50","100"]
+        };
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
         this.returnEquKey=this.returnEquKey.bind(this)
-        this.changeworkshop=this.changeworkshop.bind(this)
-        this.firstworkshop=this.firstworkshop.bind(this)
-        this.searchContentChange=this.searchContentChange.bind(this)
+        this.reset=this.reset.bind(this);
         this.searchEvent=this.searchEvent.bind(this)
         this.handleClick=this.handleClick.bind(this)
     }
@@ -47,9 +43,7 @@ class CheckQuery extends React.Component{
             bottomheight:!this.state.bottomheight,
         })
     }
-    componentDidMount() {
-        this.fetch()
-    }
+    
     renderEquipmentName = (data) =>  {
         var first=data.slice(0,7);
         return (
@@ -118,26 +112,18 @@ class CheckQuery extends React.Component{
             </div>)
 
     }
-    //----------------------------------
-    searchEvent = () => {
+    
+    searchEvent = (searchContent) => {
         this.setState({
-            pageChangeFlag:1
-        });
-        this.getTableData({
-            condition:this.state.searchContent,
-            deptId:parseInt(this.state.depCode),
-            deviceName:this.state.deviceName,
+            condition: searchContent
         })
-    }
-    searchContentChange = (e) => {
-        const value = e.target.value;
-        this.setState({
-            searchContent: value
+        this.getTableData({
+            condition: searchContent
         })
     }
 
-    getRightData = (code, deviceName) => {
-        code = parseInt(code)
+    getRightData = (params) => {
+        let code = parseInt(params.deptId), deptName = params.depName
         axios({
             url: `${this.url.equipmentArchive.device}/${code}`,
             method: 'get',
@@ -161,7 +147,7 @@ class CheckQuery extends React.Component{
                         count: 0
                     })
                 }
-                var updatebackground=[1];
+                var updatebackground=[1], deviceName = rightTopData[0] ? rightTopData[0].name : '';
                 for(var i=0;i<rightTopData.length-1;i++){
                     updatebackground.push(0);
                 }
@@ -169,26 +155,13 @@ class CheckQuery extends React.Component{
                     rightTopData: rightTopData,
                     depCode: code,
                     updatebackground:updatebackground,
-                }, () => {
-                    const rightTopData = this.state.rightTopData;
-                    var deviceFlag = true;
-                    rightTopData.map((item) => {
-                        if (item.name === deviceName) {
-                            deviceFlag = false
-                        }
-                    })
-                    if (deviceFlag) {
-                        this.getTableData({
-                            deptId: parseInt(code),
-                            deviceName: rightTopData[0] ? rightTopData[0].name : null
-                        }, 0);
-                    } else {
-                        this.getTableData({
-                            deptId: parseInt(code),
-                            deviceName: deviceName
-                        }, 0);
-                    }
+                    deptName
                 });
+                this.getTableData({
+                    deptId: parseInt(code),
+                    deviceName: deviceName,
+                    deptName
+                }, 0)
             } else {
                 message.info('查询失败，请刷新下页面！')
             }
@@ -196,14 +169,17 @@ class CheckQuery extends React.Component{
             message.info('查询失败，请刷新下页面！')
         });
     };
-    getTableData = (params, flag) => {
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if (flag) {
-            this.setState({
-                pageChangeFlag: 0,
-                searchContent: ''
-            })
-        }
+
+getTableData = (params={}, reset) => {
+        this.setState({
+            loading: true
+        });
+        let {pageSize, current} = this.pagination, {depCode, deviceName, condition} = this.state;
+        params['size'] = pageSize;
+        params['page'] = current;
+        params['deptId'] = params['deptId'] || depCode;
+        params['deviceName'] = params['deviceName'] || deviceName;
+        params['condition'] = reset ? '' : params['condition'] || condition;
         axios({
             url: `${this.url.equipmentArchive.page}`,
             method: 'get',
@@ -212,8 +188,8 @@ class CheckQuery extends React.Component{
             },
             params: params,
         }).then((data) => {
-            const res = data.data.data ? data.data.data : [],{pagination} = this.state;
-            pagination.total = res.total || 0;
+            const res = data.data.data ? data.data.data : [];
+            this.pagination.total = res.total || 0;
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
@@ -224,7 +200,7 @@ class CheckQuery extends React.Component{
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
-                        workshop:this.state.workshop,
+                        workshop: params['deptName'] ? params['deptName'] : this.state.deptName,
                         specification: arr['specification'],
                         startdate: arr['startdate'],
                         idCode: arr['idCode'],
@@ -236,30 +212,27 @@ class CheckQuery extends React.Component{
                 this.setState({
                     rightTableData: rightTableData,
                     deviceName: params.deviceName,
-                    pagination
+                    loading: false
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
                     rightTableData: [],
                     deviceName: '',
-                    pagination
+                    loading: false
                 });
             }
         }).catch(() => {
             message.info('查询失败，请刷新下页面！')
         });
     }
-    fetch = () => {
-
-            }
-            //---------------------------------
+    
     returnEquKey=(key,name)=>{
         const params = {
-            deptId: parseInt(this.state.depCode),
             deviceName: name
         }
-        this.getTableData(params, 0)
+        this.setState({deviceName: name})
+        this.getTableData(params)
         this.setState({flags:this.state.updatebackground},()=>{
             var flagx=this.state.flags;
             const index=flagx.indexOf(1);
@@ -269,29 +242,17 @@ class CheckQuery extends React.Component{
         })
     }
 
-    changeworkshop = (value)=> {
-        this.setState({
-            workshop:value
-        })
-    }
-    firstworkshop=(e)=>{
-        this.setState({
-            workshop:e
-        })
-    }
     handleTableChange = (pagination) => {
-        this.setState({
-            pagination:pagination
-        });
-        this.getTableData({
-            deptId:this.state.depCode,
-            deviceName:this.state.deviceName,
-            status:this.state.Tableflag,
-            size:pagination.pageSize,
-            page:pagination.current,
-            condition:this.state.searchContent
-        })
+        this.pagination = pagination
+        this.getTableData()
     };
+
+    reset(){
+        this.setState({
+            condition: ''
+        })
+        this.getTableData({},'reset')
+    }
     /**返回数据录入页面 */
     returnDataEntry = () => {
         this.props.history.push({pathname:'/equipmentCheck'});
@@ -305,37 +266,27 @@ class CheckQuery extends React.Component{
         return (
             <div>
                 <Blockquote menu={current.menuParent} name="点检查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                    <div className="checkQ-DE-demo" >
-                        <div className="checkQ-DE-left" >
-                            <div  className="checkQ-eqblocka">
-                                设备名称(请选择）
-                            </div>
-                            <DepTree
-                                getRightData={this.getRightData}
-                                url={this.url}
-                                operation={this.operation}
-                                changeworkshop={this.changeworkshop}
-                                firstworkshop={this.firstworkshop}
-                            />
+                <div className='equipment'>
+                    <DepTree
+                        key="depTree"
+                        treeName={'所属部门'}
+                        url={this.url}
+                        getTableData={this.getRightData}
+                    />
+                    <Spin spinning={this.state.loading} wrapperClassName='equipment-right'>
+                        <div >
+                            {this.renderEquipmentName(this.state.rightTopData)}
                         </div>
-                        <div className="checkQ-DE-right">
-                            <div >
-                                {this.renderEquipmentName(this.state.rightTopData)}
-                            </div>
-                        <CheckTable rightTableData={this.state.rightTableData} operation={this.operation} pagination={this.state.pagination} url={this.url} fetch={this.getTableData}  handleTableChange={this.handleTableChange}
+                        <CheckTable rightTableData={this.state.rightTableData} pagination={this.pagination} url={this.url}
+                                    handleTableChange={this.handleTableChange}
                                     deptId={this.state.depCode}
                                     deviceName={this.state.deviceName}
-                                    searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
-                        </div>
-                    </div>
-
+                                    searchEvent={this.searchEvent} reset={this.reset}/>
+                    </Spin>
                 </div>
+            </div>
         )
     }
-    // 返回还没有
-    // returnDataEntry(){
-    //     this.props.history.push({pathname:'/EquipmentMaintenance'});
-    // }
 }
 
 export default CheckQuery

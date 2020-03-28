@@ -123,7 +123,7 @@ class EARight extends Component {
 
                                     } )
                                 }</div>
-                                <div id="DropNoExpandHide" ref={this.deviceSpan}>{
+                                <div className='DropExpandselected' ref={this.deviceSpan}>{
                                         data.map((data,index)=>{
                                                 return (<span
                                                         className="DropExpandbluehide"
@@ -135,7 +135,7 @@ class EARight extends Component {
                                 }</div>
                             </div>
                             :
-                            <div id={"DropExpandselected" } ref={this.deviceSpan} >
+                            <div className='DropExpandselected' ref={this.deviceSpan} >
                                 {
                                     data.map((data,index)=>{
                                         if(this.props.updatebackground[index]===0){

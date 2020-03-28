@@ -3,7 +3,7 @@ import CancleButton from "../../../BlockQuote/cancleButton";
 import {message, Modal} from "antd";
 import SeTable from "./seTable";
 import axios from "axios";
-
+import moment from 'moment';
 
 class Detail extends  React.Component{
     constructor(props){
@@ -56,9 +56,9 @@ class Detail extends  React.Component{
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
-                        finishTime:arr['finishTime'],
+                        finishTime: arr['finishTime'] ? moment(arr['finishTime']).format('YYYY-MM-DD HH:mm:ss') : '',
                         spotcheckPeople:res.list[i].spotPeople,
-                        confirmTime:arr['confirmTime'],
+                        confirmTime: arr['confirmTime'] ? moment(arr['confirmTime']).format('YYYY-MM-DD HH:mm:ss') : '',
                         confirmPeople:res.list[i].confirmPeople,
                         editFlag:arr['editFlag'],
                         specification: arr['specification'],
@@ -106,7 +106,7 @@ class Detail extends  React.Component{
                 height="464"
                 title="点检详情"
                 footer={[
-                         <CancleButton key='cancel' handleCancel={this.onCanCel} />]}
+                         <CancleButton key='cancel' flag={true} handleCancel={this.onCanCel} />]}
             >
                 <span>
                     <span>设备编号:{this.props.fixedassetsCode}</span> &nbsp;&nbsp;&nbsp;&nbsp;<span>设备名称:{this.props.deviceName}</span>
