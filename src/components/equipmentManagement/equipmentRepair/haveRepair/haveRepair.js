@@ -48,7 +48,7 @@ class HaveRepair extends React.Component{
                             <Button onClick={this.download} type='ant-btn ant-btn-primary'>
                             <i className='fa fa-download' aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>
                                 &nbsp;导出
-                        </Button>
+                            </Button>
                         </span>
                         <SearchCell
                             name='请输入设备名称'

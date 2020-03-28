@@ -33,6 +33,8 @@ class CheckTemplate extends React.Component{
             deptName:"",
             tableLoading:true,
         };
+
+        this.onChange = this.onChange.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancel=this.cancel.bind(this);
         this.getTableData = this.getTableData.bind(this);
@@ -116,23 +118,6 @@ class CheckTemplate extends React.Component{
     }
     componentDidMount(){
         this.getTreeData()
-        axios({
-            url:`${this.url.deviceSpot.getAllDevices}`,
-            method:"get",
-            headers:{
-                'Authorization':this.url.Authorization
-            },
-        }).then((data)=>{
-            const res = data.data.data
-            if(res.length !== 0){
-                this.getTableData({
-                    page:this.pagination.current,
-                    size:10,
-                    deviceName:res[0].deviceName[0],
-                    deptId:res[0].basicInfoDept.code,
-                })
-            }
-        })
         let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
         this.setState({
             addFlag:judgeOperation(operations,'SAVE'),
@@ -172,16 +157,47 @@ class CheckTemplate extends React.Component{
                 selectedKey.push(res[0].basicInfoDept.code.toString()+"-"+0);
                 this.setState({
                     TreeData:res,
+                    searchTreeData: res,
                     expandedKeys:defaultkey,
                     selectedKeys:selectedKey,
                     deptCode:res[0].basicInfoDept.code,
                     deviceName:res[0].deviceName[0],
                     deptName:res[0].basicInfoDept.name,
                     loading:false
-
+                })
+                this.getTableData({
+                    page:this.pagination.current,
+                    size:10,
+                    deviceName:res[0].deviceName[0],
+                    deptId:res[0].basicInfoDept.code,
                 })
             }
         })
+    }
+
+    onChange (e){
+        let { value } = e.target, {searchTreeData,expandedKeys,TreeData} = this.state;
+        if(value) {
+            let data = [];
+            searchTreeData.map((e) => {
+                let deviceName = e.deviceName.filter(e => e.includes(value));
+                if (deviceName.length) {
+                    data.push({
+                        basicInfoDept: e.basicInfoDept,
+                        deviceName
+                    })
+                }
+            })
+            this.setState({
+                TreeData: data
+            })
+        } else {
+            this.setState({
+                TreeData: searchTreeData,
+                expandedKeys: expandedKeys
+            })
+        }
+
     }
     handleDelete = (id) => {
         axios({
@@ -256,7 +272,7 @@ class CheckTemplate extends React.Component{
                 this.pagination.total = res.total;
                 this.pagination.current = res.page;
                 for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.page-1)*10+i;
+                    res.list[i-1]['index']=(res.page-1)*res.size+i;
                 }
                 this.setState({
                     dataSource:res.list,
@@ -290,7 +306,8 @@ class CheckTemplate extends React.Component{
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div className='equipment'>
                     <Spin spinning={this.state.loading} wrapperClassName={'equipment-left'}>
-                    <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></Spin>
+                    <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} 
+                              onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData} onChange={this.onChange}/></Spin>
                     {/*右边表格部分*/}
                     <Spin spinning={this.state.tableLoading} wrapperClassName='equipment-right'>
                         <AddBut addFlag={addFlag} getTableData={this.getTableData} info={this.state.lineData} deptCode={this.state.deptCode} deviceName={this.state.deviceName} deptName={this.state.deptName}/>

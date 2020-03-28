@@ -1,8 +1,7 @@
 import React from "react";
-import {Card, Tree} from 'antd';
+import {Card, Tree, Input} from 'antd';
 import "../../../BlockQuote/blockquote.css";
-
-
+const {Search} = Input;
 
 class TreeCard extends React.Component{
     url
@@ -13,14 +12,8 @@ class TreeCard extends React.Component{
             expandedKeys:[],
             TreeData:[]
         }
-        this.returnDepKey = this.returnDepKey.bind(this);
     }
-    returnDepKey(){
 
-    }
-    componentDidMount(){
-
-    }
     componentWillUnmount() {
         this.setState = () => {
           return ;
@@ -31,11 +24,15 @@ class TreeCard extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <Card
-                style={{display:'inline-block',width: "100%"}}
+                bordered={false}
+                style={{width: "100%",height: '100%',display: 'inline-block'}}
                 className='departmentCard'
+                headStyle={{height:'10%'}}
+                bodyStyle={{height:'65vh',padding: '6px 12px 0 12px',overflow:'auto'}}
                 title={<p id='titledepartment1'><b fontSize="10px" id='titledepartmentselect'>{this.props.treeName}&nbsp;</b>(请选择)</p>}
             >
-                <div style={{overflowX:'auto', height:'450px'}}>
+                <div className='equipment-tree'>
+                <Search style={{ marginBottom: 8 }} placeholder="请输入名称" onChange={this.props.onChange}/>
                     <Tree
                         showLine={true}
                         selectedKeys={this.props.selectedKeys}
