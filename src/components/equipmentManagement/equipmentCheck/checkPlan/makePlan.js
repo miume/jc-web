@@ -60,11 +60,13 @@ constructor(props){
             params: {deptCode:this.props.parentCode,deviceName:this.props.deviceName},
         }).then((data)=>{
             const res = data.data.data;
-            if(res ){
+            if (res) {
                 this.setState({
-                    data:res,
-                    visible:true
-                })
+                    data: res,
+                    visible: true
+                });
+            } else {
+                message.info("无点检模版")
             }
         })
     }
