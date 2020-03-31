@@ -47,7 +47,7 @@ class InterTable extends React.Component{
         align:'center',
         width: '12%'
     },{
-        title: '编号',
+        title: '流水号',
         dataIndex: 'commonBatchNumber.batchNumber',
         key: 'commonBatchNumber.batchNumber',
         align:'center',
