@@ -170,7 +170,7 @@ class CheckSpan extends React.Component {
                                 dataSource={this.state.detailData.testDTOS}
                                 pagination={{hideOnSinglePage:true,pageSize:100}}
                                 size="small"
-                                scroll={{ y: 150 }}
+                                scroll={{ y: 250 }}
                                 bordered
                             />
                         </div>
