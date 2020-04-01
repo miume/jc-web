@@ -12,7 +12,7 @@ class AddModalRight extends React.Component {
         super(props);
         this.state = {
             selectList: [],
-            typeName:["磁性异物","粒度","金属大颗粒","扣电","可溶锂分量","落尘"],
+            typeName:["磁性异物","粒度","金属大颗粒","扣电","可溶锂分量","落尘","能谱"],
             checkTypeName:[]
         };
 
