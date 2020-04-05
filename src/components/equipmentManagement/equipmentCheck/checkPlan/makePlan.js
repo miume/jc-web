@@ -17,6 +17,7 @@ constructor(props){
 
     makeplan=()=>{
         let {code} = this.state;
+        console.log(code)
         if (!code) {
             message.info('请先选择！');
             return
@@ -59,13 +60,13 @@ constructor(props){
             params: {deptCode:this.props.parentCode,deviceName:this.props.deviceName},
         }).then((data)=>{
             const res = data.data.data;
-            if(res && res.length === 1){
-                this.makeplan(res[0]["code"])
-            }else{
+            if (res) {
                 this.setState({
-                    data:res,
-                    visible:true
-                })
+                    data: res,
+                    visible: true
+                });
+            } else {
+                message.info("无点检模版")
             }
         })
     }
