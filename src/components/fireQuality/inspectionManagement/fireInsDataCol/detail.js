@@ -59,7 +59,7 @@ class Detail extends Component{
                                     return (
                                         <div key={e.code} style={sonStyle}>
                                             <span style={spanStyle}>{`${e.name}：`}</span>
-                                            <div style={span1Style}>{e.values}</div>
+                                            <div style={span1Style}>{`${e.values ? e.values : 0} ${e.unit}`}</div>
                                         </div>
                                     )
                                 }) : null
