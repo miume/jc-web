@@ -24,9 +24,9 @@ class SyntheticProcess extends Component{//合成工序
             key:'materialName',
             width:"13%",
         },{
-            title:'体积(m³)',
-            dataIndex:'volume',
-            key:'volume',
+            title:'重量(T)',
+            dataIndex:'weight',
+            key:'weight',
             width:'15%',
             render:(text,record)=>{
                 return(
@@ -34,17 +34,7 @@ class SyntheticProcess extends Component{//合成工序
                 )
             }
         },{
-            title:'含固量(g/L)',
-            dataIndex:'solidContent',
-            key:'solidContent',
-            width:'15%',
-            render:(text,record)=>{
-                return(
-                    <Input value={record.solidContent} name={`${record.index}-${'solidContent'}`}  onChange={this.inputChange}/>
-                )
-            }
-        },{
-            title:'Ni(g/L)',
+            title:'Ni(%)',
             dataIndex:'niPotency',
             key:'niPotency',
             width:'15%',
@@ -54,7 +44,7 @@ class SyntheticProcess extends Component{//合成工序
                 )
             }
         },{
-            title:'Co(g/L)',
+            title:'Co(%)',
             dataIndex:'coPotency',
             key:'coPotency',
             width:'15%',
@@ -64,7 +54,7 @@ class SyntheticProcess extends Component{//合成工序
                 )
             }
         },{
-            title:'Mn(g/L)',
+            title:'Mn(%)',
             dataIndex:'mnPotency',
             key:'mnPotency',
             width:'15%',
@@ -157,7 +147,7 @@ class SyntheticProcess extends Component{//合成工序
         return(
             <div>
                 <NewButton name='上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
-                <ReadRecipe  rowSelection={rowSelection}  flag={true} handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm} data={this.state.data}/>
+                {/* <ReadRecipe  rowSelection={rowSelection}  flag={true} handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm} data={this.state.data}/> */}
                 <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
                 <div className='clear'></div>
                 <div style={{display:'flex'}}> 

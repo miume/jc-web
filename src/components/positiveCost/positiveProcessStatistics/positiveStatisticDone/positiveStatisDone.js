@@ -34,6 +34,10 @@ class PositiveStatisticDone extends Component{//已统计
             dataIndex:'lineName',
             key:'lineName'
         },{
+            title:'在制品小计（kg）',
+            dataIndex:'comment',
+            key:'comment'
+        },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',

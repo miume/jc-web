@@ -73,7 +73,7 @@ class Search extends Component {
     }
     selectChange(value, option) {
         let name = option.props.name,{periodCode,lineCode}=this.state
-        if (name === 'lineCode' || name === 'modelCode') {
+        if (name === 'lineCode'||name==='modelCode') {
             this.setState({
                 [name]: value
             })
@@ -81,6 +81,12 @@ class Search extends Component {
                 this.props.getNextPeriods(periodCode,value)
             }
         }
+        // if(name === 'modelCode'){
+        //     console.log(value)
+        //     this.setState({
+        //         modelCode:value.split('/')[0]
+        //     })
+        // }
         else{//统计周期下拉框变化
             name=name.split('-')
             this.setState({
@@ -148,7 +154,7 @@ class Search extends Component {
         let { modelCode, periodCode, endDate ,startDate,lineCode,lengthSub,disabledDateFlag} = this.state,{flagConfirm,inputPeriod}=this.props
         return (
             <div>
-                <Select onChange={this.selectChange} value={lineCode} placeholder='请选择产线' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
+                <Select onChange={this.selectChange} value={lineCode} placeholder='产线' style={{ width: '130px', marginRight: '10px' }} disabled={flagConfirm}>
                     {
                         this.props.lineData ? this.props.lineData.map(item => {
                             return (
@@ -157,17 +163,26 @@ class Search extends Component {
                         }) : null
                     }
                 </Select>
-                <Select onChange={this.selectChange} value={modelCode} placeholder='请选择产品型号' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
+                <Select onChange={this.selectChange} value={modelCode} placeholder='请选择产品型号' 
+                        style={{ width: '380px', marginRight: '10px' }} disabled={flagConfirm} 
+                         dropdownMatchSelectWidth={false} dropdownStyle={{width: 400}}>
                     {
                         this.state.modelData ? this.state.modelData.map(item => {
                             return (
-                                <Option name='modelCode' key={item.code} value={item.code}>{item.name}</Option>
+                                <Option name='modelCode' key={item.code} value={item.code} >
+                                   <div>
+                                        <span style={{display:'inline-block',width:45}}>{item.name} ;</span>
+                                        前驱体：<span style={{display:'inline-block',width:45}}>{item.matchingCoefficientPrecursors} ;</span>
+                                        碳酸锂：<span style={{display:'inline-block',width:45}}>{item.matchingCoefficientLithiumCarbonate} ;</span>
+                                        氢氧化锂： <span style={{display:'inline-block'}}>{item.matchingCoefficientLithiumOh}</span>
+                                   </div>
+                                </Option>
                             )
                         }) : null
                     }
 
                 </Select>
-                <Select onChange={this.selectChange} value={periodCode} placeholder='请选择周期' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}>
+                <Select onChange={this.selectChange} value={periodCode} placeholder='周期' style={{ width: '100px', marginRight: '10px' }} disabled={flagConfirm}>
                     {
                         this.props.periodStatis ? this.props.periodStatis.map(item => {
                             return (
@@ -176,9 +191,9 @@ class Search extends Component {
                         }) : null
                     }
                 </Select>
-                <span>期数 : </span>&nbsp;<Input value={inputPeriod} placeholder='期数' style={{width:100,marginRight:'20px'}}  disabled={true}/>
-                <DatePicker onChange={this.startChange} disabledDate={this.props.disabledDate} value={startDate?moment(startDate):undefined} placeholder='开始时间' style={{ width: '180px', marginRight: '10px' }}  disabled={flagConfirm}/>
-                <DatePicker onChange={this.endChange} disabledDate={this.props.disabledDate} value={endDate ? moment(endDate) : undefined} placeholder='结束时间' style={{ width: '180px', marginRight: '10px' }} disabled={flagConfirm}/>
+                <span>期数 : </span>&nbsp;<Input value={inputPeriod} placeholder='期数' style={{width:70,marginRight:'20px'}}  disabled={true}/>
+                <DatePicker onChange={this.startChange} disabledDate={this.props.disabledDate} value={startDate?moment(startDate):undefined} placeholder='开始时间' style={{ width: '150px', marginRight: '10px' }}  disabled={flagConfirm}/>
+                <DatePicker onChange={this.endChange} disabledDate={this.props.disabledDate} value={endDate ? moment(endDate) : undefined} placeholder='结束时间' style={{ width: '150px', marginRight: '10px' }} disabled={flagConfirm}/>
                 {!disabledDateFlag?<Button type='primary' className='button' style={this.props.editFlag?{display:'none'}:{}} onClick={this.confirm} disabled={this.props.flagConfirm}>确定</Button>
                 :<Popconfirm title={`与上期结束时间间隔${lengthSub}天，确定继续吗?`} onConfirm={this.confirm} okText="确定" cancelText="再想想" >
                     <Button type='primary' className='button' style={this.props.editFlag?{display:'none'}:{}}  disabled={this.props.flagConfirm}>确定</Button>

@@ -16,17 +16,32 @@ class ModelPositiveCost extends Component{//产品型号
             title:'序号',
             dataIndex:'index',
             key:'index',
-            width:'15%'
+            
         },{
-            title:'产线型号',
+            title:'产品型号',
             dataIndex:'name',
             key:'name',
-            width:'35%'
+            width:'18%'
+        },{
+            title:'前驱体',
+            dataIndex:'matchingCoefficientPrecursors',
+            key:'matchingCoefficientPrecursors',
+            width:'18%'
+        },{
+            title:'碳酸锂',
+            dataIndex:'matchingCoefficientLithiumCarbonate',
+            key:'matchingCoefficientLithiumCarbonate',
+            width:'18%'
+        },{
+            title:'氢氧化锂',
+            dataIndex:'matchingCoefficientLithiumOh',
+            key:'matchingCoefficientLithiumOh',
+            width:'18%'
         },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
-            width:'35%',
+            width:'18%',
             render:(text,record)=>{
                 let {deleteFlag,updateFlag}=this.state
                 return(
@@ -107,7 +122,7 @@ class ModelPositiveCost extends Component{//产品型号
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
-                <BlockQuote menu={this.current.menuParent} name='产品型号' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} />
+                <BlockQuote menu={this.current.menuParent} name={this.current.menuName} menu2='返回' returnDataEntry={this.returnBaseInfoPositive} />
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Add addFlag={this.state.addFlag} url={this.url} getTableData={this.getTableData}/>
                     <Table 

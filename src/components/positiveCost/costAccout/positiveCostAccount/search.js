@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Select} from 'antd'
-import SearchCell from '../../BlockQuote/search'
-import NewButton from '../../BlockQuote/newButton'
+import SearchCell from '../../../BlockQuote/search'
+import NewButton from '../../../BlockQuote/newButton'
 const {Option}=Select
 class Search extends Component{
     constructor(props){
@@ -11,12 +11,12 @@ class Search extends Component{
         let  {lineNameData,periods,selectChange,periodCode,staticPeriod} = this.props; //es6数组去重
         return(
             <div className={this.props.flag?'searchCell':'hide'}>
-                <Select  style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectChange} placeholder='请选择核算对象'>
+                {/* <Select  style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectChange} placeholder='请选择核算对象'>
                     
                          <Option key={0} value={0} name='lineCode'>产线</Option>
                          <Option key={1} value={1} name='lineCode'>车间</Option>
                     
-                </Select>
+                </Select> */}
                 <Select value={periodCode} style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectChange}>
                         {
                             staticPeriod?staticPeriod.map(e=>{
@@ -41,7 +41,7 @@ class Search extends Component{
                             ) : null
                     }
                 </Select>
-                <NewButton name='确定' handleClick={this.props.confirm}/>
+                <NewButton name='查询' handleClick={this.props.confirm}/>
             </div>
         )
     }
