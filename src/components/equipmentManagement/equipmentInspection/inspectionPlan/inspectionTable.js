@@ -24,13 +24,13 @@ class InspectionTable extends React.Component {
             dataIndex:'index',
             key: 'devicePatrolPlanRecordHead.code',
             align:'center',
-            width: '10%',
+            width: '6%',
         },{
             title:"计划名称",
             dataIndex:'devicePatrolPlanRecordHead.planName',
             key: 'devicePatrolPlanRecordHead.planName',
             align:'center',
-            width: '15%',
+            width: '10%',
         },{
             title:"巡检模板名称",
             dataIndex:'modelName',
@@ -55,7 +55,13 @@ class InspectionTable extends React.Component {
             dataIndex:'devicePatrolPlanRecordHead.planTime',
             key: 'devicePatrolPlanRecordHead.planTime',
             align:'center',
-            width: '20%',
+            width: '18%',
+        },{
+            title:"结束日期",
+            dataIndex:'devicePatrolPlanRecordHead.tabulatedate',
+            key: 'devicePatrolPlanRecordHead.tabulatedate',
+            align:'center',
+            width: '18%',
         },{
             title:"操作",
             dataIndex: 'operation',

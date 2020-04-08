@@ -68,11 +68,18 @@ class Edit extends React.Component{
             });
     };
 
+    endDateChange = (date) => {
+        this.setState({
+            endDate :moment(date).format('YYYY-MM-DD')
+        })
+    }
+
     handleCreate = () => {
+        let {planName,planTime,endDate} = this.state;
         axios({
             url : `${this.url.devicePatrolPlan.update}`,
             method:'put',
-            params:{planId:this.props.planId,planName:this.state.planName,planDate:this.state.planTime},
+            params:{planId:this.props.planId,planName,planDate:planTime,endDate},
             type:'json'
         }).then((data)=>{
             if(data.data.code !== 0){
@@ -117,7 +124,7 @@ class Edit extends React.Component{
                 checkType:res.devicePatrolPlanRecordHead.checkType,
                 planTime:res.devicePatrolPlanRecordHead.planTime,
                 tabPeopleName:res.tabPeopleName,
-                tabulatedate:res.devicePatrolPlanRecordHead.tabulatedate,
+                endDate:res.devicePatrolPlanRecordHead.tabulatedate || undefined,
                 devicePatrolPlanRecordItemDetailsList:res.devicePatrolPlanRecordItemDetailsList,
                 devicePatrolPlanRecordLocationDetailsList:res.devicePatrolPlanRecordLocationDetailsList
             })
@@ -161,7 +168,8 @@ class Edit extends React.Component{
                         <span className="headers1">制表人：</span><span className="checkName">{this.state.tabPeopleName===""?"空":this.state.tabPeopleName}</span>
                     </div>
                     <div>
-                        <span className="headers">制表日期：</span><span className="checkName">{this.state.tabulatedate===null?"空":this.state.tabulatedate}</span>
+                        <span className="headers">结束日期：</span>
+                        <DatePicker format="YYYY-MM-DD" value={this.state.endDate ? moment(this.state.endDate) : null} locale={locale} showTime={true} onChange={this.endDateChange} placeholder="请选择时间"/>
                     </div>
                     <Table
                         title = {this.getTitle}

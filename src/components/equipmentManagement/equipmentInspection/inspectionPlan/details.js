@@ -138,7 +138,7 @@ class Detail extends React.Component{
                             <span className="headers1">制表人：</span><span className="checkName">{this.state.setPeople?this.state.setPeople:"空"}</span>
                         </div>
                         <div>
-                            <span className="headers">制表日期：</span><span className="checkName">{this.state.tabulatedate?this.state.tabulatedate:"空"}</span>
+                            <span className="headers">结束日期：</span><span className="checkName">{this.state.tabulatedate?this.state.tabulatedate:"空"}</span>
                         </div>
                         <Table
                             title = {this.getTitle}
