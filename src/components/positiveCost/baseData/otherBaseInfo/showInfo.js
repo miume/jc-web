@@ -17,9 +17,6 @@ class ShowInfo extends Component{
             presinteringWeight: undefined,
             secondSinteringWeight: undefined,
             highMixingMachineWeight: undefined,
-            matchingCoefficientPrecursors: undefined,
-            matchingCoefficientLithiumCarbonate: undefined,
-            matchingCoefficientHopPocket: undefined,
             addFlag:true ,//用来判断调新增还是编辑接口
             code:undefined,
             loading:false
@@ -66,9 +63,6 @@ class ShowInfo extends Component{
                     presinteringWeight: res.presinteringWeight,
                     secondSinteringWeight: res.secondSinteringWeight,
                     highMixingMachineWeight: res.highMixingMachineWeight,
-                    matchingCoefficientPrecursors: res.matchingCoefficientPrecursors,
-                    matchingCoefficientLithiumCarbonate: res.matchingCoefficientLithiumCarbonate,
-                    matchingCoefficientHopPocket: res.matchingCoefficientHopPocket
                 })
             }
             else{//如果返回的数据为null，此时要新增一条数据，调用新增接口
@@ -84,12 +78,12 @@ class ShowInfo extends Component{
     handleSave(){
         let {code,addFlag,bagWeight,bowlFillWeight,bowlNum,burningLossRate,smashWeight,
             presinteringWeight,secondSinteringWeight,highMixingMachineWeight,
-            matchingCoefficientPrecursors,matchingCoefficientLithiumCarbonate,matchingCoefficientHopPocket}=this.state,
+           }=this.state,
             data={
                 bagWeight: bagWeight,bowlFillWeight: bowlFillWeight,bowlNum: bowlNum,burningLossRate: burningLossRate,
                 smashWeight: smashWeight,presinteringWeight: presinteringWeight,secondSinteringWeight: secondSinteringWeight,
-                highMixingMachineWeight: highMixingMachineWeight,matchingCoefficientPrecursors: matchingCoefficientPrecursors,
-                matchingCoefficientLithiumCarbonate: matchingCoefficientLithiumCarbonate,matchingCoefficientHopPocket: matchingCoefficientHopPocket
+                highMixingMachineWeight: highMixingMachineWeight,
+               
             }
             for(let key in data){
                 if(data[key]===undefined){
@@ -141,8 +135,7 @@ class ShowInfo extends Component{
     render(){
         this.url=JSON.parse(localStorage.getItem('url'))
         let {addFlag,updateFlag,loading,flag,bagWeight,bowlFillWeight,bowlNum,burningLossRate,smashWeight,
-            presinteringWeight,secondSinteringWeight,highMixingMachineWeight,
-            matchingCoefficientPrecursors,matchingCoefficientLithiumCarbonate,matchingCoefficientHopPocket}=this.state
+            presinteringWeight,secondSinteringWeight,highMixingMachineWeight,}=this.state
             return(
             <Spin spinning={loading} wrapperClassName={'rightDiv-Content'}>
                 <div className='fontAttribute'>
@@ -170,17 +163,17 @@ class ShowInfo extends Component{
                         <span >高混机每批进料量 :</span>
                         <Input placeholder='请输入' name='highMixingMachineWeight' value={highMixingMachineWeight} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
                     </div>
-                    <div className='fontInfo'>预混配比系数</div>
+                    {/* <div className='fontInfo'>预混配比系数</div>
                     <div className='fontAttribute'>
                         <span >前驱体 :</span>
-                        <Input placeholder='请输入' name='matchingCoefficientPrecursors' value={matchingCoefficientPrecursors} suffix="kg" style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={!flag}/>
+                        <Input placeholder='请输入' name='' value={} suffix="kg" style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={!flag}/>
                         <span >碳酸锂 :</span>
                         <Input placeholder='请输入' name='matchingCoefficientLithiumCarbonate' value={matchingCoefficientLithiumCarbonate} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
                     </div>
                     <div className='fontAttribute'>
                         <span >布袋料 :</span>
                         <Input placeholder='请输入' name='matchingCoefficientHopPocket' value={matchingCoefficientHopPocket} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
-                    </div>
+                    </div> */}
                 </div>
                 {flag?<div style={{textAlign:'center',marginTop:'50px'}}>
                         <SaveButton handleSave={this.handleSave}/>&nbsp;&nbsp;&nbsp;
