@@ -679,4 +679,7 @@ export const routes = [{
     },{
         path:'/workShopPostCost',
         component:WorkShopPostCost
+    },{
+        path:'/positiveProductAccount',
+        component:PositiveCostAccount
     }];
