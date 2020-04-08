@@ -116,7 +116,7 @@ import OtherBaseInfo from '../positiveCost/baseData/otherBaseInfo/otherBaseInfo'
 import MaterialTypePLCMeterCom from '../positiveCost/baseData/materialTypePLCMeterCompare/materialTypePLCMeterCom'
 import ProcessStatistics from '../costAccounting/processStatistics/processStatistic'
 import CostAccount from '../costAccounting/costAccount/costAccount'
-import PositiveCostAccount from '../positiveCost/costAccout/mainMaterial'
+import PositiveCostOperation from '../positiveCost/costAccout/positiveCostAccount/mainMaterial'
 import PositiveProcessStatistics from '../positiveCost/positiveProcessStatistics/positiveProcessStatistics'
 import CostProcessAdd from '../costAccounting/processStatistics/processAdd/add'
 import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/statisticalAnalysis/statisticalAnalysis'
@@ -170,6 +170,10 @@ import RepoStatisticsAge from '../smartWarehouse/dataStatistics/repoStatisticsAg
 import BaseProduct from '../productionManagement/baseData/baseData'
 import ProductCalculationBase from '../productionManagement/baseData/calculationBase/calculationBase'
 import ProductLastIntial from '../productionManagement/baseData/lastIntial/lastIntial'
+import PositiveCostAccount from '../positiveCost/costAccout/postCost'
+import ProductLinePostCost from '../positiveCost/costAccout/poductLinePostCost/produceLinePostCost'
+import ProductPostCost from '../positiveCost/costAccout/productPostCost/productPostCost'
+import WorkShopPostCost from '../positiveCost/costAccout/workShopPostCost/workShopPostCost'
 class Right extends React.Component {
     render() {
         const data = [{
@@ -666,6 +670,18 @@ class Right extends React.Component {
             },{
                 path:'/productLastIntial',
                 component:ProductLastIntial
+            },{
+                path:'/positiveCostOperation',
+                component:PositiveCostOperation
+            },{
+                path:'/productLinePostCost',
+                component:ProductLinePostCost
+            },{
+                path:'/productPostCost',
+                component:ProductPostCost
+            },{
+                path:'/workShopPostCost',
+                component:WorkShopPostCost
             }];
         return (
             <div className="rightDiv">

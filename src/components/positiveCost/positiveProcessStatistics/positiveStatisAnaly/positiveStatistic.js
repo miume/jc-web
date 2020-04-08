@@ -3,6 +3,7 @@ import Blockquote from '../../../BlockQuote/blockquote'
 import {Spin,Tabs} from 'antd'
 import PositiveProcess from './processStatistic/processStatis'
 import PositiveProductLine from './productLineStatis/productLineStatis'
+import Product from './productStatis/productStatis'
 import PositiveProcessCom from './processCompare/processCom'
 import ProductLineCom from './productLineCom/productLineCom'
 const {TabPane}=Tabs
@@ -59,8 +60,9 @@ const {TabPane}=Tabs
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         <TabPane key='1' tab='按产线统计'> <PositiveProductLine staticPeriod={staticPeriod} periodCode={periodCode} url={this.url}/> </TabPane>
                         <TabPane key='2' tab='按工序统计'> <PositiveProcess line={line} staticPeriod={staticPeriod} periodCode={periodCode} lineCode={lineCode} url={this.url}/> </TabPane>
-                        <TabPane key='3' tab='产线对比分析'> <ProductLineCom staticPeriod={staticPeriod} periodCode={periodCode} url={this.url}/> </TabPane>
-                        <TabPane key='4' tab='工序对比分析'> <PositiveProcessCom staticPeriod={staticPeriod} line={line} periodCode={periodCode} url={this.url}/> </TabPane>
+                        <TabPane key='3' tab='按产品统计'> <Product staticPeriod={staticPeriod} line={line} periodCode={periodCode} url={this.url}/> </TabPane>
+                        <TabPane key='4' tab='产线对比分析'> <ProductLineCom staticPeriod={staticPeriod} periodCode={periodCode} url={this.url}/> </TabPane>
+                        <TabPane key='5' tab='工序对比分析'> <PositiveProcessCom staticPeriod={staticPeriod} line={line} periodCode={periodCode} url={this.url}/> </TabPane>
                     </Tabs>
                 </div>
             </div>

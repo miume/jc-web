@@ -1,10 +1,10 @@
 import React,{Component} from 'react'
 import {Table,Button,Select,Spin,message} from 'antd'
 import Search from './search'
-import Blockquote from '../../BlockQuote/blockquote'
+import Blockquote from '../../../BlockQuote/blockquote'
 import axios from 'axios'
 const {Option}=Select;
-class PositiveCostAccount extends Component{
+class PositiveCostOperation extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -12,11 +12,6 @@ class PositiveCostAccount extends Component{
             periodCode:undefined
         }
         this.columns=[{
-            title:'核算对象',
-            key:'costObject',
-            dataIndex:'costObject',
-            width:'6%'
-        },{
             title:'周期名称',
             key:'periodName',
             dataIndex:'periodName',
@@ -36,82 +31,14 @@ class PositiveCostAccount extends Component{
             key:'endTime',
             dataIndex:'endTime',
             width:'6%'
-        },{
-            title:'原料领用(T)',
-            key:'rawMaterialFeedStock',
-            dataIndex:'rawMaterialFeedStock',
-            width:'11%',
-            render:(text)=>{
-                let da=text?text.split(' '):undefined
-                return(
-                    da?da.map((item,index)=>{
-                        return(
-                            <span style={{display:'block'}} key={index}>{item}</span>
-                        )
-                    }):null
-                )
-            }
-        },{
-            title:'原料结存(T)',
-            key:'rawMaterialBalance',
-            dataIndex:'rawMaterialBalance',
-            width:'11%',
-            render:(text)=>{
-                let da=text?text.split(' '):undefined
-                return(
-                    da?da.map((item,index)=>{
-                        return(
-                            <span style={{display:'block'}} key={index}>{item}</span>
-                        )
-                    }):null
-                )
-            }
-        },{
-            title:'上期前段在制品(T)',
-            key:'lastGoodsInProcessFirst',
-            dataIndex:'lastGoodsInProcessFirst',
-            width:'6%'
-        },{
-            title:'本期前段在制品(T)',
-            key:'currentGoodsInProcessFirst',
-            dataIndex:'currentGoodsInProcessFirst',
-            width:'6%'
-        },{
-            title:'上期后段在制品(T)',
-            key:'lastGoodsInProcessSecond',
-            dataIndex:'lastGoodsInProcessSecond',
-            width:'6%'
-        },{
-            title:'本期后段在制品(T)',
-            key:'currentGoodsInProcessSecond',
-            dataIndex:'currentGoodsInProcessSecond',
-            width:'6%'
-        },{
-            title:'成品入库(T)',
-            key:'productStorage',
-            dataIndex:'productStorage',
-            width:'5%'
-        },{
-            title:'单耗(T)',
-            key:'unitConsumption',
-            dataIndex:'unitConsumption',
-            width:'11.5%',
-            render:(text)=>{
-                let da=text?text.split(' '):undefined
-                return(
-                    da?da.map((item,index)=>{
-                        return(
-                            <span style={{display:'block'}} key={index}>{item}</span>
-                        )
-                    }):null
-                )
-            }
         }]
         this.selectChange=this.selectChange.bind(this);
         this.getPeriod=this.getPeriod.bind(this);
         this.getTimeByPeriod=this.getTimeByPeriod.bind(this);
         this.confirm=this.confirm.bind(this);
         this.timeChange=this.timeChange.bind(this);
+        this.returnFireCost=this.returnFireCost.bind(this);
+        this.add=this.add.bind(this);
     }
     componentDidMount(){
         this.getPeriod()
@@ -223,19 +150,27 @@ class PositiveCostAccount extends Component{
             message.error('操作失败，请联系管理员!')
         })
     }
+    add(){
 
+    }
+       //返回火法成本
+    returnFireCost(){
+        this.props.history.push({pathname:'/positiveProductAccount'});
+    }
     render(){
-        const current=JSON.parse(localStorage.getItem('current'))
-        this.url=JSON.parse(localStorage.getItem('url'))
+        this.current=JSON.parse(localStorage.getItem('dataEntry'));
+        this.url = JSON.parse(localStorage.getItem('url'));
         let {lineNameData,data,periods,periodCode,staticPeriod}=this.state
         return(
             <div >
-                <Blockquote name={current.menuName} menu={current.menuParent}/>
+                <Blockquote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.returnFireCost} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                    <Button onClick={this.add} style={{float:'right'}} type='ant-btn ant-btn-primary' >新增</Button>
                     <Search  staticPeriod={staticPeriod} periodCode={periodCode} selectChange={this.selectChange}
                             lineNameData={lineNameData} periods={periods} timeChange={this.timeChange} flag={true}
                             confirm={this.confirm}
                      />
+                    
                     <div className='clear'></div> 
                     <Table
                         dataSource={data}
@@ -249,4 +184,4 @@ class PositiveCostAccount extends Component{
         );
     }
 }
-export default PositiveCostAccount
+export default PositiveCostOperation
