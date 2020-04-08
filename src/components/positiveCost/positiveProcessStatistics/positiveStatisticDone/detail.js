@@ -206,11 +206,14 @@ class Detail extends Component{
         }
         else if(id===2){//预混(犁刀混)
             return (
-                <span style={{float:'right',marginBottom:'10px'}}> 
-                    <span >总已混量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
-                    <span >总消耗量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
-                    <span >总结存量 : {sub&&sub.tBal!==undefined?sub.tBal:undefined}</span>
-                </span>
+                <div>
+                    {/* <span style={{fontWeight:'650',fontSize:'13px'}}>小计 : </span> */}
+                    <span style={{float:'right'}}> 
+                        <span >总已混量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
+                        <span >总消耗量 : {sub&&sub.tCom!==undefined?sub.tCom:undefined}</span>
+                        <span >总结存量 : {sub&&sub.tBal!==undefined?sub.tBal:undefined}</span>
+                    </span>
+                </div>
             )
         }
         else if(id===3||id===5||id===6||id===8){//预混(暂存仓),粉碎,二混,包装
@@ -332,7 +335,7 @@ class Detail extends Component{
                        columns={this.getColumns(this.props.record.totals.processCode)}
                        footer={() => {
                            return(
-                               <div className='process-statisDone-detail1'>
+                               <div >
                                   {this.getFooter(this.props.record.totals.processCode)}
                                </div>
                            );
