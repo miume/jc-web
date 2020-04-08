@@ -3,7 +3,6 @@ import Blockquote from "../../../BlockQuote/blockquote";
 import DepTree from "../../../BlockQuote/department";
 import axios from "axios";
 import Allocation from "./allocation";
-import home from "../../../commom/fns";
 import {Select, Spin} from "antd";
 import SearchCell from "../../../BlockQuote/search";
 import RightTable from "./RightTable";
@@ -34,6 +33,7 @@ class EqupimentAssignment extends React.Component {
         this.searchReset = this.searchReset.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
     }
 
     render() {
@@ -60,7 +60,7 @@ class EqupimentAssignment extends React.Component {
                         {/*搜索模块*/}
                         <SearchCell
                             name='固定资产编号/设备名称'
-                            flag={home.judgeOperation(this.operation, 'QUERY')}
+                            flag={true}
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             fetch={this.searchReset}
@@ -114,10 +114,10 @@ class EqupimentAssignment extends React.Component {
             params
         }).then((data)=>{
             let res = data.data.data ? data.data.data : [], dataSource = [];
-            this.pagination.total = res.list && res.list.total ? res.list.total : 0;
+            this.pagination.total = res && res.total ? res.total : 0;
             for(let i = 0; i < res.list.length; i++) {
                 let e = res.list[i]['deviceMap'];
-                e['index'] = i + 1;
+                e['index'] = (res['page'] - 1) * res['size'] + i + 1;
                 e['status'] = res.list[i].status.name;
                 e['color'] = res.list[i].status.color;
                 e['deptName'] = this.state.deptName;

@@ -3,13 +3,11 @@ import Blockquote from "../../../BlockQuote/blockquote";
 import axios from "axios";
 import {message,Spin} from "antd";
 import './locationBasic.css'
-import home from "../../../commom/fns";
 import AddModal from "./addModal";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import TheTable from './theTable'
 import DepTree from "../../../BlockQuote/department";
 import {judgeOperation,getOperations} from '../../../commom/getOperations'
-import { updateLocale } from "moment";
 class LocationBasic extends React.Component{
     constructor(props){
         super(props);

@@ -4,6 +4,8 @@ import {message, Modal} from "antd";
 import ThirdTable from "./thirdTable"
 import FhTable from "./fhTable"
 import axios from "axios";
+import moment from 'moment';
+
 class SeDetail extends  React.Component{
     constructor(props){
         super(props)
@@ -35,14 +37,6 @@ class SeDetail extends  React.Component{
                 pageChangeFlag: 0,
                 searchContent: ''
             })
-            // var {pagination} = this.state;
-            // pagination.current = 1;
-            // pagination.total = 0;
-            // this.setState({
-            //     pageChangeFlag:0,
-            //     searchContent:'',
-            //     pagination:pagination
-            // })
         }
         axios({
             url: `${this.props.url.checkQuery.deviceDetail}/${params.id}`,
@@ -67,9 +61,9 @@ class SeDetail extends  React.Component{
                     code: arr1['code'],
                     fixedassetsCode: arr1['fixedassetsCode'],
                     deviceName: arr1['deviceName'],
-                    scanTime:arr1['scanTime'],
+                    scanTime: arr1['scanTime'] ? moment(arr1['scanTime']).format('YYYY-MM-DD HH:mm:ss') : '',
                     spotcheckPeople:res.spotPeople,
-                    confirmTime:arr1['confirmTime'],
+                    confirmTime:arr1['confirmTime'] ? moment(arr1['confirmTime']).format('YYYY-MM-DD HH:mm:ss') : '',
                     confirmPeople:res.confirmPeople,
                     editFlag:arr1['editFlag'],
                     specification: arr1['specification'],
@@ -136,10 +130,6 @@ class SeDetail extends  React.Component{
                 <span>
 
                     <span>设备编号:{this.props.fixedassetsCode}</span> &nbsp;&nbsp;&nbsp;&nbsp;<span>设备名称:{this.props.deviceName}</span>
-                {/*<ThirdTable*/}
-                {/*    // dataSource={this.state.dataSource}*/}
-                {/*    // dataSource={fakedataSource}*/}
-                {/*/>*/}
                 </span>
                 <span>
                     <FhTable  dataSource={this.state.dataSource} />

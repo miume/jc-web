@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from "axios";
-import {message, Modal,Checkbox,Radio} from "antd";
+import {message, Modal,Radio} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 
@@ -15,11 +15,13 @@ constructor(props){
     this.makeplan=this.makeplan.bind(this)
 }
 
-    makeplan=(code)=>{
-        // console.log(this.props.record.code)
-        // console.log(this.props.record.deviceName)
-        // console.log(this.state.code[0])
-        // console.log(code)
+    makeplan=()=>{
+        let {code} = this.state;
+        console.log(code)
+        if (!code) {
+            message.info('请先选择！');
+            return
+        }
         axios({
             url: `${this.props.url.SpotcheckPlan.SpotcheckPlan1}`,
             method: 'post',
@@ -29,12 +31,10 @@ constructor(props){
             params: {
                 deviceCode: this.props.record.code,
                 deviceName: this.props.deviceName,
-                modelId:this.state.code===""?code:this.state.code
+                modelId: code
             },
             type: 'json'
         }).then((data) => {
-            // console.log(data)
-            // this.props.fetch()
             this.props.fetch({
                 deptId:this.props.deptId,
                 deviceName:this.props.deviceName
@@ -60,16 +60,14 @@ constructor(props){
             params: {deptCode:this.props.parentCode,deviceName:this.props.deviceName},
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res);
-            if(res.length === 1){
-                this.makeplan(res[0]["code"])
-            }else{
+            if (res) {
                 this.setState({
-                    data:res,
-                    visible:true
-                })
+                    data: res,
+                    visible: true
+                });
+            } else {
+                message.info("无点检模版")
             }
-            // this.makeplan(1)
         })
     }
     handleCancel = () =>{
@@ -80,18 +78,12 @@ constructor(props){
         })
     }
     onChange = (value)=>{
-        console.log(value.target.value)
         this.setState({
             code:value.target.value
         })
     }
     render(){
-        // console.log(this.props.record.code)
-        const options = this.state.data.map((item)=>{
-            return(
-                {label:item.modelName,value:item.code}
-            )
-        })
+        let {data} = this.state;
         return(
             <span>
             <span className={this.props.flag===2?'blue':'hide'} onClick={this.showModal}>
@@ -110,9 +102,9 @@ constructor(props){
                 ]}
             >
                 <Radio.Group value={this.state.code} onChange={this.onChange}>
-                    {this.state.data.map((item)=>{
+                    { data && data.length ?data.map((item)=>{
                         return <Radio key={item.code} value={item.code}>{item.modelName}</Radio>
-                    })}
+                    }) : null}
                 </Radio.Group>
             </Modal>
             <span className={this.props.flag===1?'green':'hide'}>

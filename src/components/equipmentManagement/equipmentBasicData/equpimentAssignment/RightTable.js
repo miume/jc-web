@@ -10,7 +10,7 @@ class RightTable extends React.Component{
             title:'序号',
             dataIndex:'index',
             sorter:(a,b) =>a.code-b.code,
-            width:'10%',
+            width:'6%',
         },{
             title:'所属部门',
             dataIndex: 'deptName' ,
@@ -38,7 +38,7 @@ class RightTable extends React.Component{
         },{
             title:'设备状态',
             dataIndex:'status',
-            width:'15%',
+            width:'19%',
             render: (text, record) => {
                 return(
                     <span>{text}&nbsp;&nbsp;<i style={{color: `${record.color}`}} className="fa fa-circle" aria-hidden="true"></i></span>

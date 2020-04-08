@@ -1,10 +1,7 @@
 import React from "react"
 import {Table} from 'antd'
-
-import home from "../../../commom/fns";
 import Detail from "./detail"
-import SearchCell from "./searchCell";
-import "./checkQuery.css"
+import SearchCell from "../../../BlockQuote/newSearchSell";
 
 class CheckTable extends React.Component{
     constructor(props){
@@ -21,28 +18,21 @@ class CheckTable extends React.Component{
         },{ title: '设备编号',
             dataIndex: 'fixedassetsCode' ,
             key: 'fixedassetsCode',
-            width: '24%',
-            align:'left',
-            editable: false
+            width: '24%'
         }, {
             title: '设备名称',
             dataIndex: 'deviceName',
             key:  'deviceName',
-            width: '24%',
-            align:'left',
-            editable: true
+            width: '24%'
         },{
             title: '所属车间',
             dataIndex: 'workshop',
             key: 'workshop',
             width: '24%',
-            align:'left',
-            editable: true
         },{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            align: 'left',
             render: (text, record) => {
                 return (
                      <Detail fixedassetsCode={record.fixedassetsCode} deviceName={record.deviceName}    url={this.props.url} code={record.code}/>
@@ -53,13 +43,10 @@ class CheckTable extends React.Component{
         return(
             <div>
                 <SearchCell
-                    fetch={this.props.fetch}
-s                    name="设备编号/设备名称"
-                    deptId={this.props.deptId}
-                    deviceName={this.props.deviceName}
+s                   placeholder="设备编号/设备名称"
                     searchEvent={this.props.searchEvent}
-                    searchContentChange={this.props.searchContentChange}
-                    flag={home.judgeOperation(this.props.operation, 'QUERY')}
+                    reset={this.props.reset}
+                    flag={true}
                 />
                 <div className="clear"></div>
             <Table
@@ -70,7 +57,6 @@ s                    name="设备编号/设备名称"
                    rowKey={record => record.code}
                    size="small"
                    bordered
-                   scroll={{ y: 380 }}
             />
             </div>
         )

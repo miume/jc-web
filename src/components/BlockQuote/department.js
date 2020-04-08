@@ -80,8 +80,8 @@ class DepTree extends React.Component{
 
     /**对获取的部门数据进行处理*/
     dataProcessing(res) {
-        let dataSource = [];
-        let depId = -1, depName = '',expandedKeys = [], selectedKeys = [];
+        let dataSource = [],parentCode;
+        let deptId = -1, depName = '',expandedKeys = [], selectedKeys = [];
         for (let i = 0; i < res.length; i++) {
             const parent = res[i].parent;
             let parenObj = {
@@ -90,13 +90,14 @@ class DepTree extends React.Component{
                 children: [],
             };
             if(i === 0) {
-                expandedKeys.push(parent.code.toString())
+                expandedKeys.push(parent.code.toString());
+                parentCode = parent.code
             }
             const son = res[i].son;
             for (let j = 0; j < son.length; j++) {
                 let arr = son[j];
                 if(i===0 && j===0) {
-                    depId = arr.code;
+                    deptId = arr.code;
                     depName = arr.name;
                     selectedKeys.push(arr.code.toString());
                 }
@@ -104,6 +105,7 @@ class DepTree extends React.Component{
                     children: [],
                     title:arr.name,
                     key:arr.code,
+                    parent: parent.code
                 });
             }
             dataSource.push(parenObj);
@@ -116,20 +118,22 @@ class DepTree extends React.Component{
             expandedKeys: expandedKeys
         });
         this.props.getTableData({
-            deptId: depId,
-            depName: depName
+            deptId,
+            depName,
+            parentCode
         })
     }
 
     onSelect(selectedKeys,e) {
-        let depName = e.node.props.title;
+        let {title, parent} = e.node.props;
         this.setState({
             selectedKeys: selectedKeys,
-            depName: depName
+            depName: title
         });
         this.props.getTableData({
             deptId: parseInt(selectedKeys[0]),
-            depName: depName,
+            depName: title,
+            parentCode: parent
         });
     }
 

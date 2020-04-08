@@ -64,6 +64,12 @@ class AddModal extends React.Component {
         })
     };
 
+    onEndDateChangeTime = (date) => {
+        this.setState({
+            endDate: moment(date).format('YYYY-MM-DD')
+        })
+    }
+
     showModal = () => {
         axios({
             url: `${this.url.devicePatrolModel.getAllByDeptCode}`,
@@ -84,6 +90,7 @@ class AddModal extends React.Component {
             visible: false,
             radioValue: undefined,
             date: null,
+            endDate: null,
             devicePatrolModelsItemDetailsList: [],
             devicePatrolModelsLocationDetails: [],
             planName: "",
@@ -94,9 +101,9 @@ class AddModal extends React.Component {
 
     handleCreate = () => {
         const userId = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).userId:null;
-        const {planName,radioValue,date} = this.state;
-        if( !planName || !radioValue || !date) {
-            message.info('请确保计划名称、巡检模板名称以及计划日期不为空！');
+        const {planName,radioValue,date,endDate} = this.state;
+        if( !planName || !radioValue || !date || !endDate) {
+            message.info('请确保计划名称、巡检模板名称、计划日期以及结束日期不为空！');
             return;
         }
         axios({
@@ -111,7 +118,8 @@ class AddModal extends React.Component {
                 checkType: this.state.checkType === false ? 0 : 1,
                 planDate: date,
                 modelId: radioValue,
-                userId: userId
+                userId: userId,
+                endDate
             },
             type: "json"
         }).then((data) => {
@@ -224,6 +232,13 @@ class AddModal extends React.Component {
                                           value={this.state.date ? moment(this.state.date) : null}
                                           showTime={true} style={{width: '200px'}}
                                           onChange={this.onChangeTime}
+                                          placeholder="请选择时间"/>
+                        </span>
+                        <span className="headers1">结束日期：</span>
+                        <span><DatePicker format="YYYY-MM-DD" locale={locale}
+                                          value={this.state.endDate ? moment(this.state.endDate) : null}
+                                          showTime={true} style={{width: '200px'}}
+                                          onChange={this.onEndDateChangeTime}
                                           placeholder="请选择时间"/>
                         </span>
                     </div>

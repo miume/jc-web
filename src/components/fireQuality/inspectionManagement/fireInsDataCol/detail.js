@@ -35,7 +35,7 @@ class Detail extends Component{
                 'fontWeight': 500
             },
             span1Style = {
-                'width': 60,
+                'width': 100,
                 'height': 30,
                 'border': '1px solid #ccc',
                 'textAlign': 'center'
@@ -49,7 +49,7 @@ class Detail extends Component{
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={'600px'}
+                    width={'650px'}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} flag={true}/>,
                     ]}>
@@ -59,7 +59,7 @@ class Detail extends Component{
                                     return (
                                         <div key={e.code} style={sonStyle}>
                                             <span style={spanStyle}>{`${e.name}：`}</span>
-                                            <div style={span1Style}>{e.values}</div>
+                                            <div style={span1Style}>{`${e.values ? e.values : 0} ${e.unit}`}</div>
                                         </div>
                                     )
                                 }) : null

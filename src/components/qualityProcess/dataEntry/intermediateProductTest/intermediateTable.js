@@ -41,13 +41,13 @@ class InterTable extends React.Component{
             return deliveryFactoryName?deliveryFactoryName:'无';
         }
     },{
-        title: '编号',
+        title: '批号',
         dataIndex: 'batch',
         key: 'batch',
         align:'center',
         width: '12%'
     },{
-        title: '批号',
+        title: '流水号',
         dataIndex: 'commonBatchNumber.batchNumber',
         key: 'commonBatchNumber.batchNumber',
         align:'center',

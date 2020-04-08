@@ -20,14 +20,19 @@ class Add extends React.Component {
             visible: false,
             maintenanceItems: '',
             maintenanceContent: '',
-            optType: this.props.optType === undefined ? 0 : this.props.optType,
+            optType: 0,
             maintenanceFrequency: '',
         };
     }
 
     handleAdd = () => {
+        let {maintenanceItems,maintenanceContent,optType,maintenanceFrequency} = this.props;
         this.setState({
-            visible: true
+            visible: true,
+            maintenanceItems,
+            maintenanceContent,
+            optType: optType === undefined ? 0 : optType,
+            maintenanceFrequency
         })
     }
     handleSave = () => {
@@ -78,7 +83,8 @@ class Add extends React.Component {
     /**点击取消按钮，隐藏新增弹框*/
     onCanCel = () => {
         this.setState({
-            visible:false
+            visible:false,
+            
         });
     };
 
@@ -98,6 +104,7 @@ class Add extends React.Component {
     }
 
     render() {
+        let {maintenanceItems,maintenanceContent,maintenanceFrequency,optType} = this.state;
         return (
             <span className={this.props.flag ? '' : 'hide'}>
                 {
@@ -109,7 +116,6 @@ class Add extends React.Component {
                     visible={this.state.visible}
                     closable={false}
                     centered={true}
-                    onCancle={this.handleCancel}
                     maskClosable={false}
                     width="804px"
                     title="设备保养-项目录入"
@@ -124,7 +130,7 @@ class Add extends React.Component {
                                 设备名称:
                             </Col>
                             <Col span={10}>
-                                <Input disabled={true}  style={{width:"280px"}} defaultValue={this.props.deviceName}/>
+                                <Input disabled={true}  style={{width:"280px"}} value={this.props.deviceName}/>
                             </Col>
 
                             <Col span={2} style={{paddingTop:"5px"}}>
@@ -132,7 +138,7 @@ class Add extends React.Component {
                             </Col>
                             <Col span={10}>
                                 <Input placeholder="请输入保养项目" key='2'  style={{width:"280px"}}
-                                       name="maintenanceItems" onChange={this.onInputChange}  defaultValue={this.props.maintenanceItems}/>
+                                       name="maintenanceItems" onChange={this.onInputChange}  value={maintenanceItems}/>
                             </Col>
                         </Row>
 
@@ -143,14 +149,14 @@ class Add extends React.Component {
                             </Col>
                             <Col span={10} style={{paddingRight:"20px"}} >
                                 <Input placeholder="请输入保养内容"  key='3' name="maintenanceContent"
-                                       style={{width:"280px"}} onChange={this.onInputChange} defaultValue={this.props.maintenanceContent}/>
+                                       style={{width:"280px"}} onChange={this.onInputChange} value={maintenanceContent}/>
                             </Col>
 
                             <Col span={2} style={{paddingTop:"5px"}}>
                                 操作类型:
                             </Col>
                             <Col span={10}>
-                                <Select  defaultValue={this.props.optType ? this.props.optType : 0} onChange={this.handleOptTypeChange} name="optType" style={{ width:"280px"}}>
+                                <Select  value={optType} onChange={this.handleOptTypeChange} name="optType" style={{ width:"280px"}}>
                                     <Option value={0}>勾选</Option>
                                     <Option value={1}>录入</Option>
                                 </Select>
@@ -163,7 +169,7 @@ class Add extends React.Component {
                             </Col>
                             <Col span={10} style={{paddingRight:"20px"}}>
                                 <Input placeholder="请输入保养频率"  key='4' name="maintenanceFrequency"
-                                       style={{width:"280px"}} onChange={this.onInputChange} defaultValue={this.props.maintenanceFrequency}/>
+                                       style={{width:"280px"}} onChange={this.onInputChange} value={maintenanceFrequency}/>
                             </Col>
                         </Row>
                     </div>

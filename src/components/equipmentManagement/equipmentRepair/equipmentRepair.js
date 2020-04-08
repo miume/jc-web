@@ -17,7 +17,6 @@ class equipmentRepair extends React.Component{
             secondDeptId2:'',
             secondDeptId3:'',
             secondDeptId4:'',
-            deptName:'',
             rightTableData:[],
             loading: true
         };
@@ -100,11 +99,6 @@ class equipmentRepair extends React.Component{
     getTableData = (params) => {
         let secondDeptId =  params.deptId ? params.deptId : params.secondDeptId;
         if(secondDeptId) {
-            if(params.depName) {
-                this.setState({
-                    depName:params.depName
-                })
-            }
             params['secondDeptId'] = params['secondDeptId'] ? params['secondDeptId'] : params.deptId;
             /**分别保存每一次点击部门的id*/
             if(params.repairStatus === 1) {
@@ -173,7 +167,7 @@ class equipmentRepair extends React.Component{
                         evaluationResult:arr.deviceRepairApplication['evaluationResult'],//评价结果
                         repairStatus:arr.deviceRepairApplication['repairStatus'],//维修状态
                         emergeStatus:emergeStatus,//紧急程度
-                        deptName:this.state.deptName,
+                        deptName:arr.deptName
                     })
                 }
                 this.setState({

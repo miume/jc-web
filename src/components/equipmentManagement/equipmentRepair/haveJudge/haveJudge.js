@@ -2,23 +2,34 @@ import React from "react";
 import DepTree from "../../../BlockQuote/department";
 import SearchCell from "../../../BlockQuote/search";
 import TheTable from "./theTable";
-import {Spin} from "antd";
+import {Button, DatePicker, Spin, message} from 'antd';
+import moment from "moment";
+import axios from "axios";
+
+const {RangePicker} = DatePicker;
 
 class HaveJudge extends React.Component{
     constructor(props){
         super(props);
         this.state={
             searchContent:'',
+            startTime: '',
+            endTime: '',
+            dateFormat: 'YYYY-MM-DD'
         };
         this.pagination = {
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
             pageSizeOptions: ["10","20","50","100"]
         };
+        this.download = this.download.bind(this);
+        this.dateChange = this.dateChange.bind(this);
     }
 
     render() {
         this.pagination.total = this.props.rightTableData.total;
+        const {startTime, endTime, dateFormat} = this.state;
+        const value = startTime === '' || endTime === '' ? null : [moment(startTime,dateFormat), moment(endTime,dateFormat)];
         return(
             <div className='equipment-query'>
                 <DepTree
@@ -29,6 +40,15 @@ class HaveJudge extends React.Component{
                 />
                 <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
                     <div>
+                        <RangePicker style={{marginRight: 10}}
+                                     onChange={this.dateChange}
+                                     placeholder={['开始时间','结束时间']} value={value}/>
+                        <span className='searchCell' style={{marginLeft: 10}}>
+                            <Button onClick={this.download} type='ant-btn ant-btn-primary'>
+                            <i className='fa fa-download' aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>
+                                &nbsp;导出
+                            </Button>
+                        </span>
                         <SearchCell
                             name='请输入设备名称'
                             flag={true}
@@ -100,5 +120,39 @@ class HaveJudge extends React.Component{
         };
         this.props.getTableData(params);
     };
+
+    /**跟踪日期变化*/
+    dateChange(date,dateString) {
+        this.setState({
+            startTime: dateString[0],
+            endTime: dateString[1]
+        });
+    }
+
+    /**点击导出按钮*/
+    download() {
+        let {searchContent,startTime,endTime} = this.state;
+        const params={
+            secondDeptId: this.props.secondDeptId,
+            repairStatus: 4,
+            condition: searchContent,
+            startTime: startTime,
+            endTime: endTime
+        };
+        axios({
+            url: `${this.props.url.equipmentRepair.export}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            let url = `${this.props.url.equipmentRepair.download}${data.data.data}`;
+            let a = document.createElement('a');
+            a.href = url;
+            a.click();
+            message.info(data.data.message)
+        })
+    }
 }
 export default HaveJudge

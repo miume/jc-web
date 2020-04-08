@@ -1,7 +1,6 @@
 import React from "react"
 import { Table} from 'antd'
 
-import "./checkQuery.css"
 class FhTable extends React.Component{
     constructor(props){
         super(props)
@@ -56,7 +55,6 @@ class FhTable extends React.Component{
             align:'left',
         }]
         return(
-
             <Table
                 columns={this.columns}
                 dataSource={this.props.dataSource}
