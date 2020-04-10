@@ -120,6 +120,7 @@ class InterTable extends React.Component{
                         <DetailSpan
                             url={this.props.url}
                             id={record.sampleDeliveringRecord.id}
+                            batch={record.batch}
                         />
                     ):(
                         <span className="notClick">详情</span>
@@ -134,6 +135,7 @@ class InterTable extends React.Component{
                                 url={this.props.url}
                                 id={record.sampleDeliveringRecord.id}
                                 fetch={this.props.fetch}
+                                batch={record.batch}
                             />
                         ):(
                             <span className="notClick">录检</span>
