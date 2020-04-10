@@ -65,7 +65,7 @@ class RightTable extends React.Component{
                 let {deleteFlag,updateFlag}=this.props
                 return (
                     <span>
-                        <EditorModal record={record} url={this.props.url} updateFlag={updateFlag}/>
+                        <EditorModal record={record} url={this.props.url} updateFlag={updateFlag} searchEvent={this.props.searchEvent}/>
                         {updateFlag?<Divider type='vertical' />:''}
                         <DetailModal record={record} url={this.props.url}/>
                     {/*删除*/}
