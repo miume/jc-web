@@ -7,9 +7,20 @@ const {Option}=Select
         super(props)
     }
     render(){
-        let {lineCode,periodCode,timeData,startTime,lineNameData,periods}=this.props
+        let {lineCode,periodCode,timeData,startTime,lineNameData,periods,modelData,modelCode}=this.props
         return(
             <div className='searchCell'>
+                <span className={this.props.productFlag?'':'hide'}>
+                    <Select value={modelCode} onChange={this.props.selectChange} style={{width:'150px',marginRight:'10px'}} placeholder='请选择产品型号'>
+                        {
+                            this.props.modelData?this.props.modelData.map(item=>{
+                                return(
+                                    <Option key={item.code} name='modelCode' value={item.code}>{item.name}</Option>
+                                )
+                            }):null
+                        }
+                    </Select>
+                </span>
                 <Select value={periodCode} onChange={this.props.selectChange} style={{width:'200px',marginRight:'10px'}} placeholder='请选择周期类型'>
                     {
                         this.props.staticPeriod?this.props.staticPeriod.map(item=>{

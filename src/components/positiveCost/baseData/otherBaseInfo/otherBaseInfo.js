@@ -17,7 +17,7 @@ class OtherBaseInfo extends Component{
         
         return(
             <div>
-                <Blockquote menu={this.current.menuParent} name='其他基本数据' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <Blockquote menu={this.current.menuParent} name={this.current.menuName}  menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <ShowInfo current={this.current}/>
             </div>
         );

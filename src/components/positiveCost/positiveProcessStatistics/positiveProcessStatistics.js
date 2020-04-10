@@ -191,6 +191,7 @@ class PositiveProcessStatistics extends Component{
             }
         }).then((data) => {
             let res = data.data.data
+            console.log(res)
             if(res&&res.list){
                 for (let i = 0; i < res.list.length; i++) {
                     res.list[i]['index'] = (res.page - 1) * res.size + (i + 1)

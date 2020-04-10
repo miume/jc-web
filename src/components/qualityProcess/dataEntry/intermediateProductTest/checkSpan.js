@@ -149,7 +149,7 @@ class CheckSpan extends React.Component {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><span title={this.state.detailData.topData.serialNumber} className="text-decoration">{arr[0]+'-'+arr[1]+'...'}</span></td>
+                                        <td>{this.props.batch}</td>
                                         <td>{home.judgeText(this.state.detailData.topData.materialName,8)}</td>
                                         <td>{home.judgeText(this.state.detailData.topData.sampleDeliveringDate,10)}</td>
                                     </tr>
