@@ -88,7 +88,7 @@ class DetailSpan extends React.Component {
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
-                    serialNumber: res.serialNumber,
+                    serialNumber: this.props.batch,
                     materialName: res.materialName,
                     sampleDeliveringDate: res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
