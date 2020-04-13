@@ -1,34 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import BlockQuote from '../../../BlockQuote/blockquote'
-import {Table, Popconfirm, Divider, message, Spin} from 'antd';
+import {Table, Popconfirm, Divider, message, Spin,Select} from 'antd';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import Add from './add';
 import './editor.css';
 import SearchCell from '../../../BlockQuote/search';
 import home from '../../../commom/fns'
-// const data = [];
-// for(var i = 1; i<=15;i++){
-//     data.push({
-//         id : `${i}`,
-//         operate:1,
-//         batchNumber:'SDERER',
-//         creatPerson:{
-//             id:1,
-//             userName:'张三'
-//         },
-//         creatTime:'2018-10-12 00:11:11',
-//         updatePerson:{
-//           id:1,
-//           userName:'张三'
-//       },
-//         updateTime:'2018-10-18 00:11:11',
-//         type:1,
-//         state:1,
-//         isUrgent:0
-//         })
-//   }
 
+const { Option } = Select;
 class ProcessInspection extends React.Component{
     url
     status
@@ -49,7 +29,8 @@ class ProcessInspection extends React.Component{
             searchContent:'',
             allProductionProcess:[],
             detailData:[],
-            loading: true
+            loading: true,
+            deliveryFactoryId: '' // 送检工厂 ID
         }
         this.fetch = this.fetch.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
@@ -248,7 +229,8 @@ class ProcessInspection extends React.Component{
       this.fetch({
           size:this.pagination.pageSize,
           page:this.pagination.current,
-          personName:this.state.searchContent
+          personName:this.state.searchContent,
+          newId: this.state.deliveryFactoryId
       });
   }
   /**获取所有产品线 productionProcess*/
@@ -266,6 +248,15 @@ class ProcessInspection extends React.Component{
     })
   })
   }
+
+  factoryOnChange = (value) => {
+        console.log(`selected ${value}`);
+        this.setState({
+            deliveryFactoryId: parseInt(value)
+        })
+    }
+
+
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
@@ -290,8 +281,29 @@ class ProcessInspection extends React.Component{
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
                     flag={home.judgeOperation(this.operation,'DELETE')}
                     />
-                    <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
-                    fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
+
+                    <div style={{float:"right"}}>
+                        <Select
+                            showSearch
+                            style={{ width: 200,marginRight: "10px" }}
+                            placeholder="选择产品线"
+                            optionFilterProp="children"
+                            onChange={this.factoryOnChange}
+                            filterOption={(input, option) =>
+                                option.props.children.indexOf(input) >= 0
+                            }
+                        >
+                            {
+                                this.state.allProductionProcess.map(pe=>{
+                                    return(
+                                        <Option key={pe.id} value={pe.id}>{pe.name}</Option>
+                                    )
+                                })
+                            }
+                        </Select>
+                        <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
+                                    fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
+                    </div>
                   <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered/>
                 </Spin>
             </div>
