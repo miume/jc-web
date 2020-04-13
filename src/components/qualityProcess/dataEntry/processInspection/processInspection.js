@@ -67,8 +67,9 @@ class ProcessInspection extends React.Component{
             width: '13%',
             align:'left',
             render:(produceLine)=>{
-                if (produceLine&&produceLine.length > 10) {
-                    return <span title={produceLine} className='text-decoration'>{produceLine.substring(0,10)}</span>;
+                var arr = produceLine?produceLine.split(","):[];
+                if (arr.length > 1) {
+                    return <span title={produceLine} className='text-decoration'>{arr[0] + "..."}</span>;
                 } else {
                     return <span>{produceLine}</span>;
                 }
@@ -269,6 +270,12 @@ class ProcessInspection extends React.Component{
         })
     }
 
+    searchClear = (params,flag) => {
+        params["newId"] = this.state.deliveryFactoryId?parseInt(this.state.deliveryFactoryId):'';
+        console.log(params)
+      this.fetch(params,flag)
+    }
+
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -302,6 +309,7 @@ class ProcessInspection extends React.Component{
                             placeholder="选择产品线"
                             optionFilterProp="children"
                             onChange={this.factoryOnChange}
+                            allowClear={true}
                             filterOption={(input, option) =>
                                 option.props.children.indexOf(input) >= 0
                             }
@@ -315,7 +323,7 @@ class ProcessInspection extends React.Component{
                             }
                         </Select>
                         <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
-                                    fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
+                                    fetch={this.searchClear} flag={home.judgeOperation(this.operation,'QUERY')}/>
                     </div>
                   <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered/>
                 </Spin>
