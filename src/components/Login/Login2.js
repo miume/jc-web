@@ -21,7 +21,7 @@ class Login extends React.Component {
     this.infoShow=this.infoShow.bind(this)
   }
   componentWillMount() {
-    localStorage.setItem("server", "http://47.107.237.60:3389");//外网
+    glocalStorage.setItem("server", "http://47.107.237.60:3389");//外网
     //localStorage.setItem("server", "http://119.39.4.6:18080");//jcweb
     //localStorage.setItem("server", "http://192.168.190.161:8080");//Jcweb1
   }

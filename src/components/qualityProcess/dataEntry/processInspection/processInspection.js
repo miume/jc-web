@@ -139,7 +139,8 @@ class ProcessInspection extends React.Component{
         this.fetch({
             size:pagination.pageSize,
             page:pagination.current,
-            personName:this.state.searchContent
+            personName:this.state.searchContent,
+            newId: this.state.deliveryFactoryId
         })
     }
     /**分页查询 getAllByPage */
@@ -160,12 +161,12 @@ class ProcessInspection extends React.Component{
               for(var i = 1; i <= res.list.length;i++){
                   var e = res.list[i-1];
                   e['index'] = res.prePage*10+i
-            }
-            this.pagination.total = res?res.total:0;
-            this.setState({
-                dataSource:res.list,
-                loading: false
-            })
+              }
+              this.pagination.total = res?res.total:0;
+              this.setState({
+                  dataSource:res.list,
+                  loading: false
+              })
             }
         })
     }
@@ -325,7 +326,8 @@ class ProcessInspection extends React.Component{
                         <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
                                     fetch={this.searchClear} flag={home.judgeOperation(this.operation,'QUERY')}/>
                     </div>
-                  <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered/>
+                  {/*<Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered/>*/}
+                    <Table rowKey={record => record.index} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered/>
                 </Spin>
             </div>
 
