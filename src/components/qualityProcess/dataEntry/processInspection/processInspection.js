@@ -66,6 +66,13 @@ class ProcessInspection extends React.Component{
             key: 'produceLine',
             width: '13%',
             align:'left',
+            render:(produceLine)=>{
+                if (produceLine&&produceLine.length > 10) {
+                    return <span title={produceLine} className='text-decoration'>{produceLine.substring(0,10)}</span>;
+                } else {
+                    return <span>{produceLine}</span>;
+                }
+            }
         }, {
           title: '创建人',
           dataIndex: 'createPersonName',
