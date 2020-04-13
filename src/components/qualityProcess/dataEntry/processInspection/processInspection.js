@@ -52,7 +52,7 @@ class ProcessInspection extends React.Component{
           title: '序号',
           dataIndex: 'index',
           key: 'index',
-          width: '8%',
+          width: '5%',
           align:'left',
         }, {
           title: '批号',
@@ -61,10 +61,16 @@ class ProcessInspection extends React.Component{
           width: '15%',
           align:'left',
         }, {
+            title: '产品线',
+            dataIndex: 'produceLine' ,
+            key: 'produceLine',
+            width: '13%',
+            align:'left',
+        }, {
           title: '创建人',
           dataIndex: 'createPersonName',
           key:  'createPersonName',
-          width: '15%',
+          width: '10%',
           align:'left',
         }, {
           title: '创建时间',
@@ -86,7 +92,7 @@ class ProcessInspection extends React.Component{
           render: state => {
                return this.status[state.toString()];
           },
-          width: '15%',
+          width: '10%',
           align:'left',
         }, {
           title: '操作',
