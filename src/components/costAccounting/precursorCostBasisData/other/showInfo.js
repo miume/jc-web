@@ -113,8 +113,8 @@ class ShowInfo extends Component{
             name=e.target.name;
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        if(value[value.length-1] !== '.')
-            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        // if(value[value.length-1] !== '.')
+        //     value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         if(value !== '' && value < 1){
             message.error('值必须大于1!')
             return

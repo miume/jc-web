@@ -158,8 +158,8 @@ class AddModal extends React.Component{
             value = value === '' ? '' : parseInt(value);  //将字符串转为整型
         } else if (type === 'float') {
             value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-            if(value[value.length-1] !== '.')
-                value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+            // if(value[value.length-1] !== '.')
+            //     value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         }
         if(index === '') {
             this.setState({
@@ -180,8 +180,8 @@ class AddModal extends React.Component{
             {data} = this.state;
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        if(value[value.length-1] !== '.')        //若输入最后一位为. 则不转换为浮点型
-            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        // if(value[value.length-1] !== '.')        //若输入最后一位为. 则不转换为浮点型
+        //     value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         // if(value < 0 || value > 1) {
         //     message.info('只能输入0到1之间的数字！');
         //     return

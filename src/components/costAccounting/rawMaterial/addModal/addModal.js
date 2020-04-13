@@ -294,8 +294,8 @@ class AddModal extends React.Component {
         if(!type) {
             if(typeof value === 'number') value = value.toString();
             value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-            if(value[value.length-1] !== '.')
-                value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+            // if(value[value.length-1] !== '.')
+            //     value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         }
         if(index > -1) {
             stockOutDTOS[index-1][name] = value;
@@ -321,8 +321,8 @@ class AddModal extends React.Component {
 
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        if(value[value.length-1] !== '.')
-            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        // if(value[value.length-1] !== '.')
+        //     value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
 
         if(type === 'mixedSalt') {        //混合盐
             saltMixtureLiquorDTOS[index-1][name] = value;
@@ -352,8 +352,8 @@ class AddModal extends React.Component {
     inputNumberChange(value) {
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        if(value[value.length-1] !== '.')
-            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        // if(value[value.length-1] !== '.')
+        //     value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         // if(value < 0 || value > 1) {
         //     message.info('只能输入0到1之间的数字！');
         //     return undefined

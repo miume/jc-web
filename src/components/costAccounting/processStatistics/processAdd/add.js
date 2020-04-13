@@ -299,16 +299,13 @@ class CostProcessAdd extends Component {
             let index = inputData1[0],    //定位到是第几条数据
                 name = inputData1[1]     //输入框内容变化的字段
             if(tabKey==='6'&&otherFlag){
-                if(value[value.length-1] !== '.'){
-                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                }
+                // if(value[value.length-1] !== '.'){
+                //     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                // }
                 otherData[index - 1][name]=value
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
             else{
-                if(value[value.length-1] !== '.'){
-                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                }
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] =value
             }
         }
@@ -324,9 +321,9 @@ class CostProcessAdd extends Component {
             let index = inputData1[0],    //定位到是第几条数据
                 name = inputData1[1]    //输入框内容变化的字段
             if(tabKey==='6'&&otherFlag){
-                if(value[value.length-1] !== '.'){
-                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                }
+                // if(value[value.length-1] !== '.'){
+                //     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                // }
                 otherData[index - 1][name]=value
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
