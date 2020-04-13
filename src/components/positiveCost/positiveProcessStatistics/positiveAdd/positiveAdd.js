@@ -194,9 +194,9 @@ class PositiveAdd extends Component {
             inputData = e.target.name.split('-'),
             index = inputData[0],    //定位到是第几条数据
             name = inputData[1] 
-        if (value[value.length - 1] !== '.') {
-            value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
-        }
+        // if (value[value.length - 1] !== '.') {
+        //     value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
+        // }
         if(key==='1'){
             addData.processes[key-1].materials[index][name] =value
         }
@@ -213,9 +213,9 @@ class PositiveAdd extends Component {
         index = inputData[0],    //定位到是第几条数据
         name = inputData[1]  
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        if (value[value.length - 1] !== '.') {
-            value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
-        }
+        // if (value[value.length - 1] !== '.') {
+        //     value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
+        // }
         addData.processes[key-1].others[index]['value'] =value
         this.setState({
             addData:addData

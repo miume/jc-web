@@ -90,8 +90,8 @@ class Add extends Component{
         let value=e.target.value,name=e.target.name
         if(name!=='name'){
             value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-            if(value[value.length-1] !== '.')
-                value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+            // if(value[value.length-1] !== '.')
+            //     value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         }
 
         this.setState({

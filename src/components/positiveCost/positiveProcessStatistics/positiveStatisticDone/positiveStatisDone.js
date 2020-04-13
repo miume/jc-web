@@ -35,13 +35,14 @@ class PositiveStatisticDone extends Component{//已统计
             key:'lineName'
         },{
             title:'在制品小计（kg）',
-            dataIndex:'comment',
-            key:'comment'
+            dataIndex:'comment1',
+            key:'comment1'
         },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
             render:(text,record)=>{
+                console.log(record.totals.code)
                 return(
                     <Detail record={record} url={this.props.url}/>
                 )
