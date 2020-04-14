@@ -153,9 +153,6 @@ class Home extends Component {
                 byNameLikeByPage: `${server}/jc/auth/department/byNameLikeByPage`,
                 department: `${server}/jc/auth/department`,
                 batchDelete: `${server}/jc/auth/department/batchDelete`,
-                // update:`${server}/jc/auth/department/update`,
-                // add:`${server}/jc/auth/department/add`,
-                // deleteById:`${server}/jc/auth/department`,
                 getAll: `${server}/jc/auth/department`,
             },
             /**设备保养 */
@@ -1057,7 +1054,9 @@ class Home extends Component {
             baseValues:{
                 all:`${server}/jc/common/baseValues/all`,
                 edit:`${server}/jc/common/baseValues/update`
-            }
+            },
+            /**设备管理-基础数据-设备维续 */
+            deviceRepairType: `${server}/jc/common/deviceRepairType`,
     };
 
         localStorage.setItem('status', JSON.stringify(status));

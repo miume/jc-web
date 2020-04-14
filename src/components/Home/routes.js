@@ -65,9 +65,9 @@ import EqMaintenanceDataEntry from '../equipmentManagement/equipmentMaintenance/
 import EqMaintenancePlan from '../equipmentManagement/equipmentMaintenance/eqMaintenancePlan/eqMaintenancePlan'
 import EqMaintenanceQuery from '../equipmentManagement/equipmentMaintenance/eqMaintenanceQuery/eqMaintenanceQuery'
 import EqupimentAssignment from '../equipmentManagement/equipmentBasicData/equpimentAssignment/equipmentProcessAssignment'
+import DeviceRepair from '../equipmentManagement/equipmentBasicData/deviceRepair/deviceRepair'
 
-import EquipmentArchiveManager
-    from '../equipmentManagement/equipmentArchive/equipmentArchiveManager/equipmentArchiveManager'
+import EquipmentArchiveManager from '../equipmentManagement/equipmentArchive/equipmentArchiveManager/equipmentArchiveManager'
 import EqcomponentSearch from '../equipmentManagement/equipmentArchive/eqcomponentSearch/eqcomponentSearch'
 import EquipmentInspection from '../equipmentManagement/equipmentInspection/equipmentInspection'
 import InspectionTemplate from '../equipmentManagement/equipmentInspection/inspectionTemplate/inspectionTemplate'
@@ -258,6 +258,9 @@ export const routes = [{
     }, {
         path: '/equipmentBasicData',
         component: BaseData
+    }, {
+        path: '/deviceRepair',
+        component: DeviceRepair
     }, {
         path: '/departmentStruct',
         component: DepartmentStruct

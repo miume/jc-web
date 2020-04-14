@@ -20,7 +20,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,deliveryTypeName} = this.state, {title,flag} = this.props;
+        let {visible,typeName} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -32,7 +32,7 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <Input placeholder={'请输入出库类别'} name={'deliveryTypeName'} value={deliveryTypeName} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入维修类型'} name={'typeName'} value={typeName} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -51,10 +51,10 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {deliveryTypeName,id} = record;
+            let {typeName,code} = record;
             this.setState({
-                deliveryTypeName,
-                id
+                typeName,
+                code
             });
         }
         this.setState({
@@ -66,7 +66,7 @@ class AddModal extends React.Component {
     handleCancel() {
         this.setState({
             visible: false,
-            deliveryTypeName:undefined
+            typeName:undefined
         });
     }
 
@@ -90,30 +90,25 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                if(data.data.code==='000000'){
-                    message.info(data.data.mesg);
-                    this.props.getTableParams();
-                }
-               else{
-                message.info(data.data.data);
-               }
+                message.info(data.data.message);
+                this.props.getTableParams();
             })
         }
     }
 
     saveDataProcessing() {
-        let {deliveryTypeName,id} = this.state,
+        let {typeName,code} = this.state,
             data = {
-                id,
-                deliveryTypeName
-            }, method = 'post', url = `${this.props.url.swmsBasicDeliveryTypeInfo}/add`;
-        if(!deliveryTypeName) {
-            message.info('请将出库类别填写完整！');
+                code,
+                typeName
+            }, method = 'post', url = `${this.props.url.deviceRepairType}/add`;
+        if(!typeName) {
+            message.info('请将维修类型填写完整！');
             return false
         }
-        if(id) {
+        if(code) {
             method = 'put';
-            url = `${this.props.url.swmsBasicDeliveryTypeInfo}/${id}`;
+            url = `${this.props.url.deviceRepairType}/update`;
         }
         return {data,method,url};
     }
