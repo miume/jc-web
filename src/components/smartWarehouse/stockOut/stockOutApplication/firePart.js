@@ -111,6 +111,8 @@ class FirePart extends React.Component {
                     outType: undefined
                 })
             }
+        }).catch(() => {
+            message.info('操作失败，请将问题详细反馈给管理员!');
         })
     }
 }

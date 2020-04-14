@@ -74,7 +74,7 @@ class Right extends React.Component {
 
     componentDidMount() {
         const menuList = JSON.parse(localStorage.getItem('menuList')), userId = menuList.userId ? menuList.userId : null,
-            deptId = menuList.deptId ? menuList.deptId : null, deptName = menuList.deptName ? menuList.deptName : '';
+            deptId = menuList.deptId ? menuList.deptId : null, deptName = menuList.detpName ? menuList.detpName : '';
         this.setState({
             deptCode: deptId,
             deptName: deptName,
