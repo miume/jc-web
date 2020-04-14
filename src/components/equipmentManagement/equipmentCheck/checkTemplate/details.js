@@ -97,8 +97,8 @@ class Detail extends React.Component{
                     {
                         this.state.deviceSpotcheckModelsDetails.map(e=>
                             <div key={e.code}>
-                                <span className="DetailName">{e.spotcheckContent}</span>
-                                <span className="DetailName" title={e.spotcheckItems}>{e.spotcheckItems}</span>
+                                <span className="DetailName">{e.spotcheckItems}</span>
+                                <span className="DetailName" title={e.spotcheckContent}>{e.spotcheckContent}</span>
                                 <span className="DetailName">{e.spotcheckPeriod}</span>
                                 <img style={{cursor:"pointer"}} onClick={this.previewPreview.bind(this,`${this.server}/jc/common/spotCheck/model/${e.spotcheckAddress}`)} alt="图片未上传" className="Eqpicture" src={`${this.server}/jc/common/spotCheck/model/${e.spotcheckAddress}`}/>
                                 <Modal visible={this.state.previewVisible} footer={null} onCancel={this.previewCancel}>

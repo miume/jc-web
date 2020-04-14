@@ -19,7 +19,7 @@ class Tr extends React.Component{
                 <Form.Item>
                     {getFieldDecorator(`content[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
-                        initialValue:this.props.deviceSpotcheckModelsDetails[k]?this.props.deviceSpotcheckModelsDetails[k].spotcheckContent:undefined
+                        initialValue:this.props.deviceSpotcheckModelsDetails[k]?this.props.deviceSpotcheckModelsDetails[k].spotcheckItems:undefined
                     })(
                         <Input placeholder='请输入项目名称' style={{width:'150px'}}/>
                     )}
@@ -28,7 +28,7 @@ class Tr extends React.Component{
                 <Form.Item>
                     {getFieldDecorator(`standard[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
-                        initialValue:this.props.deviceSpotcheckModelsDetails[k]?this.props.deviceSpotcheckModelsDetails[k].spotcheckItems:undefined
+                        initialValue:this.props.deviceSpotcheckModelsDetails[k]?this.props.deviceSpotcheckModelsDetails[k].spotcheckContent:undefined
                     })(
                         <Input placeholder='请输入点检标准' style={{width:'150px'}}/>
                     )}

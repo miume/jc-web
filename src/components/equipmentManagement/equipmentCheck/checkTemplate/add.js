@@ -112,8 +112,8 @@ class AddBut extends React.Component{
             for(var i=0;i<values.keys.length;i++){
                 let file = `fileList${values.keys[i]}`
                 deviceSpotcheckModelsDetails[i]["spotcheckAddress"] = this.state[file].length === 0 ? null :this.state[file][0].response.data
-                deviceSpotcheckModelsDetails[i]["spotcheckContent"] = values.content[values.keys[i]];
-                deviceSpotcheckModelsDetails[i]["spotcheckItems"] = values.standard[values.keys[i]];
+                deviceSpotcheckModelsDetails[i]["spotcheckItems"] = values.content[values.keys[i]];
+                deviceSpotcheckModelsDetails[i]["spotcheckContent"] = values.standard[values.keys[i]];
                 deviceSpotcheckModelsDetails[i]["spotcheckPeriod"] = values.frequency[values.keys[i]];
             }
             data["deviceSpotcheckModelsDetails"] = deviceSpotcheckModelsDetails;
