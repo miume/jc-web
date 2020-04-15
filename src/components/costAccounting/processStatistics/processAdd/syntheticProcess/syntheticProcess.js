@@ -30,7 +30,7 @@ class SyntheticProcess extends Component{//合成工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input value={record.volume} name={`${record.index}-${'volume'}`}  onChange={this.inputChange}/>
+                    <Input value={record.weight} name={`${record.index}-${'weight'}`}  onChange={this.inputChange}/>
                 )
             }
         },{
