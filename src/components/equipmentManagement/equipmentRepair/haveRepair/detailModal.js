@@ -17,44 +17,24 @@ class DetailModal extends React.Component{
         dataIndex: 'index',
         key: 'index',
         sorter: (a, b) => a.index - b.index,
-        align:'center',
-        width: '80px',
+        width: '10%'
     },{
         title: '配件名称',
         dataIndex: 'name',
         key: 'name',
-        align:'center',
-        width: '150px',
+        width: '30%'
     },{
         title: '配件规格',
         dataIndex: 'specification',
         key: 'specification',
-        align:'center',
-        width: '150px',
+        width: '30%'
     },{
         title: '配件数量',
         dataIndex: 'counts',
         key: 'counts',
-        align:'center',
-        width: '120px',
+        width: '30%'
     }]
 
-    dataSource=[{
-        code:'1',
-        name:'螺丝',
-        specification:'big',
-        counts:6
-    },{
-        code:'2',
-        name:'螺丝',
-        specification:'big',
-        counts:6
-    },{
-        code:'3',
-        name:'螺丝',
-        specification:'big',
-        counts:6
-    }]
     render() {
         return(
             <div style={{display:'flex'}}>
@@ -82,6 +62,7 @@ class DetailModal extends React.Component{
                         <Col span={12}>报修时间：{this.props.record.reportTime}</Col>
                         <Col span={12}>报修人：{this.props.record.reportPeople}</Col>
                     </Row>
+                    <div style={{padding: '6px 0'}}>协作人：{this.state.helpPeoples}</div>
                     <div style={{padding: '6px 0'}}>故障描述：{this.props.record.faultContent}</div>
                     <div style={{padding: '6px 0'}}>故障处理及原因分析：{this.props.record.faultReason}</div>
 
@@ -137,6 +118,7 @@ class DetailModal extends React.Component{
                 this.setState({
                     visible: true,
                     detailData: res,
+                    helpPeoples: data.data.data.helpPeoples || ''
                 })
             } else {
 
