@@ -504,9 +504,8 @@ class CostProcessAdd extends Component {
         
         for(let i=0;i<addDataSave.goodInProcessDTOS['2'].materialDetails.length;i++){
             addDataSave.goodInProcessDTOS['2'].materialDetails[i]['volume']=1
-            addDataSave.goodInProcessDTOS['2'].materialDetails[i]['weight']=1
+            
         }
-        console.log(addDataSave)
         axios({
             url: `${this.url.precursorGoodIn.saveOrCommit}`,
             method: 'post',
