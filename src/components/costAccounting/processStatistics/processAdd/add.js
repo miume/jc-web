@@ -116,6 +116,7 @@ class CostProcessAdd extends Component {
                     this.setState({
                         tagTableData: tagTable.goodInProcessDTOS,
                         addData: tagTable,
+                        addDataSave: JSON.parse(JSON.stringify(tagTable)),
                         otherMaterial:tagTable.otherMaterials,
                         dataOrigin:JSON.parse(JSON.stringify(tagTable.goodInProcessDTOS))
                     })
@@ -269,6 +270,7 @@ class CostProcessAdd extends Component {
                         this.setState({
                             tagTableData: tagTable.goodInProcessDTOS,
                             addData: tagTable,
+                            addDataSave:JSON.parse(JSON.stringify(tagTable)),
                             otherMaterial:tagTable.otherMaterials,
                             loading:false
                         })
@@ -291,7 +293,7 @@ class CostProcessAdd extends Component {
     }
 
     getChange(tabKey, inputData, selectData) {  //获取到下拉框，输入框填的值
-        let {addData,otherData,otherFlag}=this.state
+        let {addData,otherData,otherFlag,addDataSave}=this.state
         if (inputData) {
             let value = inputData.target.value;
                 value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
@@ -299,14 +301,19 @@ class CostProcessAdd extends Component {
             let index = inputData1[0],    //定位到是第几条数据
                 name = inputData1[1]     //输入框内容变化的字段
             if(tabKey==='6'&&otherFlag){
-                // if(value[value.length-1] !== '.'){
-                //     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                // }
+                if(value[value.length-1] !== '.'){
+                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                }
                 otherData[index - 1][name]=value
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
             else{
+                // if(value[value.length-1] !== '.'){
+                //     value= value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                // }
+         
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] =value
+                addDataSave.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name]=parseFloat(value)
             }
         }
         if (selectData) {
@@ -321,13 +328,14 @@ class CostProcessAdd extends Component {
             let index = inputData1[0],    //定位到是第几条数据
                 name = inputData1[1]    //输入框内容变化的字段
             if(tabKey==='6'&&otherFlag){
-                // if(value[value.length-1] !== '.'){
-                //     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                // }
+                if(value[value.length-1] !== '.'){
+                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                }
                 otherData[index - 1][name]=value
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
             else {
+                
                 if (value[value.length - 1] !== '.') {
                     value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
                 }
@@ -488,8 +496,17 @@ class CostProcessAdd extends Component {
             loading:true
         })
         let flag=(f===1?1:0)
-        this.state.addData['periodId'] = this.state.periodCode
-        this.state.addData['lineName'] = this.state.inputPeriod
+        let {addData,addDataSave}=this.state
+        addData['periodId'] = this.state.periodCode
+        addData['lineName'] = this.state.inputPeriod
+        addDataSave['periodId'] = this.state.periodCode
+        addDataSave['lineName'] = this.state.inputPeriod
+        
+        for(let i=0;i<addDataSave.goodInProcessDTOS['2'].materialDetails.length;i++){
+            addDataSave.goodInProcessDTOS['2'].materialDetails[i]['volume']=1
+            addDataSave.goodInProcessDTOS['2'].materialDetails[i]['weight']=1
+        }
+        console.log(addDataSave)
         axios({
             url: `${this.url.precursorGoodIn.saveOrCommit}`,
             method: 'post',
@@ -500,7 +517,7 @@ class CostProcessAdd extends Component {
                 statisticId: this.props.location.editFlag?this.props.location.code:this.state.statisticId,
                 flag: flag
             },
-            data: this.state.addData
+            data: addDataSave
 
         }).then(data => {
             message.info(data.data.data)
