@@ -30,13 +30,11 @@ class EqMaintenancePlan extends React.Component{
             searchContent:'',
             params:{},
             selectContent:-1,
-            //控制分页
-            // page:1,
-            // size:10,
-            // current:1,
             loading: true
         };
         this.pagination = {
+            pageSize: 10,
+            current: 1,
             showSizeChanger:true,
             showTotal(total) {
                 return `共${total}条记录`
@@ -88,7 +86,7 @@ class EqMaintenancePlan extends React.Component{
                         <ContentTable
                             url={this.url}
                             depCode={this.state.depCode}
-                            getTableData={this.getTableData}
+                            getTableData={this.handleTableChange}
                             getMaintType={this.getMaintType}
                             MaintenanceType={this.state.MaintenanceType}
                             Device={this.state.Device}
@@ -163,11 +161,9 @@ class EqMaintenancePlan extends React.Component{
     }
 
      /**获取表格当前请求页数和每页显示数据数量*/
-     getTableSize = (current,size)=>{
-        this.setState({
-            size:size,
-            current:current,
-        })
+     handleTableChange = (pagination)=>{
+        this.pagination = pagination;
+        this.getTableData()
     }
 
     /**获取表格数据*/
@@ -176,6 +172,8 @@ class EqMaintenancePlan extends React.Component{
         statusId: this.state.selectContent,
         condition:this.state.searchContent,
         depName:this.state.deviceName,
+        size: this.pagination.pageSize,
+        page: this.pagination.current
     }) => {
         this.setState({
             loading: true,
@@ -325,6 +323,8 @@ class EqMaintenancePlan extends React.Component{
             searchContent:'',
             selectContent: -1
         });
+        this.pagination.current = 1;
+        this.pagination.pageSize = 10;
         this.getTableData({
             deptId: parseInt(this.state.depCode),
             statusId:-1,

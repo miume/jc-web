@@ -111,15 +111,15 @@ class ContentTable extends React.Component {
     }
 
     handleTableChange=(page)=>{
-        const params={
-            deptId: this.props.depCode,
-            statusId: this.props.statusId,
-            condition:this.props.searchContent,
-            page:page.current,
-            depName:this.props.depName,
-            size:page.pageSize,
-        }
-        this.props.getTableData(params);
+        // const params={
+        //     deptId: this.props.depCode,
+        //     statusId: this.props.statusId,
+        //     condition:this.props.searchContent,
+        //     page:page.current,
+        //     depName:this.props.depName,
+        //     size:page.pageSize,
+        // }
+        this.props.getTableData(page);
     }
     handleDel=(id)=>{
         axios({
