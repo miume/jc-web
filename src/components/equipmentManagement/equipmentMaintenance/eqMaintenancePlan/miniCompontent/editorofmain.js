@@ -228,16 +228,17 @@ class EditorofMain extends React.Component{
                 let itemsCode = deviceMaintenanceItems[i].code;
                 deviceMaintenanceItems[i]['itemsCode'] = itemsCode;
                 delete deviceMaintenanceItems[i].code;
-                if( i < len && itemsCode === deviceMaintenancePlansDetails[i].itemsCode) {
-                    selectedRowKeys.push(itemsCode);
-                    selectedRows.push(deviceMaintenancePlansDetails[i])
-                }
+            }
+            for(let j = 0; j < len; j++) {
+                selectedRowKeys.push(deviceMaintenancePlansDetails[j]['itemsCode']);
+                selectedRows.push(deviceMaintenancePlansDetails[j])
             }
             this.setState({
                 deviceMaintenanceItems:deviceMaintenanceItems,
                 editorVisible:true,
                 selectedRowKeys: selectedRowKeys,
-                detailNum: detailNum
+                detailNum: detailNum,
+                selectedRows
             })
         })
     }
