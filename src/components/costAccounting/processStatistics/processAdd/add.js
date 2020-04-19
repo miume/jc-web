@@ -301,17 +301,16 @@ class CostProcessAdd extends Component {
             let index = inputData1[0],    //定位到是第几条数据
                 name = inputData1[1]     //输入框内容变化的字段
             if(tabKey==='6'&&otherFlag){
-                if(value[value.length-1] !== '.'){
-                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                }
+                // if(value[value.length-1] !== '.'){
+                //     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                // }
+               
                 otherData[index - 1][name]=value
+               
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
+                addDataSave.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
             else{
-                // if(value[value.length-1] !== '.'){
-                //     value= value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                // }
-         
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] =value
                 addDataSave.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name]=parseFloat(value)
             }
@@ -321,6 +320,7 @@ class CostProcessAdd extends Component {
             let codeSelect = selectData[0],    //第几个下拉框
                         id = selectData[1]     //下拉框的哪个option
            addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
+           addDataSave.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
         }
         if (inputData && selectData) {
             let value = inputData.target.value;
@@ -328,17 +328,15 @@ class CostProcessAdd extends Component {
             let index = inputData1[0],    //定位到是第几条数据
                 name = inputData1[1]    //输入框内容变化的字段
             if(tabKey==='6'&&otherFlag){
-                if(value[value.length-1] !== '.'){
-                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                }
+                // if(value[value.length-1] !== '.'){
+                //     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                // }
                 otherData[index - 1][name]=value
+              
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
+                addDataSave.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
             else {
-                
-                if (value[value.length - 1] !== '.') {
-                    value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
-                }
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
             }
             selectData=selectData.split('-')
@@ -502,9 +500,11 @@ class CostProcessAdd extends Component {
         addDataSave['periodId'] = this.state.periodCode
         addDataSave['lineName'] = this.state.inputPeriod
         
-        for(let i=0;i<addDataSave.goodInProcessDTOS['2'].materialDetails.length;i++){
-            addDataSave.goodInProcessDTOS['2'].materialDetails[i]['volume']=1
-            
+        // for(let i=0;i<addDataSave.goodInProcessDTOS['2'].materialDetails.length;i++){
+        //     addDataSave.goodInProcessDTOS['2'].materialDetails[i]['volume']=1
+        // }
+        for(let i=0;i<addData.goodInProcessDTOS['2'].materialDetails.length;i++){
+            addData.goodInProcessDTOS['2'].materialDetails[i]['volume']=1
         }
         axios({
             url: `${this.url.precursorGoodIn.saveOrCommit}`,
@@ -516,7 +516,7 @@ class CostProcessAdd extends Component {
                 statisticId: this.props.location.editFlag?this.props.location.code:this.state.statisticId,
                 flag: flag
             },
-            data: addDataSave
+            data: addData
 
         }).then(data => {
             message.info(data.data.data)
