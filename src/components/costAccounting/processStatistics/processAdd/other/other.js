@@ -151,6 +151,7 @@ class Other extends Component{//其他工序
        this.setState({
            data:data
        })
+       this.props.handleOtherDelete(data)
     }
     judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];

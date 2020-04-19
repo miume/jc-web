@@ -59,6 +59,7 @@ class CostProcessAdd extends Component {
         this.submit = this.submit.bind(this);
         this.save = this.save.bind(this);
         this.handleOtherAdd=this.handleOtherAdd.bind(this);
+        this.handleOtherDelete=this.handleOtherDelete.bind(this);
         this.otherSelectChange=this.otherSelectChange.bind(this);
         this.editData=this.editData.bind(this);
         this.alterData=this.alterData.bind(this);
@@ -291,7 +292,13 @@ class CostProcessAdd extends Component {
             otherData:data
         })
     }
-
+    handleOtherDelete(data){//其他标签页的删除后的数据要传父组件
+        let {addData}=this.state
+        addData.goodInProcessDTOS['5'].materialDetails=data
+        this.setState({
+            addData:addData
+        })
+    }
     getChange(tabKey, inputData, selectData) {  //获取到下拉框，输入框填的值
         let {addData,otherData,otherFlag,addDataSave}=this.state
         if (inputData) {
@@ -584,7 +591,7 @@ class CostProcessAdd extends Component {
         }, {
             component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <Other tagTableData={this.state.tagTableData} otherData={this.state.otherData} otherMaterial={this.state.otherMaterial} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <Other tagTableData={this.state.tagTableData} otherData={this.state.otherData} otherMaterial={this.state.otherMaterial} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  handleOtherDelete={this.handleOtherDelete} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }]
         return (
             <div >
