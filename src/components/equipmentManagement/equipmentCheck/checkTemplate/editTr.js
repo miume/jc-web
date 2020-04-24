@@ -55,7 +55,7 @@ class Tr extends React.Component{
                         className="dynamic-delete-button"
                         type="minus-circle-o"
                         disabled={keys.length === 1}
-                        onClick={() => this.remove(k)}
+                        onClick={() => this.props.remove(k)}
                     />
                 ) : null}
                 </Form.Item>

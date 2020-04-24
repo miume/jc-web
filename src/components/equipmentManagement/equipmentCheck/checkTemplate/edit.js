@@ -180,7 +180,7 @@ class Edit extends React.Component{
                     title='编辑' visible={this.state.visible}
                     closable={false} centered={true}
                     maskClosable={false}
-                    width='800px'
+                    width='1000px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
@@ -190,13 +190,14 @@ class Edit extends React.Component{
                         <span className="headers">所属部门：</span><span className="checkName">{this.props.deptName}</span>
                             <span className="headers">设备名称：</span><span className="checkName">{this.props.deviceName}</span>
                             <span className="headers">模板名称：</span><span><Input style={{width:'200px'}} value={this.state.date} onChange={this.onChangeTime} placeholder="请选择时间"/></span>
-                            <div className="radios">
-                            <span className="headers">模板状态：</span><Radio.Group onChange={this.onChange} value={this.state.radioValue}>
+                            <div>
+                            <span className="headers">模板状态：</span>
+                            <Radio.Group onChange={this.onChange} value={this.state.radioValue} style={{width:'200px'}}>
                                 <Radio value={false}>生效</Radio>
                                 <Radio value={true}>失效</Radio>
                             </Radio.Group>
-                            <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.peopleName:"管理员"}</span>
-                            <span className="headersDate">制表日期：</span><span className="checkName">{this.state.tabulateDate}</span>
+                            <span className="headers">制表人：</span><span className="checkName">{this.state.peopleName?this.state.peopleName:"管理员"}</span>
+                            <span className="headers">制表日期：</span><span className="checkName">{this.state.tabulateDate}</span>
                             </div>
                         <Divider />
                         <div id="edit" style={{height:'360px'}}>

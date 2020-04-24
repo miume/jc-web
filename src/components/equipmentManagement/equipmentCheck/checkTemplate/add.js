@@ -237,8 +237,9 @@ class AddBut extends React.Component{
                         <span className="headers">所属部门：</span><span className="checkName">{this.props.deptName}</span>
                         <span className="headers">设备名称：</span><span className="checkName">{this.props.deviceName}</span>
                         <span className="headers">模板名称：</span><span><Input style={{width:'200px'}} value={this.state.date} onChange={this.onChangeTime} placeholder="请输入名称"/></span>
-                        <div className="radios">
-                            模板状态：<Radio.Group onChange={this.onChange} value={this.state.radioValue}>
+                        <div>
+                        <span className="headers">模板状态：</span>
+                        <Radio.Group onChange={this.onChange} value={this.state.radioValue}>
                             <Radio value={false}>生效</Radio>
                             <Radio value={true}>失效</Radio>
                         </Radio.Group>
