@@ -133,9 +133,6 @@ class AddBut extends React.Component{
             }).then((data)=>{
                 if(data.data.code !== 0){
                     message.info('新增失败')
-                  this.setState({
-                    visible:true
-                  })
                 }else{
                     message.info(data.data.message);
                     this.props.getTableData({

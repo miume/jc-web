@@ -142,9 +142,6 @@ class Edit extends React.Component{
             }).then((data)=>{
                 if(data.data.code !== 0){
                     message.info('编辑失败')
-                  this.setState({
-                    visible:true
-                  })
                 }else{
                     message.info(data.data.message);
                     this.props.getTableData({
