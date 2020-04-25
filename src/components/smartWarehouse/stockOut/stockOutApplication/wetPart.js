@@ -26,40 +26,40 @@ class WetPart extends React.Component {
         return (
             <div>
                 <div className={'stock-out-flex'} style={{marginTop: 10}}>
-                    <div>
-                        <span className='stock-out-application-span'>湿法产线：</span>
-                        <Select placeholder={'请选择产线'} style={{width: 115}} onChange={this.selectChange} value={lineCode}>
-                            {
-                                linesData.length ? linesData.map(e => <Option key={e.code} value={e.code} name={'lineCode'}>{e.name}</Option>) : null
-                            }
-                        </Select>
-                    </div>
-                    <div>
-                        <span className='stock-out-application-span'>出库点：</span>
-                        <Select placeholder={'请选择出库点'} style={{width: 115}} onChange={this.selectChange} value={outPoint}>
-                            {
-                                addressData.length ? addressData.map(e => <Option key={e.id} value={e.id} name={'outPoint'}>{e.deliveryAddressName}</Option>) : null
-                            }
-                        </Select>
-                    </div>
-                    <div>
-                        <span className='stock-out-application-span'>出库类别：</span>
-                        <Select placeholder={'请选择出库类别'} style={{width: 115}} onChange={this.selectChange} value={outType}>
-                            {
-                                outTypeData.length ? outTypeData.map(e => <Option key={e.id} value={e.id} name={'outType'}>{e.deliveryTypeName}</Option>) : null
-                            }
-                        </Select>
-                    </div>
-                </div>
-                <div className={'stock-out-flex'} style={{marginTop: 10}}>
                     <div style={{lineHeight: '35px'}}>
-                        <span className='stock-out-application-span'>领料部门：</span>
+                        <span>领料部门：</span>
                         <span>{deptName}</span>
                     </div>
                     <div>
                         <span>批次信息：</span>
                         <Input value={batch} placeholder={'请输入批次'} style={{width: 170}} onChange={this.batchChange}/>
                         <BatchNumberSelect url={this.props.url} batchNumber={this.state.batch} getBatchNumber={this.getBatchNumber}/>
+                    </div>
+                    <div style={{width: 110}}></div>
+                </div>
+                <div className={'stock-out-flex'} style={{marginTop: 10}}>
+                    <div>
+                        <Select placeholder={'请选择湿法产线'} style={{width: 150}} onChange={this.selectChange} value={lineCode}>
+                            {
+                                linesData.length ? linesData.map(e => <Option key={e.code} value={e.code} name={'lineCode'}>{e.name}</Option>) : null
+                            }
+                        </Select>
+                    </div>
+                    <div>
+                        {/* <span className='stock-out-application-span'>出库点：</span> */}
+                        <Select placeholder={'请选择出库点'} style={{width: 220}} onChange={this.selectChange} value={outPoint}>
+                            {
+                                addressData.length ? addressData.map(e => <Option key={e.id} value={e.id} name={'outPoint'}>{e.deliveryAddressName}</Option>) : null
+                            }
+                        </Select>
+                    </div>
+                    <div>
+                        {/* <span className='stock-out-application-span'>出库类别：</span> */}
+                        <Select placeholder={'请选择出库类别'} style={{width: 150}} onChange={this.selectChange} value={outType}>
+                            {
+                                outTypeData.length ? outTypeData.map(e => <Option key={e.id} value={e.id} name={'outType'}>{e.deliveryTypeName}</Option>) : null
+                            }
+                        </Select>
                     </div>
                     <Submit url={this.props.url} applySaveAndReview={this.applySaveAndReview}/>
                 </div>

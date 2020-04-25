@@ -23,31 +23,33 @@ class FirePart extends React.Component {
                 <div>{`领料部门：${deptName}`}</div>
                 <div className={'stock-out-flex'} style={{marginTop: 10}}>
                     <div>
-                        <span>
-                            火法产线：</span>
-                        <Select placeholder={'请选择产线'} style={{width: 110}} onChange={this.selectChange} value={lineCode}>
+                        {/* <span>
+                            火法产线：</span> */}
+                        <Select placeholder={'请选择火法产线'} style={{width: 150}} onChange={this.selectChange} value={lineCode}>
                             {
                                 linesData.length ? linesData.map(e => <Option key={e.code} value={e.code} name={'lineCode'}>{e.name}</Option>) : null
                             }
                         </Select>
                     </div>
                     <div>
-                        <span>出库点：</span>
-                        <Select placeholder={'请选择出库点'} style={{width: 110}} onChange={this.selectChange} value={outPoint}>
+                        {/* <span>出库点：</span> */}
+                        <Select placeholder={'请选择出库点'} style={{width: 220,marginLeft:10}} onChange={this.selectChange} value={outPoint} dropdownMatchSelectWidth={false} dropdownStyle={{width: 220}}>
                             {
                                 addressData.length ? addressData.map(e => <Option key={e.id} value={e.id} name={'outPoint'}>{e.deliveryAddressName}</Option>) : null
                             }
                         </Select>
                     </div>
                     <div>
-                        <span>出库类别：</span>
-                        <Select placeholder={'请选择出库类别'} style={{width: 110}} onChange={this.selectChange} value={outType}>
+                        {/* <span>出库类别：</span> */}
+                        <Select placeholder={'请选择出库类别'} style={{width: 150,margin:'0 10px'}} onChange={this.selectChange} value={outType}>
                             {
                                 outTypeData.length ? outTypeData.map(e => <Option key={e.id} value={e.id} name={'outType'}>{e.deliveryTypeName}</Option>) : null
                             }
                         </Select>
                     </div>
+                    <div style={{float:'right'}}>
                     <Submit url={this.props.url} applySaveAndReview={this.applySaveAndReview}/>
+                    </div>
                 </div>
             </div>
         )
