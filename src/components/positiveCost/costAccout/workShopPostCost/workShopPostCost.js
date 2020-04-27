@@ -108,11 +108,11 @@ class WorkShopPostCost extends Component{
             }
         }]
         this.returnFireCost=this.returnFireCost.bind(this);
-        this.returnFireCost=this.returnFireCost.bind(this);
         this.selectChange=this.selectChange.bind(this);
         this.getPeriod=this.getPeriod.bind(this);
         this.getTimeByPeriod=this.getTimeByPeriod.bind(this);
         this.timeChange=this.timeChange.bind(this);
+        this.confirm=this.confirm.bind(this)
     }
     componentDidMount(){
         this.getPeriod()
@@ -175,6 +175,53 @@ class WorkShopPostCost extends Component{
             periods:value
         })
     }
+    /**查询*/
+    confirm(){
+        let {periodCode,periods}=this.state
+        this.setState({
+            loading:true
+        })
+        axios({
+            url:this.url.anodeCostAccount.confirm,
+            headers:{
+                Authorization:this.url.Authorization
+            },
+            method:'get',
+            params:{
+                lineCode:1,
+                periodId:periodCode,
+                periods:periods
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                if(res[0]===1){
+                    message.error('不存在本期的产线统计数据，基础数据不全!');
+                }
+               else if(res[0]===2){
+                    message.error('不存在上期的产线统计数据，基础数据不全!');
+                }
+                else{
+                    for(let i=0;i<res.length;i++){
+                        res[i]['index']=i+1
+                    }
+                    this.setState({
+                        dataSource:res,
+                        loading:false
+                    })
+                }
+            }
+            else{
+                this.setState({
+                    loading:false,
+                    dataSource: []
+                })
+                message.error('操作失败，请联系管理员!');
+            }
+        }).catch(()=>{
+            message.error('操作失败，请联系管理员!')
+        })
+    }
     //返回火法成本
     returnFireCost(){
         this.props.history.push({pathname:'/positiveProductAccount'});
@@ -191,8 +238,9 @@ class WorkShopPostCost extends Component{
                             lineNameData={lineNameData} periods={periods} timeChange={this.timeChange} flag={true}
                             confirm={this.confirm}
                      />
+                     <div className='clear'></div> 
                     <Table
-                    rowKey={record=>record.code}
+                    rowKey={record=>record.index}
                     dataSource={this.state.dataSource}
                     size='small'
                     columns={this.columns}
