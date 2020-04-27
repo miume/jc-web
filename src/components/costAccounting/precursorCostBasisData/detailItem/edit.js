@@ -87,7 +87,7 @@ class AddModal extends React.Component{
     handleCreate = () =>{
         let {dataTypes,name,process,types,valueType,metal}=this.state
         var data = {
-            code:this.props.code,dataType:this.state.dataTypes,materialName:this.state.name,processCode:this.state.process,types:this.state.types,
+            code:this.props.code,dataType:this.state.dataTypes,materialName:this.state.name,processCode:this.state.process,types:this.state.types,valueType:valueType,
             mn:this.state.metal.includes("Mn")?1:0,co:this.state.metal.includes("Co")?1:0,ni:this.state.metal.includes("Ni")?1:0,
             alkaliFlag:types===1&&metal.includes('碱')?1: 0,//碱
             ammoniaFlag: types===1&&metal.includes('氨')?1: 0,//氨

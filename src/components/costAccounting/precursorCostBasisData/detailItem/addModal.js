@@ -121,6 +121,7 @@ class AddModal extends React.Component{
             metal:value
         })
     };
+    /**数据类型改变*/
     valueChange = (value)=>{
         this.setState({
             valueType:value
