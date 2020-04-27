@@ -190,6 +190,7 @@ class ProductPostCost extends Component{
                             lineNameData={lineNameData} periods={periods} timeChange={this.timeChange} flag={true}
                             confirm={this.confirm}
                      />
+                     <div className='clear'></div> 
                     <Table
                     rowKey={record=>record.code}
                     dataSource={this.state.dataSource}
