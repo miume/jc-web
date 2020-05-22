@@ -173,6 +173,8 @@ import ProductLinePostCost from '../positiveCost/costAccout/poductLinePostCost/p
 import ProductPostCost from '../positiveCost/costAccout/productPostCost/productPostCost'
 import WorkShopPostCost from '../positiveCost/costAccout/workShopPostCost/workShopPostCost'
 import PositiveCostOperation from '../positiveCost/costAccout/positiveCostAccount/mainMaterial'
+import TraceabilityBeforeDisassembly from '../QualityBacktracking/TraceabilityBeforeDisassembly/TraceabilityBeforeDisassembly'
+import ProcessTraceability from '../QualityBacktracking/ProcessTraceability/ProcessTraceability'
 export const routes = [{
     path: '/role',
     component: Role
@@ -685,4 +687,13 @@ export const routes = [{
     },{
         path:'/positiveProductAccount',
         component:PositiveCostAccount
-    }];
+    }
+    ,{
+        path:'/traceBeforeDisassembly',
+        component:TraceabilityBeforeDisassembly
+    }
+    ,{
+        path:'/processTraceability',
+        component:ProcessTraceability
+    }
+    ];

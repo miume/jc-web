@@ -1057,6 +1057,26 @@ class Home extends Component {
             },
             /**设备管理-基础数据-设备维续 */
             deviceRepairType: `${server}/jc/common/deviceRepairType`,
+
+            TraceabilityBeforeDisassembly: {
+                all: `${server}/jc/common/TraceabilityBeforeDisassemblyController/getAll`,
+                page: `${server}/jc/common/TraceabilityBeforeDisassemblyController/page`,
+                add: `${server}/jc/common/TraceabilityBeforeDisassemblyController`,
+                update: `${server}/jc/common/TraceabilityBeforeDisassemblyController`,
+                delete: `${server}/jc/common/TraceabilityBeforeDisassemblyController`,
+                deletes: `${server}/jc/common/TraceabilityBeforeDisassemblyController/ids`,
+                detail: `${server}/jc/common/TraceabilityBeforeDisassemblyController/detail`,
+            },
+
+            ProcessTraceability: {
+                all: `${server}/jc/common/ProcessTraceabilityController/getAll`,
+                page: `${server}/jc/common/ProcessTraceabilityController/page`,
+                add: `${server}/jc/common/ProcessTraceabilityController`,
+                update: `${server}/jc/common/ProcessTraceabilityController`,
+                delete: `${server}/jc/common/ProcessTraceabilityController`,
+                deletes: `${server}/jc/common/ProcessTraceabilityController/ids`,
+                detail: `${server}/jc/common/ProcessTraceabilityController/detail`,
+            }
     };
 
         localStorage.setItem('status', JSON.stringify(status));
