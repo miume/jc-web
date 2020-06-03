@@ -311,6 +311,7 @@ class Home extends Component {
                 addNewClass: `${server}/jc/common/techProductStandard/newClass`,
 
                 getAllProductCommonBatch: `${server}/jc/common/product/getAllProductCommonBatch`,
+                getItemsByProductStandardId: `${server}/jc/common/product/getItemsByProductStandardId`,
             },
             /**设备基本厂商*/
             equipmentManufacture: {

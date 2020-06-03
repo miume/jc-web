@@ -312,7 +312,7 @@ class BatchSelect extends React.Component{
                     visible={this.state.visible}
                     closable={false}
                     title="批次规则"
-                    width="850px"
+                    width="1020px"
                     footer={[
                         <CancleButton key='back' handleCancel={this.onCancel}/>,
                         <AddButton key="submit" handleClick={this.onCenter} name='确定' className='fa fa-check' />

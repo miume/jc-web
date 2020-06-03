@@ -9,3 +9,11 @@
 .check-box::-webkit-scrollbar{
     display: none;
 }
+
+.rawSelectTop {
+    width: 100%;
+    display: flex;
+}
+.rawSelectTable {
+    padding-top: 10px;
+}
