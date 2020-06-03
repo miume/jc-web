@@ -1,15 +1,15 @@
 import React from 'react';
-import {Input, Select,message} from "antd";
+import {Select,message} from "antd";
 import Submit from "../../../BlockQuote/checkSubmit";
 import axios from "axios";
-import BatchNumberSelect from "../../../BlockQuote/batchNumberSelect";
+// import BatchNumberSelect from "../../../BlockQuote/batchNumberSelect";
 const {Option} = Select;
 
 class WetPart extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            batch: undefined,
+            batch: 1,
             linesData: [],
             deptCode: ''
         };
@@ -30,11 +30,11 @@ class WetPart extends React.Component {
                         <span>领料部门：</span>
                         <span>{deptName}</span>
                     </div>
-                    <div>
+                    {/* <div>
                         <span>批次信息：</span>
                         <Input value={batch} placeholder={'请输入批次'} style={{width: 170}} onChange={this.batchChange}/>
                         <BatchNumberSelect url={this.props.url} batchNumber={this.state.batch} getBatchNumber={this.getBatchNumber}/>
-                    </div>
+                    </div> */}
                     <div style={{width: 110}}></div>
                 </div>
                 <div className={'stock-out-flex'} style={{marginTop: 10}}>
@@ -118,7 +118,7 @@ class WetPart extends React.Component {
             message.info('送审表格数据不能为空！');
             return
         }
-        if(!auditId || !deptCode || !lineCode || !outPoint || !outType || !batch) {
+        if(!auditId || !deptCode || !lineCode || !outPoint || !outType) {
             message.info('数据不完整，不能送审！');
             return
         }

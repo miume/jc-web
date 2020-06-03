@@ -104,3 +104,7 @@
     height: 370px;
     overflow: auto;
 }
+.process-material-add-footer {
+    display: flex;
+    margin: 10px 0;
+}

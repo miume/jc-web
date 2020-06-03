@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import NewButton from "../../BlockQuote/newButton";
+import NewButton from "../../../BlockQuote/newButton";
 import {Input, Modal, message} from "antd";
-import CancleButton from "../../BlockQuote/cancleButton";
-import SaveButton from "../../BlockQuote/saveButton";
+import CancleButton from "../../../BlockQuote/cancleButton";
+import SaveButton from "../../../BlockQuote/saveButton";
 
 class AddModal extends React.Component {
     constructor(props) {
@@ -20,9 +20,9 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,siteName} = this.state, {title} = this.props;
+        let {visible,name} = this.state, {title,flag} = this.props;
         return (
-            <span>
+            <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
                 <Modal title={title} visible={visible} maskClosable={false} closable={false}
                        centered={true} width={400}
@@ -32,8 +32,7 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <div>站点名称：</div>
-                        <Input placeholder={'请输入站点名称'} name={'siteName'} value={siteName} style={{width:200}} onChange={this.inputChange}/>
+                        <Input placeholder={'请输入岗位名称'} name={'name'} value={name} onChange={this.inputChange}/>
                     </div>
                 </Modal>
             </span>
@@ -52,10 +51,10 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {siteName,code} = record;
+            let {name,id} = record;
             this.setState({
-                siteName,
-                code
+                name,
+                id
             });
         }
         this.setState({
@@ -66,8 +65,7 @@ class AddModal extends React.Component {
     /**取消事件*/
     handleCancel() {
         this.setState({
-            visible: false,
-            siteName: undefined
+            visible: false
         });
     }
 
@@ -91,27 +89,37 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                message.info(data.data.message);
-                this.props.getTableParams();
+                if(data.data.code === '000000') {
+                    message.info(data.data.mesg);
+                    this.props.getTableParams();
+                } else {
+                    message.info(data.data.data);
+                }
             })
         }
     }
 
     saveDataProcessing() {
-        let {siteName,code} = this.state,
+        let {name,id} = this.state,
             data = {
-                code,
-                siteName
-            }, method = 'post', url = this.props.url.checkSite.add;
-        if(!siteName) {
-            message.info('请将站点名称填写完整！');
+                id,
+                name
+            }, method = 'post', url = this.props.url.firePosition;
+        if(!name) {
+            message.info('请将新增信息填写完整！');
             return false
         }
-        if(code) {
+        if(id) {
             method = 'put';
-            url = this.props.url.checkSite.update;
+            url = this.props.url.firePosition;
         }
         return {data,method,url};
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 
