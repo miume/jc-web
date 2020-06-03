@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
-import {Input, Modal, message, Divider} from "antd";
+import {Input, Modal, message,Select} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 
@@ -16,11 +16,12 @@ class AddModal extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
+        this.selectChange = this.selectChange.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
     }
 
     render() {
-        let {visible,deliveryAddressName} = this.state, {title,flag} = this.props;
+        let {visible,deliveryAddressName,type} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -33,6 +34,12 @@ class AddModal extends React.Component {
                 >
                     <div className={'check-item'}>
                         <Input placeholder={'请输入出库点'} name={'deliveryAddressName'} value={deliveryAddressName}  onChange={this.inputChange}/>
+                    </div>
+                    <div className={'check-item'}>
+                        <Select placeholder='请选择类型' onChange={this.selectChange} style={{width: '100%'}} value={type}>
+                            <Select.Option value='1'>南</Select.Option>
+                            <Select.Option value='0'>北</Select.Option>
+                        </Select>
                     </div>
                 </Modal>
             </span>
@@ -51,10 +58,11 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {deliveryAddressName,id} = record;
+            let {deliveryAddressName,id,type} = record;
             this.setState({
                 deliveryAddressName,
-                id
+                id,
+                type: type ? '1' : '0'
             });
         }
         this.setState({
@@ -66,7 +74,8 @@ class AddModal extends React.Component {
     handleCancel() {
         this.setState({
             visible: false,
-            deliveryAddressName:undefined
+            deliveryAddressName:undefined,
+            type: undefined
         });
     }
 
@@ -74,6 +83,12 @@ class AddModal extends React.Component {
         let tar = e.target, name = tar.name, value = tar.value;
         this.setState({
             [name]: value
+        })
+    }
+
+    selectChange(value) {
+        this.setState({
+            type: value
         })
     }
 
@@ -102,13 +117,14 @@ class AddModal extends React.Component {
     }
 
     saveDataProcessing() {
-        let {deliveryAddressName,id} = this.state,
+        let {deliveryAddressName,id,type} = this.state,
             data = {
                 id,
-                deliveryAddressName
+                deliveryAddressName,
+                type: type ? true : false
             }, method = 'post', url = `${this.props.url.swmsBasicDeliveryAddressInfo}/add`;
-        if(!deliveryAddressName) {
-            message.info('请将站点名称填写完整！');
+        if(!deliveryAddressName && type !== undefined) {
+            message.info('请将新增信息填写完整！');
             return false
         }
         if(id) {

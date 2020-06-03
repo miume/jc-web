@@ -1077,7 +1077,8 @@ class Home extends Component {
                 delete: `${server}/jc/common/ProcessTraceabilityController`,
                 deletes: `${server}/jc/common/ProcessTraceabilityController/ids`,
                 detail: `${server}/jc/common/ProcessTraceabilityController/detail`,
-            }
+            },
+            firePosition: `${server}/jc/common/firePosition`
     };
 
         localStorage.setItem('status', JSON.stringify(status));
