@@ -21,8 +21,8 @@ class Login extends React.Component {
     this.infoShow=this.infoShow.bind(this)
   }
   componentWillMount() {
-    localStorage.setItem("server", "http://47.107.237.60:3389");//外网
-    //localStorage.setItem("server", "http://119.39.4.6:18080");//jcweb
+    localStorage.setItem("server", "http://125.94.71.249:3389");//外网
+    // localStorage.setItem("server", "http://119.39.4.6:18080");//jcweb
     //localStorage.setItem("server", "http://192.168.190.161:8080");//Jcweb1
   }
 
@@ -36,6 +36,9 @@ class Login extends React.Component {
               /**如果登陆成功  则屏蔽enter键 */
               if(res.data){
                 window.onkeydown = undefined;
+                this.setState({
+                  isLogin: true
+                })
                 if(res.data && res.data.menuList)
                   this.dataProcessing(res.data)
               }
@@ -94,7 +97,7 @@ class Login extends React.Component {
     }
  }
   render() {
-    let {loading} = this.state;
+    let {loading,isLogin} = this.state;
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>
       <Spin spinning={loading} >
@@ -108,7 +111,7 @@ class Login extends React.Component {
                     <Tabs.TabPane tab='火法' key='1'></Tabs.TabPane>
                     <Tabs.TabPane tab='湿法' key='2'></Tabs.TabPane>
                   </Tabs>
-                  <LoginItem loginIn={this.loginIn} handleInfo={this.handleInfo}/>
+                  <LoginItem loginIn={this.loginIn} handleInfo={this.handleInfo} isLogin={isLogin}/>
                 </div>
               </div>
         </div>

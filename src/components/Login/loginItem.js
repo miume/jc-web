@@ -21,10 +21,10 @@ class LoginItem extends React.Component {
         return (
             <div className={'login-spin'}>
                 <Input className='login-input' size='large' name='username' value={username} onChange={this.inputChange}
-                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)'}} />} placeholder="请输入用户名称"/>
+                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)'}} />} placeholder="请输入用户名称" enterButton/>
                 <div className='login-blockquote'></div>
                 <Input className='login-input' name='password' value={password} onChange={this.inputChange} type='password' size='large'
-                       prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录"/>
+                       prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录" enterButton/>
                 <div className='login-blockquote'></div>
                 <Checkbox style={{float:'left'}} onChange={this.remindLogin} defaultChecked={document.cookie ? true : false}>记住登录状态</Checkbox>
                 <div className='login-blockquote'></div>
@@ -41,7 +41,7 @@ class LoginItem extends React.Component {
     /**登陆接口调用 */
     handleSubmit() {
         let {username,password} = this.state;
-        if(!this.beforeLogin(username,password)){
+        if(!this.props.isLogin && !this.beforeLogin(username,password)){
             return
         }
         this.props.loginIn(username,password);

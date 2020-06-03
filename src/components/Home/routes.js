@@ -175,6 +175,8 @@ import WorkShopPostCost from '../positiveCost/costAccout/workShopPostCost/workSh
 import PositiveCostOperation from '../positiveCost/costAccout/positiveCostAccount/mainMaterial'
 import TraceabilityBeforeDisassembly from '../QualityBacktracking/TraceabilityBeforeDisassembly/TraceabilityBeforeDisassembly'
 import ProcessTraceability from '../QualityBacktracking/ProcessTraceability/ProcessTraceability'
+
+import JobInformation from '../fireQuality/baseData/jobInformation/jobInformation'
 export const routes = [{
     path: '/role',
     component: Role
@@ -695,5 +697,7 @@ export const routes = [{
     ,{
         path:'/processTraceability',
         component:ProcessTraceability
-    }
-    ];
+    },{
+        path: '/jobInformation',
+        component: JobInformation
+    }];

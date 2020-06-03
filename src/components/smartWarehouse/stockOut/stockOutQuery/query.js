@@ -30,7 +30,7 @@ class Query extends React.Component {
             title: '出库单号',
             key: 'head.id',
             dataIndex: 'head.id',
-            width: '10%'
+            width: '8%'
         },{
             title: '领用单位',
             key: 'dept',
@@ -45,22 +45,22 @@ class Query extends React.Component {
             title: '出库状态',
             key: 'status',
             dataIndex: 'status',
-            width: '11%'
+            width: '10%'
         },{
             title: '使用产线',
             key: 'line',
             dataIndex: 'line',
-            width: '11%'
+            width: '10%'
         },{
             title: '出库类别',
             key: 'outType.deliveryTypeName',
             dataIndex: 'outType.deliveryTypeName',
-            width: '11%'
+            width: '10%'
         },{
             title: '出库点',
             key: 'address.deliveryAddressName',
             dataIndex: 'address.deliveryAddressName',
-            width: '11%'
+            width: '16%'
         },{
             title: '操作',
             key: 'head',
