@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import {Select,Button} from 'antd'
 import '../process.css'
+import ReadRecipe from './readRecipe'
 const {Option}=Select
 class SelectLine extends Component{
     constructor(props){
@@ -15,7 +16,7 @@ class SelectLine extends Component{
                         return(
                             <span key={data.line.code}>
                                 <span >{data.line.name} : </span>
-                                <Select  onChange={this.props.handleSelect} defaultValue={this.props.headerData[index].product?this.props.headerData[index].product:undefined} placeholder='产品型号' style={{width:'120px',marginRight:'10px',}}>
+                                {/* <Select  onChange={this.props.handleSelect} defaultValue={this.props.headerData[index].product?this.props.headerData[index].product:undefined} placeholder='产品型号' style={{width:'120px',marginRight:'10px',}}>
                                     {
                                         data.products.map((pro)=>{
                                             return(
@@ -23,7 +24,9 @@ class SelectLine extends Component{
                                             )
                                         })
                                     }
-                                </Select>
+                                </Select> */}
+
+                                <ReadRecipe/>
                             </span>
                         )
                     }):null

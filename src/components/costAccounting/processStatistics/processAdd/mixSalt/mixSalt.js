@@ -11,7 +11,9 @@ class MixSalt extends Component{//混合盐配置
             visible:false,
             data:[],
             selectedRowKeys:[],
-            selectValue:undefined
+            selectValue:undefined,
+            name:['产品型号','产品型号','产品型号','产品型号'],
+            modelBtnId:1,
         }
         this.columns=[{
             title:'序号',
@@ -77,10 +79,10 @@ class MixSalt extends Component{//混合盐配置
         this.showModal=this.showModal.bind(this);
         this.inputChange=this.inputChange.bind(this);
         this.getMixSalt=this.getMixSalt.bind(this);
-        this.handleTableChange=this.handleTableChange.bind(this)
         this.onSelectChange=this.onSelectChange.bind(this);
         this.getWeight=this.getWeight.bind(this);
     }
+
     handleSelect(value,name){//获取下拉框的id
         
         let selectKey=name.props.name;//监听是第几个下拉框change了
@@ -91,34 +93,55 @@ class MixSalt extends Component{//混合盐配置
     inputChange(e){
         this.props.getMix(this.props.processId,e,'')
     }
-    showModal(){
+    showModal(e){
         this.setState({
-            visible:true
+            visible:true,
+            modelBtnId:e.target.id//获取选中按钮的id，绑定的是产线的code
         })
         this.getMixSalt()
     }
-    handleOk(){
+    handleOk(){//读取配方的确定
+        let {selectValue,modelBtnId,name,mats}=this.state
+        name[modelBtnId-1]=selectValue[0].product
+        this.setState({
+            visible:false,
+            selectedRowKeys:[],
+            name:name,
+        })
+        let selectData=`${modelBtnId}-${selectValue[0].product}`//按钮id以及选的产品型号
+        this.props.getMix(this.props.processId,'', selectData)
+        axios({
+            url:this.props.url.precursorGoodIn.getByLineByProcess,
+            method:'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                lineCode:modelBtnId,
+                processCode:this.props.processId,
+                paramId:selectValue[0].paramId,
+            },
+            data:this.tableData
+        }).then(data=>{
+            this.props.alterData(this.props.processId,data.data.data)
+        })
+       // this.props.alterData(this.props.processId,selectValue)
+       
+    }
+    handleCancel(){//读取配方的取消
         this.setState({
             visible:false,
             selectedRowKeys:[]
         })
-        let {selectValue}=this.state
-        this.props.alterData(this.props.processId,selectValue)
     }
-    handleCancel(){
-        this.setState({
-            visible:false,
-            selectedRowKeys:[]
-        })
-    }
-    onSelectChange(selectedRowKeys,value) {//对应选择的这条这条记录
+    onSelectChange(selectedRowKeys,value) {//对应选择的这条记录
         this.setState({ 
             selectedRowKeys:selectedRowKeys,
             selectValue:value });
      }
-    getMixSalt(){//混合盐读取配方
+    getMixSalt(){//获取工艺参数
         axios({
-            url:this.props.url.processParam.mixRecipe,
+            url:this.props.url.processParam.recipe,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
@@ -135,11 +158,8 @@ class MixSalt extends Component{//混合盐配置
             }
         })
     }
-    getWeight(){//获取体积値}
+    getWeight(){//获取体积値
         this.props.weightAlterData(this.props.processId,'volume')
-    }
-    handleTableChange(pagination){//读取配方的表格数据切换页
-
     }
     render(){
         this.tableData = this.props.tagTableData&&this.props.tagTableData[1]&&this.props.tagTableData[1].materialDetails?this.props.tagTableData[1].materialDetails:[]
@@ -158,8 +178,20 @@ class MixSalt extends Component{//混合盐配置
         return(
             <div>
                 <NewButton name='获取体积値' flagConfirm={!this.props.flagConfirm} handleClick={this.getWeight}/>
-                <ReadRecipe rowSelection={rowSelection} handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm} data={this.state.data} handleTableChange={this.handleTableChange}/>
-                <SelectLine headerData={this.header} handleSelect={this.handleSelect} />
+                {/* <ReadRecipe rowSelection={rowSelection} handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm} data={this.state.data} handleTableChange={this.handleTableChange}/> */}
+                {/* <SelectLine headerData={this.header} handleSelect={this.handleSelect} /> */}
+                <span style={{float:'right'}}>
+                    {
+                        this.header?this.header.map((data,index)=>{
+                            return(
+                                    <ReadRecipe key={data.line.code} buttonId={data.line.code} lineName={data.line.name} rowSelection={rowSelection} handleCancel={this.handleCancel} handleOk={this.handleOk}
+                                     showModal={this.showModal} visible={this.state.visible} 
+                                    flagConfirm={!this.props.flagConfirm} data={this.state.data}
+                                     name={data.product===null?'产品型号':data.product}/>
+                            )
+                        }):null
+                    }
+                </span>
                 <div className='clear'></div>
                 <div style={{display:'flex'}}> 
                     <Table 
