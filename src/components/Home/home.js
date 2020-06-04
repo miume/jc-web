@@ -642,7 +642,8 @@ class Home extends Component {
                 getStartTime: `${server}/jc/common/goodIn/getStartTime`,
                 processCompare: `${server}/jc/common/goodIn/processCompare`,
                 lineCompare: `${server}/jc/common/goodIn/lineCompare`,
-                getVolume: `${server}/jc/common/goodIn/getVolumeWeight` //获取体积
+                getVolume: `${server}/jc/common/goodIn/getVolumeWeight`, //获取体积
+                getByLineByProcess: `${server}/jc/common/goodIn/getByLineByProcess`,//根据产线，工艺参数，获取上期数据
             },
 
             /**异常处理模块*/
@@ -703,6 +704,7 @@ class Home extends Component {
                 deleteByIds: `${server}/jc/common/processParam/deleteByIds`,
                 mixRecipe: `${server}/jc/common/processParam/mixRecipeList`, //混合盐读取配方
                 compoundRecipe: `${server}/jc/common/processParam/compoundRecipeList`,
+                recipe: `${server}/jc/common/processParam/getProcessParam`//读取配方（获取工艺参数）
             },
             /**正极基础统计周期*/
             positiveStatic: {

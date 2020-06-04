@@ -307,13 +307,9 @@ class CostProcessAdd extends Component {
             let inputData1 = inputData.target.name.split('-');
             let index = inputData1[0],    //定位到是第几条数据
                 name = inputData1[1]     //输入框内容变化的字段
-            if(tabKey==='6'&&otherFlag){
-                // if(value[value.length-1] !== '.'){
-                //     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
-                // }
-               
+            if(tabKey==='6'&&otherFlag){         
                 otherData[index - 1][name]=value
-               
+
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
                 addDataSave.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
@@ -339,7 +335,6 @@ class CostProcessAdd extends Component {
                 //     value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
                 // }
                 otherData[index - 1][name]=value
-              
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
                 addDataSave.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
@@ -368,23 +363,16 @@ class CostProcessAdd extends Component {
         })
     }
     alterData(tabKey,value){//根据获取到的读取配方，修改表格数据
-        let niPoency= value[0].ni,
-            coPotency=value[0].co,
-            mnPotency=value[0].mn,
-            solidContent=value[0].solidContent
         let {tagTableData}=this.state
-        if(tabKey==='2'){//混合盐
-            for (let i = 0; i < tagTableData[tabKey-1].materialDetails.length; i++) {
-                tagTableData[tabKey-1].materialDetails[i]['niPotency'] = niPoency
-                tagTableData[tabKey-1].materialDetails[i]['coPotency'] = coPotency
-                tagTableData[tabKey-1].materialDetails[i]['mnPotency'] = mnPotency
-            }
-        }
-        else{//合成和陈化
-            for (let i = 0; i < tagTableData[tabKey-1].materialDetails.length; i++) {
-                tagTableData[tabKey-1].materialDetails[i]['solidContent'] = solidContent
-            }
-        }
+            //for (let i = 0; i < tagTableData[tabKey-1].materialDetails.length; i++) {
+                // tagTableData[tabKey-1].materialDetails[i]['niPotency'] = niPoency
+                // tagTableData[tabKey-1].materialDetails[i]['coPotency'] = coPotency
+                // tagTableData[tabKey-1].materialDetails[i]['mnPotency'] = mnPotency
+                
+           // }
+           console.log(value)
+            tagTableData[tabKey-1].materialDetails = value
+      
         this.setState({
             tagTableData:tagTableData,
         })
@@ -589,7 +577,7 @@ class CostProcessAdd extends Component {
         }, {
             component: <AgingProcess tagTableData={this.state.tagTableData} url={this.url} alterData={this.alterData} processId={this.state.tabKey} getAge={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} alterData={this.alterData}  processId={this.state.tabKey} getDry={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
             component: <Other tagTableData={this.state.tagTableData} otherData={this.state.otherData} otherMaterial={this.state.otherMaterial} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  handleOtherDelete={this.handleOtherDelete} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }]

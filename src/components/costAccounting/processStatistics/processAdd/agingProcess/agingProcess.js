@@ -11,7 +11,9 @@ class AgingProcess extends Component{//陈化工序
             visible:false,
             data:[],
             selectedRowKeys:[],
-            selectValue:undefined
+            selectValue:undefined,
+            name:['产品型号','产品型号','产品型号','产品型号'],
+            modelBtnId:1,
         }
         this.columns=[{
             title:'序号',
@@ -85,7 +87,6 @@ class AgingProcess extends Component{//陈化工序
         this.handleOk=this.handleOk.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.showModal=this.showModal.bind(this);
-        this.getLastPotency=this.getLastPotency.bind(this);
         this.inputChange=this.inputChange.bind(this);
         this.getSy=this.getSy.bind(this);
         this.onSelectChange=this.onSelectChange.bind(this);
@@ -112,12 +113,30 @@ class AgingProcess extends Component{//陈化工序
         });
     }
     handleOk(){
+        let {selectValue,modelBtnId,name,mats}=this.state
+        name[modelBtnId-1]=selectValue[0].product
         this.setState({
             visible:false,
-            selectedRowKeys:[]
+            selectedRowKeys:[],
+            name:name,
         })
-        let {selectValue}=this.state
-        this.props.alterData(this.props.processId,selectValue)
+        let selectData=`${modelBtnId}-${selectValue[0].product}`//按钮id以及选的产品型号
+        this.props.getAge(this.props.processId,'', selectData)
+        axios({
+            url:this.props.url.precursorGoodIn.getByLineByProcess,
+            method:'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                lineCode:modelBtnId,
+                processCode:this.props.processId,
+                paramId:selectValue[0].paramId,
+            },
+            data:this.tableData
+        }).then(data=>{
+            this.props.alterData(this.props.processId,data.data.data)
+        })
     }
     handleCancel(){
         this.setState({
@@ -125,12 +144,9 @@ class AgingProcess extends Component{//陈化工序
             selectedRowKeys:[]
         })
     }
-    getLastPotency() {//获取上期浓度
-        this.props.getLastPotency(this.props.processId)
-    }
     getSy(){ //获取陈化配方
         axios({
-            url:this.props.url.processParam.compoundRecipe,
+            url:this.props.url.processParam.recipe,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
@@ -167,9 +183,18 @@ class AgingProcess extends Component{//陈化工序
         return(
             <div>
                 <NewButton name='获取体积値' flagConfirm={!this.props.flagConfirm}  handleClick={this.getWeight}/>
-                <NewButton name='获取上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
-                <ReadRecipe rowSelection={rowSelection} flag={true} data={this.state.data} handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm}/>
-                <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
+                <span style={{float:'right'}}>
+                    {
+                        this.header?this.header.map((data,index)=>{
+                            return(
+                                    <ReadRecipe key={data.line.code} buttonId={data.line.code} lineName={data.line.name} rowSelection={rowSelection} handleCancel={this.handleCancel} handleOk={this.handleOk}
+                                     showModal={this.showModal} visible={this.state.visible} 
+                                    flagConfirm={!this.props.flagConfirm} data={this.state.data}
+                                     name={data.product===null?'产品型号':data.product} flag={true}/>
+                            )
+                        }):null
+                    }
+                </span>
                 <div className='clear'></div>
                 <div style={{display:'flex'}}> 
                     <Table 

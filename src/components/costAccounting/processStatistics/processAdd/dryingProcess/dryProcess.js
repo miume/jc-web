@@ -2,11 +2,15 @@ import React,{Component} from 'react'
 import {Table,Input} from 'antd'
 import SelectLine from '../selectProductline'
 import NewButton from '../../../../BlockQuote/newButton'
+import ReadRecipe from '../readRecipe'
+import axios from 'axios'
 class DryProcess extends Component{//烘干工序
     constructor(props){
         super(props);
         this.state={
-            visible:false
+            visible:false,
+            name:['产品型号','产品型号','产品型号','产品型号'],
+            modelBtnId:1,
         }
         this.columns=[{
             title:'序号',
@@ -70,9 +74,10 @@ class DryProcess extends Component{//烘干工序
         this.handleOk=this.handleOk.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.showModal=this.showModal.bind(this);
-        this.getLastPotency=this.getLastPotency.bind(this);
         this.inputChange=this.inputChange.bind(this);
         this.getWeight=this.getWeight.bind(this)
+        this.getRecipe=this.getRecipe.bind(this);
+        this.onSelectChange=this.onSelectChange.bind(this);
     }
     handleSelect(value,name){//获取下拉框的id
         let selectKey=name.props.name;//监听是第几个下拉框change了
@@ -85,23 +90,68 @@ class DryProcess extends Component{//烘干工序
         this.props.getDry(this.props.processId,e,'')
     }
 
-    showModal(){
+    showModal(e){
         this.setState({
-            visible:true
+            visible:true,
+            modelBtnId:e.target.id//获取选中按钮的id，绑定的是产线的code
         })
+        this.getRecipe()
     }
+    onSelectChange(selectedRowKeys,value) {//对应选择的这条记录
+        this.setState({ 
+            selectedRowKeys:selectedRowKeys,
+            selectValue:value });
+     }
     handleOk(){
+        let {selectValue,modelBtnId,name,mats}=this.state
+        name[modelBtnId-1]=selectValue[0].product
         this.setState({
-            visible:false
+            visible:false,
+            selectedRowKeys:[],
+            name:name,
+        })
+        let selectData=`${modelBtnId}-${selectValue[0].product}`//按钮id以及选的产品型号
+        this.props.getDry(this.props.processId,'', selectData)
+        axios({
+            url:this.props.url.precursorGoodIn.getByLineByProcess,
+            method:'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                lineCode:modelBtnId,
+                processCode:this.props.processId,
+                paramId:selectValue[0].paramId,
+            },
+            data:this.tableData
+        }).then(data=>{
+            this.props.alterData(this.props.processId,data.data.data)
         })
     }
     handleCancel(){
         this.setState({
-            visible:false
+            visible:false,
+            selectedRowKeys:[]
         })
     }
-    getLastPotency() {//获取上期浓度
-        this.props.getLastPotency(this.props.processId)
+    getRecipe(){//获取工艺参数
+        axios({
+            url:this.props.url.processParam.recipe,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                for(let i=0;i<res.length;i++){
+                    res[i]['id']=(i+1)
+                }
+                this.setState({
+                    data:res
+                })
+            }
+        })
     }
     getWeight(){
         this.props.weightAlterData(this.props.processId,'weight')
@@ -114,12 +164,27 @@ class DryProcess extends Component{//烘干工序
             }
         }
         this.header=this.props.tagTableData&&this.props.tagTableData[4]&&this.props.tagTableData[4].lineProDTOS?this.props.tagTableData[4].lineProDTOS:null
-
+        const {selectedRowKeys}=this.state;
+        const rowSelection = {//checkbox
+            selectedRowKeys,
+            onChange:this.onSelectChange,
+            type:'radio'
+        };
         return(
             <div>
                 <NewButton name='获取重量値' flagConfirm={!this.props.flagConfirm}  handleClick={this.getWeight}/>
-                <NewButton name='上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
-                <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
+                <span style={{float:'right'}}>
+                    {
+                        this.header?this.header.map((data,index)=>{
+                            return(
+                                    <ReadRecipe key={data.line.code} buttonId={data.line.code} lineName={data.line.name} rowSelection={rowSelection} handleCancel={this.handleCancel} handleOk={this.handleOk}
+                                     showModal={this.showModal} visible={this.state.visible} 
+                                    flagConfirm={!this.props.flagConfirm} data={this.state.data}
+                                     name={data.product===null?'产品型号':data.product}/>
+                            )
+                        }):null
+                    }
+                </span>
                 <div className='clear'></div>
                 <div style={{display:'flex'}}> 
                     <Table 

@@ -97,17 +97,19 @@ class Detail extends Component{
             dataIndex:'materialName',
             key:'materialName',
             width:'11%'
-        },{
-            title:'体积 (m³)',
-            dataIndex:'process.volumes',
-            key:'process.volumes',
-            width:'9%'
-        },{
-            title:'含固量（g/L）',
-            dataIndex:'process.solidContainingContent',
-            key:'process.solidContainingContent',
-            width:'12%'
-        },{
+        },
+        // {
+        //     title:'体积 (m³)',
+        //     dataIndex:'process.volumes',
+        //     key:'process.volumes',
+        //     width:'9%'
+        // },{
+        //     title:'含固量（g/L）',
+        //     dataIndex:'process.solidContainingContent',
+        //     key:'process.solidContainingContent',
+        //     width:'12%'
+        // },
+        {
             title:'重量（T）',
             dataIndex:'process.weight',
             key:'process.weight',

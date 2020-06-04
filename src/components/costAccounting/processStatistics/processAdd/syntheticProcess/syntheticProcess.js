@@ -11,7 +11,9 @@ class SyntheticProcess extends Component{//合成工序
             visible:false,
             data:[],
             selectedRowKeys:[],
-            selectValue:undefined
+            selectValue:undefined,
+            name:['产品型号','产品型号','产品型号','产品型号'],
+            modelBtnId:1
         }
         this.columns=[{
             title:'序号',
@@ -81,9 +83,10 @@ class SyntheticProcess extends Component{//合成工序
     inputChange(e){
         this.props.getSynthesis(this.props.processId,e,'')
     }
-    showModal(){
+    showModal(e){
         this.setState({
-            visible:true
+            visible:true,
+            modelBtnId:e.target.id//获取选中按钮的id，绑定的是产线的code
         })
         this.getSy()
     }
@@ -95,12 +98,31 @@ class SyntheticProcess extends Component{//合成工序
         });
     }
     handleOk(){
+        let {selectValue,modelBtnId,name}=this.state
+        name[modelBtnId-1]=selectValue[0].product
         this.setState({
             visible:false,
-            selectedRowKeys:[]
+            selectedRowKeys:[],
+            name:name,
         })
-        let {selectValue}=this.state
-        this.props.alterData(this.props.processId,selectValue)
+        let selectData=`${modelBtnId}-${selectValue[0].product}`//按钮id以及选的产品型号
+        this.props.getSynthesis(this.props.processId,'', selectData)
+        axios({
+            url:this.props.url.precursorGoodIn.getByLineByProcess,
+            method:'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                lineCode:modelBtnId,
+                processCode:this.props.processId,
+                paramId:selectValue[0].paramId,
+            },
+            data:this.tableData
+        }).then(data=>{
+            this.props.alterData(this.props.processId,data.data.data)
+        })
+        //this.props.alterData(this.props.processId,selectValue)
     }
     handleCancel(){
         this.setState({
@@ -113,7 +135,7 @@ class SyntheticProcess extends Component{//合成工序
     }
     getSy(){ //合成获取配方
         axios({
-            url:this.props.url.processParam.compoundRecipe,
+            url:this.props.url.processParam.recipe,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
@@ -147,8 +169,18 @@ class SyntheticProcess extends Component{//合成工序
         return(
             <div>
                 <NewButton name='上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
-                {/* <ReadRecipe  rowSelection={rowSelection}  flag={true} handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm} data={this.state.data}/> */}
-                <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
+                <span style={{float:'right'}}>
+                    {
+                        this.header?this.header.map((data,index)=>{
+                            return(
+                                <ReadRecipe key={data.line.code} buttonId={data.line.code} lineName={data.line.name} rowSelection={rowSelection} handleCancel={this.handleCancel} handleOk={this.handleOk}
+                                 showModal={this.showModal} visible={this.state.visible} 
+                                flagConfirm={!this.props.flagConfirm} data={this.state.data}
+                                 name={data.product===null?'产品型号':data.product}/>
+                          )
+                        }):null
+                    }
+                </span>
                 <div className='clear'></div>
                 <div style={{display:'flex'}}> 
                     <Table 
