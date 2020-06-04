@@ -268,9 +268,9 @@ class AddModal extends React.Component{
                 'Authorization': this.url.Authorization
             }
         }).then((data) => {
-            let res = data.data.data;
-            if(res.length) {
-                this.getVolumeOrWeight(res,index,type);
+            let result = data.data.data;
+            if(result.length) {
+                this.getVolumeOrWeight(result,index,type);
             }
         })
     }
@@ -288,7 +288,7 @@ class AddModal extends React.Component{
             name = 'fcDetails4';
         }
         for(let i = 0; i < temp.length; i++) {
-            temp[i][type] = data[i]['value']
+            temp[i][type] = data[i] ? data[i]['value'] : 0
         }
         this.setState({
             [name]: temp
