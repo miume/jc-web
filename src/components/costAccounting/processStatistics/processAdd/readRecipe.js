@@ -43,17 +43,26 @@ class ReadRecipe extends Component{//读取配方
             title:'Ni(g/L)',
             dataIndex:'ni',
             key:'ni',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                return text?text:0;
+            }
         },{
             title:'Co(g/L)',
             dataIndex:'co',
             key:'co',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                return text?text:0;
+            }
         },{
             title:'Mn(g/L)',
             dataIndex:'mn',
             key:'mn',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                return text?text:0;
+            }
         }]:[{
             title:'序号',
             dataIndex:'id',
@@ -80,22 +89,34 @@ class ReadRecipe extends Component{//读取配方
             title:'Ni(g/L)',
             dataIndex:'ni',
             key:'ni',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                    return text?text:0;
+            }
         },{
             title:'Co(g/L)',
             dataIndex:'co',
             key:'co',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                return text?text:0;
+            }
         },{
             title:'Mn(g/L)',
             dataIndex:'mn',
             key:'mn',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                return text?text:0;
+            }
         },{
             title:'含固量(g/L)',
             dataIndex:'solidContent',
             key:'solidContent',
-            width:'15%'
+            width:'15%',
+            render:(text)=>{
+                return text?text:0;
+            }
         }]
     }
     render(){
