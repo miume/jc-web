@@ -45,12 +45,7 @@ class ReadRecipe extends Component{//读取配方
             key:'ni',
             width:'11%',
             render:(text)=>{
-                if(text===null){
-                    return 0;
-                }
-                else{
-                    return text;
-                }
+                return text?text:0;
             }
         },{
             title:'Co(g/L)',
@@ -58,12 +53,7 @@ class ReadRecipe extends Component{//读取配方
             key:'co',
             width:'11%',
             render:(text)=>{
-                if(text===null){
-                    return 0;
-                }
-                else{
-                    return text;
-                }
+                return text?text:0;
             }
         },{
             title:'Mn(g/L)',
@@ -71,12 +61,7 @@ class ReadRecipe extends Component{//读取配方
             key:'mn',
             width:'11%',
             render:(text)=>{
-                if(text===null){
-                    return 0;
-                }
-                else{
-                    return text;
-                }
+                return text?text:0;
             }
         }]:[{
             title:'序号',
@@ -106,12 +91,7 @@ class ReadRecipe extends Component{//读取配方
             key:'ni',
             width:'11%',
             render:(text)=>{
-                if(text===null){
-                    return 0;
-                }
-                else{
-                    return text;
-                }
+                    return text?text:0;
             }
         },{
             title:'Co(g/L)',
@@ -119,12 +99,7 @@ class ReadRecipe extends Component{//读取配方
             key:'co',
             width:'11%',
             render:(text)=>{
-                if(text===null){
-                    return 0;
-                }
-                else{
-                    return text;
-                }
+                return text?text:0;
             }
         },{
             title:'Mn(g/L)',
@@ -132,12 +107,7 @@ class ReadRecipe extends Component{//读取配方
             key:'mn',
             width:'11%',
             render:(text)=>{
-                if(text===null){
-                    return 0;
-                }
-                else{
-                    return text;
-                }
+                return text?text:0;
             }
         },{
             title:'含固量(g/L)',
@@ -145,12 +115,7 @@ class ReadRecipe extends Component{//读取配方
             key:'solidContent',
             width:'15%',
             render:(text)=>{
-                if(text===null){
-                    return 0;
-                }
-                else{
-                    return text;
-                }
+                return text?text:0;
             }
         }]
     }
