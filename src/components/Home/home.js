@@ -311,6 +311,7 @@ class Home extends Component {
                 addNewClass: `${server}/jc/common/techProductStandard/newClass`,
 
                 getAllProductCommonBatch: `${server}/jc/common/product/getAllProductCommonBatch`,
+                getItemsByProductStandardId: `${server}/jc/common/product/getItemsByProductStandardId`,
             },
             /**设备基本厂商*/
             equipmentManufacture: {
@@ -1078,7 +1079,8 @@ class Home extends Component {
                 delete: `${server}/jc/common/ProcessTraceabilityController`,
                 deletes: `${server}/jc/common/ProcessTraceabilityController/ids`,
                 detail: `${server}/jc/common/ProcessTraceabilityController/detail`,
-            }
+            },
+            firePosition: `${server}/jc/common/firePosition`
     };
 
         localStorage.setItem('status', JSON.stringify(status));

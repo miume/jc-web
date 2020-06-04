@@ -56,7 +56,8 @@ class Search extends React.Component {
 
                 <div>
                     <span>供货单位: </span>
-                    <Select placeholder={'请选择供货单位'} style={{width:150}} value={supplierId} onChange={this.selectChange}>
+                    <Select placeholder={'请选择供货单位'} style={{width:150}} value={supplierId} onChange={this.selectChange} 
+                            dropdownMatchSelectWidth={false} dropdownStyle={{width: 200}}>
                         {
                             supplierData.length ? supplierData.map(e => <Option key={e.id} value={e.id} name={'supplierId'}>{e.materialSupplierName}</Option>) : null
                         }
@@ -78,7 +79,6 @@ class Search extends React.Component {
     componentDidMount() {
         this.getAllType();
         this.getAllSupplier();
-        this.getAllMaterialName();
     }
 
     /**获取所有物料大类*/
@@ -108,9 +108,9 @@ class Search extends React.Component {
     }
 
     /**获取所有物料名称*/
-    getAllMaterialName() {
+    getAllMaterialName(type,subType) {
         axios({
-            url: `${this.props.url.materialInfoSto.materialInfo}/getAll`,
+            url: `${this.props.url.materialInfoSto.materialInfo}/getByTypeBySubtype?subType=${subType}&type=${type}`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
@@ -134,6 +134,12 @@ class Search extends React.Component {
                 subType: undefined
             });
             this.getAllSubType(value);
+        } else if(name === 'subType') {
+            let {type} = this.state;
+            this.setState({
+                subType: value
+            })
+            this.getAllMaterialName(type,value)
         } else {
             this.setState({
                 [name]: value

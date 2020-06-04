@@ -53,70 +53,20 @@ class Left extends React.Component {
             dataIndex: 'weight',
             width: '10%'
         }];
-        this.getData = this.getData.bind(this);
-        this.onRowClick = this.onRowClick.bind(this);
     }
 
     render() {
-        let {data,rowSelection} = this.props, {tableData} = this.state;
+        let {data,rowSelection,tableData} = this.props;
         return (
             <div style={{width: '48%'}}>
                 <Table columns={this.columns} pagination={false} dataSource={data} scroll={{y:110}}
                        rowClassName={(record) => record.isClicked ? 'stock-out-table-row-click' : ''}
-                       bordered size={'small'} rowKey={record => record.id} onRow={this.onRowClick}/>
+                       bordered size={'small'} rowKey={record => record.id} onRow={this.props.onRowClick}/>
 
-                <Table columns={this.columns1} pagination={false} className={'stock-out-table'}  dataSource={data.length ? tableData : []}
+                <Table columns={this.columns1} pagination={false} className={'stock-out-table'}  dataSource={tableData}
                        bordered size={'small'} rowKey={record => record.id} rowSelection={rowSelection}/>
             </div>
         )
-    }
-
-    onRowClick(record,index) {
-        return {
-            onClick: () => {
-                let matId = record.materialNameCode, {preClickedIndex} = this.state;
-                if(preClickedIndex === index) return;
-                this.props.updateData(preClickedIndex,index);
-                this.setState({
-                    preClickedIndex: index
-                });
-                this.getData(matId)
-            }
-        }
-    }
-
-    getData(matId) {
-        let {type} = this.props;
-        axios({
-            url: `${this.props.url[type]}/queryDown?matId=${matId}`,
-            method: 'post'
-        }).then(data => {
-            let res = data.data.data ? data.data.data.details : [], result = [];
-            for(let i = 0; i < res.length; i++) {
-                res[i]['index'] = i + 1;
-                let {id,materialCode,materialTypeId,materialName,weight,measureUnit} = res[i];
-                result.push({
-                    index: i + 1,
-                    id: id,
-                    ledgersId: parseInt(id),
-                    metBatch: materialCode,
-                    matName: materialName,
-                    matId: materialTypeId,
-                    weight: weight,
-                    measureUnit: measureUnit
-                })
-            }
-            this.setState({
-                tableData: result
-            })
-        })
-    }
-
-    selectChange(selectedRowKeys,selectedRows) {
-        this.setState({
-            selectedRowKeys,
-            selectedRows
-        })
     }
 }
 

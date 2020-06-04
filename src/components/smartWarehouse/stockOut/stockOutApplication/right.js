@@ -53,13 +53,15 @@ class Right extends React.Component {
                 return <Icon type="close" className={'stock-out-icon'} onClick={() => this.props.delete(text)}/>
             }
         }]
+        this.columns1 = this.columns.slice(0,1).concat(this.columns.slice(2))
     }
 
     render() {
         let {data,type,url,reset} = this.props, {addressData,outTypeData,userId,deptCode,deptName} = this.state;
+        let columns = type === 'fire' ? this.columns : this.columns1;
         return (
             <div style={{width: '50%',border: '1px solid #ccc',padding: 2}}>
-                <Table columns={this.columns} pagination={false} dataSource={data} className={ type === 'fire' ? 'stock-out-fire-right-table' : 'stock-out-wet-right-table'}
+                <Table columns={columns} pagination={false} dataSource={data} className={ type === 'fire' ? 'stock-out-fire-right-table' : 'stock-out-wet-right-table'}
                        bordered size={'small'} rowKey={record => record.id}/>
                 <div className={'stock-out-right-apply'}>
                     {
@@ -94,9 +96,10 @@ class Right extends React.Component {
         })
     }
 
-    /**获取出库点数据*/
+    /**根据火法1或湿法0获取出库点数据*/
     getAddressData() {
-        axios.get(`${this.props.url.swmsBasicDeliveryAddressInfo}/getAll`).then((data) => {
+        let type = this.props.type === 'fire' ? 1 : 0;
+        axios.get(`${this.props.url.swmsBasicDeliveryAddressInfo}/getByType?type=${type}`).then((data) => {
             let res = data.data.data;
             this.setState({
                 addressData: res

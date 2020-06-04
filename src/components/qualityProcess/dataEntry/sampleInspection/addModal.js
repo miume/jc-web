@@ -6,6 +6,7 @@ import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import moment from "moment";
 import BatchSelect from "./batchSelect"
+import RawSelect from "./rawSelect"
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -123,14 +124,14 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.url.serialNumber.serialNumber}`,
+                url: `${this.url.product.getAllProductCommonBatch}`,
                 method : 'get',
-                params : {materialClass:3},
                 headers:{
                     'Authorization': this.url.Authorization
                 },
             }).then((data) =>{
                 const res = data.data.data;
+                console.log(res)
                 if(res){
                     this.setState({
                         FinalserialNumber:res
@@ -209,17 +210,36 @@ const CollectionCreateForm = Form.create()(
         }
 
         materialsItem = (value)=>{
-            console.log(value)
             axios({
-                url:`${this.url.sampleInspection.rawStandard}`,
+                url:`${this.url.rawStandard.getItemsByRawId}`,
                 method:'get',
-                params:{serialNumberId:value},
+                params:{rawId:value},
                 headers:{
                     'Authorization': this.url.Authorization
                 },
             }).then((data)=>{
                 const res = data.data.data;
-                console.log(res)
+                if(res){
+                    this.props.onChange(res);
+                    this.setState({
+                        materialsItem:res
+                    })
+                }else{
+                    message.info("此物料没有建立标准，请去技术中心建立标准")
+                }
+            })
+        }
+
+        materialsProductItem = (value)=>{
+            axios({
+                url:`${this.url.product.getItemsByProductStandardId}`,
+                method:'get',
+                params:{productStandardId:value},
+                headers:{
+                    'Authorization': this.url.Authorization
+                },
+            }).then((data)=>{
+                const res = data.data.data;
                 if(res){
                     this.props.onChange(res);
                     this.setState({
@@ -351,12 +371,15 @@ const CollectionCreateForm = Form.create()(
                                 })(
                                     <Select onChange={this.selectChange} placeholder="请选择样品种类">
                                         <Option key="1" value="1">原材料</Option>
-                                        <Option key="2" value="2">中间品</Option>
+                                        {/*<Option key="2" value="2">中间品</Option>*/}
                                         <Option key="3" value="3">成品</Option>
                                     </Select>
                                 )}
                         </FormItem>
-                        <BatchSelect batchRule={this.props.batchRule} onBatchCenter = {this.props.onBatchCenter}/>
+                        {
+                            this.state.visible1===3?<BatchSelect batchRule={this.props.batchRule} onBatchCenter = {this.props.onBatchCenter}/>:null
+                        }
+                        {/*<BatchSelect batchRule={this.props.batchRule} onBatchCenter = {this.props.onBatchCenter}/>*/}
                         <Col span={12} style={{display:"block"}}>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('date', {
@@ -471,19 +494,27 @@ const CollectionCreateForm = Form.create()(
                         )
                         }
                         {
-                            this.state.visible1===3?
-                        <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">
-                            <Checkbox.Group style={{ width: '100%' }}  onChange={onChange}>
-                            {
-                            this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
-                            }
-                            </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">
-                            <Checkbox.Group style={{ width: '100%' }} onChange={onChange} value={this.state.materialsItem}>
-                            {
-                            this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
-                            }
-                            </Checkbox.Group></div>:null
+                            <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">
+                                <Checkbox.Group style={{ width: '100%' }} onChange={onChange} value={this.state.materialsItem}>
+                                    {
+                                        this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
+                                    }
+                                </Checkbox.Group></div>
                         }
+                        {/*{*/}
+                            {/*this.state.visible1===3?*/}
+                        {/*<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">*/}
+                            {/*<Checkbox.Group style={{ width: '100%' }}  onChange={onChange}>*/}
+                            {/*{*/}
+                            {/*this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)*/}
+                            {/*}*/}
+                            {/*</Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">*/}
+                            {/*<Checkbox.Group style={{ width: '100%' }} onChange={onChange} value={this.state.materialsItem}>*/}
+                            {/*{*/}
+                            {/*this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)*/}
+                            {/*}*/}
+                            {/*</Checkbox.Group></div>:null*/}
+                        {/*}*/}
                         {
                             this.state.visible1 === 1 ?  <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
@@ -494,7 +525,7 @@ const CollectionCreateForm = Form.create()(
                                         this.state.serialNumber.map(pe=>{
                                             // console.log(pe)
                                             return(
-                                                <Option key={pe.standandId} value={pe.standandId}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
+                                                <Option key={pe.material.id} value={pe.material.id}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
                                             )
                                         })
                                     }
@@ -504,17 +535,22 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('serialNumberId', {
                                 rules: [{ required: true, message: '请选择成品标准' }],
                             })(
-                                <Select placeholder="请选择成品标准">
+                                <Select placeholder="请选择成品标准" onChange={this.materialsProductItem}>
                                     {
                                         this.state.FinalserialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName}</Option>
+                                                <Option key={pe.techniqueProductNewStandardRecord.id} value={pe.techniqueProductNewStandardRecord.id}>{pe.productName+' - '+pe.meterialClass}</Option>
                                             )
                                         })
                                     }
                                 </Select>
                             )}
                         </FormItem> : null
+                        }
+                        {
+                            this.state.visible1 === 1 ?
+                                <RawSelect batchRule={this.props.batchRule} onBatchCenter = {this.props.onBatchCenter}/>
+                                :null
                         }
                         <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('exceptionComment', {
