@@ -7,7 +7,7 @@ class ProcessParamsPart extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            materialData: []
         };
         this.productionLineChange = this.productionLineChange.bind(this);
         this.getSynthesisSlotNumber= this.getSynthesisSlotNumber.bind(this);
@@ -199,17 +199,31 @@ class ProcessParamsPart extends React.Component {
                 </div>
                 <Table dataSource={detail} columns={this.columns} size={'small'}
                        rowKey={record => record.index} bordered pagination={false}/>
+                <div className={'process-material-add-footer'}>
+                    <div>
+                        <label>镍(g/L)：</label>
+                        <Input placeholder='请输入' value={detail[0]['ni']} name={`ni-${index}`} style={{width: 150,marginRight:20}} onChange={inputChange}/>
+                    </div>
+                    <div>
+                        <label>钴(g/L)：</label>
+                        <Input placeholder='请输入' value={detail[0]['co']} name={`co-${index}`} style={{width: 150,marginRight:20}} onChange={inputChange}/>
+                    </div>
+                    <div>
+                        <label>锰(g/L)：</label>
+                        <Input placeholder='请输入' value={detail[0]['mn']} name={`mn-${index}`} style={{width: 150}} onChange={inputChange}/>
+                    </div>
+                </div>
                 <div style={{marginTop:5}}>
-                    <TextArea rows={2} value={detail[0]['comment']} name={`comment-1`} placeholder={'请输入备注'} onChange={inputChange}/>
+                    <TextArea rows={2} value={detail[0]['comment']} name={`comment-${index}`} placeholder={'请输入备注'} onChange={inputChange}/>
                 </div>
             </div>
         )
     }
 
-    componentWillReceiveProps(nextProps) {
-        let lines = nextProps['proAndLines']['lines'], line = this.props.proAndLines['lines'];
-        if(lines.length !== line.length) {
-            this.getSynthesisSlotNumber(lines);
+    componentDidMount() {
+        let line = this.props.proAndLines['lines']
+        if(line.length) {
+            this.getSynthesisSlotNumber(line);
         }
     }
 

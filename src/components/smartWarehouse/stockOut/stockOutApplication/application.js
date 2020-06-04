@@ -74,7 +74,8 @@ class Application extends React.Component {
             selectedRowKeys: [],
             selectedRows: [],
             tableData: [],
-            preClickedIndex: undefined
+            preClickedIndex: undefined,
+            params
         })
         let {type} = this.props;
         axios({
@@ -164,9 +165,14 @@ class Application extends React.Component {
                 }
             });
             data.sort((a,b) => a.group - b.group);
-        }
-        for(let k = 0; k < data.length; k++) {
-            data[k]['index'] = k + 1;
+            for(let k = 0; k < data.length; k++) {
+                data[k]['index'] = k + 1;
+            }
+        } else {
+            for(let k = 0; k < data.length; k++) {
+                data[k]['index'] = k + 1;
+                data[k]['group'] = 1;
+            }
         }
     }
 
@@ -180,11 +186,12 @@ class Application extends React.Component {
         })
     }
 
-    getData(matId) {
+    getData(params) {
         let {type} = this.props;
         axios({
-            url: `${this.props.url[type]}/queryDown?matId=${matId}`,
-            method: 'post'
+            url: `${this.props.url[type]}/queryDown`,
+            method: 'post',
+            params
         }).then(data => {
             let res = data.data.data ? data.data.data.details : [], result = [];
             for(let i = 0; i < res.length; i++) {
@@ -210,13 +217,13 @@ class Application extends React.Component {
     onRowClick(record,index) {
         return {
             onClick: () => {
-                let matId = record.materialNameCode, {preClickedIndex} = this.state;
+                let matId = record.materialNameCode, {preClickedIndex,params} = this.state;
                 if(preClickedIndex === index) return;
                 this.updateData(preClickedIndex,index);
                 this.setState({
                     preClickedIndex: index
                 });
-                this.getData(matId)
+                this.getData(params)
             }
         }
     }

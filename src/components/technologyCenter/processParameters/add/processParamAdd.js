@@ -153,7 +153,10 @@ class ProcessParamAddModal extends React.Component {
                 "solidContainingContentBias": 0,
                 "solidContainingContentStandard": 0,
                 "temperatureBias": 0,
-                "temperatureStandard": 0
+                "temperatureStandard": 0,
+                "co": 0,
+                "mn": 0,
+                "ni": 0
             }, exceptionDisposesItems = {
                 "phenomenon": "",
                 "reason": "",
@@ -249,7 +252,10 @@ class ProcessParamAddModal extends React.Component {
             "solidContainingContentBias": 0,
             "solidContainingContentStandard": 0,
             "temperatureBias": 0,
-            "temperatureStandard": 0
+            "temperatureStandard": 0,
+            "co": 0,
+            "mn": 0,
+            "ni": 0
         }, exceptionDisposesItems = {
             "phenomenon": "",
             "reason": "",
@@ -288,7 +294,8 @@ class ProcessParamAddModal extends React.Component {
     /**编辑*/
     getDetailById(id) {
         this.setState({
-            loading: true
+            loading: true,
+            code: id
         });
         axios({
             url: `${this.url.processParam.detail}?id=${id}`,
@@ -328,7 +335,7 @@ class ProcessParamAddModal extends React.Component {
                         mediateMemo: zjp['memo'],
                         exceptionDisposes: exceptionDisposes,
                         detail: gy['details'],
-                        processParamsMemo: gy['memo'],
+                        processParamsMemo: gy['memo'] ? gy['memo'] : '',
                         proAndLines: gy['proAndLines']
                     })
                 }
@@ -457,8 +464,8 @@ class ProcessParamAddModal extends React.Component {
     /**新增合成-工艺参数数据（表格数据以及生产品种和生产线）*/
     addDetail() {
         let {item,detail,proAndLinesItems,proAndLines} = this.state;
-        detail.push(item);
-        proAndLines.push(proAndLinesItems)
+        detail.push(JSON.parse(JSON.stringify(item)));
+        proAndLines.push(JSON.parse(JSON.stringify(proAndLinesItems)))
         this.setState({
             detail: detail,
             proAndLines: proAndLines
@@ -516,7 +523,7 @@ class ProcessParamAddModal extends React.Component {
         let {mediate} = this.state;
         mediate.pop(index-1);
         this.setState({
-            exceptionDisposes: mediate
+            mediate: mediate
         })
     }
 
@@ -567,7 +574,7 @@ class ProcessParamAddModal extends React.Component {
                 value = this.floatInputChange(value)
             }
         }
-        detail[index-1][name] = value;
+        detail[index][name] = value;
         this.setState({
             detail: detail
         })
@@ -861,7 +868,7 @@ class ProcessParamAddModal extends React.Component {
     checkObj(obj) {
         if(obj === {}) return false;
         for(let i in obj) {
-            if(i !== 'comment' && (obj[i] === '' || obj[i] === undefined || (Array.isArray(obj[i]) && !obj[i].length))) {
+            if(i !== 'lineNames' && i !== 'comment' && (obj[i] === '' || obj[i] === undefined || (Array.isArray(obj[i]) && !obj[i].length))) {
                 return false;
             }
         }

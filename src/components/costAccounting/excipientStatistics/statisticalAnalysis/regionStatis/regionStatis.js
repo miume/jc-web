@@ -7,7 +7,7 @@ class ProcessStatis extends Component{//工序统计
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
+            loading: false,
             periodCode: '',
             alk: '',
             amm: '',

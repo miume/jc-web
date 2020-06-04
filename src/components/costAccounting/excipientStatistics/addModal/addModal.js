@@ -256,7 +256,11 @@ class AddModal extends React.Component{
      * */
     getVolume(index,type) {
         index = parseInt(index) - 1;
-        let {res} = this.state, processId = res['processDTOS'][index]['processId'];
+        let {res} = this.state;
+        if (!res['processDTOS'].length) {
+            return
+        }
+        let processId = res['processDTOS'][index]['processId'];
         axios({
             url: `${this.url.auxiliary.getVolumeWeight}?processId=${processId}`,
             method: 'get',
@@ -265,7 +269,9 @@ class AddModal extends React.Component{
             }
         }).then((data) => {
             let res = data.data.data;
-            this.getVolumeOrWeight(res,index,type);
+            if(res.length) {
+                this.getVolumeOrWeight(res,index,type);
+            }
         })
     }
 
