@@ -43,17 +43,41 @@ class ReadRecipe extends Component{//读取配方
             title:'Ni(g/L)',
             dataIndex:'ni',
             key:'ni',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                if(text===null){
+                    return 0;
+                }
+                else{
+                    return text;
+                }
+            }
         },{
             title:'Co(g/L)',
             dataIndex:'co',
             key:'co',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                if(text===null){
+                    return 0;
+                }
+                else{
+                    return text;
+                }
+            }
         },{
             title:'Mn(g/L)',
             dataIndex:'mn',
             key:'mn',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                if(text===null){
+                    return 0;
+                }
+                else{
+                    return text;
+                }
+            }
         }]:[{
             title:'序号',
             dataIndex:'id',
@@ -80,22 +104,54 @@ class ReadRecipe extends Component{//读取配方
             title:'Ni(g/L)',
             dataIndex:'ni',
             key:'ni',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                if(text===null){
+                    return 0;
+                }
+                else{
+                    return text;
+                }
+            }
         },{
             title:'Co(g/L)',
             dataIndex:'co',
             key:'co',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                if(text===null){
+                    return 0;
+                }
+                else{
+                    return text;
+                }
+            }
         },{
             title:'Mn(g/L)',
             dataIndex:'mn',
             key:'mn',
-            width:'11%'
+            width:'11%',
+            render:(text)=>{
+                if(text===null){
+                    return 0;
+                }
+                else{
+                    return text;
+                }
+            }
         },{
             title:'含固量(g/L)',
             dataIndex:'solidContent',
             key:'solidContent',
-            width:'15%'
+            width:'15%',
+            render:(text)=>{
+                if(text===null){
+                    return 0;
+                }
+                else{
+                    return text;
+                }
+            }
         }]
     }
     render(){
