@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table} from "antd";
+import axios from "axios";
 
 class ProcessParametersTable extends React.Component {
     constructor(props) {
@@ -79,6 +80,7 @@ class ProcessParametersTable extends React.Component {
             dataIndex: 'sizeD90',
             width: '8%'
         }]
+        this.getSynthesisSlotNumber= this.getSynthesisSlotNumber.bind(this);
     }
 
     render() {
@@ -95,6 +97,11 @@ class ProcessParametersTable extends React.Component {
                 <Table rowKey={record => record.code} dataSource={data}
                        columns={this.columns} pagination={false}
                        size={"small"} bordered/>
+                <div className={'process-material-add-footer'}>
+                    <div className={'process-material-add-footer-div'}>{`镍(g/L)：${data[0]['ni'] || 0}`}</div>
+                    <div className={'process-material-add-footer-div'}>{`钴(g/L)：${data[0]['co'] || 0}`}</div>
+                    <div className={'process-material-add-footer-div'}>{`锰(g/L)：${data[0]['mn'] || 0}`}</div>
+                </div>
                 <div className='process-params-detail-text'>
                     { data && data.length ? data[0]['comment'] : ''}
                 </div>
@@ -102,9 +109,40 @@ class ProcessParametersTable extends React.Component {
         )
     }
 
+    componentDidMount() {
+        let line = this.props.proAndLines['lines']
+        if(line.length) {
+            this.getSynthesisSlotNumber(line);
+        }
+    }
+
     componentWillUnmount() {
         this.setState(() => {
             return;
+        })
+    }
+
+     /**根据生产线id获取合成槽号*/
+     getSynthesisSlotNumber(ids) {
+        axios({
+            url: `${this.props.url.techLineCellMap.byIds}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            data: ids,
+            type:'application/json'
+        }).then((data) => {
+            let res = data.data.data ? data.data.data : [], materialData = [];
+            for(let i = 0; i < res.length; i++) {
+                let materialDTOS = res[i]['materialDTOS'];
+                for(let j = 0; j < materialDTOS.length; j++) {
+                    materialData.push(materialDTOS[j]);
+                }
+            }
+            this.setState({
+                materialData: materialData
+            })
         })
     }
 }

@@ -33,7 +33,7 @@ class DetailModal extends React.Component{
                            <CancleButton key='back' flag={1} handleCancel={this.handleCancel}/>,
                        ]}>
                     <div>
-                        <DetailContent head={head} zy={zy} hc={hc} ch={ch}/>
+                        <DetailContent head={head} zy={zy} hc={hc} ch={ch} url={this.props.url}/>
                         <AllTester examineData={examineData} dataId='1'/>
                     </div>
                 </Modal>

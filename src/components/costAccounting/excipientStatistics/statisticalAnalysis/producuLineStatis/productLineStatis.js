@@ -6,7 +6,7 @@ class ProductLineStatis extends Component{//产品线统计
     constructor(props) {
         super(props);
         this.state = {
-            loading: true
+            loading: false
         };
         this.getTableData = this.getTableData.bind(this);
         this.getDateRange = this.getDateRange.bind(this);
