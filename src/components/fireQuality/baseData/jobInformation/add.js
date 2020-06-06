@@ -51,9 +51,9 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {name,id} = record;
+            let {position,id} = record;
             this.setState({
-                name,
+                name: position,
                 id
             });
         }
@@ -89,12 +89,8 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                if(data.data.code === '000000') {
-                    message.info(data.data.mesg);
-                    this.props.getTableParams();
-                } else {
-                    message.info(data.data.data);
-                }
+                message.info(data.data.message);
+                this.props.getTableParams();
             })
         }
     }
@@ -103,8 +99,8 @@ class AddModal extends React.Component {
         let {name,id} = this.state,
             data = {
                 id,
-                name
-            }, method = 'post', url = this.props.url.firePosition;
+                position: name
+            },method = 'post', url = `${this.props.url.firePosition}?name=${name}`;
         if(!name) {
             message.info('请将新增信息填写完整！');
             return false

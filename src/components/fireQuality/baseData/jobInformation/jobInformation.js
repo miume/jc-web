@@ -6,6 +6,8 @@ import NewSearchCell from "../../../BlockQuote/newSearchSell";
 import Add from './add'
 import axios from "axios";
 import {getOperations,judgeOperation} from "../../../commom/getOperations";
+import AssignItems from './assignItems';
+import AssignUsers from './assignUsers';
 
 class JobInformation extends React.Component{
     constructor(props) {
@@ -40,13 +42,17 @@ class JobInformation extends React.Component{
                 let {deleteFlag,updateFlag} = this.state;
                 return (
                     <span>
-                        <Add url={this.url} getTableData={this.getTableData} flag={updateFlag}/>
+                        <Add url={this.url} getTableParams={this.getTableParams} flag={updateFlag} title='编辑' record={record}/>
                         {updateFlag && deleteFlag ? <Divider type={"vertical"}/> : ''}
                         <span className={deleteFlag ? '' : 'hide'}>
                             <Popconfirm title="确认删除?" onConfirm={()=> this.deleteById(text)} okText="确定" cancelText="取消" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>
                         </span>
+                        <Divider type={"vertical"}/>
+                        <AssignItems url={this.url} id={record.id}/>
+                        <Divider type={"vertical"}/>
+                        <AssignUsers url={this.url} id={record.id}/>
                     </span>
                 )
             }
@@ -75,9 +81,9 @@ class JobInformation extends React.Component{
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
-                    <Add url={this.url} getTableData={this.getTableData} flag={addFlag} title='新增'/>
+                    <Add url={this.url} getTableParams={this.getTableParams} flag={addFlag} title='新增'/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={deleteFlag}/>
-                    <NewSearchCell placeholder={'请输入部门名称'}
+                    <NewSearchCell placeholder={'请输入岗位名称'}
                                 searchEvent={this.searchEvent}
                                 reset={this.reset}
                                 flag={true}
@@ -129,7 +135,7 @@ class JobInformation extends React.Component{
             if(res && res.list) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
                 for(let i = 0; i < res.list.length; i++) {
-                    res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
+                    res['list'][i]['index'] = (res['page'] - 1) * res['size'] + i + 1;
                 }
                 this.setState({
                     dataSource: res.list
@@ -148,18 +154,14 @@ class JobInformation extends React.Component{
 
     deleteById(id) {
         axios({
-            url:`${this.url.material.material}/${id}`,
+            url:`${this.url.firePosition}?id=${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.url.Authorization
             }
         }).then((data)=>{
-            if(data.data.code === '000000') {
-                message.info(data.data.mesg);
-                this.getTableParams(); //删除后重置信息
-            } else {
-                message.info(data.data.mesg);
-            }
+            message.info(data.data.message);
+            this.getTableParams(); //删除后重置信息
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
@@ -171,7 +173,7 @@ class JobInformation extends React.Component{
             index === 0 ? ids += `ids=${e}` : ids += `&ids=${e}`
         });
         axios({
-            url:`${this.url.material.material}/batchDelete?${ids}`,
+            url:`${this.url.firePosition}/ids?${ids}`,
             method:'Delete',
             headers:{
                 'Authorization':this.url.Authorization
