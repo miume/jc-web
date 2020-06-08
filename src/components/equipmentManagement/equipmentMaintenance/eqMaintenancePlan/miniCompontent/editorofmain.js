@@ -219,7 +219,7 @@ class EditorofMain extends React.Component{
             const params2={
                 deviceName:this.props.editorRecord.deviceName,
             }
-            this.props.getMaintType(params2)
+            // this.props.getMaintType(params2)
             this.setS();
             let {deviceMaintenancePlansDetails,deviceMaintenanceItems,detailNum} = res,
                 len = deviceMaintenancePlansDetails.length, selectedRowKeys = [], selectedRows = [];

@@ -24,9 +24,9 @@ class DetailContent extends React.Component{
     }
 
     renderTable() {
-        let {head,zy,hc,ch} = this.props,processCode = head ? head['processCode'] : '';
+        let {head,zy,hc,ch,url} = this.props,processCode = head ? head['processCode'] : '';
         if(processCode === 49) {
-            return <ProcessParams hc={hc}/>
+            return <ProcessParams hc={hc} url={url}/>
         } else if(processCode === 48) {
             return <LiquidDetail zy={zy}/>
         } else if (processCode === 50){

@@ -10,12 +10,12 @@ class ProcessParams extends React.Component{
         super(props);
     }
     render() {
-        let {hc} = this.props,{gy, exceptionDisposes, zjp} = hc;
+        let {hc,url} = this.props,{gy, exceptionDisposes, zjp} = hc;
         return (
             <div style={{height: 425}}>
                 <Tabs defaultActiveKey={'1'}>
                     <TabPane tab={'工艺参数'} key={'1'}>
-                        <ProcessParaMeter data={gy['details']} proAndLines={gy['proAndLines']} memo={gy['memo']}/>
+                        <ProcessParaMeter data={gy['details']} proAndLines={gy['proAndLines']} memo={gy['memo']} url={url}/>
                     </TabPane>
                     <TabPane tab={'异常处置'} key={'2'}>
                         <ExceptionHandling data={exceptionDisposes} />
