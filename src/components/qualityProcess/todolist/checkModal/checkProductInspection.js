@@ -50,8 +50,8 @@ class CkeckProductInspection extends React.Component{
             if(res){
                 isQualified = res.isPublished;
                 topData = {
-                    serialNumber: res.repoBaseSerialNumber.serialNumber,
-                    materialName: res.repoBaseSerialNumber.materialName,
+                    serialNumber: res.batch?res.batch:null,
+                    materialName: res.materialName?res.materialName:null,
                     sampleDeliveringDate: res.deliveringDate
                 };
                 const testResultDTOList = res.testResultDTOList;

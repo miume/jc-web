@@ -104,8 +104,10 @@ class CheckSpan extends React.Component {
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:1;
                 topData = {
-                    serialNumber: res.repoBaseSerialNumber.serialNumber,
-                    materialName: res.repoBaseSerialNumber.materialName,
+                    serialNumber: res.batch?res.batch:null,
+                    // TODO
+                    // 应该返回标准名称
+                    materialName: res.materialName?res.materialName:null,
                     sampleDeliveringDate: res.deliveringDate
                 };
                 const testResultDTOList = res.testResultDTOList;
