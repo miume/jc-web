@@ -131,7 +131,6 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data) =>{
                 const res = data.data.data;
-                console.log(res)
                 if(res){
                     this.setState({
                         FinalserialNumber:res
@@ -499,7 +498,8 @@ const CollectionCreateForm = Form.create()(
                                     {
                                         this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
                                     }
-                                </Checkbox.Group></div>
+                                </Checkbox.Group>
+                            </div>
                         }
                         {/*{*/}
                             {/*this.state.visible1===3?*/}

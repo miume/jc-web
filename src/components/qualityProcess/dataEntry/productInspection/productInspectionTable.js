@@ -5,6 +5,7 @@ import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
 import './productInspection.css';
 import RateOptSpan from './rateOptSpan';
+import Print from './print'
 
 class ProductTable extends React.Component{
     columns = [{
@@ -30,37 +31,29 @@ class ProductTable extends React.Component{
         align:'center',
         width: '8%',
     },{
-        title: '送检工厂(原材料)',
+        title: '送检工厂',
         dataIndex: 'deliverFactory',
         key: 'deliverFactory',
         align:'center',
         width: '10%',
     },{
         title: '物料编码',
-        dataIndex: 'repoBaseSerialNumber.serialNumber',
-        key: 'repoBaseSerialNumber.serialNumber',
+        dataIndex: 'batch',
+        key: 'batch',
         align:'center',
-        width: '20%',
-        render:(batchNumber)=>{
-            const arr = batchNumber.split('-');
-            if(arr.length>4){
-                return <span title={batchNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'-'+arr[2]+'-'+arr[3]+'...'}</span>
-            }else{
-                return <span>{batchNumber}</span>
-            }
-        }
+        width: '15%',
     },{
         title: '检测项目',
         dataIndex: 'testItemString',
         key: 'testItemString',
         align:'center',
-        width: '10%',
+        width: '15%',
         render:(text)=>{
             const items = text.split(',');
             var testItems = '';
             if(items.length>5){
                 testItems = items[0]+','+items[1]+','+items[2];
-                return <span title={text} className='text-decoration'>{testItems}</span>;
+                return <span title={text} className='text-decoration'>{testItems + "..."}</span>;
             }else{
                 testItems = text;
                 return <span>{testItems}</span>
@@ -85,6 +78,7 @@ class ProductTable extends React.Component{
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
             let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
+            let printFlag = this.judgeprintOperation(record.isPublished);
             let rateOpt = this.judgeRateOpt(record.isPublished,record.status);
             return (
                 <span>
@@ -110,14 +104,17 @@ class ProductTable extends React.Component{
                         ):(
                             <span className="notClick">录检</span>
                         )}
+                    </span>
+                    <span className={this.props.judgeOperation(this.props.operation,'PRINT')?'':'hide'}>
                         <Divider type="vertical" />
-                        <CheckSpan
-                            title={'修改'}
-                            menuList={this.props.menuList}
-                            fetch={this.props.fetch}
-                            batchNumberId={record.batchNumberId}
-                            url={this.props.url}
-                        />
+                        {printFlag?(
+                            <Print
+                                record={record}
+                                batchNumberId={record.batchNumberId}
+                            />
+                        ):(
+                            <span  className="notClick">打印</span>
+                        )}
                     </span>
                     <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                         <Divider type="vertical" />
@@ -176,7 +173,7 @@ class ProductTable extends React.Component{
     }
     /**判断详情，录检，发布可否功能 */
     judgeRateOpt = (isPublished,status) => {
-        if(isPublished===0&&(status===2||status===3)){
+        if((isPublished===0||isPublished===null)&&(status===2)){
             return true;
         }else{
             return false;
@@ -190,14 +187,21 @@ class ProductTable extends React.Component{
         }
     };
     judgeCheckOperation = (status) => {
-        if(status===-1||status===3||status===12){
+        if(status===-1||status===12){
             return true;
         }else{
             return false;
         }
     };
     judgeReleaseOperation = (isPublished,status) => {
-        if(isPublished===0&&(status===2||status===3)){
+        if((isPublished===0||isPublished===null)&&(status===2)){
+            return true;
+        }else{
+            return false;
+        }
+    };
+    judgeprintOperation = (isPublished) => {
+        if(isPublished===1){
             return true;
         }else{
             return false;
