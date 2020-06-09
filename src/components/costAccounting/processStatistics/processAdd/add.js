@@ -309,7 +309,6 @@ class CostProcessAdd extends Component {
                 name = inputData1[1]     //输入框内容变化的字段
             if(tabKey==='6'&&otherFlag){         
                 otherData[index - 1][name]=value
-
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
                 addDataSave.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
@@ -322,8 +321,8 @@ class CostProcessAdd extends Component {
             selectData= selectData.split('-')
             let codeSelect = selectData[0],    //第几个下拉框
                         id = selectData[1]     //下拉框的哪个option
-           addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
-           addDataSave.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
+           addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = `${id}-${selectData[2]}`
+           addDataSave.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = `${id}-${selectData[2]}`
         }
         if (inputData && selectData) {
             let value = inputData.target.value;
@@ -344,7 +343,7 @@ class CostProcessAdd extends Component {
             selectData=selectData.split('-')
             let codeSelect = selectData[0],  //第几个下拉框
                         id = selectData[1]    //下拉框的哪个option
-            addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
+            addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = `${id}-${selectData[2]}`
         }
         this.setState({
             addData:addData
@@ -365,12 +364,8 @@ class CostProcessAdd extends Component {
     alterData(tabKey,value){//根据获取到的读取配方，修改表格数据
         let {tagTableData}=this.state
             //for (let i = 0; i < tagTableData[tabKey-1].materialDetails.length; i++) {
-                // tagTableData[tabKey-1].materialDetails[i]['niPotency'] = niPoency
-                // tagTableData[tabKey-1].materialDetails[i]['coPotency'] = coPotency
-                // tagTableData[tabKey-1].materialDetails[i]['mnPotency'] = mnPotency
-                
+                // tagTableData[tabKey-1].materialDetails[i]['niPotency'] = niPoency       
            // }
-           console.log(value)
             tagTableData[tabKey-1].materialDetails = value
       
         this.setState({
@@ -423,14 +418,6 @@ class CostProcessAdd extends Component {
                 loading:false
             })
         }) 
-        // .catch(
-        //     ()=>{
-        //         message.error('操作失败，请联系管理员！')
-        //         this.setState({
-        //             loading:false
-        //         })
-        //     }
-        // )
     }
     getLastPotency(tabKey){//获取上期浓度,修改表格数据
         this.setState({
@@ -494,10 +481,6 @@ class CostProcessAdd extends Component {
         addData['lineName'] = this.state.inputPeriod
         addDataSave['periodId'] = this.state.periodCode
         addDataSave['lineName'] = this.state.inputPeriod
-        
-        // for(let i=0;i<addDataSave.goodInProcessDTOS['2'].materialDetails.length;i++){
-        //     addDataSave.goodInProcessDTOS['2'].materialDetails[i]['volume']=1
-        // }
         for(let i=0;i<addData.goodInProcessDTOS['2'].materialDetails.length;i++){
             addData.goodInProcessDTOS['2'].materialDetails[i]['volume']=1
         }
@@ -568,18 +551,25 @@ class CostProcessAdd extends Component {
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'))
+        let {tagTableData,tabKey,flagConfirm}=this.state
         this.dataComponent = [{
-            component: <SingleCrystal tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getSingleCrystal={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <SingleCrystal tagTableData={tagTableData} url={this.url} processId={tabKey} getSingleCrystal={this.getChange} 
+            weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:flagConfirm}/>
         }, {
-            component: <MixSalt tagTableData={this.state.tagTableData} url={this.url} getMix={this.getChange} alterData={this.alterData} processId={this.state.tabKey} weightAlterData={this.weightAlterData} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <MixSalt tagTableData={tagTableData} url={this.url} getMix={this.getChange} alterData={this.alterData} processId={tabKey}
+             weightAlterData={this.weightAlterData} flagConfirm={this.props.location.editFlag?true:flagConfirm}/>
         }, {
-            component: <SyntheticProcess tagTableData={this.state.tagTableData} url={this.url} alterData={this.alterData} processId={this.state.tabKey} getSynthesis={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <SyntheticProcess tagTableData={tagTableData} url={this.url} alterData={this.alterData} processId={tabKey} getSynthesis={this.getChange} 
+            weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:flagConfirm}/>
         }, {
-            component: <AgingProcess tagTableData={this.state.tagTableData} url={this.url} alterData={this.alterData} processId={this.state.tabKey} getAge={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <AgingProcess tagTableData={tagTableData} url={this.url} alterData={this.alterData} processId={tabKey} getAge={this.getChange} 
+            weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true: flagConfirm}/>
         }, {
-            component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} alterData={this.alterData}  processId={this.state.tabKey} getDry={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <DryProcess tagTableData={tagTableData} url={this.url} alterData={this.alterData}  processId={tabKey} getDry={this.getChange} 
+            weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:flagConfirm}/>
         }, {
-            component: <Other tagTableData={this.state.tagTableData} otherData={this.state.otherData} otherMaterial={this.state.otherMaterial} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  handleOtherDelete={this.handleOtherDelete} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <Other tagTableData={tagTableData} otherData={this.state.otherData} otherMaterial={this.state.otherMaterial} url={this.url} getOther={this.getChange} 
+            otherSelectChange={this.otherSelectChange} processId={tabKey} handleOtherAdd={this.handleOtherAdd}  handleOtherDelete={this.handleOtherDelete} flagConfirm={this.props.location.editFlag?true:flagConfirm}/>
         }]
         return (
             <div >

@@ -9,7 +9,6 @@ class DryProcess extends Component{//烘干工序
         super(props);
         this.state={
             visible:false,
-            name:['产品型号','产品型号','产品型号','产品型号'],
             modelBtnId:1,
         }
         this.columns=[{
@@ -70,7 +69,6 @@ class DryProcess extends Component{//烘干工序
                 )
             }
         }];
-        this.handleSelect=this.handleSelect.bind(this);
         this.handleOk=this.handleOk.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.showModal=this.showModal.bind(this);
@@ -78,13 +76,7 @@ class DryProcess extends Component{//烘干工序
         this.getWeight=this.getWeight.bind(this)
         this.getRecipe=this.getRecipe.bind(this);
         this.onSelectChange=this.onSelectChange.bind(this);
-    }
-    handleSelect(value,name){//获取下拉框的id
-        let selectKey=name.props.name;//监听是第几个下拉框change了
-        let optionId=value;
-        let selectData=`${selectKey}-${optionId}`
-        this.props.getDry(this.props.processId,'',selectData)
-
+        this.getName=this.getName.bind(this)
     }
     inputChange(e){
         this.props.getDry(this.props.processId,e,'')
@@ -95,7 +87,7 @@ class DryProcess extends Component{//烘干工序
             visible:true,
             modelBtnId:e.target.id//获取选中按钮的id，绑定的是产线的code
         })
-        this.getRecipe()
+        this.getRecipe(e.target.id)
     }
     onSelectChange(selectedRowKeys,value) {//对应选择的这条记录
         this.setState({ 
@@ -104,13 +96,11 @@ class DryProcess extends Component{//烘干工序
      }
     handleOk(){
         let {selectValue,modelBtnId,name,mats}=this.state
-        name[modelBtnId-1]=selectValue[0].product
         this.setState({
             visible:false,
-            selectedRowKeys:[],
-            name:name,
         })
-        let selectData=`${modelBtnId}-${selectValue[0].product}`//按钮id以及选的产品型号
+        let product_paramId=`${selectValue[0].product}-${selectValue[0].head.code}`
+        let selectData=`${modelBtnId}-${product_paramId}`//按钮id以及选的产品型号
         this.props.getDry(this.props.processId,'', selectData)
         axios({
             url:this.props.url.precursorGoodIn.getByLineByProcess,
@@ -131,10 +121,12 @@ class DryProcess extends Component{//烘干工序
     handleCancel(){
         this.setState({
             visible:false,
-            selectedRowKeys:[]
         })
     }
-    getRecipe(){//获取工艺参数
+    getRecipe(modelBtnId){//获取工艺参数
+        let lineParamId=this.header&&this.header[modelBtnId-1]&&this.header[modelBtnId-1].product
+        &&this.header[modelBtnId-1].product.includes('-')?this.header[modelBtnId-1].product.split('-')[1]
+        :this.header[modelBtnId-1].product
         axios({
             url:this.props.url.processParam.recipe,
             method:'get',
@@ -146,6 +138,18 @@ class DryProcess extends Component{//烘干工序
             if(res){
                 for(let i=0;i<res.length;i++){
                     res[i]['id']=(i+1)
+                    if(res[i].head.code===parseInt(lineParamId)){
+                        let a=[parseInt(lineParamId)]
+                        this.setState({
+                            selectedRowKeys:a,
+                            selectValue:[res[i]]
+                        })
+                    }
+                }
+                if(lineParamId===null){//说明此时未选择产品型号
+                    this.setState({
+                        selectedRowKeys:[]
+                    })
                 }
                 this.setState({
                     data:res
@@ -155,6 +159,17 @@ class DryProcess extends Component{//烘干工序
     }
     getWeight(){
         this.props.weightAlterData(this.props.processId,'weight')
+    }
+    getName(product){
+        if(product===null||product===undefined){
+            return '产品型号'
+        }
+        else if(product.includes('-')){//判断product是否为拼接的产品型号-paramId形式
+            return product.split('-')[0]
+        }
+        else {
+            return product
+        }
     }
     render(){
         this.tableData = this.props.tagTableData&&this.props.tagTableData[4]&&this.props.tagTableData[4].materialDetails?this.props.tagTableData[4].materialDetails:[]
@@ -180,7 +195,7 @@ class DryProcess extends Component{//烘干工序
                                     <ReadRecipe key={data.line.code} buttonId={data.line.code} lineName={data.line.name} rowSelection={rowSelection} handleCancel={this.handleCancel} handleOk={this.handleOk}
                                      showModal={this.showModal} visible={this.state.visible} 
                                     flagConfirm={!this.props.flagConfirm} data={this.state.data}
-                                     name={data.product===null?'产品型号':data.product}/>
+                                     name={this.getName(data.product)}/>
                             )
                         }):null
                     }
