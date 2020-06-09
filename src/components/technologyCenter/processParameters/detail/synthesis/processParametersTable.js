@@ -5,6 +5,9 @@ import axios from "axios";
 class ProcessParametersTable extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            materialData: ''
+        }
         this.columns = [{
             title: '实际镍钴锰溶液流量1(L/min)',
             key: 'flowStandard1',
@@ -84,7 +87,7 @@ class ProcessParametersTable extends React.Component {
     }
 
     render() {
-        let {data,proAndLines} = this.props;
+        let {data,proAndLines} = this.props, {materialData} = this.state;
         if(proAndLines) {
             var {productClassName,lineNames} = proAndLines;
             lineNames = lineNames.join(',');
@@ -93,7 +96,7 @@ class ProcessParametersTable extends React.Component {
             <div className='process-parameters-detail-bottom-process'>
                 <div className='process-parameters-detail-bottom-process-div'>{`生产品种：${productClassName}`}</div>
                 <div className='process-parameters-detail-bottom-process-div'>{`生产线：${lineNames}`}</div>
-                <div className='process-parameters-detail-bottom-process-div'>{`合成槽号：`}</div>
+                <div className='process-parameters-detail-bottom-process-div'>{`合成槽号：${materialData}`}</div>
                 <Table rowKey={record => record.code} dataSource={data}
                        columns={this.columns} pagination={false}
                        size={"small"} bordered/>
@@ -137,11 +140,11 @@ class ProcessParametersTable extends React.Component {
             for(let i = 0; i < res.length; i++) {
                 let materialDTOS = res[i]['materialDTOS'];
                 for(let j = 0; j < materialDTOS.length; j++) {
-                    materialData.push(materialDTOS[j]);
+                    materialData.push(materialDTOS[j]['materialName']);
                 }
             }
             this.setState({
-                materialData: materialData
+                materialData: materialData.join(',')
             })
         })
     }

@@ -44,7 +44,7 @@ class Unit extends React.Component {
             dataIndex: 'autoFlag',
             width: '20%',
             render: (text) => {
-                return text ? '是' : '否'
+                return text ? '否' : '是'
             }
         },{
             title: '操作',

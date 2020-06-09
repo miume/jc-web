@@ -224,7 +224,15 @@ class AddModal extends React.Component {
     /**取消事件*/
     handleCancel() {
         this.setState({
-            visible: false
+            visible: false,
+            materialTypeId: undefined,
+            subTypeId: undefined,
+            selectedItems: [],
+            measureUnit: undefined,
+            materialName: '',
+            materialNameCode: '',
+            streamFlag: false,
+            supplierId: [],
         });
     }
 

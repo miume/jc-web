@@ -11,6 +11,14 @@ class BlockQuote extends React.Component {
         localStorage.setItem('defaultOpenKeys',[])
         this.props.history.push({pathname:'/home'});
     }
+
+    componentDidMount() {
+        this.current = JSON.parse(localStorage.getItem('current'));
+        if (!this.current) {
+            this.props.history.push('/');
+        }
+    }
+
     render() {
         return (
             <div style={{borderBottom:'1px solid #f0e9e9'}}>
