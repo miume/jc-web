@@ -174,6 +174,9 @@ class PackGenerateModal extends React.Component {
                     }
                 }else {
                     message.info(data.data.message)
+                    this.setState({
+                        visible: true
+                    })
                 }
             });
         }

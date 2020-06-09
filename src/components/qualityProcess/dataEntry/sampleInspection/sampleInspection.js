@@ -94,7 +94,7 @@ class SampleInspection extends React.Component {
             align: 'center',
             width: '15%',
             render:(text)=>{
-                if(text !=""){
+                if(text !==""){
                     // var value = text.split('-')
                     return <div className='text-decoration' title={text}>{text}</div>
                 }else {

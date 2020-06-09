@@ -13,6 +13,8 @@ class ProductInspection extends React.Component {
         this.fetch({
             pageSize:10,
             pageNumber:1,
+            sortField: 'sample_delivering_date',
+            sortType: 'desc'
         });
     }
     componentWillUnmount() {
@@ -97,12 +99,16 @@ class ProductInspection extends React.Component {
             this.fetch({
                 pageSize:pagination.pageSize,
                 pageNumber:pagination.current,
-                factory:this.state.searchContent
+                factory:this.state.searchContent,
+                sortField: 'sample_delivering_date',
+                sortType: 'desc'
             })
         }else{
             this.fetch({
                 pageSize:pagination.pageSize,
                 pageNumber:pagination.current,
+                sortField: 'sample_delivering_date',
+                sortType: 'desc'
             })
         }
 
@@ -155,7 +161,9 @@ class ProductInspection extends React.Component {
             pageChangeFlag:1
         });
         this.fetch({
-            factory:this.state.searchContent
+            factory:this.state.searchContent,
+            sortField: 'sample_delivering_date',
+            sortType: 'desc'
         });
 
     };

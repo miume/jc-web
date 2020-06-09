@@ -45,14 +45,6 @@ class PackTable extends React.Component {
         key: 'serialNumber',
         align:'center',
         width: '24%',
-        render:(serialNumber)=>{
-            var arr = serialNumber.split('-');
-            if(arr.length>4){
-                return <span title={serialNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'-'+arr[2]+'-'+arr[3]+'...'}</span>
-            }else{
-                return serialNumber
-            }
-        }
     },{
         title: '检测项目',
         dataIndex: 'testItemString',
@@ -80,6 +72,7 @@ class PackTable extends React.Component {
             return (
                 <span>
                     <DetailSpan
+                        checkStatus={record.status}
                         unGenerateDate={this.props.unGenerateDate}
                         url={this.props.url}
                         batchNumberId={record.batchNumberId}

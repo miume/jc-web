@@ -109,7 +109,7 @@ class DetailSpan extends React.Component {
                 isQualified =  res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
                     serialNumber: res.batch?res.batch:null,
-                    materialName: res.materialName?res.materialName:null,
+                    materialName: res.matName?res.matName:null,
                     sampleDeliveringDate: res.deliveringDate
                 };
                 const testResultDTOList = res.testResultDTOList;
@@ -131,7 +131,7 @@ class DetailSpan extends React.Component {
                 }
                 testData = {
                     tester: res.tester?res.tester:'无',
-                    testTime: res.testReportRecord.judgeDate?res.testReportRecord.judgeDate:'无',
+                    testTime: res.testReportRecord?res.testReportRecord.judgeDate:'无',
                 };
                 // 择优数据
                 optional = {
