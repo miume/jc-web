@@ -12,6 +12,8 @@ class Pack extends React.Component {
         this.fetch({
             pageSize:10,
             pageNumber:1,
+            sortField: 'id',
+            sortType: 'desc'
         });
     }
     constructor(props) {
@@ -47,6 +49,8 @@ class Pack extends React.Component {
             this.fetch({
                 pageSize:10,
                 pageNumber:1,
+                sortField: 'id',
+                sortType: 'desc'
             });
             this.props.modifyTabFlag();
         }
@@ -114,12 +118,16 @@ class Pack extends React.Component {
             this.fetch({
                 pageSize:pagination.pageSize,
                 pageNumber:pagination.current,
-                personName:this.state.searchContent
+                personName:this.state.searchContent,
+                sortField: 'id',
+                sortType: 'desc'
             })
         }else{
             this.fetch({
                 pageSize:pagination.pageSize,
                 pageNumber:pagination.current,
+                sortField: 'id',
+                sortType: 'desc'
             })
         }
 
@@ -133,7 +141,9 @@ class Pack extends React.Component {
             this.setState({
                 pageChangeFlag:0,
                 searchContent:'',
-                pagination:pagination
+                pagination:pagination,
+                sortField: 'id',
+                sortType: 'desc'
             })
         }
         const unGenerateDate = this.state.unGenerateDate;
@@ -179,7 +189,9 @@ class Pack extends React.Component {
             pageChangeFlag:1
         });
         this.fetch({
-            personName:this.state.searchContent
+            personName:this.state.searchContent,
+            sortField: 'id',
+            sortType: 'desc'
         });
     };
     /**获取查询时角色名称的实时变化 */
@@ -197,12 +209,16 @@ class Pack extends React.Component {
                 this.fetch({
                     pageSize:10,
                     pageNumber:1,
+                    sortField: 'id',
+                    sortType: 'desc'
                 });
             }else{
                 var flag = 1;
                 this.fetch({
                     pageSize:10,
                     pageNumber:1,
+                    sortField: 'id',
+                    sortType: 'desc'
                 },flag);
             }
         })

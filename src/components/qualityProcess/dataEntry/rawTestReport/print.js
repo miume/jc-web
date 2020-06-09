@@ -20,7 +20,7 @@ class Print extends Component {
                         <div style={{fontSize:"15px"}}>{this.props.record.batchNumber}</div>
                         <div style={{fontSize:"8px"}}>检验项目：</div>
                         <div style={{fontSize:"8px",width:"550px",wordWrap:"break-word"}}>{this.props.record.testItemString}</div>
-                        <div style={{fontSize:"8px"}}>送检时间：&nbsp;{this.props.record.deliveringDate}</div>
+                        <div style={{fontSize:"8px"}}>送检时间：&nbsp;{this.props.record.sampleDeliveringDate}</div>
                     </div>
                 </div>
             </span>

@@ -30,19 +30,34 @@ const columns = [{
     width: '20%',
 },{
     title: '状态',
-    dataIndex: 'isAudit',
-    key: 'isAudit',
+    dataIndex: 'isValid',
+    key: 'isValid',
     width: '30%',
     render: (text) => {
         if(text === 0) {
-            return '最近审核未通过';
+            return <span style={{color: 'red'}}>不合格</span>
         } else if(text === 1) {
-            return '通过'
+            return <span style={{color: 'green'}}>合格</span>
         } else {
-            return '未审核';
+            return '';
         }
     }
 }];
+// {
+//     title: '状态',
+//         dataIndex: 'isAudit',
+//     key: 'isAudit',
+//     width: '30%',
+//     render: (text) => {
+//     if(text === 0) {
+//         return '最近审核未通过';
+//     } else if(text === 1) {
+//         return '通过'
+//     } else {
+//         return '未审核';
+//     }
+// }
+// }
 class DetailModal extends React.Component {
     render() {
         const data = this.props.detail;

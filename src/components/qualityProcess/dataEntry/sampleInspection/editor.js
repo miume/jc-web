@@ -544,7 +544,7 @@ class Editor extends React.Component{
                             {
                                 this.state.serialNumber.map(pe=>{
                                     return(
-                                        <Option key={pe.material.id} value={pe.material.id}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
+                                        <Option key={pe.material.id} value={pe}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
                                     )
                                 })
                             }
