@@ -115,9 +115,8 @@ class Editor extends React.Component{
         })
 
         axios({
-            url: `${this.url.serialNumber.serialNumber}`,
+            url: `${this.url.rawStandard.getCurrentRawStandard}`,
             method : 'get',
-            params : {materialClass:1},
             headers:{
                 'Authorization': this.Authorization
             },
@@ -132,9 +131,8 @@ class Editor extends React.Component{
         })
 
         axios({
-            url: `${this.url.serialNumber.serialNumber}`,
+            url: `${this.url.product.getAllProductCommonBatch}`,
             method : 'get',
-            params : {materialClass:3},
             headers:{
                 'Authorization': this.Authorization
             },
@@ -388,6 +386,26 @@ class Editor extends React.Component{
             }
         })
     }
+    materialsProductItem = (value)=>{
+        axios({
+            url:`${this.url.product.getItemsByProductStandardId}`,
+            method:'get',
+            params:{productStandardId:value},
+            headers:{
+                'Authorization': this.url.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            if(res){
+                // this.props.onChange(res);
+                this.setState({
+                    oldTestItems: res
+                })
+            }else{
+                message.info("此物料没有建立标准，请去技术中心建立标准")
+            }
+        })
+    }
 
     changeMemo = (value) =>{
         this.setState({
@@ -422,7 +440,7 @@ class Editor extends React.Component{
                 <span onClick={this.showModal} className='blue'>编辑</span>
                 <Modal title='编辑' visible={this.state.visible}
                     closable={false}
-                    width="550px"
+                    width="520px"
                     maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
@@ -430,7 +448,7 @@ class Editor extends React.Component{
                         <AddButton key="submit" handleClick={this.onCenter} name='提交' className='fa fa-check' />
                       ]}
                 >
-                      <Select disabled onChange={this.selectChange} placeholder="请选择样品种类" defaultValue={this.state.type} style={{width:"460px"}}>
+                      <Select disabled onChange={this.selectChange} placeholder="请选择样品种类" defaultValue={this.state.type} style={{width:"480px"}}>
                             <Option key="1" value={1}>原材料</Option>
                             <Option key="2" value={2}>中间品</Option>
                             <Option key="3" value={3}>成品</Option>
@@ -493,7 +511,7 @@ class Editor extends React.Component{
                                         })
                                     }
                                 </Select>
-                                <Select placeholder="请选择受检物料" onChange={this.getItems} value={this.state.oldMaterials} style={{width:"460px",marginTop:"10px"}}>
+                                <Select placeholder="请选择受检物料" onChange={this.getItems} value={this.state.oldMaterials} style={{width:"480px",marginTop:"10px"}}>
                                     {
                                         this.state.materials.map(pe=>{
                                             return(
@@ -503,7 +521,7 @@ class Editor extends React.Component{
                                     }
                                 </Select>
                                 </div>
-                                    <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} className="check-box">
+                                    <div style={{ width: '480px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} className="check-box">
                                         <Checkbox.Group style={{ width: '100%' }} value={this.state.oldTestItems}>
                                         {
                                         this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id} disabled>{p.name}</Checkbox></Col>)
@@ -511,37 +529,35 @@ class Editor extends React.Component{
                                         </Checkbox.Group>
                                     </div>
                                 </div>}
-
-                        {this.state.visible1===3?<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} className="check-box">
-                            <Checkbox.Group style={{ width: '100%' }} defaultValue={this.state.oldTestItems} onChange={this.changeItems}>
-                            {
-                            this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
-                            }
-                        </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} className="check-box">
+                    {
+                        <div style={{ width: '480px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} className="check-box">
                             <Checkbox.Group style={{ width: '100%' }} value={this.state.oldTestItems} onChange={this.changeItems}>
-                            {
-                            this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
-                            }
-                        </Checkbox.Group></div>:null}
+                                {
+                                    this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
+                                }
+                            </Checkbox.Group>
+                        </div>
 
-                        {this.state.visible1 === 1?<Select placeholder="请选择受检物料" onChange={this.changeMaterials} defaultValue={this.state.oldMaterials} style={{width:"460px",marginTop:"10px"}}>
+                    }
+
+                        {this.state.visible1 === 1?<Select placeholder="请选择原材料标准" onChange={this.changeMaterials} defaultValue={this.state.oldMaterials} style={{width:"480px",marginTop:"10px"}}>
                             {
                                 this.state.serialNumber.map(pe=>{
                                     return(
-                                        <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName+" - "+pe.manufacturerName}</Option>
+                                        <Option key={pe.material.id} value={pe}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
                                     )
                                 })
                             }
-                        </Select>:this.state.visible1 ===3?<Select placeholder="请选择受检物料" onChange={this.changeMaterials} defaultValue={this.state.oldMaterials} style={{width:"460px",marginTop:"10px"}}>
+                        </Select>:this.state.visible1 ===3?<Select placeholder="请选择成品标准" onChange={this.materialsProductItem} defaultValue={this.state.oldMaterials} style={{width:"480px",marginTop:"10px"}}>
                             {
                                 this.state.FinalserialNumber.map(pe=>{
                                     return(
-                                        <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName}</Option>
+                                        <Option key={pe.techniqueProductNewStandardRecord.id} value={pe.techniqueProductNewStandardRecord.id}>{pe.productName+' - '+pe.meterialClass}</Option>
                                     )
                                 })
                             }
                         </Select>:null}
-                        <Input.TextArea autosize={{minRows:2}} placeholder="请输入异常备注" onChange={this.changeMemo} defaultValue={this.state.oldMemo} style={{marginTop:"10px"}}/>
+                        <Input.TextArea autosize={{minRows:2}} placeholder="请输入异常备注" onChange={this.changeMemo} defaultValue={this.state.oldMemo} style={{marginTop:"10px",width:"480px"}}/>
                 </Modal>
             </span>
         )

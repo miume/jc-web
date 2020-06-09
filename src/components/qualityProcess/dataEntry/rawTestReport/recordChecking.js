@@ -75,7 +75,7 @@ class RecordChecking extends React.Component {
             title:'标准',
             dataIndex:'value',
             key:'value',
-            width:'20%'
+            width:'16%'
         },{
             title:'计量单位',
             dataIndex:'unit',
@@ -85,15 +85,15 @@ class RecordChecking extends React.Component {
             title:'状态',
             dataIndex:'testItemResultRecord.isValid',
             key:'testItemResultRecord.isValid',
-            width:'13%',
+            width:'17%',
             render: (text) => {
                 if(text === 0) {
                     return <span style={{color: 'red'}}>不合格</span>
-                }
-                if(text === 1) {
+                } else if(text === 1) {
                     return <span style={{color: 'green'}}>合格</span>
+                } else {
+                    return '';
                 }
-                return '';
             }
         }]
     }
@@ -162,12 +162,12 @@ class RecordChecking extends React.Component {
         detail[index]['testItemResultRecord']['testResult'] = value;
         if(standard) {
             let flag = this.checkIfQualified(value,standard);
-            isValid = flag ? '合格' : '不合格';
+            isValid = flag ? 1 : 0;
         }
         if(!value) {
             isValid = '';
         }
-        detail[index]['isValid'] = isValid
+        detail[index]['testItemResultRecord']['isValid'] = isValid
         isQualifiedArr[index] = isValid;
         this.setState({
             detail: detail,
@@ -190,10 +190,10 @@ class RecordChecking extends React.Component {
             } else if(standard[0] === LESS_THAN) {
                 return value < parseFloat(standard.slice(1)); //小于
             } else if(standard.indexOf(RANGE) > -1) {         //a ± b
-                let index = value.indexOf(RANGE), lowerLimit = parseFloat(standard.slice(0,index)), upperLimit = parseFloat(standard.slice(index + 1));
+                let index = standard.indexOf(RANGE), lowerLimit = parseFloat(standard.slice(0,index)), upperLimit = parseFloat(standard.slice(index + 1));
                 return value >= (lowerLimit - upperLimit) && value <= (lowerLimit + upperLimit);
             } else {                                          //a~b
-                let index = value.indexOf(BETWEEN), lowerLimit = parseFloat(standard.slice(0,index)), upperLimit = parseFloat(standard.slice(index + 1));
+                let index = standard.indexOf(BETWEEN), lowerLimit = parseFloat(standard.slice(0,index)), upperLimit = parseFloat(standard.slice(index + 1));
                 return value >= lowerLimit && value <= upperLimit;
             }
         }
@@ -228,12 +228,12 @@ class RecordChecking extends React.Component {
         this.checkData(1);
    }
     /**点击保存按钮 */
-    handleSave(){
+    handleSave = () => {
         this.checkData(0);
     }
 
     /**检查保存数据*/
-    checkData(status){
+    checkData = (status) => {
         let {detail,isQualified} = this.state;
         if(detail){
             let count = 0;
@@ -243,17 +243,16 @@ class RecordChecking extends React.Component {
                     isQualified = 0;
                 }
 
-                if(!e.testResult){
+                if(e.testResult !== ''){
                     count++
                 }
             }
             if(count === detail.length){
-                message.info('必须录入一个检测结果！');
+                message.info('必须录入全部检测结果！');
                 return
             }
         }
-        console.log(detail)
-        //this.applyOut(status,testDTOS,isQualified);
+        this.applyOut(status,detail,isQualified);
     }
     /**保存 */
     applyOut(status,testDTOS,isQualified){
@@ -349,7 +348,7 @@ class RecordChecking extends React.Component {
         return (
             <span className={this.props.flag?'':'hide'}>
                 <Divider type='vertical' />
-                <span className={this.props.status===-1||this.props.status===3||this.props.status===12?'blue':'notClick'} onClick={this.handleClick}>{this.props.title}</span>
+                <span className={this.props.status===-1||this.props.status===12?'blue':'notClick'} onClick={this.handleClick}>{this.props.title}</span>
                 <Modal title={this.props.title} visible={this.state.visible} style={{top:20}} closable={false}
                        maskClosable={false} centered={true}
                        footer={this.getFooter()}

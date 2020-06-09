@@ -8,6 +8,7 @@ import SearchCell from '../../../BlockQuote/search';
 import RecordChecking from './recordChecking';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import Loss from '../../../BlockQuote/lossStatement';
+import Print from "./print";
 
 class RawTestReport extends React.Component{
     url
@@ -16,6 +17,8 @@ class RawTestReport extends React.Component{
         this.fetch({
             pageSize:10,
             pageNumber:1,
+            sortField: 'sample_delivering_date',
+            sortType: 'desc'
         });
     }
     componentWillUnmount(){
@@ -119,10 +122,23 @@ class RawTestReport extends React.Component{
             align:'center',
             render:(text,record)=>{
                 const editorFlag = home.judgeOperation(this.operation,'UPDATE')
+                const printGrantFlag = home.judgeOperation(this.operation,'PRINT')
+                let printFlag = this.judgeprintOperation(record.status);
                 return (
                     <span>
                         <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
                         <RecordChecking title='录检' value={text} url={this.url} status={record.status} tableRecord={this.tableRecord} flag={editorFlag}/>
+                        <span className={printGrantFlag?'':'hide'}>
+                            <Divider type="vertical" />
+                            {printFlag?(
+                                <Print
+                                    record={record}
+                                    batchNumberId={record.batchNumberId}
+                                />
+                            ):(
+                                <span  className="notClick">打印</span>
+                            )}
+                        </span>
                         <Divider type='vertical' />
                         <Loss statement={record.exceptionComment} name='异常备注' />
                         <Divider type='vertical' />
@@ -132,13 +148,23 @@ class RawTestReport extends React.Component{
             }
         },]
     }
+    judgeprintOperation = (isPublished) => {
+        if(isPublished===2){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
     handleTableChange(pagination){
         this.pagination = pagination;
         /**分页查询 */
         this.fetch({
             pageSize:pagination.pageSize,
             pageNumber:pagination.current,
-            factoryName:this.state.searchContent
+            factoryName:this.state.searchContent,
+            sortField: 'sample_delivering_date',
+            sortType: 'desc'
         })
     }
     /**?factoryName=${this.state.searchContent} */
@@ -210,7 +236,9 @@ class RawTestReport extends React.Component{
         let {searchContent} = this.state;
         if(searchContent) {
             this.fetch({
-                factoryName: searchContent
+                factoryName: searchContent,
+                sortField: 'sample_delivering_date',
+                sortType: 'desc'
             })
         }
     }

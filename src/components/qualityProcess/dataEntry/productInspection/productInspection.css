@@ -492,3 +492,43 @@
 .rateOptDate span{
     width: 275px !important;
 }
+
+/*打印*/
+.productInspection_print{
+    font-family: 'Arial Normal', 'Arial';
+    font-style: normal;
+    color: #333333;
+    line-height: normal;
+    /*display: none;*/
+}
+.productInspection_print_big{
+    font-size: 28px ;
+    font-weight: 400;
+}
+.productInspection_print_small{
+    font-size: 10px;
+    /*font-weight: 400;*/
+}
+.printModal_scala{
+    height: 500px;
+}
+.printModal_print{
+    /*display: none;*/
+    display: none;
+}
+
+
+@media print {
+    body {
+        color: #000;
+        background: #fff;
+    }
+    nav, aside {
+        display: none;
+    }
+    body, article {
+        width: 30% !important;
+        margin-left: 0;
+        padding-left: 0;
+    }
+}

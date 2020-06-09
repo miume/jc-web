@@ -645,6 +645,8 @@ class Home extends Component {
                 lineCompare: `${server}/jc/common/goodIn/lineCompare`,
                 getVolume: `${server}/jc/common/goodIn/getVolumeWeight`, //获取体积
                 getByLineByProcess: `${server}/jc/common/goodIn/getByLineByProcess`,//根据产线，工艺参数，获取上期数据
+                mixRecipeList:`${server}/jc/common/processParam/mixRecipeList`,//混合盐获取配方
+                mixGetByLineByProcess:`${server}/jc/common/goodIn/mixGetByLineByProcess`//混合盐-根据产线，工序，工艺参数获取数据
             },
 
             /**异常处理模块*/

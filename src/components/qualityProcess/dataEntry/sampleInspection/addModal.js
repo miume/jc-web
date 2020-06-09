@@ -131,7 +131,6 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data) =>{
                 const res = data.data.data;
-                console.log(res)
                 if(res){
                     this.setState({
                         FinalserialNumber:res
@@ -213,7 +212,7 @@ const CollectionCreateForm = Form.create()(
             axios({
                 url:`${this.url.rawStandard.getItemsByRawId}`,
                 method:'get',
-                params:{rawId:value},
+                params:{rawId:parseInt(value.split("-")[0])},
                 headers:{
                     'Authorization': this.url.Authorization
                 },
@@ -499,7 +498,8 @@ const CollectionCreateForm = Form.create()(
                                     {
                                         this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
                                     }
-                                </Checkbox.Group></div>
+                                </Checkbox.Group>
+                            </div>
                         }
                         {/*{*/}
                             {/*this.state.visible1===3?*/}
@@ -525,7 +525,7 @@ const CollectionCreateForm = Form.create()(
                                         this.state.serialNumber.map(pe=>{
                                             // console.log(pe)
                                             return(
-                                                <Option key={pe.material.id} value={pe.material.id}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
+                                                <Option key={pe.standandId} value={pe.material.id+"-"+pe.standandId}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
                                             )
                                         })
                                     }
@@ -622,7 +622,7 @@ class AddModal extends React.Component{
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
             let data = {batch:this.state.batchRule,sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
-                sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
+                sampleDeliveringDate:dateTime,serialNumberId:parseInt(value.serialNumberId.split("-")[1]),type:value.type},testItemIds:this.state.testItemIds}
             axios({
                 url:`${this.url.sampleInspection.getAll}`,
                 method:'post',
@@ -651,7 +651,7 @@ class AddModal extends React.Component{
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
             let data = {batch:this.state.batchRule,sampleDeliveringRecord:{acceptStatus:1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
-                sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
+                sampleDeliveringDate:dateTime,serialNumberId:parseInt(value.serialNumberId.split("-")[1]),type:value.type},testItemIds:this.state.testItemIds}
             axios({
                 url:`${this.url.sampleInspection.getAll}`,
                 method:'post',

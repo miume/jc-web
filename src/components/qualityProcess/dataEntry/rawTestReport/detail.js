@@ -3,40 +3,7 @@ import {Modal} from 'antd';
 import axios from 'axios';
 import DetailModal from './detailModal';
 import CancleButton from '../../../BlockQuote/cancleButton';
-// const columns1 = [{
-//     title:'序号',
-//     dataIndex:'id',
-//     key:'id',
-//     align:'center',
-//     width:'10%'
-// },{
-//     title:'检测项目',
-//     dataIndex:'testItem',
-//     key:'testItem',
-//     align:'center',
-//     width:'30%'
-// },{
-//     title:'检测结果',
-//     dataIndex:'result',
-//     key:'result',
-//     align:'center',
-//     width:'30%'
-// },{
-//     title:'计量单位',
-//     dataIndex:'unit',
-//     key:'unit',
-//     align:'center',
-//     width:'30%'
-// },]
-// const data = [];
-// for(var i = 1; i <=10; i++){
-//     data.push({
-//         id:i,
-//         testItem:`Ca${i}`,
-//         result:`结果${i}`,
-//         unit:'g/ml'
-//     })
-// }
+
 class Detail extends React.Component{
     constructor(props){
         super(props);
@@ -114,7 +81,8 @@ class Detail extends React.Component{
                         testItemId:e.testItemResultRecord.testItemId,
                         testItemName:e.name,
                         testResult:e.testItemResultRecord.testResult,
-                        unit:e.unit
+                        unit:e.unit,
+                        isValid: e.testItemResultRecord.isValid
                     })
             }
         }
