@@ -313,7 +313,6 @@ class AddModal extends React.Component {
             return false
         }
         if(id) {
-            delete data['autoFlag'];
             method = 'put';
             url = this.props.url.materialInfoSto.materialInfo + `/${id}`;
         }
