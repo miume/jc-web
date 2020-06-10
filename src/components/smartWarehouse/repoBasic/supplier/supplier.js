@@ -44,7 +44,7 @@ class Suppliers extends React.Component {
             dataIndex: 'autoFlag',
             width: '10%',
             render: (text) => {
-                return text ? '是' : '否'
+                return text ? '否' : '是'
             }
         },{
             title: '操作',

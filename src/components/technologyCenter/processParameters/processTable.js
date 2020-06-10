@@ -30,7 +30,7 @@ class ProcessTable extends React.Component {
             title: '编号',
             key: 'processNum',
             dataIndex: 'processNum',
-            width: '9%'
+            width: '12%'
         }, {
             title: '使用车间',
             key: 'deptName',
@@ -55,7 +55,7 @@ class ProcessTable extends React.Component {
             title: '编制人',
             key: 'prepareName',
             dataIndex: 'prepareName',
-            width: '12%'
+            width: '11%'
         }, {
             title: '编制时间',
             key: 'dateOfFiling',

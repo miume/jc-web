@@ -224,7 +224,15 @@ class AddModal extends React.Component {
     /**取消事件*/
     handleCancel() {
         this.setState({
-            visible: false
+            visible: false,
+            materialTypeId: undefined,
+            subTypeId: undefined,
+            selectedItems: [],
+            measureUnit: undefined,
+            materialName: '',
+            materialNameCode: '',
+            streamFlag: false,
+            supplierId: [],
         });
     }
 
@@ -305,7 +313,6 @@ class AddModal extends React.Component {
             return false
         }
         if(id) {
-            delete data['autoFlag'];
             method = 'put';
             url = this.props.url.materialInfoSto.materialInfo + `/${id}`;
         }
