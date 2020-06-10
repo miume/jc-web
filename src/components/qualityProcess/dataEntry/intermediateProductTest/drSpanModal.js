@@ -35,14 +35,16 @@ class DrSpanModal extends React.Component {
         width: '20%',
     },{
         title: '状态',
-        dataIndex: 'isValid',
-        key: 'isValid',
+        dataIndex: 'isAudit',
+        key: 'isAudit',
         width: '30%',
         render: (text) => {
-            if(text === 1) {
-                return '通过';
+            if(text === 0) {
+                return '最近审核未通过';
+            } else if(text === 1) {
+                return '通过'
             } else {
-                return '不通过';
+                return '未审核';
             }
         }
     }];
