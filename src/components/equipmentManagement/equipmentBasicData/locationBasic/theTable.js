@@ -127,14 +127,14 @@ class TheTable extends React.Component{
         const {pageChangeFlag} = this.props.pageChangeFlag;
         if (pageChangeFlag) {
             this.props.getTableData({
-                id:parseInt(this.props.deptCode),
+                deptId:parseInt(this.props.deptCode),
                 page:page.current,
                 size:page.pageSize,
                 depName:this.props.deptName,
             })
         } else {
             this.props.getTableData({
-                id:parseInt(this.props.deptCode),
+                deptId:parseInt(this.props.deptCode),
                 page:page.current,
                 size:page.pageSize,
                 depName:this.props.deptName,
