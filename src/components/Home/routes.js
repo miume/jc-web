@@ -177,6 +177,11 @@ import TraceabilityBeforeDisassembly from '../QualityBacktracking/TraceabilityBe
 import ProcessTraceability from '../QualityBacktracking/ProcessTraceability/ProcessTraceability'
 
 import JobInformation from '../fireQuality/baseData/jobInformation/jobInformation'
+import InputOutputPositiveCost from '../positiveCost/inputOutput/inputOutput'
+import InputOutputAnaly from '../positiveCost/inputOutput/inputOutputAnaly/inputOutputAnaly'
+import ProductAnaly from '../positiveCost/inputOutput/productAnaly/productAnaly'
+import ProductLineAnaly from '../positiveCost/inputOutput/productLineAnaly/productLineAnaly'
+import WorkShopAnaly from '../positiveCost/inputOutput/workshopAnaly/workshopAnaly'
 export const routes = [{
     path: '/role',
     component: Role
@@ -689,15 +694,28 @@ export const routes = [{
     },{
         path:'/positiveProductAccount',
         component:PositiveCostAccount
-    }
-    ,{
+    },{
         path:'/traceBeforeDisassembly',
         component:TraceabilityBeforeDisassembly
-    }
-    ,{
+    },{
         path:'/processTraceability',
         component:ProcessTraceability
     },{
         path: '/jobInformation',
         component: JobInformation
+    },{
+        path: '/inputOutputPositiveCost',
+        component:InputOutputPositiveCost
+    },{
+        path:'/inputOutputAnaly',
+        component:InputOutputAnaly
+    },{
+        path:'/productAnaly',
+        component:ProductAnaly
+    },{
+        path: '/productLineAnaly',
+        component: ProductLineAnaly
+    },{
+        path: '/workShopAnaly',
+        component:WorkShopAnaly
     }];

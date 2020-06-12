@@ -21,27 +21,68 @@ class ModelPositiveCost extends Component{//产品型号
             title:'产品型号',
             dataIndex:'name',
             key:'name',
-            width:'18%'
+            width:'10%'
         },{
             title:'前驱体',
             dataIndex:'matchingCoefficientPrecursors',
             key:'matchingCoefficientPrecursors',
-            width:'18%'
+            width:'10%'
         },{
             title:'碳酸锂',
             dataIndex:'matchingCoefficientLithiumCarbonate',
             key:'matchingCoefficientLithiumCarbonate',
-            width:'18%'
+            width:'10%'
         },{
-            title:'氢氧化锂',
+            title:'预混料',
             dataIndex:'matchingCoefficientLithiumOh',
             key:'matchingCoefficientLithiumOh',
-            width:'18%'
+            width:'10%'
+        },,{
+            title:'产成品',
+            dataIndex:'matchingCoefficientProduct',
+            key:'matchingCoefficientProduct',
+            width:'10%'
         },{
+            title:'a',
+            dataIndex:'a',
+            key:'a',
+            width:'5%'
+        },{
+            title:'b',
+            dataIndex:'b',
+            key:'b',
+            width:'5%'
+        },,{
+            title:'c',
+            dataIndex:'c',
+            key:'c',
+            width:'5%'
+        },{
+            title:'d',
+            dataIndex:'d',
+            key:'d',
+            width:'5%'
+        },{
+            title:'e',
+            dataIndex:'e',
+            key:'e',
+            width:'5%'
+        },{
+            title:'f',
+            dataIndex:'f',
+            key:'f',
+            width:'5%'
+        },{
+            title:'g',
+            dataIndex:'g',
+            key:'g',
+            width:'5%'
+        },
+        {
             title:'操作',
             dataIndex:'operation',
             key:'operation',
-            width:'18%',
+            width:'10%',
             render:(text,record)=>{
                 let {deleteFlag,updateFlag}=this.state
                 return(
