@@ -74,7 +74,7 @@ class Edit extends React.Component{
                         <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
-                    vga点名称：<Input id="name" style={{width:"83%"}} onChange={this.change} value={this.state.data} placeholder="请输入vga点名称"/>
+                    <Input id="name" placeholder='请输入VGA点名称' onChange={this.change} value={this.state.data} placeholder="请输入vga点名称"/>
                 </Modal>
             </span>
         )

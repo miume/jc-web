@@ -83,7 +83,7 @@ class RawMaterialName extends React.Component{
                     return '手工领料'
                 }
                 else{
-                    return 'AGV叫料'
+                    return 'VGA叫料'
                 }
             }
         },{

@@ -233,10 +233,10 @@ class AddModal extends Component{
         })
     }
     render(){
-        let {nameFlag,typeFlag}=this.state,{editFlag,updateFlag,addFlag}=this.props
+        let {editFlag,updateFlag,addFlag}=this.props
         return(
             <span>
-                {this.props.editflag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
+                {editFlag?<span className={updateFlag?'blue':'hide'} onClick={this.showModal}>编辑</span>
                 :<span className={addFlag?'':'hide'}>
                     <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/>
                 </span>}

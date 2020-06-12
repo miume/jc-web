@@ -3,7 +3,6 @@ import {Table,Button,Select,Spin,message} from 'antd'
 import Search from './search'
 import Blockquote from '../../../BlockQuote/blockquote'
 import axios from 'axios'
-const {Option}=Select;
 class PositiveCostOperation extends Component{
     constructor(props){
         super(props);
@@ -105,7 +104,7 @@ class PositiveCostOperation extends Component{
         this.setState({
             loading:true
         })
-        let {lineCode,periodCode,periods}=this.state
+        let {periodCode,periods}=this.state
 
         axios({
             url:this.url.anodeCostAccount.confirm,
@@ -114,7 +113,7 @@ class PositiveCostOperation extends Component{
                 'Authorization':this.url.Authorization
             },
             params:{
-                lineCode:lineCode,
+                // lineCode:lineCode,
                 periodId:periodCode,
                 periods:periods
             }

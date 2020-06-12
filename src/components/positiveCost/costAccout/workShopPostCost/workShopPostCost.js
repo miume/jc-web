@@ -1,15 +1,18 @@
 import React,{Component} from 'react'
-import {Spin,Table,Popconfirm,Divider,message} from 'antd'
+import {Spin,Table,message} from 'antd'
 import Blockquote from '../../../BlockQuote/blockquote'
 import Search from '../positiveCostAccount/search'
 import axios from 'axios'
-import {judgeOperation,getOperations} from '../../../commom/getOperations'
+
 class WorkShopPostCost extends Component{
     constructor(props){
         super(props);
         this.state={
             loading:false,
-            dataSource:[]
+            dataSource:[],
+            type: 1,  //标记前驱体碳酸锂
+            pageType: 1, //标记成本核算界面
+            allProductionType: []
         }
         this.columns=[{
             title:'核算对象',
@@ -37,7 +40,7 @@ class WorkShopPostCost extends Component{
             dataIndex:'endTime',
             width:'6%'
         },{
-            title:'原料领用(T)',
+            title:'当前消耗材料(kg)',
             key:'rawMaterialFeedStock',
             dataIndex:'rawMaterialFeedStock',
             width:'11%',
@@ -52,7 +55,7 @@ class WorkShopPostCost extends Component{
                 )
             }
         },{
-            title:'原料结存(T)',
+            title:'上期期末在制品(T)',
             key:'rawMaterialBalance',
             dataIndex:'rawMaterialBalance',
             width:'11%',
@@ -67,45 +70,25 @@ class WorkShopPostCost extends Component{
                 )
             }
         },{
-            title:'上期前段在制品(T)',
+            title:'本期期末在制品(T)',
             key:'lastGoodsInProcessFirst',
             dataIndex:'lastGoodsInProcessFirst',
             width:'6%'
         },{
-            title:'本期前段在制品(T)',
+            title:'本期入库产品(T)',
             key:'currentGoodsInProcessFirst',
             dataIndex:'currentGoodsInProcessFirst',
             width:'6%'
         },{
-            title:'上期后段在制品(T)',
+            title:'当期消耗其他物料(T)',
             key:'lastGoodsInProcessSecond',
             dataIndex:'lastGoodsInProcessSecond',
             width:'6%'
         },{
-            title:'本期后段在制品(T)',
+            title:'材料单耗(kg)',
             key:'currentGoodsInProcessSecond',
             dataIndex:'currentGoodsInProcessSecond',
             width:'6%'
-        },{
-            title:'成品入库(T)',
-            key:'productStorage',
-            dataIndex:'productStorage',
-            width:'5%'
-        },{
-            title:'单耗(T)',
-            key:'unitConsumption',
-            dataIndex:'unitConsumption',
-            width:'11.5%',
-            render:(text)=>{
-                let da=text?text.split(' '):undefined
-                return(
-                    da?da.map((item,index)=>{
-                        return(
-                            <span style={{display:'block'}} key={index}>{item}</span>
-                        )
-                    }):null
-                )
-            }
         }]
         this.returnFireCost=this.returnFireCost.bind(this);
         this.selectChange=this.selectChange.bind(this);
@@ -113,9 +96,19 @@ class WorkShopPostCost extends Component{
         this.getTimeByPeriod=this.getTimeByPeriod.bind(this);
         this.timeChange=this.timeChange.bind(this);
         this.confirm=this.confirm.bind(this)
+        this.onRadioChange = this.onRadioChange.bind(this)
+        this.getAllProductionType = this.getAllProductionType.bind(this);
     }
     componentDidMount(){
         this.getPeriod()
+        //pageType表示界面类型  1表示车间成本核算 2表示产线成本核算 3代表产品成本核算
+        let {pageType} = this.props; 
+        if(pageType) {
+            this.setState({pageType})
+        }
+        if (pageType === 3) {
+            this.getAllProductionType()
+        }
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -139,8 +132,26 @@ class WorkShopPostCost extends Component{
                 this.getTimeByPeriod(res[0].code)
             }
         })
-        
     }
+    
+    //获取所有产品型号
+    getAllProductionType() {
+        axios({
+            url:this.url.positiveModel.all,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    allProductionType:res,
+                })
+            }
+        })
+    }
+
     getTimeByPeriod(value){
         axios({
             url:this.url.anodeCostAccount.getDate,
@@ -160,6 +171,13 @@ class WorkShopPostCost extends Component{
             }
         })
     }
+
+    onRadioChange(e) {
+        this.setState({
+            type: e.target.value
+        })
+    }
+
     selectChange(value,name){
         name=name.props.name
         this.setState({
@@ -177,7 +195,8 @@ class WorkShopPostCost extends Component{
     }
     /**查询*/
     confirm(){
-        let {periodCode,periods}=this.state
+        //periodCode表示班次，periods表示开始时间，type表示前驱体或碳酸锂，productionType表示产品型号
+        let {periodCode,periods,type,productionType}=this.state
         this.setState({
             loading:true
         })
@@ -190,7 +209,8 @@ class WorkShopPostCost extends Component{
             params:{
                 lineCode:1,
                 periodId:periodCode,
-                periods:periods
+                periods:periods,
+                type
             }
         }).then(data=>{
             let res=data.data.data
@@ -223,29 +243,30 @@ class WorkShopPostCost extends Component{
         })
     }
     //返回火法成本
-    returnFireCost(){
+    returnFireCost() {
         this.props.history.push({pathname:'/positiveProductAccount'});
     }
     render(){
         this.current=JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url'));
-        let {lineNameData,data,periods,periodCode,staticPeriod}=this.state
+        let {lineNameData,periods,periodCode,staticPeriod,type,pageType,allProductionType,productionType}=this.state
         return(
             <div>
                 <Blockquote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.returnFireCost} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Search  staticPeriod={staticPeriod} periodCode={periodCode} selectChange={this.selectChange}
                             lineNameData={lineNameData} periods={periods} timeChange={this.timeChange} flag={true}
-                            confirm={this.confirm}
+                            confirm={this.confirm} type={type} onRadioChange={this.onRadioChange} pageType={pageType}
+                            allProductionType={allProductionType} productionType={productionType}
                      />
                      <div className='clear'></div> 
                     <Table
-                    rowKey={record=>record.index}
-                    dataSource={this.state.dataSource}
-                    size='small'
-                    columns={this.columns}
-                    pagination={false}
-                    bordered/>
+                        rowKey={record=>record.index}
+                        dataSource={this.state.dataSource}
+                        size='small'
+                        columns={this.columns}
+                        pagination={false}
+                        bordered/>
                 </Spin>
             </div>
         );

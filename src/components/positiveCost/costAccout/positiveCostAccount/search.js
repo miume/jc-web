@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import {Select} from 'antd'
-import SearchCell from '../../../BlockQuote/search'
+import {Select,Radio} from 'antd'
 import NewButton from '../../../BlockQuote/newButton'
 const {Option}=Select
 class Search extends Component{
@@ -8,16 +7,23 @@ class Search extends Component{
         super(props)
     }
     render(){
-        let  {lineNameData,periods,selectChange,periodCode,staticPeriod} = this.props; //es6数组去重
+        let  {lineNameData,periods,selectChange,periodCode,staticPeriod,type,onRadioChange,productionType,pageType,allProductionType} = this.props; //es6数组去重
         return(
             <div className={this.props.flag?'searchCell':'hide'}>
-                {/* <Select  style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectChange} placeholder='请选择核算对象'>
-                    
-                         <Option key={0} value={0} name='lineCode'>产线</Option>
-                         <Option key={1} value={1} name='lineCode'>车间</Option>
-                    
-                </Select> */}
-                <Select value={periodCode} style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectChange}>
+                <Select value={productionType} style={ pageType === 3 ? {width:'150px',marginRight:'10px'} : {display:'none'}} onChange={selectChange} placeholder='请选择产品型号'>
+                    {
+                        allProductionType ? allProductionType.map(e=>{
+                            return(
+                                <Option key={e.code} value={e.code} name='productionType'>{e.name}</Option>
+                            )
+                        }):null
+                    }
+                </Select>
+                <Radio.Group onChange={onRadioChange} value={type}>
+                    <Radio value={1}>前驱体</Radio>
+                    <Radio value={2}>碳酸锂</Radio>
+                </Radio.Group>
+                <Select value={periodCode} style={{width:'150px',marginRight:'10px'}} onChange={selectChange}>
                         {
                             staticPeriod?staticPeriod.map(e=>{
                                 return(

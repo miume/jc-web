@@ -16,7 +16,8 @@ class AddModal extends React.Component {
             selectAllItems: [],
             selectedItems: [],
             allUnitData: [],
-            allSupplierData: []
+            allSupplierData: [],
+            supplierId: []
         };
         this.getAllUnit = this.getAllUnit.bind(this);
         this.getAllType = this.getAllType.bind(this);

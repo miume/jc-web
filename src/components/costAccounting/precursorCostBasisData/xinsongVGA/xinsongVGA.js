@@ -201,7 +201,7 @@ class PLCaddress extends React.Component{
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch} addFlag={addFlag}/>
 
-                    <SearchCell name='请输入PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
+                    <SearchCell name='请输入VGA点名称' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
                     <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange
                     } size="small" bordered/>
