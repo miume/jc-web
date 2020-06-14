@@ -20,7 +20,6 @@ class PositiveProcessStatistics extends Component{
         }
         this.getPeriod=this.getPeriod.bind(this);
         this.handleAdd=this.handleAdd.bind(this);
-        this.statisticalAnalysis=this.statisticalAnalysis.bind(this);
         this.confirm=this.confirm.bind(this);
         this.getLine=this.getLine.bind(this);
         this.getPendSubmit=this.getPendSubmit.bind(this);
@@ -214,14 +213,7 @@ class PositiveProcessStatistics extends Component{
             line:line,
         })
     }
-    statisticalAnalysis(){
-        let {line,periodStatis}=this.state
-        this.props.history.push({
-            pathname:'/positiveStatistic',
-            periodStatis: periodStatis,
-            line: line
-        })
-    }
+
 
     render(){
         let {periodStatis,periodCode,time,length,line,lineCode,dataStatistic,dataSubmit,head,tabKey}=this.state
@@ -234,7 +226,7 @@ class PositiveProcessStatistics extends Component{
                     <span className={this.state.addFlag?'':'hide'}>
                           <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd} />
                     </span>
-                    <NewButton name='统计分析' handleClick={this.statisticalAnalysis}/>
+                    {/* <NewButton name='统计分析' handleClick={this.statisticalAnalysis}/> */}
                     <Search flag={true} periodStatis={periodStatis} line={line} tabKey={tabKey} getPendSubmit={this.getPendSubmit} getStatisticPage={this.getStatisticPage}
                             periodCode={tabKey === '2' ? periodCode : undefined} time={time} length={length} confirm={this.confirm} lineCode={tabKey === '2' ? lineCode : undefined}/>
                     <div className='clear'></div>

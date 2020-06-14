@@ -42,7 +42,6 @@ class PositiveStatisticDone extends Component{//已统计
             dataIndex:'operation',
             key:'operation',
             render:(text,record)=>{
-                console.log(record.totals.code)
                 return(
                     <Detail record={record} url={this.props.url}/>
                 )

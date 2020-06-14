@@ -478,6 +478,7 @@ class CostProcessAdd extends Component {
         let flag=(f===1?1:0)
         let {addData,addDataSave}=this.state
         addData['periodId'] = this.state.periodCode
+        console.log(this.state.periodCode,addData['periodId'])
         addData['lineName'] = this.state.inputPeriod
         addDataSave['periodId'] = this.state.periodCode
         addDataSave['lineName'] = this.state.inputPeriod
@@ -551,6 +552,7 @@ class CostProcessAdd extends Component {
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'))
+        const current=JSON.parse(localStorage.getItem('dataEntry'))
         let {tagTableData,tabKey,flagConfirm}=this.state
         this.dataComponent = [{
             component: <SingleCrystal tagTableData={tagTableData} url={this.url} processId={tabKey} getSingleCrystal={this.getChange} 
@@ -573,7 +575,7 @@ class CostProcessAdd extends Component {
         }]
         return (
             <div >
-                <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='前驱体成本核算管理' menu2='在制品统计' returnDataEntry={this.returnProcess} />
+                <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu={'湿法成本'} menu2='在制品统计' returnDataEntry={this.returnProcess} />
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}
                         staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} period={this.state.period} selectChange={this.selectChange}

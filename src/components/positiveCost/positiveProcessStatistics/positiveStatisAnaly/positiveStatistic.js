@@ -6,6 +6,7 @@ import PositiveProductLine from './productLineStatis/productLineStatis'
 import Product from './productStatis/productStatis'
 import PositiveProcessCom from './processCompare/processCom'
 import ProductLineCom from './productLineCom/productLineCom'
+import axios from 'axios'
 const {TabPane}=Tabs
 
 /**统计分析*/
@@ -15,47 +16,70 @@ const {TabPane}=Tabs
         this.state={
             loading:false
         }
-        this.back=this.back.bind(this);
+        this.getLine=this.getLine.bind(this);
+        this.getPeriod=this.getPeriod.bind(this)
         this.tabChange=this.tabChange.bind(this);
     }
     componentDidMount(){
-        let {location}=this.props
-        let staticPeriod=location.periodStatis,//这个数组在点击统计分析界面后就有了
-            line=location.line,
-            periodCode=staticPeriod&&staticPeriod[0]?staticPeriod[0].code:-1,
-            length=staticPeriod&&staticPeriod[0]?staticPeriod[0].length:-1,
-            startTime=staticPeriod&&staticPeriod[0]?staticPeriod[0].startTime:'',
-            lineCode=line&&line[0]&&line[0].code?line[0].code:undefined
-
-        this.setState({
-            staticPeriod:staticPeriod,
-            line:line,
-            periodCode:periodCode,
-            length:length,
-            startSecondTime:startTime,
-            lineCode:lineCode
-        })
+        this.getPeriod()
+        this.getLine()
     }
     componentWillUnmount(){
-        this.setState = ()=>{
+        this.setState=()=>{
             return;
-        };
-      }
+        }
+    }
+    /**获取统计周期*/
+    getPeriod(){
+        axios({
+            url:this.url.positiveStatic.all,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res.length){
+                this.setState({
+                    staticPeriod:res,
+                    periodCode:res[0].code,
+                    length:res[0].length,
+                    time:res[0].startTime
+                })
+            }
+        })
+    }
+    /**获取产线*/
+    getLine(){
+        axios({
+            url:this.url.positiveProductline.all,
+            method:'get',
+            headers: {
+                'Authorization':this.url.Authorization
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    line:res,
+                    lineCode:res[0].code
+                })
+            }
+        })
+    }
     tabChange(key){
         this.setState({
             tabKey:key
         })
     }
-    back(){
-        this.props.history.push({pathname:'/positiveProcess'})
-    }
+
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
         let {line,staticPeriod,periodCode,lineCode}=this.state
         this.url=JSON.parse(localStorage.getItem('url'))
         return(
             <div>
-                <Blockquote name='在制品统计分析' menu='正极成本'  menu2='在制品管理' returnDataEntry={this.back}/>
+                <Blockquote name={current.menuName} menu={current.menuParent}  />
                 <div className='rightDiv-content'>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         <TabPane key='1' tab='按产线统计'> <PositiveProductLine staticPeriod={staticPeriod} periodCode={periodCode} url={this.url}/> </TabPane>

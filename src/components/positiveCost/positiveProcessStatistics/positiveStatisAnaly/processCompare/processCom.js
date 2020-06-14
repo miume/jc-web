@@ -18,6 +18,17 @@ class PositiveProcessCom extends Component{
         this.getOption=this.getOption.bind(this);
         this.selectChange=this.selectChange.bind(this);
     }
+    componentDidMount(){
+        let {periodCode}=this.props
+        this.setState({
+            periodCode:periodCode,
+        })
+    }
+    componentWillUnmount(){
+        this.setState=()=>{
+            return
+        }
+    }
     handleConfirm(){
         let {periodCode,lineCode,startTime,endTime,flag}=this.state;   
         this.setState({
@@ -96,7 +107,6 @@ class PositiveProcessCom extends Component{
   
     getOption(){
         let {xData,name,data10,series}=this.state
-           
         const option={
             tooltip:{
                 trigger:'axis'
@@ -133,11 +143,12 @@ class PositiveProcessCom extends Component{
         return option
     }
     render(){
-        let {loading,dataFlag}=this.state,{line}=this.props
+        let {loading,dataFlag,periodCode}=this.state,{line}=this.props
         return(
             <Spin spinning={loading}>
                 <Search flag={true} handleConfirm={this.handleConfirm} dataFlag={dataFlag}
-                timeChange={this.timeChange} selectChange={this.selectChange} staticPeriod={this.props.staticPeriod}
+                timeChange={this.timeChange} selectChange={this.selectChange}
+                 staticPeriod={this.props.staticPeriod} periodCode={periodCode}
                 line={line}/>
                 <div className={'clear'}></div>
                 <div className={'statis-processCompare-echarts'}>
