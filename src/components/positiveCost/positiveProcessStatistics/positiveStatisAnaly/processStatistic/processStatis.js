@@ -149,7 +149,10 @@ class PositiveProcess extends Component{
             let res = data.data.data;
             if(res){
                 this.setState({
-                    lineNameData:res
+                    lineNameData:res,
+                    beginTime:res[0].beginTime,
+                    endTime:res[0].endTime,
+                    periods:res[0].periods,
                 })
             }
         })
@@ -201,21 +204,25 @@ class PositiveProcess extends Component{
             this.getStartTime(value)
         }
     }
-    onChange(value) {
-        value=value.split('/')[0]
+    onChange(value) {//选择周期开始时间对应的下拉框
+        let periods=value.split('/')[0],beginTime=value.split('/')[1],endTime=value.split('/')[2]
         this.setState({
-            periods:value
+            periods:periods,
+            beginTime:beginTime,
+            endTime:endTime
         })   
       }
 
   
     render(){
-        let {line,staticPeriod}=this.props,{periodCode,lineCode,loading,lineNameData,data,periods}=this.state
+        let {line,staticPeriod}=this.props,
+        {periodCode,lineCode,loading,lineNameData,data,periods,endTime,beginTime}=this.state
         return(
             <Spin spinning={loading}>
                 <Search lineFlag={true} staticPeriod={staticPeriod} selectChange={this.selectChange} 
                         line={line} onChange={this.onChange}  periods={periods}
-                        periodCode={periodCode} lineCode={lineCode} lineNameData={lineNameData} getTableData={this.getTableData}
+                        periodCode={periodCode} lineCode={lineCode} lineNameData={lineNameData} 
+                        getTableData={this.getTableData} beginTime={beginTime} endTime={endTime}
                 />
                 <div className='clear'></div>
                 <Table 

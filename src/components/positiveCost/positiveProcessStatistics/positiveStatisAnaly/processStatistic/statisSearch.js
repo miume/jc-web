@@ -7,13 +7,14 @@ const {Option}=Select
         super(props)
     }
     render(){
-        let {lineCode,periodCode,timeData,startTime,lineNameData,periods,modelData,modelCode}=this.props
+        let {lineCode,periodCode,lineNameData,periods,modelData,modelCode,staticPeriod,line,beginTime,endTime}=this.props
+        console.log(periodCode,beginTime)
         return(
             <div className='searchCell'>
                 <span className={this.props.productFlag?'':'hide'}>
                     <Select value={modelCode} onChange={this.props.selectChange} style={{width:'150px',marginRight:'10px'}} placeholder='请选择产品型号'>
                         {
-                            this.props.modelData?this.props.modelData.map(item=>{
+                            modelData?modelData.map(item=>{
                                 return(
                                     <Option key={item.code} name='modelCode' value={item.code}>{item.name}</Option>
                                 )
@@ -23,14 +24,15 @@ const {Option}=Select
                 </span>
                 <Select value={periodCode} onChange={this.props.selectChange} style={{width:'200px',marginRight:'10px'}} placeholder='请选择周期类型'>
                     {
-                        this.props.staticPeriod?this.props.staticPeriod.map(item=>{
+                        staticPeriod?staticPeriod.map(item=>{
                             return(
                                 <Option key={item.code} name='periodCode' value={item.code}>{item.name}</Option>
                             )
                         }):null
                     }
                 </Select>
-                <Select placeholder={'请选择周期开始时间'} style={{width:'200px',marginRight:'10px'}} onChange={this.props.onChange} value={periods}
+                <Select placeholder={'请选择周期开始时间'} style={{width:'400px',marginRight:'10px'}} onChange={this.props.onChange}
+                 value={beginTime&&endTime?`${beginTime} ~ ${endTime}`:undefined}
                         dropdownMatchSelectWidth={false} dropdownStyle={{width: 400}}>
                     {
                         lineNameData ?
@@ -48,7 +50,7 @@ const {Option}=Select
                 <span className={this.props.lineFlag?'':'hide'}>
                     <Select value={lineCode} onChange={this.props.selectChange} style={{width:'150px',marginRight:'10px'}} placeholder='请选择产线'>
                         {
-                            this.props.line?this.props.line.map(item=>{
+                            line?line.map(item=>{
                                 return(
                                     <Option key={item.code} name='lineCode' value={item.code}>{item.name}</Option>
                                 )

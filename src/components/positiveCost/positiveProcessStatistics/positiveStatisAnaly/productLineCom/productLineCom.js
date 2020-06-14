@@ -17,6 +17,17 @@ class ProductLineCom extends Component{
         this.getOption=this.getOption.bind(this);
         this.selectChange=this.selectChange.bind(this);
     }
+    componentDidMount(){
+        let {periodCode}=this.props
+        this.setState({
+            periodCode:periodCode,
+        })
+    }
+    componentWillUnmount(){
+        this.setState=()=>{
+            return
+        }
+    }
     handleConfirm(){
         let {periodCode,dataFlag,startTime,endTime,materialFlag}=this.state;   
         this.setState({
@@ -132,9 +143,11 @@ class ProductLineCom extends Component{
         return option
     }
     render(){
+        let {periodCode}=this.state
         return(
                 <Spin spinning={this.state.loading}>
-                    <Search handleConfirm={this.handleConfirm} timeChange={this.timeChange} dataFlag={this.state.dataFlag}
+                    <Search handleConfirm={this.handleConfirm} timeChange={this.timeChange} 
+                            dataFlag={this.state.dataFlag}   periodCode={periodCode}
                             selectChange={this.selectChange} staticPeriod={this.props.staticPeriod}
                     />
                     <div className={'statis-processCompare-echarts'}>

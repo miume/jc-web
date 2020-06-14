@@ -9,10 +9,11 @@ const {RangePicker}=DatePicker
         super(props)
     }
     render(){
-        let {line}=this.props
+        let {line,periodCode}=this.props
         return(
             <div style={{textAlign:'center',marginTop:'20px'}}>
-                <Select  onChange={this.props.selectChange} style={{width:'180px',marginRight:'10px'}} placeholder='请选择周期类型'>
+                <Select  onChange={this.props.selectChange} style={{width:'180px',marginRight:'10px'}} 
+                placeholder='请选择周期类型' value={periodCode}>
                     {
                         this.props.staticPeriod?this.props.staticPeriod.map(item=>{
                             return(
@@ -21,7 +22,7 @@ const {RangePicker}=DatePicker
                         }):null
                     }
                 </Select>
-                <RangePicker showTime={{ format: 'HH:mm:ss' }} format="YYYY-MM-DD HH:mm:ss" locale={locale}
+                <RangePicker  format="YYYY-MM-DD" locale={locale}
                      placeholder={['开始时间','结束时间']} style={{width:350,marginRight:'10px'}} onChange={this.props.timeChange}></RangePicker>
                 
                 <span  className={this.props.flag?'':'hide'}>

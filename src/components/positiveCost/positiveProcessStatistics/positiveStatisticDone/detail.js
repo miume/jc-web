@@ -221,13 +221,13 @@ class Detail extends Component{
                 <div >
                      <div style={{float:'left'}}>  
                         <span className={id===8?'':'hide'}>
-                            <span >周期内包装袋数 : {sub&&sub.bags!==undefined?sub.bags:undefined}</span>
-                            <span >产成品入库 : {sub&&sub.productStorage!==undefined?sub.productStorage:undefined}</span>
+                            <span style={{marginRight:'20px'}}>周期内包装袋数 : {sub&&sub.bags!==undefined?sub.bags:undefined}</span>
+                            <span style={{marginRight:'20px'}}>产成品入库 : {sub&&sub.productStorage!==undefined?sub.productStorage:undefined}</span>
                         </span>
                         {
                             dataBottom?dataBottom.map((item,index)=>{
                                 return(
-                                    <span  key={index}>{item.materialName} : {item.value}</span>
+                                    <span  key={index} style={{marginRight:'20px'}}>{item.materialName} : {item.value} </span>
                                 )
                             }):null
                         }
