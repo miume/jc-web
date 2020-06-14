@@ -89,7 +89,7 @@ class DetailModal extends React.Component {
                             size="small"
                             dataSource={this.state.devicePatrolModelsItemDetailsList}
                             bordered
-                            scroll={{y: 150}}
+                            scroll={{y: 110}}
                             pagination={false}
                             className={'inspection-detail-table'}
                         />

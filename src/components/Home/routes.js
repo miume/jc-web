@@ -182,6 +182,9 @@ import InputOutputAnaly from '../positiveCost/inputOutput/inputOutputAnaly/input
 import ProductAnaly from '../positiveCost/inputOutput/productAnaly/productAnaly'
 import ProductLineAnaly from '../positiveCost/inputOutput/productLineAnaly/productLineAnaly'
 import WorkShopAnaly from '../positiveCost/inputOutput/workshopAnaly/workshopAnaly'
+
+import ProductNumber from '../positiveCost/baseData/productNumber/productNumber';
+import KilnBurning from '../positiveCost/baseData/kilnBuriningLossCoeffcient/kilnBuriningLossCoeffcient';
 export const routes = [{
     path: '/role',
     component: Role
@@ -718,4 +721,10 @@ export const routes = [{
     },{
         path: '/workShopAnaly',
         component:WorkShopAnaly
+    },{
+        path: '/productNumber',
+        component: ProductNumber
+    },{
+        path: '/kilnBurning',
+        component: KilnBurning
     }];
