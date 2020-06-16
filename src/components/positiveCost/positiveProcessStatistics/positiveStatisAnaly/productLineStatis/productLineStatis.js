@@ -223,16 +223,30 @@ import './stattic.css'
                 footer={()=>{
                     return(
                         <div className={data.length===0?'hide':''}>
-                            合计 : &nbsp;&nbsp;&nbsp;
+                            <div className={'positive-statisSum'} style={{fontWeight:'800'}}>合计 :</div>
+                            &nbsp;&nbsp;&nbsp;<span style={{fontWeight:'800'}}>原料领用合计 :</span> 
                             <div className={'positive-statis'}>
-                                <div ><span>前驱体原料重量 :</span>&nbsp; {res&&res['前驱体']['feedstock']!==undefined?res['前驱体']['feedstock']:''} </div>
-                                <div ><span>碳酸锂原料重量 :</span>&nbsp; {res&&res['碳酸锂']['feedstock']!==undefined?res['碳酸锂']['feedstock']:''} </div>
-                                <div ><span>预混料原料重量 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
-                                <div > <span>烧结料原料重量 : </span>&nbsp;{res&&res['烧结料']['feedstock']!==undefined?res['烧结料']['feedstock']:''} </div>
-                                <div ><span>前驱体原料结存 : </span>&nbsp;{res&&res['前驱体']['balance']!==undefined?res['前驱体']['balance']:''} </div>
-                                <div ><span>碳酸锂原料结存 : </span>&nbsp;{res&&res['碳酸锂']['balance']!==undefined?res['碳酸锂']['balance']:''} </div>
-                                <div ><span>前段在制品重量 :</span>&nbsp; {res&&res['前段在制品重量']!==undefined?res['前段在制品重量']:''} </div>
-                                <div ><span>后段在制品重量 : </span>&nbsp;{res&&res['后段在制品重量']!==undefined?res['后段在制品重量']:''} </div>
+                                
+                                <div ><span>前驱体 :</span>&nbsp; {res&&res['前驱体']['feedstock']!==undefined?res['前驱体']['feedstock']:''} </div>
+                                <div ><span>碳酸锂 :</span>&nbsp; {res&&res['碳酸锂']['feedstock']!==undefined?res['碳酸锂']['feedstock']:''} </div>
+                                <div ><span>仓库预混料 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
+                                <div > <span>仓库烧结料 : </span>&nbsp;{res&&res['烧结料']['feedstock']!==undefined?res['烧结料']['feedstock']:''} </div>
+                                <div ><span>仓库布袋料 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
+                                <div > <span>仓库重加工 : </span>&nbsp;{res&&res['烧结料']['feedstock']!==undefined?res['烧结料']['feedstock']:''} </div>
+                                <div ><span>仓库半成品 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
+                            </div> 
+                            &nbsp;&nbsp;&nbsp;<span style={{fontWeight:'800'}}>原料结存合计 :</span>
+                            <div className={'positive-statis'}> 
+                                <div ><span>前驱体 :</span>&nbsp; {res&&res['前驱体']['feedstock']!==undefined?res['前驱体']['feedstock']:''} </div>
+                                <div ><span>碳酸锂 :</span>&nbsp; {res&&res['碳酸锂']['feedstock']!==undefined?res['碳酸锂']['feedstock']:''} </div>
+                                <div ><span>仓库预混料 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
+                                <div > <span>仓库烧结料 : </span>&nbsp;{res&&res['烧结料']['feedstock']!==undefined?res['烧结料']['feedstock']:''} </div>
+                                <div ><span>仓库布袋料 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
+                                <div > <span>仓库重加工 : </span>&nbsp;{res&&res['烧结料']['feedstock']!==undefined?res['烧结料']['feedstock']:''} </div>
+                                <div ><span>仓库半成品 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
+                            </div> 
+                            <div className={'positive-statis'}>    
+                                <div ><span>在制品重量 :</span>&nbsp; {res&&res['前段在制品重量']!==undefined?res['前段在制品重量']:''} </div>
                                 <div ><span>产品重量 :</span>&nbsp; {res&&res['产品重量']!==undefined?res['产品重量']:''} </div>
                             </div>
                         </div>
