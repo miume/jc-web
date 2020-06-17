@@ -233,7 +233,7 @@ const CollectionCreateForm = Form.create()(
             axios({
                 url:`${this.url.product.getItemsByProductStandardId}`,
                 method:'get',
-                params:{productStandardId:value},
+                params:{productStandardId:parseInt(value.split("-")[1])},
                 headers:{
                     'Authorization': this.url.Authorization
                 },
@@ -539,7 +539,7 @@ const CollectionCreateForm = Form.create()(
                                     {
                                         this.state.FinalserialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.techniqueProductNewStandardRecord.id} value={pe.techniqueProductNewStandardRecord.id}>{pe.productName+' - '+pe.meterialClass}</Option>
+                                                <Option key={pe.techniqueProductNewStandardRecord.id} value={"00-" + pe.techniqueProductNewStandardRecord.id}>{pe.productName+' - '+pe.meterialClass}</Option>
                                             )
                                         })
                                     }
@@ -621,6 +621,7 @@ class AddModal extends React.Component{
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
+            console.log(value.serialNumberId)
             let data = {batch:this.state.batchRule,sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:parseInt(value.serialNumberId.split("-")[1]),type:value.type},testItemIds:this.state.testItemIds}
             axios({
