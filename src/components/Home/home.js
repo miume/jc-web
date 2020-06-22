@@ -301,6 +301,9 @@ class Home extends Component {
                 productStandard: `${server}/jc/common/techProductStandard`,
                 getAll: `${server}/jc/common/techProductStandard/allClasses`,
                 addNewClass: `${server}/jc/common/techProductStandard/newClass`,
+                getClassesById: `${server}/jc/common/techProductStandard/getClassesById`,
+                deleteClass: `${server}/jc/common/techProductStandard/deleteClass`,
+                editClass: `${server}/jc/common/techProductStandard/editClass`,
             },
             /**成品标准 */
             product: {
@@ -317,6 +320,10 @@ class Home extends Component {
 
                 getAllProductCommonBatch: `${server}/jc/common/product/getAllProductCommonBatch`,
                 getItemsByProductStandardId: `${server}/jc/common/product/getItemsByProductStandardId`,
+
+                editProductName: `${server}/jc/common/product/editProductName`,
+                deleteById: `${server}/jc/common/product/deleteById`,
+
             },
             /**设备基本厂商*/
             equipmentManufacture: {
