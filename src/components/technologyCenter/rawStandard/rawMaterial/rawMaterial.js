@@ -7,6 +7,7 @@ import CancleButton from '../../../BlockQuote/cancleButton';
 import RawMaterialAddModal from './addModal';
 import '../block.css';
 import DataPart from '../div';
+import Operator from '../operator'
 
 class RawMaterial extends Component {
     url;
@@ -80,7 +81,6 @@ class RawMaterial extends Component {
                 this.setState({rawData: res});
             }
         });
-
     }
 
     //监听原材料那个块块是否被选中
@@ -187,7 +187,13 @@ class RawMaterial extends Component {
             <div>
                 <div className='rawMaterailStandardMiddle'>
                     <span className='product-standrad-middle-text'>请选择原材料</span>
-
+                    <Operator
+                        fetch={this.fetch}
+                        titleName="原材料"
+                        data={this.state.data}
+                        url={this.props.url}
+                        flag={0}
+                    />
                     <SearchCell name='请输入原材料名称'
                                 searchEvent={this.searchEvent}
                                 searchContentChange={this.searchContentChange}

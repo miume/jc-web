@@ -288,7 +288,12 @@ class Home extends Component {
                 addNewRaw: `${server}/jc/common/techRawStandard/addRaw`,
 
                 getCurrentRawStandard: `${server}/jc/common/techRawStandard/getCurrentRawStandard`,
-                getItemsByRawId: `${server}/jc/common/techRawStandard/getItemsByRawId`
+                getItemsByRawId: `${server}/jc/common/techRawStandard/getItemsByRawId`,
+                updateRaw: `${server}/jc/common/techRawStandard/updateRaw`,
+                deleteRaw: `${server}/jc/common/techRawStandard/deleteRaw`,
+                editManufacturer: `${server}/jc/common/techRawStandard/editManufacturer`,
+                deleteManufacturer: `${server}/jc/common/techRawStandard/deleteManufacturer`,
+                manufacturerByRawId: `${server}/jc/common/techRawStandard/manufacturerByRawId`,
             },
             /**产品标准 */
             productStandard: {
