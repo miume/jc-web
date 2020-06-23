@@ -24,58 +24,58 @@ class ModelPositiveCost extends Component{//产品型号
             width:'10%'
         },{
             title:'前驱体',
-            dataIndex:'matchingCoefficientPrecursors',
-            key:'matchingCoefficientPrecursors',
+            dataIndex:'precursors',
+            key:'precursors',
             width:'10%'
         },{
             title:'碳酸锂',
-            dataIndex:'matchingCoefficientLithiumCarbonate',
-            key:'matchingCoefficientLithiumCarbonate',
+            dataIndex:'lithiumCarbonate',
+            key:'lithiumCarbonate',
             width:'10%'
         },{
             title:'预混料',
-            dataIndex:'matchingCoefficientLithiumOh',
-            key:'matchingCoefficientLithiumOh',
+            dataIndex:'premix',
+            key:'premix',
             width:'10%'
         },,{
             title:'产成品',
-            dataIndex:'matchingCoefficientProduct',
-            key:'matchingCoefficientProduct',
+            dataIndex:'production',
+            key:'production',
             width:'10%'
         },{
             title:'a',
-            dataIndex:'a',
-            key:'a',
+            dataIndex:'coeA',
+            key:'coeA',
             width:'5%'
         },{
             title:'b',
-            dataIndex:'b',
-            key:'b',
+            dataIndex:'coeB',
+            key:'coeB',
             width:'5%'
         },,{
             title:'c',
-            dataIndex:'c',
-            key:'c',
+            dataIndex:'coeC',
+            key:'coeC',
             width:'5%'
         },{
             title:'d',
-            dataIndex:'d',
-            key:'d',
+            dataIndex:'coeD',
+            key:'coeD',
             width:'5%'
         },{
             title:'e',
-            dataIndex:'e',
-            key:'e',
+            dataIndex:'coeE',
+            key:'coeE',
             width:'5%'
         },{
             title:'f',
-            dataIndex:'f',
-            key:'f',
+            dataIndex:'coeF',
+            key:'coeF',
             width:'5%'
         },{
             title:'g',
-            dataIndex:'g',
-            key:'g',
+            dataIndex:'coeG',
+            key:'coeG',
             width:'5%'
         },
         {
@@ -120,7 +120,7 @@ class ModelPositiveCost extends Component{//产品型号
             loading:true
         })
         axios({
-            url:this.url.positiveModel.all,
+            url:this.url.fireCoefficientRate.page,
             method:'get',
             headers:{
                 'Authorization':this.url.Authorization
@@ -128,11 +128,11 @@ class ModelPositiveCost extends Component{//产品型号
         }).then(data=>{
             let res=data.data.data
             if(res){
-                for(let i=0;i<res.length;i++){
-                    res[i]['index']=i+1
+                for(let i=0;i<res.list.length;i++){
+                    res.list[i]['index']=i+1
                 }
                 this.setState({
-                    data:res,
+                    data:res.list,
                     loading:false
                 })
             }
@@ -140,7 +140,7 @@ class ModelPositiveCost extends Component{//产品型号
     }
     handleDelete(id){
         axios({
-            url:this.url.positiveModel.delete,
+            url:this.url.fireCoefficientRate.delete,
             method:'delete',
             headers:{
                 'Authorization':this.url.Authorization

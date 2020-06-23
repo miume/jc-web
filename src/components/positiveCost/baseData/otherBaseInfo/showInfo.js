@@ -158,16 +158,16 @@ class ShowInfo extends Component{
                         <Input placeholder='请输入' name='secondSinteringWeight' value={secondSinteringWeight} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
                     </div>
                     <div className='fontAttribute'>
-                        <span >烧损系数 :</span>
+                        <span >黎刀混每次进料量 :</span>
                         <Input placeholder='请输入' name='burningLossRate' value={burningLossRate}  style={{width:'240px',marginRight:'90px'}} onChange={this.inputChange} disabled={!flag}/>
                         <span >高混机每批进料量 :</span>
                         <Input placeholder='请输入' name='highMixingMachineWeight' value={highMixingMachineWeight} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
                     </div>
-                    <div className='fontAttribute'>
+                    {/* <div className='fontAttribute'>
                         <span >黎刀混每次进料量 :</span>
                             <Input placeholder='请输入'  suffix="kg" style={{width:'250px',marginRight:'80px'}} 
                             onChange={this.inputChange} disabled={!flag}/>
-                    </div>
+                    </div> */}
                 </div>
                 {flag?<div style={{textAlign:'center',marginTop:'50px'}}>
                         <SaveButton handleSave={this.handleSave}/>&nbsp;&nbsp;&nbsp;
