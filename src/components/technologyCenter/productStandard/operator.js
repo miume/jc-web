@@ -52,7 +52,7 @@ class Operator extends Component{
 
     render() {
         return (
-            <span style={this.props.flag===1?{paddingLeft:"570px"}:{paddingLeft:"590px"}}>
+            <span>
                 <NewButton name='操作' className='fa fa-align-justify' handleClick={this.handleClick}/>
                 <Modal
                     visible={this.state.visible}
