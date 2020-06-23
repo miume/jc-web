@@ -27,42 +27,42 @@ class SafetyStock extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '8%'
-        },{
-            title: '物料大类',
-            key: 'typeName',
-            dataIndex: 'typeName',
-            width: '15%'
-        },{
-            title: '物料小类',
-            key: 'subTypeName',
-            dataIndex: 'subTypeName',
-            width: '15%'
+            width: '10%'
+        // },{
+        //     title: '物料大类',
+        //     key: 'typeName',
+        //     dataIndex: 'typeName',
+        //     width: '15%'
+        // },{
+        //     title: '物料小类',
+        //     key: 'subTypeName',
+        //     dataIndex: 'subTypeName',
+        //     width: '15%'
         },{
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
-            width: '15%'
+            width: '20%'
         },{
             title: '单位',
             key: 'measureUnit',
             dataIndex: 'measureUnit',
-            width: '12%'
+            width: '20%'
         },{
             title: '代码',
             key: 'materialNameCode',
             dataIndex: 'materialNameCode',
-            width: '12%'
+            width: '20%'
         },{
             title: '安全库存',
             key: 'safetyStockValue',
             dataIndex: 'safetyStockValue',
-            width: '10%'
+            width: '20%'
         },{
             title: '操作',
             key: 'id',
             dataIndex: 'id',
-            width: '15%',
+            width: '10%',
             render: (text,record) => {
                 let {deleteFlag,updateFlag} = this.state;
                 return (
