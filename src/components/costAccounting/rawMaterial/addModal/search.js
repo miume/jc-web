@@ -20,28 +20,27 @@ class Search extends React.Component {
     }
 
     render() {
-        let {start, end, dateFormat,periodCode} = this.state,{staticPeriod,periods,currentStaticPeriod,disabled,head} = this.props;
+        let {start, end, dateFormat,periodCode} = this.state,{staticPeriod,periods,currentStaticPeriod,disabled,timeDisabled,head} = this.props;
         if(head) {
-            start = head['startTime'];
-            end = head['endTime'];
+            // start = head['startTime'];
+            // end = head['endTime'];
             periods = head['lineName'] ? head['lineName'] : head['periods'];
-            periodCode = head['periodName'] ? head['periodName'] : head['periodCode'];
-            disabled = true;
+            // periodCode = head['periodName'] ? head['periodName'] : head['periodCode'];
+            // disabled = true;
         }
         let startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
             endValue = end === undefined || end === "" ? null : moment(end, dateFormat);
-
         return (
             <span className={this.props.flag?'':'hide'}>
                 <span>周期：</span>
                 <SelectPeriod staticPeriod={staticPeriod} periodCode={currentStaticPeriod ? currentStaticPeriod.code : periodCode} selectChange={this.props.selectChange} disabled={disabled}/>
                 <span>期数：</span>
-                <Input placeholder={'请输入期数'} name={'periods'} defaultValue={periods} onChange={this.props.inputChange} disabled style={{width:170, marginRight: 10}}/>
+                <Input placeholder={'请输入期数'} name={'periods'} value={periods} onChange={this.props.inputChange} disabled style={{width:170, marginRight: 10}}/>
                 <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.startDateChange}
                             disabledDate={this.disabledDate} style={{marginRight: 10}} disabled={disabled}/>
                 <DatePicker placeholder={"请选择结束日期"} value={endValue} onChange={this.endDateChange}
-                            disabledDate={this.disabledDate} style={{marginRight: 10}} disabled={disabled}/>
-                <NewButton name={'确定'} handleClick={this.search} flagConfirm={disabled}/>
+                            disabledDate={this.disabledDate} style={{marginRight: 10}} disabled={!timeDisabled}/>
+                <NewButton name={'确定'} handleClick={this.search} flagConfirm={!timeDisabled}/>
             </span>
         )
     }
@@ -89,7 +88,7 @@ class Search extends React.Component {
 
     /**搜索时间*/
     search() {
-        let {currentStaticPeriod,periods} = this.props;
+        let {currentStaticPeriod,periods,head,timeDisabled} = this.props;
         if(currentStaticPeriod && periods) {
             let {start, end} = this.state,
                 {code,startTime} = currentStaticPeriod;
@@ -107,10 +106,11 @@ class Search extends React.Component {
                 periods: periods,
                 periodCode: code
             };
-            this.props.searchEvent(params);
+            this.props.searchEvent(params,timeDisabled);
         } else {
-            message.info('信息不完全！');
-            return
+            let {end} = this.state, params = JSON.parse(JSON.stringify(head));
+            params['endTime'] = end + ' 08:00:00';
+            this.props.searchEvent(params);
         }
     }
 

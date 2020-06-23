@@ -646,7 +646,8 @@ class Home extends Component {
                 getVolume: `${server}/jc/common/goodIn/getVolumeWeight`, //获取体积
                 getByLineByProcess: `${server}/jc/common/goodIn/getByLineByProcess`,//根据产线，工艺参数，获取上期数据
                 mixRecipeList:`${server}/jc/common/processParam/mixRecipeList`,//混合盐获取配方
-                mixGetByLineByProcess:`${server}/jc/common/goodIn/mixGetByLineByProcess`//混合盐-根据产线，工序，工艺参数获取数据
+                mixGetByLineByProcess:`${server}/jc/common/goodIn/mixGetByLineByProcess`,//混合盐-根据产线，工序，工艺参数获取数据
+                update: `${server}/jc/common/goodIn/update`,
             },
 
             /**异常处理模块*/
@@ -685,6 +686,7 @@ class Home extends Component {
                 getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
                 getPeriodAndTime: `${server}/jc/common/materialDeliveryStatistic/getPeriodAndTime`,
                 lastPeriodConcentrations: `${server}/jc/common/materialDeliveryStatistic/lastPeriodConcentrations`,
+                update: `${server}/jc/common/materialDeliveryStatistic/update`,
             },
             /**部门分配工序（工序名称）*/
             equipmentProcessName: {
@@ -787,7 +789,8 @@ class Home extends Component {
                 saveOrCommit: `${server}/jc/common/auxiliary/saveOrCommit`,
                 stasticByLine: `${server}/jc/common/auxiliary/stasticByLine`,
                 stasticByProcess: `${server}/jc/common/auxiliary/stasticByProcess`,
-                getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`
+                getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`,
+                update: `${server}/jc/common/auxiliary/update`,
             },
             /**成品入库*/
             productStorage: {
@@ -808,6 +811,7 @@ class Home extends Component {
                 stasticByLine: `${server}/jc/common/productStorage/stasticByLine`,
                 getPeriodAndTime: `${server}/jc/common/productStorage/getPeriodAndTime`,
                 stasticByProcess: `${server}/jc/common/productStorage/stasticByProcess`,
+                update: `${server}/jc/common/productStorage/update`,
             },
             /**质量基础受检物料*/
             testMaterial: {
@@ -1082,7 +1086,9 @@ class Home extends Component {
                 deletes: `${server}/jc/common/ProcessTraceabilityController/ids`,
                 detail: `${server}/jc/common/ProcessTraceabilityController/detail`,
             },
-            firePosition: `${server}/jc/common/firePosition`
+            firePosition: `${server}/jc/common/firePosition`,
+            /**根据期数和周期类型来判断该期的表头是否可以编辑结束时间 */
+            precursorHeadCheck: `${server}/jc/common/precursorHeadCheck/check`,
     };
 
         localStorage.setItem('status', JSON.stringify(status));

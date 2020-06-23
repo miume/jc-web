@@ -14,7 +14,8 @@ class AddModal extends React.Component{
         this.state = {
             visible: false,
             disabled: false,
-            loading: false
+            loading: false,
+            timeDisabled: true
         };
         this.checkArr = this.checkArr.bind(this);
         this.checkObj = this.checkObj.bind(this);
@@ -34,20 +35,22 @@ class AddModal extends React.Component{
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
         this.tableDataProcessing = this.tableDataProcessing.bind(this);
         this.inputNumberChange = this.inputNumberChange.bind(this);
+        this.endTimeIsEditor = this.endTimeIsEditor.bind(this);
+        this.updateEndTime = this.updateEndTime.bind(this);
     };
 
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
         let name = this.state.code > -1 ? '编辑数据' : '新增数据',
-            {staticPeriod,periods,currentStaticPeriod,visible,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,disabled,head,loading,endDate} = this.state;
+            {staticPeriod,periods,currentStaticPeriod,visible,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,disabled,head,loading,endDate,timeDisabled} = this.state;
         return(
             <Spin spinning={loading}>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
-                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} disabledDate={endDate}/>
+                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} disabledDate={endDate} timeDisabled={timeDisabled}/>
                     <div className={visible ? '' : 'hide'}>
                         <AddTabs ammValue={ammValue} alkValue={alkValue} gqDetails2={gqDetails2} cjDetails3={cjDetails3} fcDetails4={fcDetails4}
                                  inputChange={this.inputChange} getVolume={this.getVolume}/>
@@ -57,7 +60,7 @@ class AddModal extends React.Component{
                     <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
                     <div>
                         <SaveButton key='save' handleSave={this.handleSave}/>
-                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit}/>
+                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit} flag={1}/>
                     </div>
                 </div>
             </Spin>
@@ -86,6 +89,36 @@ class AddModal extends React.Component{
                 }
             }
         }
+    }
+
+    /**判断表头时间是否可以修改 */
+    endTimeIsEditor(periodId,periods) {
+        axios({
+            url: `${this.url.precursorHeadCheck}?periodId=${periodId}&periods=${periods}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data ? data.data.data : false;
+            this.setState({
+                timeDisabled: res.flag === 'true' ? true : false
+            })
+        })
+    }
+
+    updateEndTime(data) {
+        axios({
+            url: `${this.url.auxiliary.update}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data
+        }).then((data) => {
+            let res = data.data;
+            message.info(res.message)
+        })
     }
 
     /**根据周期获取上期期数*/
@@ -120,7 +153,10 @@ class AddModal extends React.Component{
     }
 
     searchEvent(params) {
-        this.addConfirm(params)
+        if (this.state.code) 
+            this.updateEndTime(params)
+        else
+            this.addConfirm(params)
     }
 
     /**监控所有input输入框的变化*/
@@ -188,7 +224,8 @@ class AddModal extends React.Component{
             if(res.code > 0) {
                 da['code'] = res.code;
                 this.setState({
-                    head: da
+                    head: da,
+                    timeDisabled: false
                 });
                 this.afterConfirm();
             } else {
@@ -235,6 +272,8 @@ class AddModal extends React.Component{
             disabled: true
         });
         if(res['head']) {
+            let {periodCode,lineName,periods} = res['head'];
+            this.endTimeIsEditor(periodCode,lineName || periods);
             this.setState({
                 head: res['head']
             })
@@ -313,12 +352,6 @@ class AddModal extends React.Component{
 
     saveDataProcessing(flag) {
         let {res,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,head} = this.state;
-        res['processDTOS'][0]['materialDetails'][0]['weight'] = ammValue;
-        res['processDTOS'][0]['materialDetails'][1]['weight'] = alkValue; //碱入库量
-        res['processDTOS'][1]['materialDetails'] = gqDetails2;         //罐区
-        res['processDTOS'][2]['materialDetails'] = cjDetails3;          //车间
-        res['processDTOS'][3]['materialDetails'] = fcDetails4;
-        res['head'] = head;
         if(ammValue === '' || alkValue === '') {
             message.info('请填写氨入库量和碱入库量！');
             return;
@@ -327,6 +360,12 @@ class AddModal extends React.Component{
             message.info('请确定表格数据都填写完整！');
             return;
         }
+        res['processDTOS'][0]['materialDetails'][0]['weight'] = ammValue;
+        res['processDTOS'][0]['materialDetails'][1]['weight'] = alkValue; //碱入库量
+        res['processDTOS'][1]['materialDetails'] = gqDetails2;         //罐区
+        res['processDTOS'][2]['materialDetails'] = cjDetails3;          //车间
+        res['processDTOS'][3]['materialDetails'] = fcDetails4;
+        res['head'] = head;
         this.saveOrCommit(res,flag);
     }
 
