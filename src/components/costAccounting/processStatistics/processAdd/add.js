@@ -14,7 +14,6 @@ import Other from './other/other'
 import axios from 'axios'
 import moment from 'moment'
 
-const { Option } = Select;
 const { TabPane } = Tabs;
 
 class CostProcessAdd extends Component {
@@ -45,7 +44,8 @@ class CostProcessAdd extends Component {
             disabledDateFlag:false,
             lengthSub:undefined,
             dataOrigin:undefined, //记录最开始没变的数据，使得做了修改颜色会变
-            otherMaterial:undefined
+            otherMaterial:undefined,
+            timeDisabled: true
         }
         this.returnProcess = this.returnProcess.bind(this);
         this.addConfirm = this.addConfirm.bind(this);
@@ -66,6 +66,8 @@ class CostProcessAdd extends Component {
         this.weightAlterData=this.weightAlterData.bind(this);
         this.getLastPotency=this.getLastPotency.bind(this);
         this.disabledDate=this.disabledDate.bind(this);
+        this.endTimeIsEditor = this.endTimeIsEditor.bind(this);
+        this.updateEndTime = this.updateEndTime.bind(this);
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -114,6 +116,8 @@ class CostProcessAdd extends Component {
             let tagTable = data.data.data;
             if(tagTable){
                 if (tagTable && tagTable.goodInProcessDTOS) {
+                    let {periodId,lineName} = tagTable;
+                    this.endTimeIsEditor(periodId,lineName);
                     this.setState({
                         tagTableData: tagTable.goodInProcessDTOS,
                         addData: tagTable,
@@ -139,11 +143,43 @@ class CostProcessAdd extends Component {
                     inputPeriod:tagTable.lineName,
                     endDate:tagTable.endTime.split(' ')[0],
                     startDate:tagTable.startTime.split(' ')[0],
-                    loading:false
+                    loading:false,
+                    periodCode:tagTable.periodId
                 })
             }
         })
     }
+
+    /**判断表头时间是否可以修改 */
+    endTimeIsEditor(periodId,periods) {
+        axios({
+            url: `${this.url.precursorHeadCheck}?periodId=${periodId}&periods=${periods}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data ? data.data.data : false;
+            this.setState({
+                timeDisabled: res.flag === 'true' ? true : false
+            })
+        })
+    }
+
+    updateEndTime(data) {
+        axios({
+            url: `${this.url.precursorGoodIn.update}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data
+        }).then((data) => {
+            let res = data.data;
+            message.info(res.message)
+        })
+    }
+
     getLineNameByPeriod(periodCode) {//根据周期类型id获取期数
         axios({
             url: `${this.url.precursorGoodIn.getLineNameByPeriod}`,
@@ -219,66 +255,76 @@ class CostProcessAdd extends Component {
         })
     }
     addConfirm() {//点击确定
-        this.setState({
-            loading:true
-        })
-        let { startTime, endTime, periodCode, inputPeriod } = this.state
-        if(!startTime|| !endTime|| !periodCode|| !inputPeriod){
-            message.info('信息不完整!') //在点确定的时候做下判断，必须4个都填了，才能点击确定
-            return
-        }
-        let param = {//将params的值传给后台
-            startTime: startTime,
-            endTime: endTime,
-            periodId: periodCode,
-            lineName: inputPeriod
-        }
-        axios({
-            url: `${this.url.precursorGoodIn.addComfirm}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-            params: {
-                ...param
+        let { startTime, endTime, periodCode, inputPeriod } = this.state;
+            if(!startTime|| !endTime|| !periodCode|| !inputPeriod){
+                message.info('信息不完整!') //在点确定的时候做下判断，必须4个都填了，才能点击确定
+                return
             }
-        }).then((data) => {
-            let res = data.data.data;
-             if(res.code<=0){
-                message.error(res.message)
-                this.setState({
-                    loading:false
-                })
+            let param = {//将params的值传给后台
+                startTime: startTime,
+                endTime: endTime,
+                periodId: periodCode,
+                lineName: inputPeriod
             }
-            else {
-                this.setState({
-                    statisticId: res.code
-                })
-                if (startTime && endTime && periodCode && inputPeriod) {//点击确定后不可再修改
+        if (this.props.location.code) {
+            this.updateEndTime({
+                startTime: startTime + ':00',
+                endTime: endTime + ' 08:00:00',
+                lineName: inputPeriod,
+                periodCode: periodCode
+            });
+        } else {
+            this.setState({
+                loading:true
+            })
+            axios({
+                url: `${this.url.precursorGoodIn.addComfirm}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.url.Authorization
+                },
+                params: {
+                    ...param
+                }
+            }).then((data) => {
+                let res = data.data.data;
+                if(res.code<=0){
+                    message.error(res.message)
                     this.setState({
-                        flagConfirm:true
+                        loading:false
                     })
                 }
-                axios({
-                    url: `${this.url.precursorGoodIn.afterComfirm}`,
-                    method: 'post',
-                    headers: {
-                        'Authorization': this.url.Authorization
-                    }
-                }).then((data) => {
-                    let tagTable = data.data.data;
-                    if (tagTable && tagTable.goodInProcessDTOS) {
+                else {
+                    this.setState({
+                        statisticId: res.code
+                    })
+                    if (startTime && endTime && periodCode && inputPeriod) {//点击确定后不可再修改
                         this.setState({
-                            tagTableData: tagTable.goodInProcessDTOS,
-                            addData: tagTable,
-                            addDataSave:JSON.parse(JSON.stringify(tagTable)),
-                            otherMaterial:tagTable.otherMaterials,
-                            loading:false
+                            flagConfirm:true,
+                            timeDisabled: false
                         })
                     }
-                })
-            }
-        })
+                    axios({
+                        url: `${this.url.precursorGoodIn.afterComfirm}`,
+                        method: 'post',
+                        headers: {
+                            'Authorization': this.url.Authorization
+                        }
+                    }).then((data) => {
+                        let tagTable = data.data.data;
+                        if (tagTable && tagTable.goodInProcessDTOS) {
+                            this.setState({
+                                tagTableData: tagTable.goodInProcessDTOS,
+                                addData: tagTable,
+                                addDataSave:JSON.parse(JSON.stringify(tagTable)),
+                                otherMaterial:tagTable.otherMaterials,
+                                loading:false
+                            })
+                        }
+                    })
+                }
+            })
+        }
     }
 
     tabChange(key) {
@@ -552,8 +598,7 @@ class CostProcessAdd extends Component {
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'))
-        const current=JSON.parse(localStorage.getItem('dataEntry'))
-        let {tagTableData,tabKey,flagConfirm}=this.state
+        let {tagTableData,tabKey,flagConfirm,timeDisabled}=this.state
         this.dataComponent = [{
             component: <SingleCrystal tagTableData={tagTableData} url={this.url} processId={tabKey} getSingleCrystal={this.getChange} 
             weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:flagConfirm}/>
@@ -577,7 +622,7 @@ class CostProcessAdd extends Component {
             <div >
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu={'湿法成本'} menu2='在制品统计' returnDataEntry={this.returnProcess} />
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}
+                    <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm} timeDisabled={timeDisabled}
                         staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} period={this.state.period} selectChange={this.selectChange}
                         search={this.addConfirm} startChange={this.startChange} endChange={this.endChange} inputChange={this.inputChange} inputPeriod={this.state.inputPeriod}
                         endDate={this.state.endDate} startDate={this.state.startDate} disabledDate={this.disabledDate} subLength={this.state.lengthSub} disabledDateFlag={this.state.disabledDateFlag}
@@ -599,7 +644,7 @@ class CostProcessAdd extends Component {
                         <span style={{ bottom: '0', position: 'absolute', right: '15px' }}>
                             <span >
                                 <SaveButton handleSave={this.save} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm}/>
-                                <NewButton name='提交' handleClick={this.submit} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm}/>
+                                <NewButton name='提交' handleClick={this.submit} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm} flag={true}/>
                             </span>
                         </span>
                 </div>

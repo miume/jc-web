@@ -17,6 +17,7 @@ class AddModal extends React.Component{
             loading: false,
             data: [],
             batchData: [], //存储所有批次信息
+            timeDisabled: true
         };
         this.addItem = this.addItem.bind(this);
         this.checkArr = this.checkArr.bind(this);
@@ -33,12 +34,14 @@ class AddModal extends React.Component{
         this.getDetailData = this.getDetailData.bind(this);
         this.getPreLineName = this.getPreLineName.bind(this);
         this.inputNumberChange = this.inputNumberChange.bind(this);
+        this.endTimeIsEditor = this.endTimeIsEditor.bind(this);
+        this.updateEndTime = this.updateEndTime.bind(this);
     };
 
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data,batchData,id,endDate} = this.state,
+        let {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data,batchData,id,endDate,timeDisabled} = this.state,
             name = id > -1 ? '编辑数据' : '新增数据';
         return(
             <Spin spinning={loading}>
@@ -46,7 +49,7 @@ class AddModal extends React.Component{
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
-                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} disabledDate={endDate}/>
+                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} disabledDate={endDate} timeDisabled={timeDisabled}/>
                     <AddTable visible={visible} data={data} batchData={batchData} batchChange={this.batchChange} add={this.addItem} i
                               inputChange={this.inputChange} inputNumberChange={this.inputNumberChange}/>
                 </div>
@@ -54,7 +57,7 @@ class AddModal extends React.Component{
                     <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
                     <div>
                         <SaveButton key='save' handleSave={this.handleSave}/>
-                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit}/>
+                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit} flag={1}/>
                     </div>
                 </div>
             </Spin>
@@ -97,6 +100,8 @@ class AddModal extends React.Component{
             let res = data.data.data;
             if(res && res['head']) {
                 let {head, pageInfo} = res;
+                let {periodCode,lineName} = head;
+                this.endTimeIsEditor(periodCode,lineName);
                 for(let i = 0; i < pageInfo.length; i++) {
                     pageInfo[i]['index'] = i + 1;
                 }
@@ -109,6 +114,37 @@ class AddModal extends React.Component{
             }
         })
     }
+
+    /**判断表头时间是否可以修改 */
+    endTimeIsEditor(periodId,periods) {
+        axios({
+            url: `${this.url.precursorHeadCheck}?periodId=${periodId}&periods=${periods}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data ? data.data.data : false;
+            this.setState({
+                timeDisabled: res.flag === 'true' ? true : false
+            })
+        })
+    }
+
+    updateEndTime(data) {
+        axios({
+            url: `${this.url.productStorage.update}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data
+        }).then((data) => {
+            let res = data.data
+            message.info(res.message)
+        })
+    }
+
 
     /**根据周期获取上期期数*/
     getPreLineName(periodCode) {
@@ -144,7 +180,10 @@ class AddModal extends React.Component{
     searchEvent(params) {
         params['lineName'] = params['periods'];
         delete params['periods'];
-        this.addConfirm(params);
+        if (this.state.id) 
+            this.updateEndTime(params)
+        else
+            this.addConfirm(params)
     }
 
     /**监控所有input输入框的变化*/
@@ -218,7 +257,8 @@ class AddModal extends React.Component{
                 this.setState({
                     id: res.code,
                     visible: true,
-                    disabled: true
+                    disabled: true,
+                    timeDisabled: false
                 })
             } else {
                 message.info(res.message);

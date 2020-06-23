@@ -9,6 +9,7 @@ import SearchCell from '../../BlockQuote/search';
 import Blockquote from '../../BlockQuote/blockquote';
 import SelectProductStandard from './selectProductStandard';
 import ProductStandardDetail from './productStandardDetail';
+import Operator from "./operator";
 class ProductStandard extends React.Component{
     url
     componentDidMount(){
@@ -26,7 +27,8 @@ class ProductStandard extends React.Component{
             selectedModal:[],       //用来存取最后一次选择型号的id和name
             selectProduct:[],       //用来存取最后一次选择成品的id和name
             standradFlag:0,            //用来存取设置标准页面来区分是搜索时为空1，还是getAllStandard为空0
-            selItemsFlag:true
+            selItemsFlag:true,
+            firstFlag: true
         }
         this.fetch = this.fetch.bind(this);
         this.clickI = this.clickI.bind(this);
@@ -74,9 +76,7 @@ class ProductStandard extends React.Component{
             })
             /**点击选择型号 给设置标准加notclick类，删click类 */
             this.addClass('product-3');
-            this.getAllSelectModal({
-                parentId:-1
-            });
+            this.getSelectModal(parseInt(this.state.selectProduct[0]));
         }
     }
     /**获取所有成品 */
@@ -91,10 +91,28 @@ class ProductStandard extends React.Component{
                 this.setState({
                     allProduct:res,
                     allProductCopy:res,
+                    firstFlag: false
                 })
             }
         })
     }
+
+
+    getSelectModal = (productId) => {
+        axios.get(`${this.url.productStandard.getClassesById}?productId=${parseInt(productId)}`,{
+            headers:{
+                Authorization:this.url.Authorization,
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            if(res){
+                this.setState({
+                    allModal:res
+                })
+            }
+        });
+    }
+
     /**获取所有型号 并保存所有点击的型号*/
     getAllSelectModal(params,ids){
         if(ids){
@@ -110,6 +128,7 @@ class ProductStandard extends React.Component{
             });
             this.recentModal(ids);
         }
+
         axios.get(`${this.url.productStandard.getAll}`,{
             headers:{
                 Authorization:this.url.Authorization,
@@ -122,7 +141,7 @@ class ProductStandard extends React.Component{
                     allModal:res
                 })
             }
-        })
+        });
     }
     /**跟踪最新一次点击的型号 */
     recentModal(ids){
@@ -149,9 +168,7 @@ class ProductStandard extends React.Component{
                 selectProduct:arr   //保存点击成品的id和name
             })
             /**点击成品后，查询所有型号，进行界面渲染 */
-            this.getAllSelectModal({
-                parentId:-1
-            });
+            this.getSelectModal(arr[0]);
         }
     }
     /**给dom添加类、删除类 */
@@ -336,6 +353,7 @@ class ProductStandard extends React.Component{
         }
     }
 
+
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
@@ -356,6 +374,19 @@ class ProductStandard extends React.Component{
                     <div className='product-standrad-middle'>
                         <div className='product-standrad-middle-top'>
                             <span className='product-standrad-middle-text'>{this.showContent()}</span>
+                            {
+                                this.state.flag !== 3 ?
+                                    <Operator
+                                        fetch={this.fetch}
+                                        titleName={this.state.flag===1?"成品":"型号"}
+                                        data={this.state.allProduct}
+                                        url={this.url}
+                                        flag={this.state.flag===1?0:1}
+                                        selectProduct={this.state.selectProduct}
+                                        getSelectModal={this.getSelectModal}
+                                        selectedModal={this.state.selectedModal}
+                                    />: null
+                            }
                             <SearchCell name={this.showContent(1)} searchEvent={this.searchEvent} fetch={this.fetch}
                                         flag={home.judgeOperation(this.operation,'QUERY')}
                             />
@@ -365,7 +396,7 @@ class ProductStandard extends React.Component{
                            <Product data={this.state.allProduct} blockClick={this.blockClick} add={this.state.add} clickI={this.clickI} url={this.url} />
                         </div>
                         <div  className={this.state.flag===2?'':'hide'}>
-                            <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal}
+                            <SelectModal firstFlag={this.state.firstFlag} getSelectModal={this.getSelectModal} selectProduct={this.state.selectProduct} url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal}
                             getAllProductStandard={this.getAllProductStandard} modalArr={this.state.modalArr}
                             addFlag={addFlag}
                             />

@@ -20,13 +20,13 @@ class AddModal extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
-        this.getAllSubType=this.getAllSubType.bind(this);
-        this.getAllType=this.getAllType.bind(this);
+        // this.getAllSubType=this.getAllSubType.bind(this);
+        // this.getAllType=this.getAllType.bind(this);
         this.getAllMaterialName=this.getAllMaterialName.bind(this);
     }
 
     render() {
-        let {visible,typeData,subTypeData,nameData,materialId,materialTypeId,subTypeId,safetyStockValue,supplierData} = this.state, {title,flag} = this.props;
+        let {visible,nameData,materialId,safetyStockValue} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -37,7 +37,7 @@ class AddModal extends React.Component {
                            <SaveButton key={'save'} handleSave={this.handleSave}/>
                        ]}
                 >
-                    <div className={'basis-data-flex'}>
+                    {/* <div className={'basis-data-flex'}>
                         <Select placeholder={'请选择所属物料大类'}  value={materialTypeId} style={{width:200}} onChange={this.selectChange}>
                             {
                                typeData &&typeData.length ? typeData.map(e => <Option key={e.id} value={e.id} name={'materialTypeId'}>{e.typeName}</Option>) : null
@@ -49,7 +49,7 @@ class AddModal extends React.Component {
                                 subTypeData&&subTypeData.length ? subTypeData.map(e => <Option key={e.id} value={e.id} name={'subTypeId'}>{e.subTypeName}</Option>) : null
                             }
                         </Select>
-                    </div>
+                    </div> */}
 
                     <div className={'basis-data-flex'}>
                         <Select placeholder={'请选择物料名称'} value={materialId} style={{width:200}} onChange={this.selectChange}>
@@ -76,20 +76,20 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {subTypeId,materialId,materialTypeId,safetyStockValue,id} = record;
+            let {materialId,safetyStockValue,id} = record;
             this.setState({
-                subTypeId:subTypeId?subTypeId.toString():undefined,
+                // subTypeId:subTypeId?subTypeId.toString():undefined,
                 materialId:materialId?materialId.toString():undefined,
-                materialTypeId:materialTypeId?materialTypeId.toString():undefined,
+                // materialTypeId:materialTypeId?materialTypeId.toString():undefined,
                 safetyStockValue,
                 id
             });
-            this.getAllSubType(materialTypeId.toString())
+            // this.getAllSubType(materialTypeId.toString())
         }
         this.setState({
             visible: true
         });
-        this.getAllType()
+        // this.getAllType()
         this.getAllMaterialName()
     }
 
@@ -98,48 +98,48 @@ class AddModal extends React.Component {
         this.setState({
             visible: false,
             materialId:undefined,
-            subTypeId:undefined,
-            materialTypeId:undefined,
+            // subTypeId:undefined,
+            // materialTypeId:undefined,
             safetyStockValue:undefined
         });
     }
     /**获取所有物料大类*/
-    getAllType(){
-        axios({
-            url: `${this.props.url.material.material}/getAll`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-        }).then(data => {
-            let res = data.data.data;
-            if(res) {
-                this.setState({
-                    typeData: res
-                })
-            }
-        })
-    }
+    // getAllType(){
+    //     axios({
+    //         url: `${this.props.url.material.material}/getAll`,
+    //         method: 'get',
+    //         headers: {
+    //             'Authorization': this.props.url.Authorization
+    //         },
+    //     }).then(data => {
+    //         let res = data.data.data;
+    //         if(res) {
+    //             this.setState({
+    //                 typeData: res
+    //             })
+    //         }
+    //     })
+    // }
     /**根据所选物料大类获取所有物料小类*/
-    getAllSubType(type){
-        axios({
-            url: `${this.props.url.subMaterial.subMaterial}/getByType`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-            params:{
-                type:type
-            }
-        }).then(data => {
-            let res = data.data.data;
-            if(res) {
-                this.setState({
-                    subTypeData: res
-                })
-            }
-        })
-    }
+    // getAllSubType(type){
+    //     axios({
+    //         url: `${this.props.url.subMaterial.subMaterial}/getByType`,
+    //         method: 'get',
+    //         headers: {
+    //             'Authorization': this.props.url.Authorization
+    //         },
+    //         params:{
+    //             type:type
+    //         }
+    //     }).then(data => {
+    //         let res = data.data.data;
+    //         if(res) {
+    //             this.setState({
+    //                 subTypeData: res
+    //             })
+    //         }
+    //     })
+    // }
     /**获取所有物料名称*/
     getAllMaterialName(){
         axios({
@@ -200,15 +200,15 @@ class AddModal extends React.Component {
     }
 
     saveDataProcessing() {
-        let {materialId,subTypeId,materialTypeId,safetyStockValue,id} = this.state,
+        let {materialId,safetyStockValue,id} = this.state,
             data = {
                 id,
                 materialId,
-                subTypeId,
-                materialTypeId,
+                // subTypeId,
+                // materialTypeId,
                 safetyStockValue,
             }, method = 'post', url = `${this.props.url.swmsBasicSafetyStock}/add`;
-        if(!materialId||!subTypeId||!materialTypeId||!safetyStockValue) {
+        if(!materialId||!safetyStockValue) {
             message.info('请将信息填写完整！');
             return false
         }

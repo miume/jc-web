@@ -288,7 +288,12 @@ class Home extends Component {
                 addNewRaw: `${server}/jc/common/techRawStandard/addRaw`,
 
                 getCurrentRawStandard: `${server}/jc/common/techRawStandard/getCurrentRawStandard`,
-                getItemsByRawId: `${server}/jc/common/techRawStandard/getItemsByRawId`
+                getItemsByRawId: `${server}/jc/common/techRawStandard/getItemsByRawId`,
+                updateRaw: `${server}/jc/common/techRawStandard/updateRaw`,
+                deleteRaw: `${server}/jc/common/techRawStandard/deleteRaw`,
+                editManufacturer: `${server}/jc/common/techRawStandard/editManufacturer`,
+                deleteManufacturer: `${server}/jc/common/techRawStandard/deleteManufacturer`,
+                manufacturerByRawId: `${server}/jc/common/techRawStandard/manufacturerByRawId`,
             },
             /**产品标准 */
             productStandard: {
@@ -296,6 +301,9 @@ class Home extends Component {
                 productStandard: `${server}/jc/common/techProductStandard`,
                 getAll: `${server}/jc/common/techProductStandard/allClasses`,
                 addNewClass: `${server}/jc/common/techProductStandard/newClass`,
+                getClassesById: `${server}/jc/common/techProductStandard/getClassesById`,
+                deleteClass: `${server}/jc/common/techProductStandard/deleteClass`,
+                editClass: `${server}/jc/common/techProductStandard/editClass`,
             },
             /**成品标准 */
             product: {
@@ -312,6 +320,10 @@ class Home extends Component {
 
                 getAllProductCommonBatch: `${server}/jc/common/product/getAllProductCommonBatch`,
                 getItemsByProductStandardId: `${server}/jc/common/product/getItemsByProductStandardId`,
+
+                editProductName: `${server}/jc/common/product/editProductName`,
+                deleteById: `${server}/jc/common/product/deleteById`,
+
             },
             /**设备基本厂商*/
             equipmentManufacture: {
@@ -646,7 +658,8 @@ class Home extends Component {
                 getVolume: `${server}/jc/common/goodIn/getVolumeWeight`, //获取体积
                 getByLineByProcess: `${server}/jc/common/goodIn/getByLineByProcess`,//根据产线，工艺参数，获取上期数据
                 mixRecipeList:`${server}/jc/common/processParam/mixRecipeList`,//混合盐获取配方
-                mixGetByLineByProcess:`${server}/jc/common/goodIn/mixGetByLineByProcess`//混合盐-根据产线，工序，工艺参数获取数据
+                mixGetByLineByProcess:`${server}/jc/common/goodIn/mixGetByLineByProcess`,//混合盐-根据产线，工序，工艺参数获取数据
+                update: `${server}/jc/common/goodIn/update`,
             },
 
             /**异常处理模块*/
@@ -685,6 +698,7 @@ class Home extends Component {
                 getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
                 getPeriodAndTime: `${server}/jc/common/materialDeliveryStatistic/getPeriodAndTime`,
                 lastPeriodConcentrations: `${server}/jc/common/materialDeliveryStatistic/lastPeriodConcentrations`,
+                update: `${server}/jc/common/materialDeliveryStatistic/update`,
             },
             /**部门分配工序（工序名称）*/
             equipmentProcessName: {
@@ -787,7 +801,8 @@ class Home extends Component {
                 saveOrCommit: `${server}/jc/common/auxiliary/saveOrCommit`,
                 stasticByLine: `${server}/jc/common/auxiliary/stasticByLine`,
                 stasticByProcess: `${server}/jc/common/auxiliary/stasticByProcess`,
-                getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`
+                getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`,
+                update: `${server}/jc/common/auxiliary/update`,
             },
             /**成品入库*/
             productStorage: {
@@ -808,6 +823,7 @@ class Home extends Component {
                 stasticByLine: `${server}/jc/common/productStorage/stasticByLine`,
                 getPeriodAndTime: `${server}/jc/common/productStorage/getPeriodAndTime`,
                 stasticByProcess: `${server}/jc/common/productStorage/stasticByProcess`,
+                update: `${server}/jc/common/productStorage/update`,
             },
             /**质量基础受检物料*/
             testMaterial: {
@@ -1093,9 +1109,10 @@ class Home extends Component {
                 add:`${server}/jc/common/anodeCoefficientRate/add`,
                 update:`${server}/jc/common/anodeCoefficientRate/update`,
                 delete:`${server}/jc/common/anodeCoefficientRate/delete`,
-            }
+            },
+            /**根据期数和周期类型来判断该期的表头是否可以编辑结束时间 */
+            precursorHeadCheck: `${server}/jc/common/precursorHeadCheck/check`,
     };
-
         localStorage.setItem('status', JSON.stringify(status));
         localStorage.setItem('dataType', JSON.stringify(dataType));
         localStorage.setItem('url', JSON.stringify(url))

@@ -32,22 +32,22 @@ class SluggishPeriod extends React.Component {
             title: '呆滞天数',
             key: 'deadline',
             dataIndex: 'deadline',
-            width: '30%'
-        },{
-            title: '物料小类名称',
-            key: 'subTypeName',
-            dataIndex: 'subTypeName',
-            width: '20%'
-        },{
-            title: '所属大类',
-            key: 'typeName',
-            dataIndex: 'typeName',
-            width: '20%'
+            width: '50%'
+        // },{
+        //     title: '物料小类名称',
+        //     key: 'subTypeName',
+        //     dataIndex: 'subTypeName',
+        //     width: '20%'
+        // },{
+        //     title: '所属大类',
+        //     key: 'typeName',
+        //     dataIndex: 'typeName',
+        //     width: '20%'
         },{
             title: '操作',
             key: 'id',
             dataIndex: 'id',
-            width: '20%',
+            width: '40%',
             render: (text,record) => {
                 let {deleteFlag,updateFlag} = this.state;
                 return (
@@ -90,7 +90,7 @@ class SluggishPeriod extends React.Component {
                     <AddModal flag={addFlag} title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
                                  cancel={this.cancel} flag={deleteFlag}/>
-                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入物料小类名称'}/>
+                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入呆滞天数'}/>
                     <div className='clear'></div>
                     <Table dataSource={data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
                            onChange={this.handleTableChange} size={'small'} bordered rowKey={record => record.id}/>
