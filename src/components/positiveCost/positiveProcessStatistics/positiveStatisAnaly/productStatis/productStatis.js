@@ -243,7 +243,6 @@ import '../productLineStatis/stattic.css'
                             <div className={'positive-statisSum'} style={{fontWeight:'800'}}>合计 :</div>
                             &nbsp;&nbsp;&nbsp;<span style={{fontWeight:'800'}}>原料领用合计 :</span> 
                             <div className={'positive-statis'}>
-                                
                                 <div ><span>前驱体 :</span>&nbsp; {res&&res['前驱体']['feedstock']!==undefined?res['前驱体']['feedstock']:''} </div>
                                 <div ><span>碳酸锂 :</span>&nbsp; {res&&res['碳酸锂']['feedstock']!==undefined?res['碳酸锂']['feedstock']:''} </div>
                                 <div ><span>仓库预混料 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>
@@ -254,7 +253,6 @@ import '../productLineStatis/stattic.css'
                             </div> 
                             &nbsp;&nbsp;&nbsp;<span style={{fontWeight:'800'}}>原料结存合计 :</span>
                             <div className={'positive-statis'}> 
-                                {/* <div ><span>原料结存合计 :</span> </div> */}
                                 <div ><span>前驱体 :</span>&nbsp; {res&&res['前驱体']['feedstock']!==undefined?res['前驱体']['feedstock']:''} </div>
                                 <div ><span>碳酸锂 :</span>&nbsp; {res&&res['碳酸锂']['feedstock']!==undefined?res['碳酸锂']['feedstock']:''} </div>
                                 <div ><span>仓库预混料 :</span>&nbsp; {res&&res['预混料']['feedstock']!==undefined?res['预混料']['feedstock']:''} </div>

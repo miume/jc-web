@@ -8,7 +8,6 @@ const {Option}=Select
     }
     render(){
         let {lineCode,periodCode,lineNameData,periods,modelData,modelCode,staticPeriod,line,beginTime,endTime}=this.props
-        console.log(periodCode,beginTime)
         return(
             <div className='searchCell'>
                 <span className={this.props.productFlag?'':'hide'}>

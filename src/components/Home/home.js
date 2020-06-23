@@ -764,7 +764,7 @@ class Home extends Component {
                 all: `${server}/jc/common/anodeProductionType/all`,
                 add: `${server}/jc/common/anodeProductionType/add`,
                 delete: `${server}/jc/common/anodeProductionType/delete`,
-                update: `${server}/jc/common/anodeProductionType/update`
+                update: `${server}/jc/common/anodeProductionType/update`,
             },
             /**正极其他数据*/
             positiveOther: {
@@ -1082,7 +1082,18 @@ class Home extends Component {
                 deletes: `${server}/jc/common/ProcessTraceabilityController/ids`,
                 detail: `${server}/jc/common/ProcessTraceabilityController/detail`,
             },
-            firePosition: `${server}/jc/common/firePosition`
+            firePosition: `${server}/jc/common/firePosition`,
+            /**火法-产品型号*/
+            fireProductModel:{
+                all:`${server}/jc/common/anodeProductionType/all`
+            },
+            /**火法-折算比例关系*/
+            fireCoefficientRate:{
+                page:`${server}/jc/common/anodeCoefficientRate/page`,
+                add:`${server}/jc/common/anodeCoefficientRate/add`,
+                update:`${server}/jc/common/anodeCoefficientRate/update`,
+                delete:`${server}/jc/common/anodeCoefficientRate/delete`,
+            }
     };
 
         localStorage.setItem('status', JSON.stringify(status));
