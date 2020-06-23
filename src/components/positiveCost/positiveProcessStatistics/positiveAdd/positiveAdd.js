@@ -297,7 +297,7 @@ class PositiveAdd extends Component {
 
         return (
             <div>
-                <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='正极成本' menu2='在制品管理' returnDataEntry={this.back} />
+                <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='火法生产' menu2='在制品管理' returnDataEntry={this.back} />
                 <Spin spinning={loading} wrapperClassName='rightDiv-add-content'>
                     <Search url={this.url} addConfirm={this.addConfirm} periodStatis={periodStatis} flagConfirm={this.props.location.editFlag?true:flagConfirm} headEdit={headEdit}
                         lineData={line} headPeriod={headPeriod} inputPeriod={inputPeriod} getNextPeriods={this.getPeriods} editFlag={this.props.location.editFlag}

@@ -19,13 +19,50 @@ class RawStandard extends Component{
             rawMaterialId:0,//原材料id
             factoryId:0,
             dataSource:[],
-            name:''
+            name:'',
+            factorys:{
+                data:[],
+                flag1:false,
+                searchContent:''
+            }
         }
         this.onBlockChange=this.onBlockChange.bind(this);
         this.clickToRaw=this.clickToRaw.bind(this);
         this.clickToFactory=this.clickToFactory.bind(this);
         this.getStandard=this.getStandard.bind(this);
     }
+
+    getFactory = (rawMaterialId) => {
+        axios({
+            url:`${this.url.rawStandard.manufacturerByRawId}?rawMaterialId=${rawMaterialId}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            }
+        }).then(data=>{
+            //console.log(data);
+            const res=data.data.data;
+            if(res){
+                this.setState({
+                    factorys: {
+                        data:res,
+                        flag1:false,
+                    }
+                });
+            }
+        });
+    }
+
+    changeFlag1 = () => {
+        const factorys = this.state.factorys
+        this.setState({
+            factorys: {
+                data:factorys.data,
+                flag1:true,
+            }
+        });
+    }
+
   onBlockChange(flag,content,id){//原材料那个块是否被选中，选中后发生的变化
         if(flag===1){
             this.setState({
@@ -35,6 +72,7 @@ class RawStandard extends Component{
             });
         }
       else if(flag===2){
+          this.getFactory(id);
         this.setState({
             flag:flag,
             content1:content,
@@ -56,6 +94,8 @@ class RawStandard extends Component{
                 factoryId:id
              });
         }
+
+
   }
   getStandard(id,value){//获取设置标准界面的表格数据
     this.setState({flag:3});
@@ -124,7 +164,7 @@ class RawStandard extends Component{
                             <RawMaterial onBlockChange={this.onBlockChange} type={1} url={this.url} home={home} operation={this.operation}/>
                         </div>
                         <div className={this.state.flag===2?'':'hide'}  >
-                            <Manufacturer onBlockChange={this.onBlockChange} rawMaterialId={this.state.rawMaterialId} type={2} url={this.url}  home={home} operation={this.operation}/>
+                            <Manufacturer changeFlag1={this.changeFlag1} getFactory={this.getFactory} factorys={this.state.factorys} onBlockChange={this.onBlockChange} rawMaterialId={this.state.rawMaterialId} type={2} url={this.url}  home={home} operation={this.operation}/>
                         </div>
                         <div className={this.state.flag===3?'':'hide'}>
                             <Standard dataSource={this.state.dataSource} onBlockChange={this.onBlockChange}   type={3} raw={this.state.content1} factory={this.state.content2} rawManufacturerId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId} url={this.url} getStandard={this.getStandard} home={home} operation={this.operation}/>

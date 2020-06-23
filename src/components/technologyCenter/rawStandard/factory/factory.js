@@ -4,11 +4,12 @@ import axios from 'axios';
 import SearchCell from '../../../BlockQuote/search';
 import '../block.css';
 import DataPart from '../div'
+import Operator from "../operator";
 
 class Manufacturer extends Component{
 
     componentDidMount(){
-      this.fetch();
+      // this.fetch();
     //   this.getAllFactory();
     }
     constructor(props){
@@ -34,7 +35,7 @@ class Manufacturer extends Component{
     }
     fetch=()=>{
       axios({
-         url:`${this.props.url.rawStandard.getFactory}`,
+         url:`${this.props.url.rawStandard.manufacturerByRawId}?rawMaterialId=${this.props.rawMaterialId}`,
          method:'get',
          headers:{
              'Authorization':this.props.url.Authorization
@@ -44,9 +45,11 @@ class Manufacturer extends Component{
           const res=data.data.data;
           if(res){
             this.setState({
-                data:res,
-                flag1:false,
-                searchContent:''
+                factorys: {
+                    data:res,
+                    flag1:false,
+                    searchContent:''
+                }
             });
           }
       });
@@ -89,9 +92,10 @@ class Manufacturer extends Component{
         this.setState({checkSelectData:value});
     }
     addClick(e){//点击新增变为输入框
-        this.setState({
-            flag1:true
-        });
+        this.props.changeFlag1();
+        // this.setState({
+        //     flag1:true
+        // });
     }
     addChange(e){//监听新增输入框的变化
             this.setState({
@@ -110,15 +114,15 @@ class Manufacturer extends Component{
                'Authorization':this.props.url.Authorization
            },
            data:{
-              name:this.state.inputContent
+               rawMaterialId: parseInt(this.props.rawMaterialId),
+               techniqueBaseRawManufacturer: {
+                   name:this.state.inputContent
+               }
            },
            type:'json'
         }).then(data=>{
              message.info(data.data.message);
-             this.fetch();
-             this.setState({
-                 flag1:false
-             });
+             this.props.getFactory(parseInt(this.props.rawMaterialId));
         }).catch(()=>{
             message.info('新增失败，请联系管理员！');
         });
@@ -162,13 +166,23 @@ class Manufacturer extends Component{
         this.props.onBlockChange(1,'选择生产厂家',this.props.rawMaterialId);//跳回生产厂家界面后，就不可以点击那个面板了
     }
 
+    getFactoryData = () => {
+        this.props.getFactory(parseInt(this.props.rawMaterialId))
+    }
+
     render(){
-        // this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <div style={{position:'relative'}}>
               <div className='rawMaterailStandardMiddle'>
               <span className='product-standrad-middle-text'>请选择生产厂家</span>
-
+                  <Operator
+                      fetch={this.getFactoryData}
+                      titleName="生产厂家"
+                      data={this.props.factorys.data}
+                      url={this.props.url}
+                      flag={1}
+                      rawMaterialId={this.props.rawMaterialId}
+                  />
                  <SearchCell name='请输入工厂名称'
                     searchEvent={this.searchEvent}
                     searchContentChange={this.searchContentChange}
@@ -182,12 +196,12 @@ class Manufacturer extends Component{
               <div className='rawStanstdardParent1'>
               <div className='rawStanstdardParent'>
                   {
-                      this.state.data.map(d=>
+                      this.props.factorys.data.map(d=>
                     <DataPart  key={d.id} name={d.name} id={d.id} onBlockChange={this.onBlockChange}/>
                     )
                   }
 
-                       <DataPart className={this.props.home.judgeOperation(this.props.operation,'SAVE')?'':'hide'} flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
+                       <DataPart className={this.props.home.judgeOperation(this.props.operation,'SAVE')?'':'hide'} flag1={this.props.factorys.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
               </div>
               </div>
                   <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>

@@ -24,6 +24,9 @@ class SelectModal extends React.Component{
         // this.getSonModal = this.getSonModal.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
+
+
+
     /**点击型号的block */
     blockClick(e){
         const id = e.target.id;
@@ -64,10 +67,14 @@ class SelectModal extends React.Component{
     /**新增新型号 */
     addModal(params){
         const {curParentId} = this.state;
+        console.log(curParentId)
         axios.post(`${this.props.url.productStandard.addNewClass}`,{
-            isLeaf:params.isLeaf,
-            name:params.name,
-            parent:curParentId
+            productId: parseInt(this.props.selectProduct[0]?this.props.selectProduct[0]:0),
+            techniqueBaseProductClass:{
+                isLeaf:params.isLeaf,
+                name:params.name,
+                parent:curParentId
+            }
         },{
             headers:{
                 Authorization:this.props.url.Authorization
@@ -78,13 +85,21 @@ class SelectModal extends React.Component{
                 this.setState({
                     add:0
                 })
-                this.props.getAllModal({
-                    parentId:curParentId
-                });
+                console.log(curParentId)
+                if (curParentId === -1) {
+                    this.props.getSelectModal(parseInt(this.props.selectProduct[0]));
+                } else {
+                    this.props.getAllModal({
+                        parentId:curParentId
+                    });
+                }
+                this.setState({
+                    isLeaf: 0
+                })
             }
         }).catch(()=>{
             message.info('新增失败，请联系管理员！')
-        })
+        });
     }
     /**监控新增型号 判断是否有子型号 */
     onChange(value){

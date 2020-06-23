@@ -171,10 +171,10 @@ class Search extends Component {
                             return (
                                 <Option name='modelCode' key={item.code} value={item.code} >
                                    <div>
-                                        <span style={{display:'inline-block',width:45}}>{item.name} ;</span>
-                                        前驱体：<span style={{display:'inline-block',width:45}}>{item.matchingCoefficientPrecursors} ;</span>
+                                        <span style={{display:'inline-block',width:45}}>{item.name}</span>
+                                        {/* 前驱体：<span style={{display:'inline-block',width:45}}>{item.matchingCoefficientPrecursors} ;</span>
                                         碳酸锂：<span style={{display:'inline-block',width:45}}>{item.matchingCoefficientLithiumCarbonate} ;</span>
-                                        氢氧化锂： <span style={{display:'inline-block'}}>{item.matchingCoefficientLithiumOh}</span>
+                                        氢氧化锂： <span style={{display:'inline-block'}}>{item.matchingCoefficientLithiumOh}</span> */}
                                    </div>
                                 </Option>
                             )

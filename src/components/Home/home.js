@@ -288,7 +288,12 @@ class Home extends Component {
                 addNewRaw: `${server}/jc/common/techRawStandard/addRaw`,
 
                 getCurrentRawStandard: `${server}/jc/common/techRawStandard/getCurrentRawStandard`,
-                getItemsByRawId: `${server}/jc/common/techRawStandard/getItemsByRawId`
+                getItemsByRawId: `${server}/jc/common/techRawStandard/getItemsByRawId`,
+                updateRaw: `${server}/jc/common/techRawStandard/updateRaw`,
+                deleteRaw: `${server}/jc/common/techRawStandard/deleteRaw`,
+                editManufacturer: `${server}/jc/common/techRawStandard/editManufacturer`,
+                deleteManufacturer: `${server}/jc/common/techRawStandard/deleteManufacturer`,
+                manufacturerByRawId: `${server}/jc/common/techRawStandard/manufacturerByRawId`,
             },
             /**产品标准 */
             productStandard: {
@@ -296,6 +301,9 @@ class Home extends Component {
                 productStandard: `${server}/jc/common/techProductStandard`,
                 getAll: `${server}/jc/common/techProductStandard/allClasses`,
                 addNewClass: `${server}/jc/common/techProductStandard/newClass`,
+                getClassesById: `${server}/jc/common/techProductStandard/getClassesById`,
+                deleteClass: `${server}/jc/common/techProductStandard/deleteClass`,
+                editClass: `${server}/jc/common/techProductStandard/editClass`,
             },
             /**成品标准 */
             product: {
@@ -312,6 +320,10 @@ class Home extends Component {
 
                 getAllProductCommonBatch: `${server}/jc/common/product/getAllProductCommonBatch`,
                 getItemsByProductStandardId: `${server}/jc/common/product/getItemsByProductStandardId`,
+
+                editProductName: `${server}/jc/common/product/editProductName`,
+                deleteById: `${server}/jc/common/product/deleteById`,
+
             },
             /**设备基本厂商*/
             equipmentManufacture: {

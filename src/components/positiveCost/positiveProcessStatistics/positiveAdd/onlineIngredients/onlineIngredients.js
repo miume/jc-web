@@ -13,23 +13,33 @@ class OnlineIngredients extends Component{//在线原料
             title:'物料种类',
             dataIndex:'materialName',
             key:'materialName',
-            width:'30%'
+            width:'18%'
         },{
             title:'产线',
             dataIndex:'productLine',
             key:'productLine',
-            width:'30%'
+            width:'18%'
         },{
             title:'领料量',
             dataIndex:'receive',
             key:'receive',
-            width:'25%',
+            width:'18%',
             render:(text,record)=>{
                 return(
                     <Input value={record.receive} name={`${record.index-1}-${'receive'}`} onChange={this.inputChange}/>
                 )
             }
-        },]
+        },{
+            title:'消耗量',
+            dataIndex:'consume',
+            key:'consume',
+            width:'18%',
+            render:(text,record)=>{
+                return(
+                    <Input value={record.consume} name={`${record.index-1}-${'consume'}`} onChange={this.inputChange}/>
+                )
+            }
+        }]
         this.inputChange=this.inputChange.bind(this);
     }
     inputChange(e){

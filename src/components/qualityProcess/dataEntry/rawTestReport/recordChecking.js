@@ -236,18 +236,19 @@ class RecordChecking extends React.Component {
     checkData = (status) => {
         let {detail,isQualified} = this.state;
         if(detail){
-            let count = 0;
+            let count = 1;
             for(let i = 0; i < detail.length; i++) {
                 let e = detail[i]['testItemResultRecord'];
                 if(e.isAudit === 0) {
                     isQualified = 0;
                 }
 
-                if(e.testResult !== ''){
+                if(e.testResult !== '' && e.testResult !== null){
+                    console.log(e.testResult)
                     count++
                 }
             }
-            if(count === detail.length){
+            if(count < detail.length){
                 message.info('必须录入全部检测结果！');
                 return
             }
