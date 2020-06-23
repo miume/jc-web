@@ -187,21 +187,22 @@ class RawMaterial extends Component {
             <div>
                 <div className='rawMaterailStandardMiddle'>
                     <span className='product-standrad-middle-text'>请选择原材料</span>
-                    <Operator
-                        fetch={this.fetch}
-                        titleName="原材料"
-                        data={this.state.data}
-                        url={this.props.url}
-                        flag={0}
-                    />
-                    <SearchCell name='请输入原材料名称'
-                                searchEvent={this.searchEvent}
-                                searchContentChange={this.searchContentChange}
-                                fetch={this.fetch}
-                                type={this.props.type}
-                                flag={this.props.home.judgeOperation(this.props.operation, 'QUERY')}
-                    />
-
+                    <span style={{float:"right"}}>
+                        <Operator
+                            fetch={this.fetch}
+                            titleName="原材料"
+                            data={this.state.data}
+                            url={this.props.url}
+                            flag={0}
+                        />
+                        <SearchCell name='请输入原材料名称'
+                                    searchEvent={this.searchEvent}
+                                    searchContentChange={this.searchContentChange}
+                                    fetch={this.fetch}
+                                    type={this.props.type}
+                                    flag={this.props.home.judgeOperation(this.props.operation, 'QUERY')}
+                        />
+                    </span>
                     <Divider type='horizontal'/>
                 </div>
                 <div className='rawStanstdardParent1'>

@@ -175,6 +175,7 @@ class Manufacturer extends Component{
           <div style={{position:'relative'}}>
               <div className='rawMaterailStandardMiddle'>
               <span className='product-standrad-middle-text'>请选择生产厂家</span>
+              <span style={{float:"right"}}>
                   <Operator
                       fetch={this.getFactoryData}
                       titleName="生产厂家"
@@ -184,12 +185,13 @@ class Manufacturer extends Component{
                       rawMaterialId={this.props.rawMaterialId}
                   />
                  <SearchCell name='请输入工厂名称'
-                    searchEvent={this.searchEvent}
-                    searchContentChange={this.searchContentChange}
-                    fetch={this.fetch}
-                    type={this.props.type}
-                    flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
+                             searchEvent={this.searchEvent}
+                             searchContentChange={this.searchContentChange}
+                             fetch={this.fetch}
+                             type={this.props.type}
+                             flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                  />
+              </span>
 
                 <Divider type='horizontal'/>
               </div>

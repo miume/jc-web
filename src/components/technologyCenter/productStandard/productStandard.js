@@ -374,22 +374,24 @@ class ProductStandard extends React.Component{
                     <div className='product-standrad-middle'>
                         <div className='product-standrad-middle-top'>
                             <span className='product-standrad-middle-text'>{this.showContent()}</span>
-                            {
-                                this.state.flag !== 3 ?
-                                    <Operator
-                                        fetch={this.fetch}
-                                        titleName={this.state.flag===1?"成品":"型号"}
-                                        data={this.state.allProduct}
-                                        url={this.url}
-                                        flag={this.state.flag===1?0:1}
-                                        selectProduct={this.state.selectProduct}
-                                        getSelectModal={this.getSelectModal}
-                                        selectedModal={this.state.selectedModal}
-                                    />: null
-                            }
-                            <SearchCell name={this.showContent(1)} searchEvent={this.searchEvent} fetch={this.fetch}
-                                        flag={home.judgeOperation(this.operation,'QUERY')}
-                            />
+                            <span style={{float:"right"}}>
+                                {
+                                    this.state.flag !== 3 ?
+                                        <Operator
+                                            fetch={this.fetch}
+                                            titleName={this.state.flag===1?"成品":"型号"}
+                                            data={this.state.allProduct}
+                                            url={this.url}
+                                            flag={this.state.flag===1?0:1}
+                                            selectProduct={this.state.selectProduct}
+                                            getSelectModal={this.getSelectModal}
+                                            selectedModal={this.state.selectedModal}
+                                        />: null
+                                }
+                                <SearchCell name={this.showContent(1)} searchEvent={this.searchEvent} fetch={this.fetch}
+                                            flag={home.judgeOperation(this.operation,'QUERY')}
+                                />
+                            </span>
                             <Divider type='horizontal' />
                         </div>
                         <div className={this.state.flag===1?'':'hide'}>
