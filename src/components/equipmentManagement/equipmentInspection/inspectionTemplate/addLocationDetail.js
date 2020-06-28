@@ -79,22 +79,22 @@ class AddLocationDetails extends React.Component {
     /**获取新增数据*/
     getAddLocationData() {
         axios({
-            url: `${this.props.url.devicePatrolModel.position}`,
+            url: `${this.props.url.devicePatrolModel.allPosition}`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
             },
             params: {
-                deptId: this.props.deptCode
+                id: this.props.deptCode
             }
         }).then((data) => {
             let res = data.data.data;
-            if(res && res.list) {
-                for(let i = 0; i < res.list.length; i++) {
-                    res.list[i]['index'] = i + 1;
+            if(res) {
+                for(let i = 0; i < res.length; i++) {
+                    res[i]['index'] = i + 1;
                 }
                 this.setState({
-                    dataSource: res.list
+                    dataSource: res
                 })
             }
         })

@@ -147,11 +147,24 @@ class HaveJudge extends React.Component{
             },
             params: params,
         }).then((data) => {
-            let url = `${this.props.url.equipmentRepair.download}${data.data.data}`;
-            let a = document.createElement('a');
-            a.href = url;
-            a.click();
-            message.info(data.data.message)
+            if (data.data.code === 0) {
+                if (data.data.data === null || data.data.data === "") {
+                    message.info("该参数条件下不存在维修记录，请重新选择参数");
+                } else {
+                    let url = `${this.props.url.equipmentRepair.download}${data.data.data}`;
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.click();
+                    message.info(data.data.message);
+                }
+            } else {
+                message.info("导出失败");
+            }
+            // let url = `${this.props.url.equipmentRepair.download}${data.data.data}`;
+            // let a = document.createElement('a');
+            // a.href = url;
+            // a.click();
+            // message.info(data.data.message)
         })
     }
 }

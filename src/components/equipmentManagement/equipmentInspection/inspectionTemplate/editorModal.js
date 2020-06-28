@@ -106,7 +106,7 @@ class EditorModal extends React.Component {
             <span>
                 {this.renderTitle(title)}
                 <Modal visible={this.state.visible} width={1000} centered={true} closable={false}
-                       title={'详情'} maskClosable={false}
+                       title={this.props.title?this.props.title:"详情"} maskClosable={false}
                        footer={[
                            <SaveButton key="save" handleSave={this.handleSave}/>,
                            <CancleButton key='cancel' handleCancel={this.cancel} />]}

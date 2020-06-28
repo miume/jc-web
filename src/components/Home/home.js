@@ -429,6 +429,7 @@ class Home extends Component {
                 update: `${server}/jc/common/devicePatrolModel/update`,
                 delete: `${server}/jc/common/devicePatrolModel/{id}`,
                 position: `${server}/jc/common/basicInfoLocation/getPage`,
+                allPosition: `${server}/jc/common/basicInfoLocation/maintenanceDetailById`,
                 getAllByDeptCode: `${server}/jc/common/devicePatrolModel/getAllByDeptCode`
             },
             devicePatrolQuery: {
