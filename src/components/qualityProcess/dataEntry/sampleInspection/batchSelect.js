@@ -74,7 +74,7 @@ class BatchSelect extends React.Component{
                         ruser:res[key]["defaultValue"]
                     })
                 }
-                if(res[key]["rule"]=="产品类型"){
+                if(res[key]["rule"]=="产品型号"){
                     this.setState({
                         productNum:res[key]["values"],
                         ruproNum:res[key]["defaultValue"]

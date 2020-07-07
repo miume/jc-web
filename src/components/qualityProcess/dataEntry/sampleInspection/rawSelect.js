@@ -202,56 +202,6 @@ class RawSelect extends React.Component{
             batchRule:batchRule
         })
     }
-    changeYear = (e) =>{
-        this.setState({
-            ruyear:e
-        })
-    }
-    changeType = (e) =>{
-        this.setState({
-            rupro:e
-        })
-    }
-    changeMonth = (e) =>{
-        this.setState({
-            rumon:e
-        })
-    }
-    changeSerial = (e) =>{
-        this.setState({
-            ruser:e
-        })
-    }
-    changeProduct = (e) =>{
-        this.setState({
-            ruproNum:e
-        })
-    }
-    changeLine = (e) =>{
-        this.setState({
-            ruproLin:e
-        })
-    }
-    changeMatrial = (e) =>{
-        this.setState({
-            rumaterial:e
-        })
-    }
-    // changeProcess = (e) =>{
-    //     this.setState({
-    //         ruprocess:e
-    //     })
-    // }
-    // changeSlot = (e) =>{
-    //     this.setState({
-    //         ruslot:e
-    //     })
-    // }
-    // changeSlotNum = (e) =>{
-    //     this.setState({
-    //         ruslotNum:e
-    //     })
-    // }
 
 }
 
