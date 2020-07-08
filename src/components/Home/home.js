@@ -403,7 +403,7 @@ class Home extends Component {
                 maintenanceDeletePlan: `${server}/jc/common/maintenancePlan/`,
                 maintenanceDeleteByIds: `${server}/jc/common/maintenancePlan/deleteByIds`,
                 getDeviceByDeptCode: `${server}/jc/common/maintenancePlan/getDeviceByDeptCode`,
-                generatorMaint: `${server}/jc/common//maintenancePlan/generatorMaint`,
+                generatorMaint: `${server}/jc/common/maintenancePlan/generatorMaint`,
 
             },
             /**点检查询**/
