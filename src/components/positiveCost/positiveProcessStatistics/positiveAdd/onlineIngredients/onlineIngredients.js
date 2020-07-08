@@ -31,12 +31,12 @@ class OnlineIngredients extends Component{//在线原料
             }
         },{
             title:'消耗量',
-            dataIndex:'consume',
-            key:'consume',
+            dataIndex:'consum',
+            key:'consum',
             width:'18%',
             render:(text,record)=>{
                 return(
-                    <Input value={record.consume} name={`${record.index-1}-${'consume'}`} onChange={this.inputChange}/>
+                    <Input value={record.consum} name={`${record.index-1}-${'consum'}`} onChange={this.inputChange}/>
                 )
             }
         }]
@@ -44,6 +44,9 @@ class OnlineIngredients extends Component{//在线原料
     }
     inputChange(e){
         this.props.inputChange(e,this.props.processId)
+    }
+    inputChange1(e){
+        this.props.inputChange1(e,this.props.processId)
     }
     render(){
         this.tableData = this.props.tagTableData&&this.props.tagTableData[0]&&this.props.tagTableData[0].materials?this.props.tagTableData[0].materials:[]

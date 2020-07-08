@@ -193,10 +193,7 @@ class PositiveAdd extends Component {
         let {addData}=this.state,value = e.target.value,
             inputData = e.target.name.split('-'),
             index = inputData[0],    //定位到是第几条数据
-            name = inputData[1] 
-        // if (value[value.length - 1] !== '.') {
-        //     value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
-        // }
+            name = inputData[1]
         if(key==='1'){
             addData.processes[key-1].materials[index][name] =value
         }
@@ -283,7 +280,7 @@ class PositiveAdd extends Component {
         let { loading,processData, periodStatis, line,headPeriod,inputPeriod,flagConfirm,productLine,tagTableData,headEdit,tabKey,giveEndDate} = this.state
         this.url = JSON.parse(localStorage.getItem('url'))
         this.tabData = [
-            { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
+            { component: <OnlineIngredients productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange} inputChange1={this.inputChange1}/> },
             { component: <PremixedCoulterMixed productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
             { component: <PremixedStorageBin productLine={productLine} tagTableData={tagTableData} processId={tabKey}/> },
             { component: <PreBuring productLine={productLine} tagTableData={tagTableData} processId={tabKey} inputChange={this.inputChange}/> },
