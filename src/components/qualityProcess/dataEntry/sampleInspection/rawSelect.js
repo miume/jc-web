@@ -1,14 +1,10 @@
 import React from "react";
-import {Modal,Button,Select,Table,Radio} from "antd";
+import {Modal, Button, Select, Table, Radio, Input, Icon,message} from "antd";
 import axios from "axios";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import AddButton from '../../../BlockQuote/newButton';
+import DeleteAddTable from "./deleteAddTable";
 
-const { Option } = Select;
-// const children = [];
-// for (let i = 10; i < 36; i++) {
-//     children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-// }
 class RawSelect extends React.Component{
     url
     constructor(props){
@@ -17,8 +13,7 @@ class RawSelect extends React.Component{
             visible:false,
             dataSource:[],
             batchRule:"",
-            children:[],
-            selValue:[]
+            inputValue: ""
         }
     }
     columns = [{
@@ -29,13 +24,10 @@ class RawSelect extends React.Component{
         width: '10%',
     },{
         title: '编号',
-        dataIndex: 'batch',
-        key: 'batch',
+        dataIndex: 'number',
+        key: 'number',
         align:'center',
-        width: '80%',
-        render:(sampleDeliveringDate)=>{
-            return <span title={sampleDeliveringDate} className='text-decoration'>{sampleDeliveringDate.substring(0,10)}</span>
-        }
+        width: '70%'
     },{
         title: '主检记录',
         dataIndex: 'flag',
@@ -45,6 +37,16 @@ class RawSelect extends React.Component{
         render:(flag,record)=>{
             return <Radio onChange={this.flagChange} id={record.index} checked={flag} className="defaultRadio" />
         }
+    },{
+        title:'操作',
+        key:'index',
+        dataIndex:'index',
+        width: '10%',
+        render:((text,record) => {
+            return (
+                <DeleteAddTable record={record} deleteTableData={this.deleteTableData}/>
+            )
+        })
     }]
 
     render(){
@@ -63,16 +65,7 @@ class RawSelect extends React.Component{
                     ]}
                 >
                     <div className="rawSelectTop">
-                        <Select
-                            mode="tags"
-                            size="default"
-                            placeholder="Please select"
-                            onChange={this.handleSelChange}
-                            style={{ width: '85%' }}
-                            value={this.state.selValue}
-                        >
-                            {this.state.children}
-                        </Select>
+                        <Input  placeholder="请输入编号" onChange={this.getNumber} value={this.state.inputValue}/>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <Button onClick={this.selButton} style={{width:"15%"}}>确认</Button>
                     </div>
@@ -93,13 +86,47 @@ class RawSelect extends React.Component{
         )
     }
 
+    deleteTableData = (index) => {
+        var dataSource = this.state.dataSource;
+        dataSource.splice(index-1,1)
+        for (var i = 0; i < dataSource.length; i++) {
+            dataSource[i].index = i+1
+        }
+        this.setState({
+            dataSource:dataSource
+        })
+    }
+    getNumber = (e) => {
+        this.setState({
+            inputValue: e.target.value
+        })
+    }
+    selButton = () => {
+        const inputValue = this.state.inputValue;
+        var dataSource = this.state.dataSource;
+        const len = this.state.dataSource.length;
+        for (let i = 0; i < len; i++) {
+            if(dataSource[i].number === inputValue){
+                message.info("列表中已存在相同的编号")
+                return
+            }
+        }
+        dataSource.push({
+            index: len+1,
+            number: inputValue,
+            flag: false
+        })
+        this.setState({
+            dataSource: dataSource,
+            inputValue: ""
+        })
+    }
+
+
     flagChange = (e)=>{
-        console.log(e.target.id)
-        console.log(e.target.checked)
         this.getRadio(e.target.id,e.target.checked);
     }
-    getRadio = (index,checked) => {
-        console.log(index)
+    getRadio = (index) => {
         var dataSource = this.state.dataSource;
         for (let i = 0; i < dataSource.length; i++) {
             if (i === index-1) {
@@ -113,93 +140,27 @@ class RawSelect extends React.Component{
         })
     }
 
-    handleSelChange = (value) => {
-        console.log(`Selected: ${value}`);
-        this.setState({
-            selValue:value
-        })
-    }
-    selButton = () => {
-        const selValue = this.state.selValue;
-        var dataSource = this.state.dataSource;
-        const len = this.state.dataSource.length;
-        for (let i = 0; i < selValue.length; i++) {
-            dataSource.push({
-                index: len + i + 1,
-                id: i,
-                batch:selValue[i],
-                flag: false
-            })
-        }
-        this.setState({
-            dataSource: dataSource,
-            selValue: []
-        })
-    }
-
 
 
     batchClick = ()=>{
-        this.fetch();
         this.setState({
             visible:true
         })
     }
-    fetch = () =>{
-        var children = []
-        for (let i = 10; i < 36; i++) {
-            children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-        }
-        this.setState({
-            children:children
-        })
-        // axios({
-        //     url:`${this.url.productionBatchRule.getAllInfos}`,
-        //     method:"get",
-        //     headers:{
-        //         'Authorization': this.url.Authorization
-        //     },
-        // }).then((data)=>{
-        //     const res = data.data.data;
-        //
-        // })
 
-    }
     onCancel = ()=>{
         this.setState({
             visible:false,
-            ruyear:undefined,
-            rupro:undefined,
-            rumon:undefined,
-            ruser:undefined,
-            ruproNum:undefined,
-            ruproLin:undefined,
-            rumaterial:undefined,
-            ruprocess:undefined,
-            ruslot:undefined,
-            ruslotNum:undefined,
-            batchRule:""
+            dataSource:[],
+            inputValue:""
         })
     }
     onCenter = ()=>{
-        let batchRule = this.state.ruyear+""+this.state.rupro+""+this.state.rumon+""+this.state.ruser+""+this.state.ruproNum+""+this.state.ruproLin+
-        ""+this.state.rumaterial
-        // +""+this.state.ruprocess+""+this.state.ruslot+""+this.state.ruslotNum;
-        console.log(batchRule)
-        this.props.onBatchCenter(batchRule);
+
+        this.props.onBatchCenter(this.state.dataSource)
         this.setState({
             visible:false,
-            ruyear:undefined,
-            rupro:undefined,
-            rumon:undefined,
-            ruser:undefined,
-            ruproNum:undefined,
-            ruproLin:undefined,
-            rumaterial:undefined,
-            ruprocess:undefined,
-            ruslot:undefined,
-            ruslotNum:undefined,
-            batchRule:batchRule
+            inputValue:""
         })
     }
 

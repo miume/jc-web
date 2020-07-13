@@ -116,7 +116,7 @@ class RecordChecking extends React.Component {
             if(res) {
                 let isQualified = res.testReportRecord ? res.testReportRecord.isQualified:0 ,isQualifiedArr = [];
                 topData={
-                    batchNumber: res.serialNumber?res.serialNumber:'',
+                    batch: res.batch?res.batch:'',
                     materialName: res.materialName?res.materialName:'',
                     b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
@@ -366,7 +366,7 @@ class RecordChecking extends React.Component {
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{this.state.topData?this.headData(this.state.topData.batchNumber):''}</td>
+                                <td>{this.state.topData?this.state.topData.batch:''}</td>
                                 <td>{this.state.topData?this.state.topData.materialName:''}</td>
                                 <td>{this.state.topData?this.headData(this.state.topData.b,1):''}</td>
                             </tr>

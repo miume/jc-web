@@ -118,7 +118,8 @@ class Home extends Component {
                 accept: `${server}/jc/common/sampleDeliveringRecord/accept`,
                 getAllBypages: `${server}/jc/common/sampleDeliveringRecord/pages`,
                 rawStandard: `${server}/jc/common/sampleDeliveringRecord/rawStandard`,
-                getPageByBatch: `${server}/jc/common/sampleDeliveringRecord/getPageByBatch`
+                getPageByBatch: `${server}/jc/common/sampleDeliveringRecord/getPageByBatch`,
+                addBatch: `${server}/jc/common/sampleDeliveringRecord/new`,
             },
             /**设备指导 */
             instructor: {

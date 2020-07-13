@@ -1,7 +1,7 @@
 import React from "react";
 import BlockQuote from '../../../BlockQuote/blockquote';
 import axios from "axios";
-import {Table, Divider, message, Popconfirm, Spin} from "antd";
+import {Table, Divider, message, Popconfirm, Spin,Radio} from "antd";
 import '../../../Home/page.css';
 import SearchCell from '../../../BlockQuote/search'
 import AddModal from './addModal'
@@ -38,6 +38,7 @@ class SampleInspection extends React.Component {
             searchContent: '',
             clicked: false,
             Contentvalue: '',
+            selectOptions: 1
         };
         this.reset = this.reset.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
@@ -301,6 +302,7 @@ class SampleInspection extends React.Component {
             batch: flag ? '' : searchContent,
             page: current ? current : 1,
             size: pageSize ? pageSize : 10,
+            type: this.state.selectOptions,
             sortField: 'id',
             sortType: 'desc',
         };
@@ -361,6 +363,18 @@ class SampleInspection extends React.Component {
             this.fetch();
         })
     }
+    optionChange = (e) => {
+        console.log(e.target.value)
+        this.setState({
+            selectOptions: parseInt(e.target.value),
+            searchContent: ""
+        },()=>{
+            this.pagination.current = 1;
+            let searchComponent = document.getElementsByClassName(`search-${this.props.type}`)[0]
+            searchComponent.childNodes[0].value = '';
+            this.fetch({},false)
+        })
+    }
 
     render() {
         const {selectedRowKeys} = this.state;
@@ -388,10 +402,19 @@ class SampleInspection extends React.Component {
                         deleteByIds={this.deleteByIds}
                         flag={this.judgeOperation(this.operation, 'DELETE')}
                     />
-                    <SearchCell name='请输入编号' searchEvent={this.searchEvent}
-                                searchContentChange={this.searchContentChange} fetch={this.fetch}
-                                flag={this.judgeOperation(this.operation, 'QUERY')}/>
-                    <div className='clear'></div>
+                    <div style={{float:'right',display:'flex'}}>
+                        <div style={{paddingTop:'5px'}}>
+                            <Radio.Group onChange={this.optionChange} value={this.state.selectOptions}>
+                                <Radio value={1}>原材料</Radio>
+                                <Radio value={2}>中间品</Radio>
+                                <Radio value={3}>成品</Radio>
+                            </Radio.Group>
+                        </div>
+                        <SearchCell name='请输入编号' searchEvent={this.searchEvent}
+                                    searchContentChange={this.searchContentChange} fetch={this.fetch}
+                                    flag={this.judgeOperation(this.operation, 'QUERY')}/>
+                        <div className='clear'></div>
+                    </div>
                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection}
                            size="small"
                            bordered

@@ -58,12 +58,12 @@ class RawTestReport extends React.Component{
             title:'送样人',
             dataIndex:'deliverer',
             key:'deliverer',
-            width:'9%'
+            width:'10%'
         },{
             title:'送样日期',
             dataIndex:'sampleDeliveringDate',
             key:'sampleDeliveringDate',
-            width:'9%',
+            width:'10%',
             render:(text)=>{
                 return <span title={text} className='text-decoration'>{text.substring(0,10)+'...'}</span>
             }
@@ -71,17 +71,22 @@ class RawTestReport extends React.Component{
             title:'送样工厂',
             dataIndex:'deliveryFactoryName',
             key:'deliveryFactoryName',
-            width:'9%'
+            width:'10%'
+        },{
+            title:'编号',
+            dataIndex:'batch',
+            key:'batch',
+            width:'10%'
         },{
             title:'批号',
             dataIndex:'batchNumber',
             key:'batchNumber',
-            width:'15%'
+            width:'10%'
         },{
             title:'检测项目',
             dataIndex:'testItemString',
             key:'testItemString',
-            width:'11%',
+            width:'10%',
             render:(text)=>{
                 const items = text.split(',');
                 var testItems = '';
@@ -98,7 +103,7 @@ class RawTestReport extends React.Component{
             dataIndex:'acceptStatus',
             key:'acceptStatus',
             align:'center',
-            width:'7%',
+            width:'5%',
         },{
             title:'审核状态',
             dataIndex:'status',
@@ -217,6 +222,7 @@ class RawTestReport extends React.Component{
                 status:e.commonBatchNumber?e.commonBatchNumber.status:0,
                 isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0,
                 batchNumberId:e.commonBatchNumber?e.commonBatchNumber.id:'无',
+                batch: e.batch
             })
         }
         this.setState({

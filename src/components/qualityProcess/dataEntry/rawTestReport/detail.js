@@ -64,7 +64,7 @@ class Detail extends React.Component{
         let details  = [];
         let IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
         let topData={
-            batchNumber: res.commonBatchNumber.batchNumber?res.commonBatchNumber.batchNumber:'',
+            batchNumber: res.batch?res.batch:'',
             materialName: res.materialName?res.materialName:'',
             b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
         };

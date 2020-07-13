@@ -76,7 +76,7 @@ class DetailModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{data.topData?data.topData.batchNumber:''}</td>
+                            <td>{data.topData?data.topData.batch:''}</td>
                             <td>{data.topData?data.topData.materialName:''}</td>
                             <td>{data.topData?data.topData.b:''}</td>
                         </tr>

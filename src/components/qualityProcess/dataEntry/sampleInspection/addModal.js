@@ -582,7 +582,8 @@ class AddModal extends React.Component{
         serialNumberId:null,
         testItemIds:[],
         type:null,
-        batchRule:""
+        batchRule:"",
+        subBatchs: []
     };
 
     onChange = (checkedValues) =>{
@@ -591,10 +592,20 @@ class AddModal extends React.Component{
         })
       }
 
-      onBatchCenter = (batchRule)=>{
+      onBatchCenter = (batchRules)=>{
+        var batchRule = "";
+        var subBatchs = [];
+          for (let i = 0; i < batchRules.length; i++) {
+              if (batchRules[i].flag === true) {
+                  batchRule = batchRules[i].number;
+              } else {
+                  subBatchs.push(batchRules[i].number)
+              }
+          }
         // console.log(batchRule);
         this.setState({
-            batchRule:batchRule
+            batchRule:batchRule,
+            subBatchs:subBatchs
         })
     }
 
@@ -612,6 +623,27 @@ class AddModal extends React.Component{
         this.formRef = formRef;
     };
 
+
+    saveRawRules = (id) => {
+        axios({
+            url:`${this.url.sampleInspection.addBatch}`,
+            method:'post',
+            headers:{
+                'Authorization': this.url.Authorization
+            },
+            data: {
+                mainBatch: this.state.batchRule,
+                sampleId: id,
+                subBatches: this.state.subBatchs
+            },
+            type:'json'
+        }).then((data)=>{
+            // message.info(data.data.message);
+        })
+    }
+
+
+    // 保存
     onCreate = () =>{
         const form = this.formRef.props.form;
         form.validateFields((err,value)=>{
@@ -621,7 +653,6 @@ class AddModal extends React.Component{
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            console.log(value.serialNumberId)
             let data = {batch:this.state.batchRule,sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:parseInt(value.serialNumberId.split("-")[1]),type:value.type},testItemIds:this.state.testItemIds}
             axios({
@@ -634,6 +665,8 @@ class AddModal extends React.Component{
                 type:'json'
             }).then((data)=>{
                 message.info(data.data.message);
+                const id = data.data.data.sampleDeliveringRecord.id
+                this.saveRawRules(id)
                 this.props.fetch({sortField: 'id',
                 sortType: 'desc',});
                 this.setState({ visible: false,batchRule:"" });
@@ -642,6 +675,7 @@ class AddModal extends React.Component{
         })
     }
 
+    // 提交
     onCenter = () =>{
         const form = this.formRef.props.form;
         form.validateFields((err,value)=>{
@@ -663,6 +697,8 @@ class AddModal extends React.Component{
                 type:'json'
             }).then((data)=>{
                 message.info(data.data.message);
+                const id = data.data.data.sampleDeliveringRecord.id
+                this.saveRawRules(id)
                 this.props.fetch({sortField: 'id',
                 sortType: 'desc',});
                 this.setState({ visible: false,batchRule:"" });

@@ -5,6 +5,7 @@ import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import moment from "moment";
+import RawSelect from "./rawSelect";
 
 const Option = Select.Option;
 const dateFormat = 'YYYY-MM-DD';
@@ -338,8 +339,9 @@ class Editor extends React.Component{
                     oldperson:res.sampleDeliveringRecord.delivererId,
                     oldfactor:res.sampleDeliveringRecord.deliveryFactoryId,
                     oldTestItems:res.sampleDeliveringRecord.testItems.split(',').map(Number),
-                    oldMaterials:res.sampleDeliveringRecord.serialNumberId,
+                    oldMaterials:res.sampleDeliveringRecord.serialNumberName,
                     oldMemo:res.sampleDeliveringRecord.exceptionComment,
+                    batchRule: res.batch,
                     visible: true,
                 })
             }
@@ -544,7 +546,7 @@ class Editor extends React.Component{
                             {
                                 this.state.serialNumber.map(pe=>{
                                     return(
-                                        <Option key={pe.material.id} value={pe}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
+                                        <Option key={pe.standandId} value={pe.material.id+"-"+pe.standandId}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
                                     )
                                 })
                             }
@@ -557,6 +559,13 @@ class Editor extends React.Component{
                                 })
                             }
                         </Select>:null}
+                    {
+                        this.state.visible1 === 1 ?
+                            <div style={{paddingTop:'5px'}}>
+                                <Input disabled={true}  placeholder="请输入编号" value={this.state.batchRule}/>
+                            </div>
+                            :null
+                    }
                         <Input.TextArea autosize={{minRows:2}} placeholder="请输入异常备注" onChange={this.changeMemo} defaultValue={this.state.oldMemo} style={{marginTop:"10px",width:"480px"}}/>
                 </Modal>
             </span>
