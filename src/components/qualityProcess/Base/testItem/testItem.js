@@ -6,6 +6,8 @@ import BlockQuote from '../../../BlockQuote/blockquote';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
 import TestItemAddModal from './testItemAddModal';
+import {getSecondsOperations,judgeOperation} from "../../../commom/getOperations";
+
 
 const EditableContext = React.createContext(); // ??这个是什么作用
 
@@ -67,7 +69,15 @@ class TestItem extends React.Component{
   url;
   operation;
   componentDidMount(){
-    this.fetch();
+      let {menuId} = this.current,operations = getSecondsOperations(menuId);
+      this.setState({
+          addFlag: judgeOperation(operations,'SAVE'),
+          updateFlag: judgeOperation(operations,'UPDATE'),
+          deleteFlag: judgeOperation(operations,'DELETE'),
+          saveFlag: judgeOperation(operations,'SAVE'),
+          queryFlag: judgeOperation(operations,'QUERY')
+      })
+      this.fetch();
   }
   componentWillUnmount() {
     this.setState = () => {
@@ -82,7 +92,12 @@ class TestItem extends React.Component{
         searchContent:'',
         visible:false,
         editingKey:'',
-          loading: true
+          loading: true,
+          addFlag: false,
+          updateFlag: false,
+          deleteFlag: false,
+          saveFlag: false,
+          queryFlag: false
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -103,9 +118,8 @@ class TestItem extends React.Component{
           pageSizeOptions: ["10","20","50","100"]
       };
        //获取该菜单所有权限
-      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
-
-      this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
+        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
+        this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -389,14 +403,14 @@ class TestItem extends React.Component{
             message.info('搜索失败，请联系管理员！')
            });
       }
-      judgeOperation(operation,operationCode){
-        if(operation===null) return false
+    judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
         return flag.length>0?true:false
     }
    render(){
      /** 通过localStorage可查到http://218.77.105.241:40080*/
         this.url=JSON.parse(localStorage.getItem('url'));
+       this.current = JSON.parse(localStorage.getItem('current'));
        const {selectedRowKeys}=this.state;
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
