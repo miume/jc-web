@@ -10,13 +10,18 @@ class AddModal extends React.Component {
         super(props);
         this.state = {
             visible: false,
+            line:[],
+            name : undefined,
+            code : undefined,
+            description : undefined
+
         };
-        this.handleSave = this.handleSave.bind(this);
+        this.showModal=this.showModal.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
-        this.saveDataProcessing = this.saveDataProcessing.bind(this);
     }
 
     render() {
@@ -24,11 +29,17 @@ class AddModal extends React.Component {
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
-                <Modal title={title} visible={visible} maskClosable={false} closable={false}
-                       centered={true} width={400}
+                <Modal title={title} 
+                       visible={visible}
+                       maskClosable={false}
+                       closable={false}
+                       centered={true}
+                       width={400}
                        footer={[
                            <CancleButton key={'cancel'} handleCancel={this.handleCancel}/>,
-                           <SaveButton key={'save'} handleSave={this.handleSave}/>
+                        //    <SaveButton key={'save'} handleSave={this.handleSave}className='fa fa-check' name='确定'/>
+                        <NewButton key='ok' handleClick={this.handleAdd} className='fa fa-check' name='确定'/>
+
                        ]}
                 >
                     <div className={'check-item'}>
@@ -45,20 +56,64 @@ class AddModal extends React.Component {
     renderButton(title) {
         return (
             title === '新增'?
-                <NewButton name='新增' className='fa fa-plus' handleClick={this.handleClick}/> :
+                <NewButton name='新增' className='fa fa-plus' handleClick={this.showModal}/> :
                 <span className={'blue'} onClick={this.handleClick}>编辑</span>
         )
     }
+    showModal(){
+        
+        this.setState({
+            visible:true
+        })
+    }
 
+    
+
+    handleAdd(){
+        let {name,code,line,description} = this.state
+        if(name ===undefined ||description===undefined){
+            message.error('信息填写不完整!')
+            return
+        }
+        let data={
+            name : name,
+            code : code,
+            description : description
+            
+        }
+        axios({
+            url:this.props.title==='编辑'?this.props.url.positiveModel.update:this.props.url.positiveModel.add,
+            method:this.props.title==='编辑'? "put":"post",
+            headers:{
+                'Authorization':this.props.url.Authorization,
+            },
+            data:data
+        }).then(data=>{
+            if(data.data.code===0){
+                message.info('操作成功!')
+                this.props.getTableData()
+            }
+            else{
+
+                message.error(data.data.message)
+            }
+        }).catch(error=>{
+            message.error('操作失败，请联系管理员!')
+        })
+       this.handleCancel()
+    }
+    
     /**点击新增事件*/
     handleClick() {
         let {record} = this.props;
         if(record) {
             let {name,code,description} = record;
             this.setState({
-                name,
-                code,
-                description
+                name : name,
+                code : code,
+                description : description,
+                line:this.props.line,
+
             });
         }
         this.setState({
@@ -75,54 +130,14 @@ class AddModal extends React.Component {
         });
     }
 
-    inputChange(e) {
-        let tar = e.target, name = tar.name, value = tar.value;
+    inputChange(e){
+        let name=e.target.name,
+            value=e.target.value
         this.setState({
-            [name]: value
+            [name]:value
         })
     }
 
-    handleSave() {
-        let params = this.saveDataProcessing();
-        if(params) {
-            let {data,method,url} = params;
-            axios({
-                url: url,
-                method: method,
-                headers: {
-                    'Authorization': this.props.url.Authorization
-                },
-                data
-            }).then((data) => {
-                this.handleCancel();
-                if(data.data.code==='000000'){
-                    message.info(data.data.mesg);
-                    this.props.getTableParams();
-                }
-               else{
-                message.info(data.data.data);
-               }
-            })
-        }
-    }
-
-    saveDataProcessing() { //TODO:修改界面所有url
-        let {name,code,description} = this.state,
-            data = {
-                code,
-                name,
-                description
-            }, method = 'post', url = `${this.props.url.swmsBasicDeliveryAddressInfo}/add`;
-        if(!name && description !== undefined) {
-            message.info('请将新增信息填写完整！');
-            return false
-        }
-        if(code) {
-            method = 'put';
-            url = `${this.props.url.swmsBasicDeliveryAddressInfo}/${code}`;
-        }
-        return {data,method,url};
-    }
 }
 
 export default AddModal;

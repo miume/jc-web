@@ -780,6 +780,8 @@ class Home extends Component {
                 add: `${server}/jc/common/anodeProductionType/add`,
                 delete: `${server}/jc/common/anodeProductionType/delete`,
                 update: `${server}/jc/common/anodeProductionType/update`,
+                page: `${server}/jc/common/anodeProductionType/page`,
+                ids : `${server}/jc/common/anodeProductionType/ids`,
             },
             /**正极其他数据*/
             positiveOther: {
