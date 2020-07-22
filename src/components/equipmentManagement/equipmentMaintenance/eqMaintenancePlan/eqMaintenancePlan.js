@@ -5,7 +5,7 @@ import ButtonToDd from './blockCompontent/buttontodo'
 import ContentTable from './blockCompontent/contenttable'
 import './blockCompontent/style.css'
 import Blockquote from "../../../BlockQuote/blockquote";
-import Department from '../../../BlockQuote/department';
+import Department from './department';
 import {judgeOperation,getOperations} from '../../../commom/getOperations'
 class EqMaintenancePlan extends React.Component{
     componentWillUnmount() {
