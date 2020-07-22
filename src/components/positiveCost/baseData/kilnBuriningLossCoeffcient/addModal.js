@@ -10,17 +10,26 @@ class AddModal extends React.Component {
         super(props);
         this.state = {
             visible: false,
+            productiontypedata:[],
+            name:undefined,
+            productioncode:undefined
         };
         this.handleSave = this.handleSave.bind(this);
-        this.inputChange = this.inputChange.bind(this);
+        this.selectChange = this.selectChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
+        this.getProductionType = this.getProductionType.bind(this);
+        this.inputChange = this.inputChange.bind(this)
+    }
+    componentDidMount() {
+        this.getProductionType();
     }
 
     render() {
-        let {visible,name,lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8} = this.state, {title,flag} = this.props;
+        const { Option } = Select;
+        let {visible,name,lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8,productiontypedata} = this.state, {title,flag} = this.props;
         return (
             <span className={flag ? '' : 'hide'}>
                 { this.renderButton(title) }
@@ -32,7 +41,11 @@ class AddModal extends React.Component {
                        ]}
                 >
                     <div className={'check-item'}>
-                        <Input placeholder={'请输入产品型号'} name={'name'} value={name}  onChange={this.inputChange}/>
+                        <Select placeholder={'请选择产品型号'} style={{width: 100+'%'}} onChange={this.selectChange} value={name} disabled={title==='编辑'?true:false}>
+                             {
+                                 productiontypedata.length ? productiontypedata.map(e => <Option key={e.code} productioncode={e.code} value={e.name} name={'name'}>{e.name}</Option>) : null
+                             }
+                        </Select>
                     </div>
                     <div className={'check-item'}>
                         <Input placeholder={'请输入1#窑炉'} name={'lossrate1'} value={lossrate1}  onChange={this.inputChange} style={{width: '100%',marginRight: 10}} />
@@ -63,13 +76,14 @@ class AddModal extends React.Component {
         )
     }
 
-    /**点击新增事件*/
+    /**点击新增或编辑事件,name是5506，code是数据库中该条记录的序号,productioncode是产品编号*/
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {name,code,lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8} = record;
+            let {name,code,productionCode,lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8} = record,
+            productioncode = productionCode;
             this.setState({
-                name,code,lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8
+                name,code,productioncode,lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8
             });
         }
         this.setState({
@@ -93,10 +107,19 @@ class AddModal extends React.Component {
         });
     }
 
-    inputChange(e) {
-        let tar = e.target, name = tar.name, value = tar.value;
+    /**选择下拉框*/
+    selectChange(value,e) {
         this.setState({
-            [name]: value
+            name: value,
+            productioncode: e.props.productioncode
+        })
+    }
+
+    /**输入框*/
+    inputChange(e){
+        let value=e.target.value,name = e.target.name
+        this.setState({
+            [name]:parseFloat(value)
         })
     }
 
@@ -113,12 +136,12 @@ class AddModal extends React.Component {
                 data
             }).then((data) => {
                 this.handleCancel();
-                if(data.data.code==='000000'){
-                    message.info(data.data.mesg);
+                if(data.data.code===0){
+                    message.info(data.data.message);
                     this.props.getTableParams();
                 }
                else{
-                message.info(data.data.data);
+                message.info(data.data.message);
                }
             })
         }
@@ -126,11 +149,12 @@ class AddModal extends React.Component {
 
     /**需要修改url */
     saveDataProcessing() {
-        let {name,code,lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8} = this.state,
+        let {name,code,productioncode,lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8} = this.state,
+            productionCode = productioncode,
             data = {
-                name,
+                productionCode,
                 lossrate1,lossrate2,lossrate3,lossrate4,lossrate5,lossrate6,lossrate7,lossrate8
-            }, method = 'post', url = `${this.props.url.swmsBasicDeliveryAddressInfo}/add`, flag;
+            }, method = 'post', url = `${this.props.url.kilnBurning.add}`, flag;
         for(let i in data) {
             if (!data[i]) {
                 flag = true
@@ -144,9 +168,17 @@ class AddModal extends React.Component {
         if(code) {
             data['code'] = code;
             method = 'put';
-            url = `${this.props.url.swmsBasicDeliveryAddressInfo}/${code}`;
+            url = `${this.props.url.kilnBurning.update}`;
         }
         return {data,method,url};
+    }
+    getProductionType() {
+        axios.get(`${this.props.url.positiveModel.all}`).then((data) => {
+            let res = data.data.data;
+            this.setState({
+                productiontypedata: res
+            })
+        })
     }
 }
 
