@@ -30,7 +30,8 @@ class EqMaintenancePlan extends React.Component{
             searchContent:'',
             params:{},
             selectContent:-1,
-            loading: true
+            loading: true,
+            parentCode: 1
         };
         this.pagination = {
             pageSize: 10,
@@ -61,6 +62,8 @@ class EqMaintenancePlan extends React.Component{
                         treeName = '部门名称'
                         url={this.url}
                         getTableData={this.getTableData}
+                        handleDepChange={this.handleDepChange}
+                        getTableParams={this.getTableParams}
                     />
                     <Spin spinning={this.state.loading} wrapperClassName='equipment-right'>
                         <ButtonToDd
@@ -82,11 +85,13 @@ class EqMaintenancePlan extends React.Component{
                             selectEvent={this.selectEvent}
                             statusId={this.state.selectContent}
                             addFlag={addFlag}
+
+                            getTableParams={this.getTableParams}
                         />
                         <ContentTable
                             url={this.url}
                             depCode={this.state.depCode}
-                            getTableData={this.handleTableChange}
+                            getTableData={this.getTableData}
                             getMaintType={this.getMaintType}
                             MaintenanceType={this.state.MaintenanceType}
                             Device={this.state.Device}
@@ -94,7 +99,6 @@ class EqMaintenancePlan extends React.Component{
                             Opt_type={this.state.Opt_type}
                             statusId={this.state.selectContent}
                             handleDel={this.handleDel}
-                            pagination={this.pagination}
                             dataSource={this.state.rightTableData}
                             page={this.state.page}
                             size={this.state.size}
@@ -103,6 +107,11 @@ class EqMaintenancePlan extends React.Component{
                             getTableSize={this.getTableSize}
                             deleteFlag={deleteFlag}
                             updateFlag={updateFlag}
+
+                            handleTableChange={this.handleTableChange}
+                            getTableParams={this.getTableParams}
+                            pagination={this.pagination}
+
                         />
                     </Spin>
                 </div>
@@ -160,37 +169,50 @@ class EqMaintenancePlan extends React.Component{
         })
     }
 
+
+    handleDepChange = (deptId, depName, parentCode) => {
+        this.setState({
+            depCode: deptId,
+            deviceName: depName,
+            parentCode: parentCode,
+            searchContent: undefined
+        },()=>{
+            this.pagination.current = 1;
+            let searchComponent = document.getElementsByClassName(`search-${this.props.type}`)[0]
+            searchComponent.childNodes[0].value = '';
+            this.getTableParams()
+        })
+    }
+
      /**获取表格当前请求页数和每页显示数据数量*/
      handleTableChange = (pagination)=>{
         this.pagination = pagination;
-        this.getTableData()
+        this.getTableParams()
+    }
+    /**确定获取表格数据的参数*/
+    getTableParams = (value) => {
+        let {searchContent} = this.state, {pageSize, current} = this.pagination,
+            params = {
+                condition: value === undefined ? searchContent : value,
+                size: pageSize?pageSize:10,
+                page: current?current:1,
+                deptId:this.state.depCode,
+                statusId: this.state.selectContent,
+                depName:this.state.deviceName,
+                parentCode: this.state.parentCode
+            };
+        this.getTableData(params);
     }
 
     /**获取表格数据*/
-    getTableData = (params = {
-        deptId:this.state.depCode,
-        statusId: this.state.selectContent,
-        condition:this.state.searchContent,
-        depName:this.state.deviceName,
-        size: this.pagination.pageSize,
-        page: this.pagination.current
-    }) => {
-        this.setState({
-            loading: true,
-            depCode: params.deptId
-        });
-        if(params.depName) {
-            this.setState({
-                deviceName: params.depName
-            })
-        }
+    getTableData = (params) => {
         axios({
             url: `${this.url.DeviceMaintenancePlan.maintenancePlanPage}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
             },
-            params:params,
+            params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
             const status=data.status;
@@ -306,31 +328,20 @@ class EqMaintenancePlan extends React.Component{
     }
 
     /**搜索事件*/
-    SearchEvent = (value) => {
-        let {selectContent,depCode} = this.state;
-        this.getTableData({
-            condition:value,
-            statusId:parseInt(selectContent),
-            deptId: parseInt(depCode),
-            size: this.pagination.pageSize,
-            page: this.pagination.current
-        })
+    SearchEvent = (searchContent) => {
+        this.setState({
+            searchContent
+        });
+        this.getTableParams(searchContent)
     }
 
     /**搜索重置调用*/
     searchReset = () => {
         this.setState({
-            searchContent:'',
-            selectContent: -1
+            searchContent: undefined
         });
         this.pagination.current = 1;
-        this.pagination.pageSize = 10;
-        this.getTableData({
-            deptId: parseInt(this.state.depCode),
-            statusId:-1,
-            page:1,
-            size:this.state.size,
-        })
+        this.getTableParams('')
     }
 }
 

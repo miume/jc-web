@@ -386,6 +386,9 @@ class CheckSpan extends React.Component {
                 'Authorization': this.props.url.Authorization
             },
             data: interCheckData,
+            params: {
+                flag: status
+            },
             type:'json'
         }).then((data)=>{
             if(status){

@@ -94,12 +94,8 @@ class DetailofMain extends React.Component{
         }).then((data)=>{
             message.info(data.data.message)
         })
-        const params={
-            deptId:this.props.depCode,
-            statusId:this.props.statusId,
-            page:1,
-        }
-        this.props.getTableData(params)
+
+        this.props.getTableParams()
         this.handleCancel2()
     }
 

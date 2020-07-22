@@ -112,7 +112,7 @@ class InterTable extends React.Component{
             const isFullAudit = record.isFullAudit?record.isFullAudit:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
             let detailSpanFlag = this.judgeDetailOperation(status);
-            let checkSpanFlag = this.judgeCheckOperation(isFullAudit);
+            let checkSpanFlag = this.judgeCheckOperation(isFullAudit,status);
             let releaseSpanFlag = this.judgeReleaseOperation(isFullAudit,status);
             return (
                 <span>
@@ -196,21 +196,22 @@ class InterTable extends React.Component{
     }
     /**判断详情，录检，发布可否功能 */
     judgeDetailOperation = (status) => {
-        if(status===-1){
+        if(status===-1 || status === 1){
             return false;
         }else{
             return true;
         }
     };
-    judgeCheckOperation = (status) => {
-        if(status){
-            return false;
-        }else{
-            return true;
-        }
+    judgeCheckOperation = (isFullAudit,status) => {
+        // if(isFullAudit===1 || status === 1){
+        //     return false;
+        // }else{
+        //     return true;
+        // }
+        return true
     };
     judgeReleaseOperation = (isFullAudit,status) => {
-        return isFullAudit === 1 && status === 2 ? true : false;
+        return isFullAudit === 1 && status === 2 ;
     };
     /**---------------------- */
     /**通过id查询详情 */

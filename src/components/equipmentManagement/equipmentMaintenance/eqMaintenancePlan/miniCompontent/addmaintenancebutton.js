@@ -187,7 +187,7 @@ class Addmaintenancebutton extends React.Component {
                 return;
             } else {
                 this.handleCancel();
-                this.props.getTableData()
+                this.props.getTableParams()
             }
 
         }).catch(function () {

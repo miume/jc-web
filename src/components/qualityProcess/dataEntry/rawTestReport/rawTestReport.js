@@ -127,23 +127,23 @@ class RawTestReport extends React.Component{
             align:'center',
             render:(text,record)=>{
                 const editorFlag = home.judgeOperation(this.operation,'UPDATE')
-                const printGrantFlag = home.judgeOperation(this.operation,'PRINT')
-                let printFlag = this.judgeprintOperation(record.status);
+                // const printGrantFlag = home.judgeOperation(this.operation,'PRINT')
+                // let printFlag = this.judgeprintOperation(record.status);
                 return (
                     <span>
                         <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
                         <RecordChecking title='录检' value={text} url={this.url} status={record.status} tableRecord={this.tableRecord} flag={editorFlag}/>
-                        <span className={printGrantFlag?'':'hide'}>
-                            <Divider type="vertical" />
-                            {printFlag?(
-                                <Print
-                                    record={record}
-                                    batchNumberId={record.batchNumberId}
-                                />
-                            ):(
-                                <span  className="notClick">打印</span>
-                            )}
-                        </span>
+                        {/*<span className={printGrantFlag?'':'hide'}>*/}
+                            {/*<Divider type="vertical" />*/}
+                            {/*{printFlag?(*/}
+                                {/*<Print*/}
+                                    {/*record={record}*/}
+                                    {/*batchNumberId={record.batchNumberId}*/}
+                                {/*/>*/}
+                            {/*):(*/}
+                                {/*<span  className="notClick">打印</span>*/}
+                            {/*)}*/}
+                        {/*</span>*/}
                         <Divider type='vertical' />
                         <Loss statement={record.exceptionComment} name='异常备注' />
                         <Divider type='vertical' />
@@ -153,13 +153,13 @@ class RawTestReport extends React.Component{
             }
         },]
     }
-    judgeprintOperation = (isPublished) => {
-        if(isPublished===2){
-            return true;
-        }else{
-            return false;
-        }
-    };
+    // judgeprintOperation = (isPublished) => {
+    //     if(isPublished===2){
+    //         return true;
+    //     }else{
+    //         return false;
+    //     }
+    // };
 
     handleTableChange(pagination){
         this.pagination = pagination;

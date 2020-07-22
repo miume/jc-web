@@ -4,10 +4,11 @@ import OperationTable from './operationTable';
 import '../../Home/page.css';
 import axios from "axios";
 import AddModal from "./addModal";
-import {message, Spin} from "antd";
+import {message, Spin, Table} from "antd";
 import home from '../../commom/fns';
 import SearchCell from '../../BlockQuote/search';
 import DeleteByIds from "../../BlockQuote/deleteByIds";
+
 
 class OperationManagement extends React.Component {
     url;
@@ -17,9 +18,9 @@ class OperationManagement extends React.Component {
     }
     componentWillUnmount() {
         this.setState = () => {
-          return ;
+            return ;
         }
-      }
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -196,6 +197,7 @@ class OperationManagement extends React.Component {
         });
         this.fetch({},1)
     }
+
 }
 
 export default OperationManagement;

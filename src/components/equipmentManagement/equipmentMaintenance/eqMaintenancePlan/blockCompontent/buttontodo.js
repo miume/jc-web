@@ -25,6 +25,7 @@ class ButtonToDd extends Component {
                     MaintenanceType={this.props.MaintenanceType}
                     statusId={this.props.statusId}
                     addFlag={addFlag}
+                    getTableParams={this.props.getTableParams}
                 />
                 <Searchpart
                     id='searchpart'
@@ -40,6 +41,7 @@ class ButtonToDd extends Component {
                     depName={this.props.depName}
                     size={this.state.size}
                     current={this.state.current}
+                    getTableParams={this.props.getTableParams}
                 />
             </div>
         )

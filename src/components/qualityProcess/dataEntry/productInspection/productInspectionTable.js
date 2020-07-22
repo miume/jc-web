@@ -78,7 +78,7 @@ class ProductTable extends React.Component{
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
             let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
-            let printFlag = this.judgeprintOperation(record.isPublished);
+            // let printFlag = this.judgeprintOperation(record.isPublished);
             let rateOpt = this.judgeRateOpt(record.isPublished,record.status);
             return (
                 <span>
@@ -105,17 +105,17 @@ class ProductTable extends React.Component{
                             <span className="notClick">录检</span>
                         )}
                     </span>
-                    <span className={this.props.judgeOperation(this.props.operation,'PRINT')?'':'hide'}>
-                        <Divider type="vertical" />
-                        {printFlag?(
-                            <Print
-                                record={record}
-                                batchNumberId={record.batchNumberId}
-                            />
-                        ):(
-                            <span  className="notClick">打印</span>
-                        )}
-                    </span>
+                    {/*<span className={this.props.judgeOperation(this.props.operation,'PRINT')?'':'hide'}>*/}
+                        {/*<Divider type="vertical" />*/}
+                        {/*{printFlag?(*/}
+                            {/*<Print*/}
+                                {/*record={record}*/}
+                                {/*batchNumberId={record.batchNumberId}*/}
+                            {/*/>*/}
+                        {/*):(*/}
+                            {/*<span  className="notClick">打印</span>*/}
+                        {/*)}*/}
+                    {/*</span>*/}
                     <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                         <Divider type="vertical" />
                         {releaseSpanFlag?(
@@ -200,13 +200,13 @@ class ProductTable extends React.Component{
             return false;
         }
     };
-    judgeprintOperation = (isPublished) => {
-        if(isPublished===1){
-            return true;
-        }else{
-            return false;
-        }
-    };
+    // judgeprintOperation = (isPublished) => {
+    //     if(isPublished===1){
+    //         return true;
+    //     }else{
+    //         return false;
+    //     }
+    // };
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */

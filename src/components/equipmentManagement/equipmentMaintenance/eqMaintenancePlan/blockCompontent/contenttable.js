@@ -80,6 +80,8 @@ class ContentTable extends React.Component {
                     url={this.props.url}
                     condition={this.props.condition}
                     updateFlag={updateFlag}
+                    pagination={this.props.pagination}
+                    getTableParams={this.props.getTableParams}
                 />
                 {updateFlag?<Divider type='vertical' />:''}
                 <DetailofMain
@@ -88,6 +90,7 @@ class ContentTable extends React.Component {
                     depCode={this.props.depCode}
                     deviceName={this.props.deviceName}
                     getTableData={this.props.getTableData}
+                    getTableParams={this.props.getTableParams}
                 />
                 {deleteFlag?<Divider type='vertical' />:''}
                     {
@@ -106,21 +109,6 @@ class ContentTable extends React.Component {
         }
     }]
 
-    onShowSizeChange=(current,size)=>{
-        this.props.getTableSize(current,size)
-    }
-
-    handleTableChange=(page)=>{
-        // const params={
-        //     deptId: this.props.depCode,
-        //     statusId: this.props.statusId,
-        //     condition:this.props.searchContent,
-        //     page:page.current,
-        //     depName:this.props.depName,
-        //     size:page.pageSize,
-        // }
-        this.props.getTableData(page);
-    }
     handleDel=(id)=>{
         axios({
             url:`${this.props.url.DeviceMaintenancePlan.maintenanceDeletePlan}${id}`,
@@ -130,10 +118,7 @@ class ContentTable extends React.Component {
             },
         }).then((data)=>{
             message.info(data.data.message);
-            const params={
-                deptId:this.props.depCode,
-            }
-            this.props.getTableData(params,this.props.depName)
+            this.props.getTableParams()
         })
     }
     render(){
@@ -147,8 +132,7 @@ class ContentTable extends React.Component {
                     columns={this.columns}
                     bordered
                     size="small"
-                    onChange={this.handleTableChange}
-                    onShowSizeChange={this.onShowSizeChange}
+                    onChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
                 />
             </div>

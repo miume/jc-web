@@ -279,14 +279,7 @@ class EditorofMain extends React.Component{
         }).then((data) => {
             message.info(data.data.message);
             this.handleCancel2();
-            const params={
-                deptId: this.props.depCode,
-                statusId: this.props.statusId,
-                condition:this.props.condition,
-                page:this.props.page,
-                size:this.props.size,
-            }
-            this.props.getTableData(params)
+            this.props.getTableParams()
         });
     }
 

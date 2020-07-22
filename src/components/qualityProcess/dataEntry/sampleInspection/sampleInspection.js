@@ -11,6 +11,8 @@ import "./sample.css"
 import Edit from "./editor"
 import Loss from '../../../BlockQuote/lossStatement'
 import Reason from '../../../BlockQuote/lossStatement'
+import Print from "../sampleInspection/print";
+import home from "../../../commom/fns";
 
 class SampleInspection extends React.Component {
     url
@@ -153,6 +155,8 @@ class SampleInspection extends React.Component {
             align: 'center',
             width: '23%',
             render: (text, record) => {
+                const printGrantFlag = home.judgeOperation(this.operation,'PRINT')
+                let printFlag = this.judgeprintOperation(record.status);
                 return (
                     <span>
                         {record.sampleDeliveringRecord.acceptStatus === -1 ?
@@ -186,11 +190,30 @@ class SampleInspection extends React.Component {
                         <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
                         <Divider type="vertical"/>
                         <Reason statement={record.sampleDeliveringRecord.handleComment} name='拒绝原因'/>
+                        <span className={printGrantFlag?'':'hide'}>
+                            <Divider type="vertical" />
+                            {printFlag?(
+                                <Print
+                                    record={record}
+                                    sampleDeliveringRecordId={record.sampleDeliveringRecord.id}
+                                />
+                            ):(
+                                <span  className="notClick">打印</span>
+                            )}
+                        </span>
                     </span>
                 );
             }
         }];
     }
+    judgeprintOperation = (isPublished) => {
+        // if(isPublished===2){
+        //     return true;
+        // }else{
+        //     return false;
+        // }
+        return true
+    };
 
     contentChange(e) {
         const value = e.target.value;
