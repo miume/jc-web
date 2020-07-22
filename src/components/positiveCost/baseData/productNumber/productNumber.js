@@ -1,7 +1,7 @@
 import React from 'react';
 import BlockQuote from "../../../BlockQuote/blockquote";
 import {Spin, message, Table, Divider, Popconfirm} from "antd";
-import SearchCell from '../../../BlockQuote/newSearchSell';
+import SearchCell from '../../../BlockQuote/search';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import AddModal from "./addModal";
 import axios from 'axios';
@@ -13,7 +13,8 @@ class ProductNumber extends React.Component {
         this.state = {
             loading: false,
             selectedRowKeys: [],
-            searchContent: ''
+            searchContent: '',
+            dataSource:[]
         };
         this.operations = [];
         this.pagination = {
@@ -44,31 +45,107 @@ class ProductNumber extends React.Component {
             dataIndex: 'code',
             width: '30%',
             render: (text,record) => {
+                //console.log(record)
                 let {deleteFlag,updateFlag} = this.state;
                 return (
                     <span>
-                        <AddModal flag={updateFlag} record={record} title={'编辑'} url={this.url} getTableParams={this.getTableParams}/>
+                        <AddModal flag={updateFlag} record={record} title={'编辑'} url={this.url} getTableData={this.getTableData}/>
                         {updateFlag && deleteFlag ? <Divider type={"vertical"}/> : ''}
                         <span className={deleteFlag ? '' : 'hide'}>
-                            <Popconfirm title="确认删除?" onConfirm={()=> this.deleteById(text)} okText="确定" cancelText="取消" >
+                            <Popconfirm title="确认删除?" onConfirm={()=>this.handleDelete(record.code)} okText="确定" cancelText="取消" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>
                         </span>
                     </span>
-                )
+                );
             }
-        }];
+        }]
+        
+        this.pagination = {
+            total: this.state.dataSource.length,
+            showTotal(total){
+                return `共${total}条记录`
+            },
+            showSizeChanger: true,
+        };
 
         this.back = this.back.bind(this);
         this.reset = this.reset.bind(this);
         this.cancel = this.cancel.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.searchContentChange=this.searchContentChange.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
-        this.deleteById=this.deleteById.bind(this);
         this.getTableData = this.getTableData.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.getTableParams = this.getTableParams.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
+    }
+
+    componentDidMount(){
+        this.getTableData()
+        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
+        this.setState({
+            addFlag:judgeOperation(operations,'SAVE'),
+            deleteFlag:judgeOperation(operations,'DELETE'),
+            updateFlag:judgeOperation(operations,'UPDATE')
+        })
+    }
+    componentWillUnmount(){
+        this.setState=()=>{
+            return
+        }
+    }
+    handleDelete = (id)=>{
+        // console.log(id)
+        axios({
+            url:`${this.url.positiveModel.delete}`,
+            method:"delete",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:id}
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.getTableData();
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+    };
+
+    getTableData=(params={})=>{
+        let {searchContent}=this.state,
+            {pageSize,current}=this.pagination;
+        params={
+            condition:searchContent,
+            size:pageSize,
+            page:current
+        }
+
+        this.setState({
+            loading:true
+        })
+        axios({
+            url:this.url.positiveModel.page,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params
+        }).then(data=>{
+            let res=data.data.data
+            if(res&&res.list){
+                this.pagination.total = res.total ? res.total : 0;
+                for(let i=0;i<res.list.length;i++){
+                    res.list[i]['index']=(res.page-1)*res.size+(i+1);
+                }
+                this.setState({
+                    dataSource:res.list
+                })
+            }
+            this.setState({
+                loading:false,
+                searchContent:''
+            })
+        })
     }
 
     render() {
@@ -79,31 +156,29 @@ class ProductNumber extends React.Component {
                 selectedRowKeys,
                 onChange: this.onSelectChange,
             };
-        data = [{ code: 1, index: 1, name: 'ceshi', description: '描述' }]; //TODO: 测试数据删除
+        //data = [{ code: 1, index: 1, name: 'ceshi', description: '描述' }]; //TODO: 测试数据删除
         return (
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal flag={addFlag} title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
-                    <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
-                                 cancel={this.cancel} flag={deleteFlag}/>
-                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入产品型号'}/>
+                    <AddModal flag={addFlag} title={'新增'} url={this.url} getTableData={this.getTableData}/>
+                    
+ 
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={this.state.deleteFlag} />
+                    
+                    <SearchCell  name='请输入产品型号' flag={true} searchEvent={this.searchEvent}
+                      searchContentChange={this.searchContentChange} placeholder={'请输入产品型号'} fetch={this.getTableData}/>
                     <div className='clear'></div>
-                    <Table dataSource={data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
-                           onChange={this.handleTableChange} size={'small'} bordered rowKey={record => record.code}/>
+                    <Table dataSource={this.state.dataSource}
+                            columns={this.columns}
+                            rowSelection={rowSelection}
+                            pagination={this.pagination}
+                           onChange={this.handleTableChange}
+                           size={'small'}
+                           bordered rowKey={record => record.code}/>
                 </Spin>
             </div>
         );
-    }
-
-    componentDidMount() {
-        this.getTableParams();
-        let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
-        this.setState({
-            addFlag: judgeOperation(operations,'SAVE'),
-            updateFlag: judgeOperation(operations,'UPDATE'),
-            deleteFlag: judgeOperation(operations,'DELETE')
-        })
     }
 
     /**确定获取表格数据的参数*/
@@ -116,100 +191,55 @@ class ProductNumber extends React.Component {
             this.getTableData(params,value === undefined ? searchContent : value);
     }
 
-    /**获取表格数据*/
-    getTableData(params,searchContent) {
-        this.setState({
-            loading: true
-        });
-        axios({
-            url: `${this.url.swmsBasicDeliveryAddressInfo}/pages?deliveryAddressName=${searchContent}`,
-            method: 'post',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-            data:params
-        }).then(data => {
-            let res = data.data.data;
-            if(res && res.records) {
-                this.pagination.total = res['total'] ? res['total'] : 0;
-                for(let i = 0; i < res.records.length; i++) {
-                    res['records'][i]['index'] = (res['current'] - 1) * 10 + i + 1;
-                }
-                this.setState({
-                    data: res.records
-                })
-            }
-            this.setState({
-                loading: false
-            })
-        })
-    }
-
     onSelectChange(selectedRowKeys) {
         this.setState({
-            selectedRowKeys
+            selectedRowKeys:selectedRowKeys
         })
     }
-
-    deleteById(id) {
-        axios({
-            url:`${this.url.swmsBasicDeliveryAddressInfo}/${id}`,
-            method:'Delete',
-            headers:{
-                'Authorization':this.url.Authorization
-            }
-        }).then((data)=>{
-            if(data.data.code === '000000') {
-                message.info(data.data.mesg);
-                this.getTableParams(); //删除后重置信息
-            } else {
-                message.info(data.data.mesg);
-            }
-        }).catch(()=>{
-            message.info('删除失败，请联系管理员！');
-        });
-    }
+  
    /**批量删除*/
-    deleteByIds() {
-        let {selectedRowKeys} = this.state, ids = '';
-        selectedRowKeys.map((e,index) => {
-            index === 0 ? ids += `ids=${e}` : ids += `&ids=${e}`
-        });
-        axios({
-            url:`${this.url.swmsBasicDeliveryAddressInfo}/batchDelete?${ids}`,
-            method:'Delete',
-            headers:{
-                'Authorization':this.url.Authorization
-            },
-        }).then((data)=>{
-            if(data.data.code === '000000') {
-                message.info(data.data.mesg);
-                this.getTableParams(); //删除后重置信息
-            } else {
-                message.info(data.data.mesg);
-            }
-        }).catch(()=>{
-            message.info('删除失败，请联系管理员！');
-        });
-    }
+   deleteByIds(){
+    const ids=this.state.selectedRowKeys
+    //console.log(ids)
+    axios({
+        url:this.url.positiveModel.ids,
+        method:'delete',
+        data:ids,
+        type : 'json'
+    }).then(data=>{
+        //console.log(data,data)
+        if(data.data.code===0){
+            this.getTableData()
+        }
+        else{
+            message.error('操作失败')
+        }
+    }).catch(error=>{
+        message.error('操作失败，请联系管理员!')
+    })
+    this.cancel()
+}
     handleTableChange(pagination) {
         this.pagination = pagination;
-        this.getTableParams();
+        this.getTableData();
     }
 
     /**搜索事件*/
-    searchEvent(searchContent) {
-        this.setState({
-            searchContent
-        });
-        this.pagination.current = 1;
-        this.getTableParams(searchContent)
+    searchEvent(){
+        this.getTableData()
     }
-
+    searchContentChange(e){
+        //console.log(e.target.value)
+        this.setState({
+            
+            searchContent:e.target.value
+        })
+    }
     /**取消批量删除*/
     cancel() {
         this.setState({
-            selectedRowKeys: []
+            selectedRowKeys: [],
+            loading:false
         })
     }
 
@@ -226,11 +256,6 @@ class ProductNumber extends React.Component {
         this.props.history.push('/repoBasic');
     }
 
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
 }
 
 export default ProductNumber;

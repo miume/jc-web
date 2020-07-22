@@ -91,6 +91,7 @@ class equipmentRepair extends React.Component{
             this.getTableData({
                 secondDeptId: code,
                 repairStatus: parseInt(key)
+                
             })
         });
     };

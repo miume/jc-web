@@ -3,22 +3,33 @@ import "../equipmenRepair.css";
 import DepTree from "../../../BlockQuote/department";
 import SearchCell from "../../../BlockQuote/search";
 import TheTable from "./theTable";
-import {Spin} from "antd";
+import {Button, DatePicker,Spin, message} from "antd";
+import moment from "moment";
+import axios from "axios";
+
+const {RangePicker} = DatePicker;
 
 class WillRepair extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            searchContent:''
+            searchContent:'',
+            startTime: '',
+            endTime: '',
+            dateFormat: 'YYYY-MM-DD'
         };
         this.pagination = {
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
             pageSizeOptions: ["10","20","50","100"]
         };
+        this.download = this.download.bind(this);
+        this.dateChange = this.dateChange.bind(this);
     }
     render() {
         this.pagination.total = this.props.rightTableData.total;
+        const {startTime, endTime, dateFormat} = this.state;
+        const value = startTime === '' || endTime === '' ? null : [moment(startTime,dateFormat), moment(endTime,dateFormat)];
         return(
             <div  className='equipment-query'>
                 {/*左边树部分*/}
@@ -30,6 +41,15 @@ class WillRepair extends React.Component{
                 />
                 <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
                     <div>
+                    <RangePicker style={{marginRight: 10}}
+                                     onChange={this.dateChange}
+                                     placeholder={['开始时间','结束时间']} value={value}/>
+                        <span className='searchCell' style={{marginLeft: 10}}>
+                            <Button onClick={this.download} type='ant-btn ant-btn-primary'>
+                            <i className='fa fa-download' aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>
+                                &nbsp;导出
+                            </Button>
+                        </span>
                         <SearchCell
                             name='请输入设备名称'
                             flag={true}
@@ -55,6 +75,13 @@ class WillRepair extends React.Component{
         params['repairStatus'] = 1;
         this.props.getTableData(params)
     };
+    /**跟踪日期变化*/
+    dateChange(date,dateString) {
+        this.setState({
+            startTime: dateString[0],
+            endTime: dateString[1]
+        });
+    }
 
     /**跟踪搜索事件变化 */
     searchContentChange=(e)=>{
@@ -69,7 +96,7 @@ class WillRepair extends React.Component{
             repairStatus:1,
             condition:this.state.searchContent,
             page: this.pagination.current,
-            size: this.pagination.pageSize
+            size: this.pagination.pageSize,         
         };
         this.props.getTableData(params);
     };
@@ -99,5 +126,49 @@ class WillRepair extends React.Component{
         };
         this.props.getTableData(params);
     };
+
+/**点击导出按钮*/
+download() {
+    let {searchContent,startTime,endTime} = this.state;
+    const params={
+        secondDeptId: this.props.secondDeptId,
+        repairStatus: 1,
+        condition: searchContent,
+        startTime: startTime,
+        endTime: endTime
+    };
+    axios({
+        url: `${this.props.url.equipmentRepair.export}`,
+        method: 'get',
+        headers: {
+            'Authorization': this.props.url.Authorization
+        },
+        params: params,
+    }).then((data) => {
+        if (data.data.code === 0) {
+            if (data.data.data === null || data.data.data === "") {
+                message.info("该参数条件下不存在维修记录，请重新选择参数");
+            } else {
+                let url = `${this.props.url.equipmentRepair.download}${data.data.data}`;
+                let a = document.createElement('a');
+                a.href = url;
+                a.click();
+                message.info(data.data.message);
+            }
+        } else {
+            message.info("导出失败");
+        }
+        // let url = `${this.props.url.equipmentRepair.download}${data.data.data}`;
+        // let a = document.createElement('a');
+        // a.href = url;
+        // a.click();
+        // message.info(data.data.message)
+    })
+};
+    
 }
+
+
+
+
 export default WillRepair
