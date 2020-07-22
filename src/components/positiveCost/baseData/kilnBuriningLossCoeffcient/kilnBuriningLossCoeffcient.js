@@ -13,7 +13,7 @@ class KilnBurning extends React.Component {
         this.state = {
             loading: false,
             selectedRowKeys: [],
-            searchContent: ''
+            searchContent: undefined
         };
         this.operations = [];
         this.pagination = {
@@ -115,7 +115,7 @@ class KilnBurning extends React.Component {
                 onChange: this.onSelectChange,
             };
 
-        data = [{code:1,index:1,name:'ceshi',lossrate1:1,lossrate2:2,lossrate3:3,lossrate4:4,lossrate5:5,lossrate6:6,lossrate7:7,lossrate8:8}] //TODO：删除测试数据
+        // data = [{code:1,index:1,name:'ceshi',lossrate1:1,lossrate2:2,lossrate3:3,lossrate4:4,lossrate5:5,lossrate6:6,lossrate7:7,lossrate8:8}] //TODO：删除测试数据
         return (
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent} menu2='返回' returnDataEntry={this.back}/>
@@ -125,7 +125,7 @@ class KilnBurning extends React.Component {
                                  cancel={this.cancel} flag={deleteFlag}/>
                     <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'请输入产品型号'}/>
                     <div className='clear'></div>
-                    <Table dataSource={data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
+                    <Table dataSource={this.state.data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination}
                            onChange={this.handleTableChange} size={'small'} bordered rowKey={record => record.code}/>
                 </Spin>
             </div>
@@ -133,7 +133,7 @@ class KilnBurning extends React.Component {
     }
 
     componentDidMount() {
-        //this.getTableParams();
+        this.getTableParams();
         let {openKeys,menuId} = this.current, operations = getOperations(openKeys,menuId);
         this.setState({
             addFlag: judgeOperation(operations,'SAVE'),
@@ -146,33 +146,36 @@ class KilnBurning extends React.Component {
     getTableParams(value) {
         let {searchContent} = this.state, {pageSize,current} = this.pagination,
             params = {
+                condition:value === undefined ? searchContent : value,
+                page: current,
                 size: pageSize,
-                current: current
+
             };
-            this.getTableData(params,value === undefined ? searchContent : value);
+        console.log(this.state)
+        this.getTableData(params);
     }
 
     /**获取表格数据*/
-    getTableData(params,searchContent) {
+    getTableData(params) {
         this.setState({
             loading: true
         });
         axios({
-            url: `${this.url.swmsBasicDeliveryAddressInfo}/pages?deliveryAddressName=${searchContent}`,
-            method: 'post',
+            url: `${this.url.kilnBurning.page}`,
+            method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
             },
-            data:params
+            params
         }).then(data => {
             let res = data.data.data;
-            if(res && res.records) {
+            if(res && res.list) {
                 this.pagination.total = res['total'] ? res['total'] : 0;
-                for(let i = 0; i < res.records.length; i++) {
-                    res['records'][i]['index'] = (res['current'] - 1) * 10 + i + 1;
+                for(let i = 0; i < res.list.length; i++) {
+                    res['list'][i]['index'] = (res['page'] - 1) * 10 + i + 1;
                 }
                 this.setState({
-                    data: res.records
+                    data: res.list
                 })
             }
             this.setState({
@@ -186,20 +189,24 @@ class KilnBurning extends React.Component {
             selectedRowKeys
         })
     }
-
+    /**删除*/
     deleteById(id) {
+        let params = {
+            id:id
+        }
         axios({
-            url:`${this.url.swmsBasicDeliveryAddressInfo}/${id}`,
+            url:`${this.url.kilnBurning.delete}`,
             method:'Delete',
             headers:{
                 'Authorization':this.url.Authorization
-            }
+            },
+            params
         }).then((data)=>{
-            if(data.data.code === '000000') {
-                message.info(data.data.mesg);
+            if(data.data.code === 0) {
+                message.info(data.data.message);
                 this.getTableParams(); //删除后重置信息
             } else {
-                message.info(data.data.mesg);
+                message.info(data.data.message);
             }
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
@@ -211,18 +218,21 @@ class KilnBurning extends React.Component {
         selectedRowKeys.map((e,index) => {
             index === 0 ? ids += `ids=${e}` : ids += `&ids=${e}`
         });
+        console.log(selectedRowKeys)
         axios({
-            url:`${this.url.swmsBasicDeliveryAddressInfo}/batchDelete?${ids}`,
-            method:'Delete',
+            url:this.url.kilnBurning.deletes,
+            method:'delete',
             headers:{
                 'Authorization':this.url.Authorization
             },
+            data:selectedRowKeys,
+            type:'json'
         }).then((data)=>{
-            if(data.data.code === '000000') {
-                message.info(data.data.mesg);
+            if(data.data.code === 0) {
+                message.info(data.data.message);
                 this.getTableParams(); //删除后重置信息
             } else {
-                message.info(data.data.mesg);
+                message.info(data.data.message);
             }
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
@@ -236,7 +246,7 @@ class KilnBurning extends React.Component {
     /**搜索事件*/
     searchEvent(searchContent) {
         this.setState({
-            searchContent
+            searchContent:searchContent
         });
         this.pagination.current = 1;
         this.getTableParams(searchContent)

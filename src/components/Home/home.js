@@ -1112,6 +1112,14 @@ class Home extends Component {
                 update:`${server}/jc/common/anodeCoefficientRate/update`,
                 delete:`${server}/jc/common/anodeCoefficientRate/delete`,
             },
+            /**窑炉关系*/
+            kilnBurning:{
+                page:`${server}/jc/common/anodeBurningLossRate/page`,
+                add:`${server}/jc/common/anodeBurningLossRate/add`,
+                update:`${server}/jc/common/anodeBurningLossRate/update`,
+                delete:`${server}/jc/common/anodeBurningLossRate/delete`,
+                deletes:`${server}/jc/common/anodeBurningLossRate/ids`
+            },
             /**根据期数和周期类型来判断该期的表头是否可以编辑结束时间 */
             precursorHeadCheck: `${server}/jc/common/precursorHeadCheck/check`,
     };
